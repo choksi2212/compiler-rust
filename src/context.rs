@@ -19,6 +19,7 @@ pub enum Stage {
     Optimize,
     Bytecode,
     Runtime,
+    Native,
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Diagnostic {

@@ -1,0 +1,30 @@
+{
+  "seed": 2212,
+  "programs_completed": 100,
+  "native_comparisons": 200,
+  "all_passed": true,
+  "normalization": "CRLF to LF only",
+  "native_path_environment": "",
+  "elapsed_seconds": 30.625,
+  "source_sha256": {
+    "src\\abi.rs": "8a6b4ed7072ebfc8a6f5fefef92f2b385351003fdd3020f81377bdd0fcac3116",
+    "src\\bytecode.rs": "c2e6284cd4ee997ba6bd5709dfbaa4b9c0c713fc82b8bf1c479d667f206f267e",
+    "src\\context.rs": "e42f146eb6c552b923c66392ec1eed64065853479eeeaa2e0154f206e6b56705",
+    "src\\ir.rs": "cfc90a81ce4ee2b4c13fc9702dadd613336f185443cf5b504c4786decea16b5c",
+    "src\\lexer.rs": "40c3b76d8922241ca8f79494bcbeaf3dd92cf3499ad8999d98fcbac95c8cbb05",
+    "src\\lib.rs": "cf540a5d1ab6d632721fbd108b7d522c4f9b02834f4245e942b910aa6a1a60e7",
+    "src\\main.rs": "14f0a0d7afae3d043fbe76f8bbe45e12bc5853ca8784af0fe3bbf088caee6ba3",
+    "src\\native_integer.rs": "adcf7f63214ef2abfb0df777915ce78fd38cb44dc972bca1d861687e98abf3a1",
+    "src\\native_pe.rs": "23828486146176f4d6f955406cb5533703b98ce6ea27e390c2d3597289e5a461",
+    "src\\native_runtime.rs": "a10fcd33f900bb9fffd6556c4399a6a745e70465772fd5f20c590bca9c1da9bf",
+    "src\\optimize.rs": "f992813646eecae9209bf4d78c33d83cc8af0aa63843bb8d3259643143079ae7",
+    "src\\parser.rs": "12bf797885d0ee50ad195f7ccd417a2e74856120a55c092da4c01397f94c1749",
+    "src\\pe.rs": "053ad5abb645087a0e16569cfc4996b1f94e9d3ec8b77ec3f2f0f683b3ac7b72",
+    "src\\pipeline.rs": "bdccbbf23d1b5bf2bedcc0ee10daa56daa7de7573b052333854f5599e90b23bb",
+    "src\\semantic.rs": "520b608ab468c04593ead95d09332f7f4776ee6b1664832e99baaef20243265e",
+    "src\\stress.rs": "4413321ad6047258880da2d0c958c472a4d10a05ea3f91dc6dc5e4d605693ccb",
+    "src\\verify.rs": "041d8c75f46d3db3d8c3688b8874dd472f91a95f61c126891de1410adf02b484",
+    "src\\x64.rs": "c14d4b7faaf298e1e29cc43af13b46017d0fee68004dcd566b46cb3ebfc785c6"
+  },
+  "generator_sha256": "7ac4a294e311949db07389e8973c44c9101e4a8190d29a213f1ac683942482c0"
+}

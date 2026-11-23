@@ -1,0 +1,3 @@
+COMMAND: cargo test --test native_source --locked --offline
+FAILED after diagnostic fixture correction: Unicode source case reported byte length14 against expected6.
+Investigation: a Windows Python edit used the host cp1252 default to read a UTF-8 Rust test file, then rewrote the mojibake as UTF-8. The native runtime correctly counted the corrupted14-byte literal. Restore the intended UTF-8 fixture, use explicit UTF-8 file IO and retain a literal-byte-length assertion. This is an editing/fixture failure, not a waived runtime mismatch.

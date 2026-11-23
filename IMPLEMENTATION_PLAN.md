@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.2, continuous phase execution; P01-P06 passed, P07 in progress
+**Revision:** 3.2, continuous phase execution; P01-P07 passed, P08 in progress
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -690,7 +690,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P05 | ABI, stack frames and unwind generation | 8B-4 | Passed; evidence in section 13.10.2 |
 | P06 | Native subset arithmetic and control flow | 8B-5/6 | Passed; evidence in section 13.11.2 |
 | P07 | Native subset runtime and startup | 8B-7/8 | Passed; evidence in section 13.12.2 |
-| P08 | Complete C-subset-to-native integration | 8B-9 | Planned |
+| P08 | Complete C-subset-to-native integration | 8B-9 | Passed; evidence in section 13.13.2 |
 | P09 | Native CLI and usable distribution | 8C | Planned |
 | P10 | Conventional syntax and control flow | 9 | Planned |
 | P11 | General type system and typed IR | 10, type portion | Planned |
@@ -1138,6 +1138,24 @@ Work items:
 **Deliverables:** callable native compilation API, end-to-end corpus, recorded dependency audit.
 **Gate:** every currently supported demo and specified subset operation has native evidence; no unimplemented operation falls back to the VM.
 **Boundary:** broader C syntax is still unsupported; public `-o` arrives only in P09.
+
+#### 13.13.1 P08 implementation contract before coding
+
+The initial shared lexer input budget is16MiB and at most1000000 non-EOF tokens; token emission checks the budget before growing beyond it. Native/source tests use small configured token budgets for precise boundary cases and reject oversized input before building a character vector. These are teaching implementation limits requiring later conformance review. Add a shared source-buffer compilation API on CompilationContext that returns tokens, AST, verified pre/post-optimization IR and a native Image. Options select optimization and the already specified teaching runtime capacity. The pipeline uses the same lexer/parser/sema/IR/optimizer/native runtime, with stage-tagged source diagnostics; no second frontend or external subprocess is used to compile. The API performs no output publication or program execution.
+
+Qualification tests publish only into owned temporary directories, delete their test source before child launch, use fresh execution directories with empty PATH, and capture stdout/stderr/status with bounds. All six demos must match their exact expected files and both VM modes at both native optimization settings. Additional source cases cover branch/loop/scope interactions, strings/counts, large output and checked failures. A finite loop exceeding the VM's instruction budget must still finish natively, documenting that the reference VM is a bounded oracle rather than the native runtime. Required malformed/unsupported source must produce diagnostics and no image.
+
+Independent defined-behavior source comparison may use development-only compiler tools; differences from the teaching runtime's specified IO/error semantics must not be misrepresented as C conformance. Public native CLI and safe arbitrary output publication remain P09 work.
+
+#### 13.13.2 P08 completion evidence
+
+Baseline: `e3c698b`. `CompilationContext::compile_native` in `src/pipeline.rs` now connects real source buffers, tokens, AST, semantic checks, verified pre/post-optimization IR and the owned native image/runtime. It returns artifacts and structured stage/source diagnostics without publishing or executing files. Optimization/runtime capacity options are explicit. No second frontend or external compiler is used in this production path.
+
+All six source demos were compiled and launched at both native optimization settings; each matched its expected-output file and both VM representations. Controlled tests removed their temporary source before executing from a fresh Unicode/spaced directory with PATH empty. Interaction cases cover short circuit, shadows, counts/UTF-8, large output and teaching-mode checked failures with discarded stdout. A600000-iteration finite loop exceeded the reference VM budget yet completed natively with the expected printed value, demonstrating the intended bounded-VM/native distinction. Invalid source, unsupported syntax, invalid source identity and capacity errors return stage-tagged diagnostics instead of an image. Shared lexical limits reject input above16MiB before character-vector allocation and enforce at most1000000 non-EOF tokens; configured small token budgets and exact source-size boundaries are tested.
+
+`python validation/run_gate.py P08` passed formatting, warnings-denied Clippy and all-target debug/release suites: 85 passed each, zero failed/ignored. [Gate log](validation/P08-gate.log), [results/source hashes](validation/P08-gate.json). `python tools/native_source_differential.py` then regenerated100 deterministic defined-behavior C programs and200 native executables from the current source, seed2212: all200 output comparisons against GCC passed. Only CRLF/LF was normalized; native PATH was empty. [Oracle summary and compiler-source hashes](validation/P08-native-oracle.json), [source/expected/actual outputs and binary hashes](validation/P08-native-oracle-cases.json), [all command exits](validation/P08-native-oracle-commands.json). The generator only writes controlled ignored `target/P08-oracle` fixtures and is not the user CLI.
+
+Resolved fixture failures: unsupported ++ was correctly classified by the lexer rather than parser, so its test expectation was fixed while rejection remained mandatory; [diagnostic evidence](validation/P08-first-diagnostic-fixture-failure.log). A host-default cp1252 edit corrupted a UTF-8 test literal; it was restored, edits switched to explicit UTF-8, and an encoding assertion retained; [encoding evidence](validation/P08-unicode-fixture-failure.log). Both focused and full checks passed after fixes. No unresolved P08 failure. This qualifies the specified teaching C subset end-to-end, not hosted C11. Output CLI/publication is still not implemented. Next eligible phase: P09.
 
 ### 13.14 P09 - Native command-line compiler and subset distribution
 
@@ -1636,9 +1654,9 @@ Do not ask repeatedly for already approved routine implementation within a stage
 
 This is a review checklist, not a request to approve six separate actions individually. One review of the document can establish the baseline. Outstanding questions discovered during implementation must be concrete and tied to an actual dependency or specification conflict.
 
-### 15.6 Immediate next action after document review
+### 15.6 Immediate next action during continuous execution
 
-P00 has passed with the evidence in section 13.5.1. Continuous phase execution is now authorized. Begin P01's native foundation audit and proceed only through recorded passing gates, not by skipping downstream prerequisites. Follow P02-P08 in order to qualify actual native compilation before P09 delivers the user-facing `-o` workflow. Do not jump directly into broad language expansion or native CLI work. The first user-visible native milestone is the current six demos compiling into standalone `.exe` files through the entirely project-owned path. P10-P24 subsequently expand language/runtime coverage without claiming unfinished capabilities. Historical package aliases may explain past commits but cannot override this phase sequence.
+The user authorized continuous phase execution after P00. P01-P08 have now passed their recorded gates. Proceed to P09's native CLI/output-publication/distribution contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
 
 ## 16. References and preserved history
 

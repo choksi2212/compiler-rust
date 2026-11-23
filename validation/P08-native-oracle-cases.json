@@ -1,0 +1,1402 @@
+[
+  {
+    "case": 0,
+    "source": "#include <stdio.h>\nint main(){int a=3;int b=11;int sum=0;for(int i=0;i<3;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a-b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -8 1 0\n",
+    "native_stdout": [
+      "7 -8 1 0\n",
+      "7 -8 1 0\n"
+    ],
+    "native_sha256": [
+      "0f333e05884a664eaf9cdc543e7bfa63556df0631150c426659c546a8dee19bf",
+      "5a9732a672d0c9768591fe9bd656d1c95807cf42f7416e7513f3c0cf9ae814f6"
+    ],
+    "passed": true
+  },
+  {
+    "case": 1,
+    "source": "#include <stdio.h>\nint main(){int a=14;int b=11;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 25 15 1\n",
+    "native_stdout": [
+      "7 25 15 1\n",
+      "7 25 15 1\n"
+    ],
+    "native_sha256": [
+      "4d4d62d23a1c288f7a1935b5cabe55546281df73d924caacdb1a4b03382b5c06",
+      "f419fc73f8046bf2adf1d8864e6c1f1bb1b80ebb6559f7f316fa009864a8f197"
+    ],
+    "passed": true
+  },
+  {
+    "case": 2,
+    "source": "#include <stdio.h>\nint main(){int a=-3;int b=2;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -1 49 0\n",
+    "native_stdout": [
+      "7 -1 49 0\n",
+      "7 -1 49 0\n"
+    ],
+    "native_sha256": [
+      "c2b0450b13c933920600f2c335cb39ced9f370f0a42089361e022836687810b8",
+      "282c56c65e7e5c5f211f0efd74d0e54ff6eb513728ba2342d25a5443f92458b4"
+    ],
+    "passed": true
+  },
+  {
+    "case": 3,
+    "source": "#include <stdio.h>\nint main(){int a=35;int b=5;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 49 1\n",
+    "native_stdout": [
+      "7 1 49 1\n",
+      "7 1 49 1\n"
+    ],
+    "native_sha256": [
+      "1cb31599d8fd61f761eba156f8d67a7cef6a04e7a20b1924ec8590428cca4db3",
+      "4d528d43dca50fe751f689eaaff8ef8977af066b3dec8e405a69e19601e12133"
+    ],
+    "passed": true
+  },
+  {
+    "case": 4,
+    "source": "#include <stdio.h>\nint main(){int a=-17;int b=1;int sum=0;for(int i=0;i<4;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 0 0\n",
+    "native_stdout": [
+      "7 1 0 0\n",
+      "7 1 0 0\n"
+    ],
+    "native_sha256": [
+      "16f06188c520302e305ad8da78363f709a8c59365e662512cd2812f18a36de96",
+      "210bf84c6e6a54818e869e1f2e5492cbab0d1001ae94f9a2366cc0dc37adc89e"
+    ],
+    "passed": true
+  },
+  {
+    "case": 5,
+    "source": "#include <stdio.h>\nint main(){int a=4;int b=10;int sum=0;for(int i=0;i<0;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 0 0\n",
+    "native_stdout": [
+      "7 0 0 0\n",
+      "7 0 0 0\n"
+    ],
+    "native_sha256": [
+      "8c52afaf89d586bc421cf3550c0ef5ae736518d01013cad92a2b806bab6b5c68",
+      "2c41736a369ff7f07f16c036dd43f675da6d721af67408d522a609e2fa3b3024"
+    ],
+    "passed": true
+  },
+  {
+    "case": 6,
+    "source": "#include <stdio.h>\nint main(){int a=15;int b=11;int sum=0;for(int i=0;i<5;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 4 1\n",
+    "native_stdout": [
+      "7 1 4 1\n",
+      "7 1 4 1\n"
+    ],
+    "native_sha256": [
+      "427f58fa8da47993b7e1d43b1e78fc4f037972d8832f271c5de19559eca9735d",
+      "4963116d62c211f32ace70a627c25f05d5bcf6a7bb819b3c06a2c41dbb0b468f"
+    ],
+    "passed": true
+  },
+  {
+    "case": 7,
+    "source": "#include <stdio.h>\nint main(){int a=-27;int b=6;int sum=0;for(int i=0;i<4;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 0 0\n",
+    "native_stdout": [
+      "7 1 0 0\n",
+      "7 1 0 0\n"
+    ],
+    "native_sha256": [
+      "15fc8d98a3567a54e4a1b0f47cb44b11b9e8ecaf883ce9ed76ff52069ee3e8d8",
+      "4e68de3f2eb42b8fcd08479bb10badf57b28704fe1c50522ffc09dee92a2191f"
+    ],
+    "passed": true
+  },
+  {
+    "case": 8,
+    "source": "#include <stdio.h>\nint main(){int a=9;int b=13;int sum=0;for(int i=0;i<9;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a*b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 117 16 0\n",
+    "native_stdout": [
+      "7 117 16 0\n",
+      "7 117 16 0\n"
+    ],
+    "native_sha256": [
+      "faf6887c912cbcea0bb675e80dc9de71933b42fe8615f469e9bc3c0843c07961",
+      "ad6d706464e1e6ddd98b712819a9f170b7185a0ab736427690f91ede485d703a"
+    ],
+    "passed": true
+  },
+  {
+    "case": 9,
+    "source": "#include <stdio.h>\nint main(){int a=18;int b=14;int sum=0;for(int i=0;i<14;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 35 1\n",
+    "native_stdout": [
+      "7 1 35 1\n",
+      "7 1 35 1\n"
+    ],
+    "native_sha256": [
+      "1213fef56ebde589c8e7800a0cb52c4e63ce99d7eca35ab14765cca48c372576",
+      "69fc9e2ea16e27997233fdf4e73048baf4e449b717b923d792a3258981c2b0ba"
+    ],
+    "passed": true
+  },
+  {
+    "case": 10,
+    "source": "#include <stdio.h>\nint main(){int a=-7;int b=18;int sum=0;for(int i=0;i<0;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a||b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 0 0\n",
+    "native_stdout": [
+      "7 1 0 0\n",
+      "7 1 0 0\n"
+    ],
+    "native_sha256": [
+      "05bfd66689414919d25be84eedf1e3b103be3e99054977570c81112c2fc74abe",
+      "c4796da725b8a0aca06cf51dcc6fe0d41f7db21e6c41ac23a68571b128deb15b"
+    ],
+    "passed": true
+  },
+  {
+    "case": 11,
+    "source": "#include <stdio.h>\nint main(){int a=13;int b=5;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a%b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 3 8 1\n",
+    "native_stdout": [
+      "7 3 8 1\n",
+      "7 3 8 1\n"
+    ],
+    "native_sha256": [
+      "37fe8baa0ce720333b7fa274a197090a7c05221a9fe93b39939d44728d15d6bf",
+      "9f7329e9595fdd8a7ffe63d330ee356f7e024eb839dd657ec3488f1297ca0561"
+    ],
+    "passed": true
+  },
+  {
+    "case": 12,
+    "source": "#include <stdio.h>\nint main(){int a=25;int b=12;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 9 1\n",
+    "native_stdout": [
+      "7 1 9 1\n",
+      "7 1 9 1\n"
+    ],
+    "native_sha256": [
+      "c3df3667857521ab629922f5c3a697446a8c77d26ca92aec91f2e73b26d89ae9",
+      "b679d0028193f4f707fb48f1e49466d4bf9bd2aa51de7bdbac6564f05744b299"
+    ],
+    "passed": true
+  },
+  {
+    "case": 13,
+    "source": "#include <stdio.h>\nint main(){int a=16;int b=12;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 24 1\n",
+    "native_stdout": [
+      "7 0 24 1\n",
+      "7 0 24 1\n"
+    ],
+    "native_sha256": [
+      "5e617c9878ff7c1d919ae143a4e35771ae0b4ecb1dd546e590b95aa0cf769199",
+      "e215eb3675ef3610ca579d7253bfa6a64fe733f6005198abc47bea7fefe3a834"
+    ],
+    "passed": true
+  },
+  {
+    "case": 14,
+    "source": "#include <stdio.h>\nint main(){int a=-46;int b=1;int sum=0;for(int i=0;i<5;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a%b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 4 0\n",
+    "native_stdout": [
+      "7 0 4 0\n",
+      "7 0 4 0\n"
+    ],
+    "native_sha256": [
+      "6ff0326c579d87637faf110c8b0b665e48830614d6cb7c5be447d46c37945171",
+      "f00c8e08a44fc546ea769f369ad193f82d54482986401289394eafb9a7a088ba"
+    ],
+    "passed": true
+  },
+  {
+    "case": 15,
+    "source": "#include <stdio.h>\nint main(){int a=48;int b=12;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a-b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 36 49 1\n",
+    "native_stdout": [
+      "7 36 49 1\n",
+      "7 36 49 1\n"
+    ],
+    "native_sha256": [
+      "25ac5be6194b5e68fc7c48bbd692dc3264c5c721ad5c05c53833d8554c71397f",
+      "326d01882c6ba97000051201ab476490046e642415aacae14d0854505528c659"
+    ],
+    "passed": true
+  },
+  {
+    "case": 16,
+    "source": "#include <stdio.h>\nint main(){int a=-31;int b=18;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 8 0\n",
+    "native_stdout": [
+      "7 1 8 0\n",
+      "7 1 8 0\n"
+    ],
+    "native_sha256": [
+      "28d15134f01daf48a25620a22582d71300f389998901c397e76559ac093d8b96",
+      "bcbec43e8f7f08b2a37878ff31d06d68fad95a4ebce758e391e5feac2750712b"
+    ],
+    "passed": true
+  },
+  {
+    "case": 17,
+    "source": "#include <stdio.h>\nint main(){int a=20;int b=14;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a||b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 8 1\n",
+    "native_stdout": [
+      "7 1 8 1\n",
+      "7 1 8 1\n"
+    ],
+    "native_sha256": [
+      "8e879e8fcaf37d4bcf495cdfd8f5027733d2f8e75b173b7d0be9cbb4c313f590",
+      "b9c6e3f9a8b313f87a424cb4d4e271acfcbf9aa114eacb23a0cff086bf6d3a11"
+    ],
+    "passed": true
+  },
+  {
+    "case": 18,
+    "source": "#include <stdio.h>\nint main(){int a=-35;int b=19;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -1 0 0\n",
+    "native_stdout": [
+      "7 -1 0 0\n",
+      "7 -1 0 0\n"
+    ],
+    "native_sha256": [
+      "d06127e1fd12e3304417aef44e5a0efc77255a5e7bbf2bbdbeebd717a05279c6",
+      "53eb9fb6af71d524ac2ea46c70404b119c2f33a3d8c9fbeac93737b0b38ef7b4"
+    ],
+    "passed": true
+  },
+  {
+    "case": 19,
+    "source": "#include <stdio.h>\nint main(){int a=31;int b=13;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a-b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 18 8 1\n",
+    "native_stdout": [
+      "7 18 8 1\n",
+      "7 18 8 1\n"
+    ],
+    "native_sha256": [
+      "11385ac3e9e49695e29e680a905db1b1d3813cd0c4fb2722b91ae783e7a2daf7",
+      "9461b74d423f086ebef2ec9eff9095d677b2eebfe866e76baf2eb4653bc229df"
+    ],
+    "passed": true
+  },
+  {
+    "case": 20,
+    "source": "#include <stdio.h>\nint main(){int a=5;int b=6;int sum=0;for(int i=0;i<0;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 0 0\n",
+    "native_stdout": [
+      "7 0 0 0\n",
+      "7 0 0 0\n"
+    ],
+    "native_sha256": [
+      "df5d95177463f2cda7bcaf96f8ca13c5de421f33a95ac3904ce798d2e1bba572",
+      "5f7acf0175b99ec08df10a3b37b28b43f681e7ddd66e03d31e5bd68143151654"
+    ],
+    "passed": true
+  },
+  {
+    "case": 21,
+    "source": "#include <stdio.h>\nint main(){int a=21;int b=14;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 9 1\n",
+    "native_stdout": [
+      "7 1 9 1\n",
+      "7 1 9 1\n"
+    ],
+    "native_sha256": [
+      "ac19a99a979561db052931399ea4a5d9db2c2397bb5854cb22beae163a877751",
+      "24edc26b0ce34efdd81f0c3a4893b2c5029fba499a74b17f9ecce4f192facf21"
+    ],
+    "passed": true
+  },
+  {
+    "case": 22,
+    "source": "#include <stdio.h>\nint main(){int a=-2;int b=17;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 15 0\n",
+    "native_stdout": [
+      "7 1 15 0\n",
+      "7 1 15 0\n"
+    ],
+    "native_sha256": [
+      "8d856860506f0d6623a2d15dba6e8d3474e41048a35a6fb0cf938f213b5b3240",
+      "44bfe86885fa86ddb5f5f9c456bd20e404170f3b65582ad14fbd5424e78b3090"
+    ],
+    "passed": true
+  },
+  {
+    "case": 23,
+    "source": "#include <stdio.h>\nint main(){int a=43;int b=9;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a||b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 15 1\n",
+    "native_stdout": [
+      "7 1 15 1\n",
+      "7 1 15 1\n"
+    ],
+    "native_sha256": [
+      "8c191cdb98a5cbc3be02fd997afbadefd829e4c61a99183b594c23f5259b931f",
+      "b70508fb19763422962878124079c52eb39e859ffaf723af3c6e7c69c5b892d7"
+    ],
+    "passed": true
+  },
+  {
+    "case": 24,
+    "source": "#include <stdio.h>\nint main(){int a=-4;int b=6;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 15 0\n",
+    "native_stdout": [
+      "7 0 15 0\n",
+      "7 0 15 0\n"
+    ],
+    "native_sha256": [
+      "340fd469740b6bb75caf9c517f19072dbabf3cf1ff00c74b32bffca748d9deae",
+      "8f61014ca1d9bd9063233f35aeebe88d017c669a31c794c0349c089c8d817fdb"
+    ],
+    "passed": true
+  },
+  {
+    "case": 25,
+    "source": "#include <stdio.h>\nint main(){int a=5;int b=3;int sum=0;for(int i=0;i<5;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 4 1\n",
+    "native_stdout": [
+      "7 1 4 1\n",
+      "7 1 4 1\n"
+    ],
+    "native_sha256": [
+      "f63eb35972c954af743c167221c441b65df1f23b976de9320c4c97bc36191c5a",
+      "9ca887cb1e0dc47b08a3e462782c6ef1201f977a9e74dc2b92a7969390b80702"
+    ],
+    "passed": true
+  },
+  {
+    "case": 26,
+    "source": "#include <stdio.h>\nint main(){int a=15;int b=19;int sum=0;for(int i=0;i<11;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 34 25 0\n",
+    "native_stdout": [
+      "7 34 25 0\n",
+      "7 34 25 0\n"
+    ],
+    "native_sha256": [
+      "93dc229c1ee283156367efb0f6f10cbdc37c14ee3f8d38e695f0255bf5b31450",
+      "4be37e37923cf152e2ecb566eca81a15dfa01fa4facced8c486a323f8e99d81c"
+    ],
+    "passed": true
+  },
+  {
+    "case": 27,
+    "source": "#include <stdio.h>\nint main(){int a=26;int b=8;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 15 1\n",
+    "native_stdout": [
+      "7 0 15 1\n",
+      "7 0 15 1\n"
+    ],
+    "native_sha256": [
+      "9eaf3b466d1752e9801ee64f022800b300a6dd61fbcbbc718a3583e2dc50126c",
+      "bd6b492e731d24edfa181c6e7cc6267750d13daad10edcec76484e50868b06f4"
+    ],
+    "passed": true
+  },
+  {
+    "case": 28,
+    "source": "#include <stdio.h>\nint main(){int a=-2;int b=19;int sum=0;for(int i=0;i<6;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 3 0\n",
+    "native_stdout": [
+      "7 1 3 0\n",
+      "7 1 3 0\n"
+    ],
+    "native_sha256": [
+      "8cb99780987ce820e0b9ec45f2fc6f6cdebbdceaa112c6497689b1a9286974ff",
+      "53d5761aedeee49beb29bbff9cbeafb66ee6ee2d4cf2d17fd5eccdc26eff31c5"
+    ],
+    "passed": true
+  },
+  {
+    "case": 29,
+    "source": "#include <stdio.h>\nint main(){int a=-25;int b=13;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 24 0\n",
+    "native_stdout": [
+      "7 0 24 0\n",
+      "7 0 24 0\n"
+    ],
+    "native_sha256": [
+      "7162864f0d586aac5d53d25bee92ce6d8aa9f063701df2cad2249fd54732337d",
+      "92a301c3af31a0dec02d552e95fa3f66a30de4e0daf3670a25e7b4e5f9871b1a"
+    ],
+    "passed": true
+  },
+  {
+    "case": 30,
+    "source": "#include <stdio.h>\nint main(){int a=36;int b=10;int sum=0;for(int i=0;i<3;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a||b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 1 1\n",
+    "native_stdout": [
+      "7 1 1 1\n",
+      "7 1 1 1\n"
+    ],
+    "native_sha256": [
+      "e79d59affb055e1c717df584d416af60e57a1eaec4be13af1538543dda76995a",
+      "9a4ebed421bcc7d70081f407e538194356156d84623360e9c0297d1dc2739aca"
+    ],
+    "passed": true
+  },
+  {
+    "case": 31,
+    "source": "#include <stdio.h>\nint main(){int a=23;int b=18;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a||b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 9 1\n",
+    "native_stdout": [
+      "7 1 9 1\n",
+      "7 1 9 1\n"
+    ],
+    "native_sha256": [
+      "14af50f197974f6b76bbd6129626ae5ed7f9bbc5b896be6eafa7f4fc48b74291",
+      "8ee3a7c8d86671125d063a1d0bfa479843e04334a90dcc02f7487c876e1ea7ca"
+    ],
+    "passed": true
+  },
+  {
+    "case": 32,
+    "source": "#include <stdio.h>\nint main(){int a=50;int b=1;int sum=0;for(int i=0;i<0;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 50 0 1\n",
+    "native_stdout": [
+      "7 50 0 1\n",
+      "7 50 0 1\n"
+    ],
+    "native_sha256": [
+      "ab4c44c60b9b5ddf98ae5cd5a1fad31edb8eb860eb36f832c008cbb0c66f7a0b",
+      "4c6cf466b435d9e001127bd572de838d8a5288683b0c9399058116920ed8414a"
+    ],
+    "passed": true
+  },
+  {
+    "case": 33,
+    "source": "#include <stdio.h>\nint main(){int a=-17;int b=17;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 0 0\n",
+    "native_stdout": [
+      "7 0 0 0\n",
+      "7 0 0 0\n"
+    ],
+    "native_sha256": [
+      "f7c45623052923df7905dcd9fbf67e481ed109f75d3e80dae27b8021b298f272",
+      "e3037533a6fb7eb68a8b916a3f4b9c265afd871d584b80bb602129d15faf64dc"
+    ],
+    "passed": true
+  },
+  {
+    "case": 34,
+    "source": "#include <stdio.h>\nint main(){int a=-35;int b=19;int sum=0;for(int i=0;i<4;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a||b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 0 0\n",
+    "native_stdout": [
+      "7 1 0 0\n",
+      "7 1 0 0\n"
+    ],
+    "native_sha256": [
+      "c2d1e8b51c6763d4aed3a59f3892f6bcb013cb8a9cc0e7413c5829d4cb396c22",
+      "ed1192fd6f5e7027c73636aad9c834ffa7dfc92ecaa2c1e3515c9c9949b2a529"
+    ],
+    "passed": true
+  },
+  {
+    "case": 35,
+    "source": "#include <stdio.h>\nint main(){int a=-36;int b=4;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 9 0\n",
+    "native_stdout": [
+      "7 1 9 0\n",
+      "7 1 9 0\n"
+    ],
+    "native_sha256": [
+      "b0d7a7d056230cf70754ea32dee8d83567b69687a9ebe28c1cc876310693d1e1",
+      "b248311c9013c7b58b9cee611f238de70f15aa5cf67a9a20699357a665a1ee18"
+    ],
+    "passed": true
+  },
+  {
+    "case": 36,
+    "source": "#include <stdio.h>\nint main(){int a=-8;int b=14;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 0 0\n",
+    "native_stdout": [
+      "7 0 0 0\n",
+      "7 0 0 0\n"
+    ],
+    "native_sha256": [
+      "9b14deb1f7177e42207b384981c74d64bc333eb902c57a2bdb824d973a39f325",
+      "c71e402e4b54e770225b9dee577916258447e3a75bcb46230ff789ceeb133bdd"
+    ],
+    "passed": true
+  },
+  {
+    "case": 37,
+    "source": "#include <stdio.h>\nint main(){int a=-41;int b=10;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a%b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -1 15 0\n",
+    "native_stdout": [
+      "7 -1 15 0\n",
+      "7 -1 15 0\n"
+    ],
+    "native_sha256": [
+      "d77f93107e6e66b8c894a05bbb7e3b1b1f159c7521aa144f1245cc8a2086a7d0",
+      "e719bd76cb95c704e48db88eae9ab8bfa112491188005c0d154aa757b17bd84e"
+    ],
+    "passed": true
+  },
+  {
+    "case": 38,
+    "source": "#include <stdio.h>\nint main(){int a=8;int b=5;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 9 1\n",
+    "native_stdout": [
+      "7 1 9 1\n",
+      "7 1 9 1\n"
+    ],
+    "native_sha256": [
+      "509031bb784e2432f09c910686596c919f010d7636017e902aa4ebcc17ed915b",
+      "55a0a4199bbb408d15a4c1df15ac60a7312a9442a2082cc5abdd88c583c7d6e6"
+    ],
+    "passed": true
+  },
+  {
+    "case": 39,
+    "source": "#include <stdio.h>\nint main(){int a=-4;int b=8;int sum=0;for(int i=0;i<3;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 1 0\n",
+    "native_stdout": [
+      "7 1 1 0\n",
+      "7 1 1 0\n"
+    ],
+    "native_sha256": [
+      "2f126321cab4a1a58f705c38e5ad22c2afb4bd52ad621d9b56aea437a825b422",
+      "0fab077610232e2b431abb510d5d87753eed21fad24a7d3e8b2ad75ec5db8969"
+    ],
+    "passed": true
+  },
+  {
+    "case": 40,
+    "source": "#include <stdio.h>\nint main(){int a=24;int b=7;int sum=0;for(int i=0;i<3;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 31 1 1\n",
+    "native_stdout": [
+      "7 31 1 1\n",
+      "7 31 1 1\n"
+    ],
+    "native_sha256": [
+      "7d52de84e6937b0188852e999d396b941483d695b0a4e2e3abbfb6130690f63a",
+      "14468adc47c993d210abd29cfc67f0570658d8e7b6e522c391064d0b6accb2ec"
+    ],
+    "passed": true
+  },
+  {
+    "case": 41,
+    "source": "#include <stdio.h>\nint main(){int a=28;int b=10;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a%b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 8 49 1\n",
+    "native_stdout": [
+      "7 8 49 1\n",
+      "7 8 49 1\n"
+    ],
+    "native_sha256": [
+      "9853d0d5e0314555285210f08a88106804915819a9b107531e7c8bd44f5fd35b",
+      "6553dacef0cd518e426af8f3a9e22b43f8a4f877443b61afe64920a411346399"
+    ],
+    "passed": true
+  },
+  {
+    "case": 42,
+    "source": "#include <stdio.h>\nint main(){int a=2;int b=5;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 15 0\n",
+    "native_stdout": [
+      "7 1 15 0\n",
+      "7 1 15 0\n"
+    ],
+    "native_sha256": [
+      "0306186cea0980a23f85dc6b92bd17e1914b40851d47f51d78839fc54e2c5efb",
+      "33dbf1bbc7411bba98c9e665fb30a03492c4b9815c4ef1c59372e9e840443ade"
+    ],
+    "passed": true
+  },
+  {
+    "case": 43,
+    "source": "#include <stdio.h>\nint main(){int a=27;int b=18;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a-b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 9 8 1\n",
+    "native_stdout": [
+      "7 9 8 1\n",
+      "7 9 8 1\n"
+    ],
+    "native_sha256": [
+      "fdcca964d76625d5f115913cad2c9f4ab63c7b7759fef60bffeddf2d884c5e9a",
+      "7bfbcf85c71bae56ba805be7450688aa0185a8874207d95e464ad08d4f825000"
+    ],
+    "passed": true
+  },
+  {
+    "case": 44,
+    "source": "#include <stdio.h>\nint main(){int a=-28;int b=4;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 9 0\n",
+    "native_stdout": [
+      "7 0 9 0\n",
+      "7 0 9 0\n"
+    ],
+    "native_sha256": [
+      "3e917105a074850a1b737288d11fd83d062b320f71a01e65eedc4236896a2bb7",
+      "478129b909270b9a5f47f0265d53774b991a9da74930491d7427d3b59552eefd"
+    ],
+    "passed": true
+  },
+  {
+    "case": 45,
+    "source": "#include <stdio.h>\nint main(){int a=1;int b=19;int sum=0;for(int i=0;i<0;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 0 0\n",
+    "native_stdout": [
+      "7 1 0 0\n",
+      "7 1 0 0\n"
+    ],
+    "native_sha256": [
+      "85eaa2e4acbc038f51ce62e15cae883c591f1859cfb574f2cf872b1387efe6b4",
+      "5905a9b6520f5c341a70e40f890449624e68ca19e79cd9509242c099e012fd4d"
+    ],
+    "passed": true
+  },
+  {
+    "case": 46,
+    "source": "#include <stdio.h>\nint main(){int a=-44;int b=5;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -8 15 0\n",
+    "native_stdout": [
+      "7 -8 15 0\n",
+      "7 -8 15 0\n"
+    ],
+    "native_sha256": [
+      "1716281230738ee0ad2e4cab02dec4a0ae20a7482c3e7b5a2fc729ecc4bafc49",
+      "cf7fb24051841d8a4ae72a99b877717a73b0f7dbceeb1616639d48593c53a2f1"
+    ],
+    "passed": true
+  },
+  {
+    "case": 47,
+    "source": "#include <stdio.h>\nint main(){int a=-3;int b=13;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a%b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -3 15 0\n",
+    "native_stdout": [
+      "7 -3 15 0\n",
+      "7 -3 15 0\n"
+    ],
+    "native_sha256": [
+      "f607da3a5867953945b07d39e8559e53bf26bca47a24e09b319ffbed34c2ec7c",
+      "3c08cd9de79f878954597d9d09f86605c6ebff8eba3a943663006d6a17b16ae0"
+    ],
+    "passed": true
+  },
+  {
+    "case": 48,
+    "source": "#include <stdio.h>\nint main(){int a=-28;int b=9;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 0 0\n",
+    "native_stdout": [
+      "7 1 0 0\n",
+      "7 1 0 0\n"
+    ],
+    "native_sha256": [
+      "a83fb462480cd95e81fc6a6fc8247f8a3ea2fa3a74717fb9dbfe967ff475ed7c",
+      "5f2777b46083a712f5eace7589582ed95709842047bda7b6f84428013b07ae24"
+    ],
+    "passed": true
+  },
+  {
+    "case": 49,
+    "source": "#include <stdio.h>\nint main(){int a=11;int b=18;int sum=0;for(int i=0;i<14;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 35 0\n",
+    "native_stdout": [
+      "7 1 35 0\n",
+      "7 1 35 0\n"
+    ],
+    "native_sha256": [
+      "cf936a543dc13de1e88b034d6f3f1378f572e50eaad42fee035fe37766549f85",
+      "d7bdc140a59d2d407f09ad50d5454ddd9237c9d32874598ccb8cd96bfe9ad107"
+    ],
+    "passed": true
+  },
+  {
+    "case": 50,
+    "source": "#include <stdio.h>\nint main(){int a=44;int b=8;int sum=0;for(int i=0;i<6;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 52 3 1\n",
+    "native_stdout": [
+      "7 52 3 1\n",
+      "7 52 3 1\n"
+    ],
+    "native_sha256": [
+      "7678548b4dd81a2db2c058b0580326349113113aa85984411c639287922cae3d",
+      "5bd3cf5f1148feb67d6ae08df0f526f420d42107f0fe31eb8ae764744cdb9a75"
+    ],
+    "passed": true
+  },
+  {
+    "case": 51,
+    "source": "#include <stdio.h>\nint main(){int a=-10;int b=8;int sum=0;for(int i=0;i<14;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -2 35 0\n",
+    "native_stdout": [
+      "7 -2 35 0\n",
+      "7 -2 35 0\n"
+    ],
+    "native_sha256": [
+      "591899b43ab2a2dc16358d5b17858e7a0e39fa83a7454058ad26e158fb6ca621",
+      "528d7fdac562b6cfb5caa9d7a8b7f9d0c7be20b23a9c931788dd33fde91a9322"
+    ],
+    "passed": true
+  },
+  {
+    "case": 52,
+    "source": "#include <stdio.h>\nint main(){int a=-10;int b=11;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a%b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -10 8 0\n",
+    "native_stdout": [
+      "7 -10 8 0\n",
+      "7 -10 8 0\n"
+    ],
+    "native_sha256": [
+      "271ca0c6d2a43a8fe5861b08fc8b37b70dd0fed0af5adf8967d3d6c934179b2c",
+      "372384826a9940033222fa6edc8573fcf428dd374d00839c4f6c44a1dd7d30cc"
+    ],
+    "passed": true
+  },
+  {
+    "case": 53,
+    "source": "#include <stdio.h>\nint main(){int a=42;int b=3;int sum=0;for(int i=0;i<13;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 45 36 1\n",
+    "native_stdout": [
+      "7 45 36 1\n",
+      "7 45 36 1\n"
+    ],
+    "native_sha256": [
+      "32d0f3b81dad83c5c4d47a030818d1a2bf51b70e21f9812c80b1978d18b12c62",
+      "4dd8c64402a753ca8b626fd61822b13f8e1114f70e2f64ab87987eb780bec68b"
+    ],
+    "passed": true
+  },
+  {
+    "case": 54,
+    "source": "#include <stdio.h>\nint main(){int a=8;int b=13;int sum=0;for(int i=0;i<2;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 -1 0\n",
+    "native_stdout": [
+      "7 1 -1 0\n",
+      "7 1 -1 0\n"
+    ],
+    "native_sha256": [
+      "add395935942c77bd75712df6c2a683878da70061bb50786b5486bec01469183",
+      "bc03097aa67ff6b7096021674276a75fb2f5553699856a8034c31dc4961cb93c"
+    ],
+    "passed": true
+  },
+  {
+    "case": 55,
+    "source": "#include <stdio.h>\nint main(){int a=-49;int b=1;int sum=0;for(int i=0;i<5;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 4 0\n",
+    "native_stdout": [
+      "7 0 4 0\n",
+      "7 0 4 0\n"
+    ],
+    "native_sha256": [
+      "8e0e35045164d10f6271a0b2672ee8e61b57f3369173e4ed9080c22e06dccd93",
+      "fe2fd388caabba2fa6f109b1ba2161eec2f8d24d3646d603c16afe567e809326"
+    ],
+    "passed": true
+  },
+  {
+    "case": 56,
+    "source": "#include <stdio.h>\nint main(){int a=-2;int b=7;int sum=0;for(int i=0;i<9;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 16 0\n",
+    "native_stdout": [
+      "7 0 16 0\n",
+      "7 0 16 0\n"
+    ],
+    "native_sha256": [
+      "34b163554e50de0fae4599ab2f8dbd18c56914c0de2b19ea855286953a46f0cd",
+      "fc5425faa8ffbf28a80ab64aea3bc30db3f7d65dbe0bba6be77d04be7415254b"
+    ],
+    "passed": true
+  },
+  {
+    "case": 57,
+    "source": "#include <stdio.h>\nint main(){int a=-23;int b=9;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 0 0\n",
+    "native_stdout": [
+      "7 0 0 0\n",
+      "7 0 0 0\n"
+    ],
+    "native_sha256": [
+      "1e69f7449a07f436ef30ae7d11e974e5ebd267bf03afa74aad5da67aaed10019",
+      "78160c5f410be0d5fd40a980b29ef25d999fc1c78ec8a7343c791f7fe98318bd"
+    ],
+    "passed": true
+  },
+  {
+    "case": 58,
+    "source": "#include <stdio.h>\nint main(){int a=-44;int b=7;int sum=0;for(int i=0;i<6;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 3 0\n",
+    "native_stdout": [
+      "7 1 3 0\n",
+      "7 1 3 0\n"
+    ],
+    "native_sha256": [
+      "1efab4ef0ec9bca3cc2370107ce54a346bde3d369dcc808a8039b34d6e06bb29",
+      "a492e0043649cd7d27f1b966055410acde1920b4bc7101801a50b4d61e218ea8"
+    ],
+    "passed": true
+  },
+  {
+    "case": 59,
+    "source": "#include <stdio.h>\nint main(){int a=42;int b=20;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 24 1\n",
+    "native_stdout": [
+      "7 0 24 1\n",
+      "7 0 24 1\n"
+    ],
+    "native_sha256": [
+      "a03aa4693af8e32f51615bab43b71673504145bfb562ac1d5ff64e17518a7907",
+      "ab02a1b1d8f49ecfa41a22e141c4745b16d6bf00d15b9b0459cd8ba12aa23279"
+    ],
+    "passed": true
+  },
+  {
+    "case": 60,
+    "source": "#include <stdio.h>\nint main(){int a=23;int b=20;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 43 49 1\n",
+    "native_stdout": [
+      "7 43 49 1\n",
+      "7 43 49 1\n"
+    ],
+    "native_sha256": [
+      "d7f000e67ba20dfd134daa702bbe14f80f4306e0681ceec03f09311eb2a95fe5",
+      "f08d868ff8e0f8042197ad08d7adbb316961ab23fb232b52da702e5fb78de643"
+    ],
+    "passed": true
+  },
+  {
+    "case": 61,
+    "source": "#include <stdio.h>\nint main(){int a=-36;int b=20;int sum=0;for(int i=0;i<13;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 36 0\n",
+    "native_stdout": [
+      "7 0 36 0\n",
+      "7 0 36 0\n"
+    ],
+    "native_sha256": [
+      "5c1c961c1a69a80f490a02157fac69939a86730f956a78afed35f9dd65215125",
+      "a709c82e5d31c9fd658d2195c39efeaaf7b6c577b82f12077d8bc3193b4a4092"
+    ],
+    "passed": true
+  },
+  {
+    "case": 62,
+    "source": "#include <stdio.h>\nint main(){int a=-9;int b=17;int sum=0;for(int i=0;i<2;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 -1 0\n",
+    "native_stdout": [
+      "7 1 -1 0\n",
+      "7 1 -1 0\n"
+    ],
+    "native_sha256": [
+      "27b4bbc5e2696272fbc1c9a8d7c72db45ab22fe261c9171178db63e6f8075670",
+      "51a003da0a11513ace946725e2d489b83c78eafe7f9b15ea7eed56501fb15418"
+    ],
+    "passed": true
+  },
+  {
+    "case": 63,
+    "source": "#include <stdio.h>\nint main(){int a=23;int b=10;int sum=0;for(int i=0;i<2;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 -1 1\n",
+    "native_stdout": [
+      "7 1 -1 1\n",
+      "7 1 -1 1\n"
+    ],
+    "native_sha256": [
+      "cf4b49920e8f42766ab83463721e8436e60e086ce415864248369e0ebfcc6e60",
+      "d586faeef33c094dce4925856abf9907dc15973e61977108b670732478ec24b9"
+    ],
+    "passed": true
+  },
+  {
+    "case": 64,
+    "source": "#include <stdio.h>\nint main(){int a=-34;int b=15;int sum=0;for(int i=0;i<13;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 36 0\n",
+    "native_stdout": [
+      "7 0 36 0\n",
+      "7 0 36 0\n"
+    ],
+    "native_sha256": [
+      "41e2d4bc37b7a0200253b81169088a4e05551262c9e45d82ade9bb7e8adb2ad1",
+      "4f07f8d77d9646a9a78b9dec117ddafa0653250a7fed19e608f3241b877ab75b"
+    ],
+    "passed": true
+  },
+  {
+    "case": 65,
+    "source": "#include <stdio.h>\nint main(){int a=-42;int b=12;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 0 0\n",
+    "native_stdout": [
+      "7 1 0 0\n",
+      "7 1 0 0\n"
+    ],
+    "native_sha256": [
+      "bb11a2edd21e0436363818296271d1ce5ee3bf04172a9bfd6bad5b40267e1504",
+      "4107be19d48bee270c6f9bcd3cbd76c25d591f346faad908d492d9eac40327d1"
+    ],
+    "passed": true
+  },
+  {
+    "case": 66,
+    "source": "#include <stdio.h>\nint main(){int a=-11;int b=19;int sum=0;for(int i=0;i<11;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 25 0\n",
+    "native_stdout": [
+      "7 1 25 0\n",
+      "7 1 25 0\n"
+    ],
+    "native_sha256": [
+      "4af5899dc522a42e674011ddd87457754da511773324013c0a2a950da6001d07",
+      "15721cc4c51a4d32e68c0ae3edbae9851011a29c45a4f2adfdbb3e58945ab6c5"
+    ],
+    "passed": true
+  },
+  {
+    "case": 67,
+    "source": "#include <stdio.h>\nint main(){int a=-22;int b=13;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -1 0 0\n",
+    "native_stdout": [
+      "7 -1 0 0\n",
+      "7 -1 0 0\n"
+    ],
+    "native_sha256": [
+      "86e4d935de3799c399e314a367bcd117115f4424221afc3ea4084fa31163ecd5",
+      "12dae5ea5f1d3cc3e4bd646c478b8c48abf0deaeb96d1e2367030a0c57418985"
+    ],
+    "passed": true
+  },
+  {
+    "case": 68,
+    "source": "#include <stdio.h>\nint main(){int a=-34;int b=2;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -17 49 0\n",
+    "native_stdout": [
+      "7 -17 49 0\n",
+      "7 -17 49 0\n"
+    ],
+    "native_sha256": [
+      "59b12dbf91e26e3cd06dbe65aebdc1b03b1df983d2d9f1261221121391b0d985",
+      "d6f6e8757c0728a4d63b45846e4deab752a1539bb0e6bf3191416adc658f05ef"
+    ],
+    "passed": true
+  },
+  {
+    "case": 69,
+    "source": "#include <stdio.h>\nint main(){int a=48;int b=15;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 3 9 1\n",
+    "native_stdout": [
+      "7 3 9 1\n",
+      "7 3 9 1\n"
+    ],
+    "native_sha256": [
+      "dc90437e7b47ae6af5c6df088a1efda08f75367137a8db73f4947ee89b276306",
+      "30a35fcc3986b75b46a4047cdf1f0fe8a88a92dd8583483a3b8bbd2776afd72f"
+    ],
+    "passed": true
+  },
+  {
+    "case": 70,
+    "source": "#include <stdio.h>\nint main(){int a=23;int b=9;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 9 1\n",
+    "native_stdout": [
+      "7 1 9 1\n",
+      "7 1 9 1\n"
+    ],
+    "native_sha256": [
+      "2ee6cee5d028286ec39f6725ab0e0267b763bf33558347bd8d0b2d8ca1de3ddc",
+      "7d0f899e429dc6b733482d5e48449022bdc7e63b30e5998f72ed38b4f761edfe"
+    ],
+    "passed": true
+  },
+  {
+    "case": 71,
+    "source": "#include <stdio.h>\nint main(){int a=-7;int b=5;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a%b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -2 8 0\n",
+    "native_stdout": [
+      "7 -2 8 0\n",
+      "7 -2 8 0\n"
+    ],
+    "native_sha256": [
+      "a56e49a6d8d74fc3c3e8510609fc15878ce2f1f1b98d00f568fbdd5f0243b231",
+      "502d8066622746f4cc8175023e304de412ab612b4033dcf0f0ecde3b00a0103d"
+    ],
+    "passed": true
+  },
+  {
+    "case": 72,
+    "source": "#include <stdio.h>\nint main(){int a=21;int b=12;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 24 1\n",
+    "native_stdout": [
+      "7 0 24 1\n",
+      "7 0 24 1\n"
+    ],
+    "native_sha256": [
+      "78f32699aab09e2b1891174ad829f214b1916967c031be24e959ffafd0003f7f",
+      "e28b0ef2dac2bb400486057ad47c51b55405882bdfc149f6fba3237b98cadb89"
+    ],
+    "passed": true
+  },
+  {
+    "case": 73,
+    "source": "#include <stdio.h>\nint main(){int a=29;int b=17;int sum=0;for(int i=0;i<9;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 16 1\n",
+    "native_stdout": [
+      "7 1 16 1\n",
+      "7 1 16 1\n"
+    ],
+    "native_sha256": [
+      "52d5da578c772753f69618323cd73cb72a1371d94af7e6f1999da44d6c557e83",
+      "f46fb213e07ab43182aeca924789d901affc032eb91093b2690cec1a13deeeae"
+    ],
+    "passed": true
+  },
+  {
+    "case": 74,
+    "source": "#include <stdio.h>\nint main(){int a=-24;int b=6;int sum=0;for(int i=0;i<11;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 25 0\n",
+    "native_stdout": [
+      "7 0 25 0\n",
+      "7 0 25 0\n"
+    ],
+    "native_sha256": [
+      "b57b4293f15448bf7e840bcd2a5687b40308e1c7e3cd618d12a199b10adb9d91",
+      "01e09dc89a3225e845a99ec93063c52dea2203c0bd3aa3a6cd5965c0ff61ae38"
+    ],
+    "passed": true
+  },
+  {
+    "case": 75,
+    "source": "#include <stdio.h>\nint main(){int a=16;int b=15;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 49 1\n",
+    "native_stdout": [
+      "7 1 49 1\n",
+      "7 1 49 1\n"
+    ],
+    "native_sha256": [
+      "f312ff06a74d5c02847a6c4a93ffaccb3c4bd9c1373f8b4ed60d03cfdf3d96bc",
+      "ce05d9fd10f51d71ed8db9a084712d30dcb445042417e2d26e41487b980d24c7"
+    ],
+    "passed": true
+  },
+  {
+    "case": 76,
+    "source": "#include <stdio.h>\nint main(){int a=-8;int b=15;int sum=0;for(int i=0;i<0;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 0 0\n",
+    "native_stdout": [
+      "7 0 0 0\n",
+      "7 0 0 0\n"
+    ],
+    "native_sha256": [
+      "58f3a3f30e47ef385eb58c74fd1cd284757354fa124cd5ddb5b9e34bed3158d2",
+      "5f05de95c83970ba71f4af713ba007f481e9e8dce797f8381a184bf11fa3b178"
+    ],
+    "passed": true
+  },
+  {
+    "case": 77,
+    "source": "#include <stdio.h>\nint main(){int a=22;int b=16;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a==b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 49 1\n",
+    "native_stdout": [
+      "7 0 49 1\n",
+      "7 0 49 1\n"
+    ],
+    "native_sha256": [
+      "9f8537cfabd7b86e074a7f0c82b052d667e3508fce95799251975d2492d53977",
+      "1b04f0983fed77e99d7da1f0e9f5bf8fef74406924d792f7652402c6267d3f6a"
+    ],
+    "passed": true
+  },
+  {
+    "case": 78,
+    "source": "#include <stdio.h>\nint main(){int a=-16;int b=12;int sum=0;for(int i=0;i<7;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -1 9 0\n",
+    "native_stdout": [
+      "7 -1 9 0\n",
+      "7 -1 9 0\n"
+    ],
+    "native_sha256": [
+      "79f66c0e9c7ce0e33197206cafa9eedaeb9a6c8942d071ba1ef18c73fff9ebd2",
+      "24be3bdbe4f59eaa5be0ccb33937f6d82123a228c12406dd5a6d838826284621"
+    ],
+    "passed": true
+  },
+  {
+    "case": 79,
+    "source": "#include <stdio.h>\nint main(){int a=23;int b=17;int sum=0;for(int i=0;i<5;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 4 1\n",
+    "native_stdout": [
+      "7 0 4 1\n",
+      "7 0 4 1\n"
+    ],
+    "native_sha256": [
+      "505c2a604560957d6a17c9903e72747ed71889e6bacdac09c99313da64641e6e",
+      "65a4481b6ee8ac3de913dea0c82ff387e482fa7079ccee6ebbdf674412572f09"
+    ],
+    "passed": true
+  },
+  {
+    "case": 80,
+    "source": "#include <stdio.h>\nint main(){int a=-2;int b=4;int sum=0;for(int i=0;i<3;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a*b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -8 1 0\n",
+    "native_stdout": [
+      "7 -8 1 0\n",
+      "7 -8 1 0\n"
+    ],
+    "native_sha256": [
+      "c548db2b65dc3ae181a29e9f4b0e9db59dfd79566d55aa98dd240b47f4627303",
+      "324f6e8b76ee626245730ae7057d2a85eb69b71742d433cdb641fa39990a5252"
+    ],
+    "passed": true
+  },
+  {
+    "case": 81,
+    "source": "#include <stdio.h>\nint main(){int a=27;int b=8;int sum=0;for(int i=0;i<4;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 35 0 1\n",
+    "native_stdout": [
+      "7 35 0 1\n",
+      "7 35 0 1\n"
+    ],
+    "native_sha256": [
+      "6a9305dbfad227b6fdc893c2811d02bac58f8655b3f788298e32ffadff53ad61",
+      "09945158eb806de54af5f174a161ae6120e69e3599f0bf2f75e946a593b817f1"
+    ],
+    "passed": true
+  },
+  {
+    "case": 82,
+    "source": "#include <stdio.h>\nint main(){int a=-19;int b=18;int sum=0;for(int i=0;i<10;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -1 15 0\n",
+    "native_stdout": [
+      "7 -1 15 0\n",
+      "7 -1 15 0\n"
+    ],
+    "native_sha256": [
+      "1ae0436c1155fd2a57b574ce586349586f22458c52e420e40e77c16026124b7e",
+      "e49655d827fc72679858801709bae2944b0c135ca8ea6aceb0e6e7f2e5fc2585"
+    ],
+    "passed": true
+  },
+  {
+    "case": 83,
+    "source": "#include <stdio.h>\nint main(){int a=-39;int b=12;int sum=0;for(int i=0;i<1;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a*b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 -468 0 0\n",
+    "native_stdout": [
+      "7 -468 0 0\n",
+      "7 -468 0 0\n"
+    ],
+    "native_sha256": [
+      "5e7b8d5ad5827241b6742334480b99781c12e5407ee86e7db3252392d1af1c69",
+      "e09d14647c2dee4fc5142df5cd455415016dfb00820a4b3269c164977fe7ad37"
+    ],
+    "passed": true
+  },
+  {
+    "case": 84,
+    "source": "#include <stdio.h>\nint main(){int a=11;int b=2;int sum=0;for(int i=0;i<14;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a*b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 22 35 1\n",
+    "native_stdout": [
+      "7 22 35 1\n",
+      "7 22 35 1\n"
+    ],
+    "native_sha256": [
+      "cb24ac94d1942d921f3322deec54e49e49532f1356eb3b873646d877816c3e6e",
+      "a33778762281a1ce8b4a03b8b1e20c88a091f1f46435f539f7d8af1c2eec1008"
+    ],
+    "passed": true
+  },
+  {
+    "case": 85,
+    "source": "#include <stdio.h>\nint main(){int a=10;int b=15;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a*b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 150 24 0\n",
+    "native_stdout": [
+      "7 150 24 0\n",
+      "7 150 24 0\n"
+    ],
+    "native_sha256": [
+      "29ad9faf6a11b5b3f7bf3c68d42076765ed14711eff0a5d3eba14b66778a55d2",
+      "30060dc785faf9d9c0363735b9e9835df50f1187314a53a1deada7e8713262b6"
+    ],
+    "passed": true
+  },
+  {
+    "case": 86,
+    "source": "#include <stdio.h>\nint main(){int a=-34;int b=6;int sum=0;for(int i=0;i<2;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 -1 0\n",
+    "native_stdout": [
+      "7 1 -1 0\n",
+      "7 1 -1 0\n"
+    ],
+    "native_sha256": [
+      "0a693e9a37279badb5ad09b27b13102b5cb58ca30dc1691aacefb88767e9e618",
+      "959c22f211ecb16411e328446c5ead5d1fab61bf0aa25a75c7745666a663fa0f"
+    ],
+    "passed": true
+  },
+  {
+    "case": 87,
+    "source": "#include <stdio.h>\nint main(){int a=-42;int b=8;int sum=0;for(int i=0;i<6;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a&&b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 3 0\n",
+    "native_stdout": [
+      "7 1 3 0\n",
+      "7 1 3 0\n"
+    ],
+    "native_sha256": [
+      "097a2d5a3bd50c944b4acfc18d8dfc039bf2140ecbd32b95b2ff9e6af64c6937",
+      "7ab7a5d30289920738f441b0ddf3def309d1a997709da54426906b2ca607b800"
+    ],
+    "passed": true
+  },
+  {
+    "case": 88,
+    "source": "#include <stdio.h>\nint main(){int a=32;int b=17;int sum=0;for(int i=0;i<8;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a*b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 544 8 1\n",
+    "native_stdout": [
+      "7 544 8 1\n",
+      "7 544 8 1\n"
+    ],
+    "native_sha256": [
+      "0e1a366b098f3fb5ade82524b4e44d91b1454a587676a2e3c81ba5cb8238921a",
+      "4eea411f22f27bc0feef484e8d8ee44e17d7218de8f8754f5ac155760b99ae13"
+    ],
+    "passed": true
+  },
+  {
+    "case": 89,
+    "source": "#include <stdio.h>\nint main(){int a=-16;int b=19;int sum=0;for(int i=0;i<13;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 36 0\n",
+    "native_stdout": [
+      "7 1 36 0\n",
+      "7 1 36 0\n"
+    ],
+    "native_sha256": [
+      "054a0661cfca704ea096f263f06a91682dea22593b90fe57f52c7d33ad9f165b",
+      "a43ed7a379af3ab3b79234760fad23dae3b0bda793dddffa0169da3f135d9e83"
+    ],
+    "passed": true
+  },
+  {
+    "case": 90,
+    "source": "#include <stdio.h>\nint main(){int a=-1;int b=11;int sum=0;for(int i=0;i<11;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a!=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 25 0\n",
+    "native_stdout": [
+      "7 1 25 0\n",
+      "7 1 25 0\n"
+    ],
+    "native_sha256": [
+      "9bf4886e8012e0a030cd1569e5cf66f40a63e52cf502446d6a6b19c5a64d7d55",
+      "65ca424b9199853ae029dffd62c0437aa89b1d5bb3fe6cf80bc96ff451d6584b"
+    ],
+    "passed": true
+  },
+  {
+    "case": 91,
+    "source": "#include <stdio.h>\nint main(){int a=34;int b=1;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 24 1\n",
+    "native_stdout": [
+      "7 1 24 1\n",
+      "7 1 24 1\n"
+    ],
+    "native_sha256": [
+      "2dda39715bb7635b94d078e12db2d0d77c489b73c2d7028dd99322743429bef9",
+      "779d7cc6bcaba477f5a0c1caa959a9fb68487a9a3a61cbf2f54960bdd4d887b2"
+    ],
+    "passed": true
+  },
+  {
+    "case": 92,
+    "source": "#include <stdio.h>\nint main(){int a=27;int b=12;int sum=0;for(int i=0;i<6;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a+b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 39 3 1\n",
+    "native_stdout": [
+      "7 39 3 1\n",
+      "7 39 3 1\n"
+    ],
+    "native_sha256": [
+      "f40aedb4c86bd28aac6ec6aed31f25094878513bb1fb73c2fa093a598db20754",
+      "3a49e2a81844a0cfc69330382116647c33d16e1de571c7e6342196c8af7b415d"
+    ],
+    "passed": true
+  },
+  {
+    "case": 93,
+    "source": "#include <stdio.h>\nint main(){int a=-12;int b=7;int sum=0;for(int i=0;i<13;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 1 36 0\n",
+    "native_stdout": [
+      "7 1 36 0\n",
+      "7 1 36 0\n"
+    ],
+    "native_sha256": [
+      "7cca6877c2799181d50c840f717b4c25e994b03b0df137ea77e8df435f01a925",
+      "a964743fd9466ce5559377d2c3d6194ce92e74b30d5a2c30684d3630efac7e15"
+    ],
+    "passed": true
+  },
+  {
+    "case": 94,
+    "source": "#include <stdio.h>\nint main(){int a=-12;int b=2;int sum=0;for(int i=0;i<9;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 16 0\n",
+    "native_stdout": [
+      "7 0 16 0\n",
+      "7 0 16 0\n"
+    ],
+    "native_sha256": [
+      "17d68f1ae77ef91106e93273e236ed8c904ea9f25942202e28a21d0994285b3a",
+      "b7688e1d6ae1b3f0cf94310bde62a90cd6a1461befe277079b8987ac30896df7"
+    ],
+    "passed": true
+  },
+  {
+    "case": 95,
+    "source": "#include <stdio.h>\nint main(){int a=-19;int b=1;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 24 0\n",
+    "native_stdout": [
+      "7 0 24 0\n",
+      "7 0 24 0\n"
+    ],
+    "native_sha256": [
+      "1abbbc29d4eb2d95c5709cc3faa2dd04f0d8f37f3cfcc7c1fb51c0d80911a471",
+      "918787c782f52ee99a51acc1a72835c5facb1724244e6e766e1ca99938f080a9"
+    ],
+    "passed": true
+  },
+  {
+    "case": 96,
+    "source": "#include <stdio.h>\nint main(){int a=27;int b=4;int sum=0;for(int i=0;i<12;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a<=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 24 1\n",
+    "native_stdout": [
+      "7 0 24 1\n",
+      "7 0 24 1\n"
+    ],
+    "native_sha256": [
+      "a9d177f14226f7879c14a2caa997aac05c374d50cad40b7a030e44b53f969db3",
+      "164359444c130e0e9332ebd6fd6e13a79d825b5e5025512d384e5be331d89580"
+    ],
+    "passed": true
+  },
+  {
+    "case": 97,
+    "source": "#include <stdio.h>\nint main(){int a=-36;int b=6;int sum=0;for(int i=0;i<9;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 16 0\n",
+    "native_stdout": [
+      "7 0 16 0\n",
+      "7 0 16 0\n"
+    ],
+    "native_sha256": [
+      "260f35ad2ab07ae080e78a1e5c889ac9a9d8356cc4bcc9c7c50dc1056cfae6ba",
+      "05f81d78b4394983d2fedf6541e62a418b914bedec34b21b4492294f5bc65e33"
+    ],
+    "passed": true
+  },
+  {
+    "case": 98,
+    "source": "#include <stdio.h>\nint main(){int a=34;int b=10;int sum=0;for(int i=0;i<13;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a/b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 3 36 1\n",
+    "native_stdout": [
+      "7 3 36 1\n",
+      "7 3 36 1\n"
+    ],
+    "native_sha256": [
+      "45c7b3224d995bf37d040a63427517423895bbd171dcb94eed14149f709e9ab9",
+      "fad664161e4f8bb11796ea64b081293fe3a9b4e2663f1a9c931b37dcec00c3fc"
+    ],
+    "passed": true
+  },
+  {
+    "case": 99,
+    "source": "#include <stdio.h>\nint main(){int a=0;int b=7;int sum=0;for(int i=0;i<15;i=i+1){if(i%2==0){sum=sum+i;}else{sum=sum-1;}}{int a=7;printf(\"%d \",a);}printf(\"%d %d %d\\n\",a>=b,sum,!(a<b));return 0;}\n",
+    "expected_stdout": "7 0 49 0\n",
+    "native_stdout": [
+      "7 0 49 0\n",
+      "7 0 49 0\n"
+    ],
+    "native_sha256": [
+      "13bc6602b2667401bd2ff69d00105cc6b40469949753961c3eedf4f505f0f4e6",
+      "6653d7fe618718c50caa1d712bfbcaf02127d738404e6cb3d470a1a6fc96c576"
+    ],
+    "passed": true
+  }
+]

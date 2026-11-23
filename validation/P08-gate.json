@@ -1,0 +1,89 @@
+{
+  "phase": "P08",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "Cargo.lock": "c862465f533aff4f4487a5d1e4f45c2e52d50bc5ab9e141010bc055376101695",
+    "Cargo.toml": "4b7a7b9976c5e135930270fca851c9e955e21ce6b3e0325a80ee77c9ee536724",
+    "src\\abi.rs": "8a6b4ed7072ebfc8a6f5fefef92f2b385351003fdd3020f81377bdd0fcac3116",
+    "src\\bytecode.rs": "c2e6284cd4ee997ba6bd5709dfbaa4b9c0c713fc82b8bf1c479d667f206f267e",
+    "src\\context.rs": "e42f146eb6c552b923c66392ec1eed64065853479eeeaa2e0154f206e6b56705",
+    "src\\ir.rs": "cfc90a81ce4ee2b4c13fc9702dadd613336f185443cf5b504c4786decea16b5c",
+    "src\\lexer.rs": "40c3b76d8922241ca8f79494bcbeaf3dd92cf3499ad8999d98fcbac95c8cbb05",
+    "src\\lib.rs": "cf540a5d1ab6d632721fbd108b7d522c4f9b02834f4245e942b910aa6a1a60e7",
+    "src\\main.rs": "14f0a0d7afae3d043fbe76f8bbe45e12bc5853ca8784af0fe3bbf088caee6ba3",
+    "src\\native_integer.rs": "adcf7f63214ef2abfb0df777915ce78fd38cb44dc972bca1d861687e98abf3a1",
+    "src\\native_pe.rs": "23828486146176f4d6f955406cb5533703b98ce6ea27e390c2d3597289e5a461",
+    "src\\native_runtime.rs": "a10fcd33f900bb9fffd6556c4399a6a745e70465772fd5f20c590bca9c1da9bf",
+    "src\\optimize.rs": "f992813646eecae9209bf4d78c33d83cc8af0aa63843bb8d3259643143079ae7",
+    "src\\parser.rs": "12bf797885d0ee50ad195f7ccd417a2e74856120a55c092da4c01397f94c1749",
+    "src\\pe.rs": "053ad5abb645087a0e16569cfc4996b1f94e9d3ec8b77ec3f2f0f683b3ac7b72",
+    "src\\pipeline.rs": "bdccbbf23d1b5bf2bedcc0ee10daa56daa7de7573b052333854f5599e90b23bb",
+    "src\\semantic.rs": "520b608ab468c04593ead95d09332f7f4776ee6b1664832e99baaef20243265e",
+    "src\\stress.rs": "4413321ad6047258880da2d0c958c472a4d10a05ea3f91dc6dc5e4d605693ccb",
+    "src\\verify.rs": "041d8c75f46d3db3d8c3688b8874dd472f91a95f61c126891de1410adf02b484",
+    "src\\x64.rs": "c14d4b7faaf298e1e29cc43af13b46017d0fee68004dcd566b46cb3ebfc785c6",
+    "tests\\abi_frames.rs": "a7068573e7896e0b77112a987be57c9210a051a76d2b5de68c6c905e8fb73479",
+    "tests\\abi_image.rs": "ab759467e428da366585fa80f36ca2d473e0ad1d044def68a2f1cdebb15d9157",
+    "tests\\cli.rs": "391d278ee19b1baa63118bc832047a339f5bf0d2ab16bae656e8e664d8fd43d9",
+    "tests\\dynamic_pe.rs": "bf9dfc3dd2f80425d3c5a3ddf2a51ebc4bb30f0cbd1905c6fb8a96e651f43d89",
+    "tests\\native_integer.rs": "6c6fe7d129b89d6ee91531161e9e55f9f98fa5a35e33c20c69f81322d3d4a439",
+    "tests\\native_runtime.rs": "2f30d643f0a95d48029b0ad9543dbf1127fcf6ef9c82464cf1a7c514d05ded88",
+    "tests\\native_source.rs": "50e04907f17da3c3d13d007d48ffef6be0976e8f3fdaf00e4ca495387b99d7ba",
+    "tests\\pe_foundation.rs": "ea5f52ba9239bcaa5d084b355114c2bb7a2066b673e46b2d1fd0bae9c8244d92",
+    "tests\\runtime_io.rs": "c97a2895a196bc3694d7cc0645235bdfbaa7866dc0ebf90e17d7aed35af8ddbe",
+    "tests\\x64_encoder.rs": "716e0d2d3435342635f933d49670884aa975500f1882a94aa2b043f4fcef3895"
+  },
+  "required_commands_executed": true,
+  "commands_passed": true
+}

@@ -13,7 +13,17 @@ pub struct Token {
     pub column: usize,
     pub kind: Kind,
 }
+pub const MAX_SOURCE_BYTES: usize = 16 * 1024 * 1024;
+pub const MAX_TOKENS: usize = 1_000_000;
 pub fn lex(source: &str) -> Result<Vec<Token>, String> {
+    lex_with_token_limit(source, MAX_TOKENS)
+}
+/// Smaller budgets may be selected by callers; the global ceiling still applies.
+pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token>, String> {
+    if source.len() > MAX_SOURCE_BYTES {
+        return Err("1:1: source input exceeds16MiB budget".into());
+    }
+    let max_tokens = max_tokens.min(MAX_TOKENS);
     let chars: Vec<char> = source.chars().collect();
     let (mut i, mut line, mut column) = (0, 1, 1);
     let mut tokens = Vec::new();
@@ -121,6 +131,9 @@ pub fn lex(source: &str) -> Result<Vec<Token>, String> {
         } else {
             return Err(format!("{line}:{col}: invalid character {c:?}"));
         };
+        if tokens.len() >= max_tokens {
+            return Err(format!("{line}:{col}: token budget exceeded"));
+        }
         tokens.push(Token {
             text: chars[start..i].iter().collect(),
             line,
