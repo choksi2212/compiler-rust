@@ -64,12 +64,31 @@ pub struct Expr {
 #[derive(Debug, Clone)]
 pub enum Expression {
     Integer(IntegerValue),
+    ArrayInitial(Vec<Expr>),
     Variable(SymbolId),
     String(String),
     Convert(Box<Expr>),
     Discard(Box<Expr>),
     Decay(Box<Expr>),
     Address(SymbolId),
+    AddressLiteral(Box<Expr>),
+    Dereference(Box<Expr>),
+    PointerOffset {
+        base: Box<Expr>,
+        index: Box<Expr>,
+        subtract: bool,
+    },
+    PointerDifference(Box<Expr>, Box<Expr>),
+    IndirectAssign {
+        address: Box<Expr>,
+        value: Box<Expr>,
+        operation: Option<(Binary, TypeId)>,
+    },
+    IndirectUpdate {
+        address: Box<Expr>,
+        increment: bool,
+        postfix: bool,
+    },
     VaStart {
         list: SymbolId,
         last: SymbolId,
@@ -83,6 +102,11 @@ pub enum Expression {
     },
     VaEnd {
         list: SymbolId,
+    },
+    IndirectCall {
+        callee: Box<Expr>,
+        signature: TypeId,
+        arguments: Vec<Expr>,
     },
     Call {
         symbol: SymbolId,
@@ -210,6 +234,7 @@ struct Parser {
     next_scope: usize,
     expression_level: usize,
     expression_operators: usize,
+    initializer_elements: usize,
     declarator_level: usize,
     declarator_operations: usize,
     loops: usize,
@@ -249,6 +274,7 @@ pub fn parse_tokens(tokens: Vec<Token>) -> Result<Unit, String> {
         next_scope: 1,
         expression_level: 0,
         expression_operators: 0,
+        initializer_elements: 0,
         declarator_level: 0,
         declarator_operations: 0,
         loops: 0,
@@ -374,6 +400,19 @@ impl Parser {
                             ..
                         }
                     )
+                    && !matches!(
+                        (
+                            self.types.get(self.declarations[id.0].ty)?,
+                            self.types.get(ty)?
+                        ),
+                        (
+                            Type::Array {
+                                length: Some(_),
+                                ..
+                            },
+                            Type::Array { length: None, .. }
+                        )
+                    )
                 {
                     self.declarations[id.0].ty = ty;
                 }
@@ -432,13 +471,26 @@ impl Parser {
             if d.kind != kind || d.linkage != Some(linkage) || !self.types.compatible(d.ty, ty)? {
                 return Err(error(&token, "conflicting type or linkage declaration"));
             }
-            if kind != DeclarationKind::Function
+            if (kind != DeclarationKind::Function
                 || matches!(
                     self.types.get(ty)?,
                     Type::Function {
                         prototype: true,
                         ..
                     }
+                ))
+                && !matches!(
+                    (
+                        self.types.get(self.declarations[id.0].ty)?,
+                        self.types.get(ty)?
+                    ),
+                    (
+                        Type::Array {
+                            length: Some(_),
+                            ..
+                        },
+                        Type::Array { length: None, .. }
+                    )
                 )
             {
                 self.declarations[id.0].ty = ty;
@@ -468,6 +520,13 @@ impl Parser {
         Ok(id)
     }
     fn static_initial(&self, e: &Expr) -> Result<(), String> {
+        if let Expression::ArrayInitial(values) = &e.kind {
+            for value in values {
+                self.static_initial(value)?;
+            }
+            return Ok(());
+        }
+
         if matches!(self.types.get(e.ty)?, Type::Pointer(_)) {
             address_constant(self, e)
         } else {
@@ -955,8 +1014,7 @@ impl Parser {
                     if kind != DeclarationKind::Global {
                         return Err(error(&name, "initializer requires an object declaration"));
                     }
-                    let e = self.expr(1)?;
-                    Some(self.convert(e, self.types.unqualified(ty)?)?)
+                    Some(self.object_initial(id, ty)?)
                 } else {
                     None
                 };
@@ -975,12 +1033,193 @@ impl Parser {
                 }
             }
         }
+        for declaration in &mut self.declarations {
+            if declaration.kind == DeclarationKind::Global
+                && declaration.tentative
+                && let Type::Array {
+                    element,
+                    length: None,
+                } = self.types.get(declaration.ty)?.clone()
+            {
+                declaration.ty = self.types.array(element, Some(1))?;
+                self.types.pointer(declaration.ty)?;
+            }
+        }
         Ok(Unit {
             types: self.types,
             declarations: self.declarations,
             definitions,
             main_symbol,
         })
+    }
+    fn object_initial(&mut self, id: SymbolId, ty: TypeId) -> Result<Expr, String> {
+        let ty = if matches!(self.types.get(ty)?, Type::Array { .. }) {
+            self.declarations[id.0].ty
+        } else {
+            ty
+        };
+        let initial = self.initializer(ty, false)?;
+        if matches!(self.types.get(ty)?, Type::Array { .. }) {
+            self.declarations[id.0].ty = initial.ty;
+        }
+        Ok(initial)
+    }
+    fn initial_budget(&mut self) -> Result<(), String> {
+        self.initializer_elements += 1;
+        if self.initializer_elements > 65535 {
+            return Err(error(self.peek(), "initializer element budget exceeded"));
+        }
+        Ok(())
+    }
+    fn zero_initial(&mut self, ty: TypeId, token: &Token) -> Result<Expr, String> {
+        self.initial_budget()?;
+        let ty = self.types.unqualified(ty)?;
+        self.types.pointer(ty)?;
+        let kind = match self.types.get(ty)?.clone() {
+            Type::Array {
+                element,
+                length: Some(n),
+            } => {
+                if n > 65535 {
+                    return Err(error(token, "initializer element budget exceeded"));
+                }
+                let mut values = vec![];
+                for _ in 0..n {
+                    values.push(self.zero_initial(element, token)?);
+                }
+                Expression::ArrayInitial(values)
+            }
+            Type::Integer(_) => Expression::Integer(IntegerValue::new(&self.types, ty, 0)?),
+            Type::Pointer(_) => {
+                let int = self.types.integer(IntegerKind::Int);
+                Expression::Convert(Box::new(Expr {
+                    token: token.clone(),
+                    ty: int,
+                    kind: Expression::Integer(IntegerValue::new(&self.types, int, 0)?),
+                }))
+            }
+            _ => return Err(error(token, "unsupported zero initializer object")),
+        };
+        Ok(Expr {
+            token: token.clone(),
+            ty,
+            kind,
+        })
+    }
+    fn initializer(&mut self, ty: TypeId, elision: bool) -> Result<Expr, String> {
+        if self.depth >= 64 {
+            return Err(error(self.peek(), "initializer nesting limit exceeded"));
+        }
+        self.depth += 1;
+        let result = self.initializer_inner(ty, elision);
+        self.depth -= 1;
+        result
+    }
+    fn initializer_inner(&mut self, ty: TypeId, elision: bool) -> Result<Expr, String> {
+        self.initial_budget()?;
+        let token = self.peek().clone();
+        let ty = self.types.unqualified(ty)?;
+        self.types.pointer(ty)?;
+        if let Type::Array { element, length } = self.types.get(ty)?.clone() {
+            if length.is_some_and(|n| n > 65535) {
+                return Err(error(&token, "initializer element budget exceeded"));
+            }
+            let braced = self.eat("{");
+            if self.types.integer_kind(element).is_ok_and(|k| {
+                matches!(
+                    k,
+                    IntegerKind::Char | IntegerKind::SignedChar | IntegerKind::UnsignedChar
+                )
+            }) && let Kind::String(text) = self.peek().kind.clone()
+            {
+                self.take();
+                let n = length.unwrap_or(text.len() as u64 + 1);
+                if (text.len() as u64) > n {
+                    return Err(error(&token, "string initializer exceeds array bound"));
+                }
+                let mut bytes = text.into_bytes();
+                bytes.resize(n as usize, 0);
+                let element_ty = self.types.unqualified(element)?;
+                self.types.pointer(element_ty)?;
+                let mut values = vec![];
+                for byte in bytes {
+                    self.initial_budget()?;
+                    values.push(Expr {
+                        token: token.clone(),
+                        ty: element_ty,
+                        kind: Expression::Integer(IntegerValue::new(
+                            &self.types,
+                            element_ty,
+                            byte as u64,
+                        )?),
+                    });
+                }
+                if braced {
+                    self.eat(",");
+                    self.expect("}")?;
+                }
+                let ty = self.types.array(element, Some(n))?;
+                self.types.pointer(ty)?;
+                self.types.pointer(element)?;
+                return Ok(Expr {
+                    token,
+                    ty,
+                    kind: Expression::ArrayInitial(values),
+                });
+            }
+            if !braced && (!elision || length.is_none()) {
+                return Err(error(
+                    &token,
+                    "array initializer requires braces or a character string",
+                ));
+            }
+            let mut values = vec![];
+            while length.is_none_or(|n| (values.len() as u64) < n) {
+                if self.peek().text == "}" {
+                    break;
+                }
+                if !values.is_empty() {
+                    if !self.eat(",") {
+                        break;
+                    }
+                    if self.peek().text == "}" {
+                        break;
+                    }
+                }
+                values.push(self.initializer(element, true)?);
+            }
+            if values.is_empty() {
+                return Err(error(&token, "empty initializer is outside C11"));
+            }
+            if braced {
+                self.eat(",");
+                self.expect("}")?;
+            }
+            let n = length.unwrap_or(values.len() as u64);
+            while (values.len() as u64) < n {
+                values.push(self.zero_initial(element, &token)?);
+            }
+            let ty = self.types.array(element, Some(n))?;
+            self.types.pointer(ty)?;
+            self.types.pointer(element)?;
+            Ok(Expr {
+                token,
+                ty,
+                kind: Expression::ArrayInitial(values),
+            })
+        } else {
+            let braced = self.eat("{");
+            let e = if braced {
+                self.initializer(ty, false)?
+            } else {
+                self.expr(1)?
+            };
+            if braced {
+                self.eat(",");
+                self.expect("}")?;
+            }
+            self.convert(e, ty)
+        }
     }
     fn declaration(&mut self) -> Result<Statement, String> {
         let token = self.peek().clone();
@@ -1007,7 +1246,9 @@ impl Parser {
             {
                 return Err(error(&name, "invalid function storage class"));
             }
-            if kind == DeclarationKind::Local {
+            if kind == DeclarationKind::Local
+                && !matches!(self.types.get(ty)?, Type::Array { length: None, .. })
+            {
                 self.types.layout(ty).map_err(|e| error(&name, e))?;
             }
             let id = if kind == DeclarationKind::Function
@@ -1027,11 +1268,15 @@ impl Parser {
                         "only local objects can have initializers here",
                     ));
                 }
-                let e = self.expr(1)?;
-                Some(self.convert(e, self.types.unqualified(ty)?)?)
+                Some(self.object_initial(id, ty)?)
             } else {
                 None
             };
+            if kind == DeclarationKind::Local {
+                self.types
+                    .layout(self.declarations[id.0].ty)
+                    .map_err(|e| error(&name, e))?;
+            }
             if kind == DeclarationKind::Global && storage == Storage::Static {
                 self.record_initial(id, initial, true, false)?;
             } else if kind == DeclarationKind::Local {
@@ -1295,6 +1540,7 @@ impl Parser {
             _ => None,
         };
         if let Some(base) = base {
+            self.types.pointer(e.ty)?;
             let ty = self.types.pointer(base)?;
             Ok(Expr {
                 token: e.token.clone(),
@@ -1362,7 +1608,7 @@ impl Parser {
                 }
             }
             (Type::Integer(_), Type::Pointer(_)) => {
-                if !constant(&self.types, &e).is_ok_and(|v| v.bits == 0) {
+                if !explicit && !constant(&self.types, &e).is_ok_and(|v| v.bits == 0) {
                     return Err(error(
                         &e.token,
                         "only integer constant zero converts to a pointer in this phase",
@@ -1379,6 +1625,44 @@ impl Parser {
                 token: e.token.clone(),
                 ty,
                 kind: Expression::Convert(Box::new(e)),
+            })
+        }
+    }
+    fn updated(&mut self, e: Expr, token: Token, postfix: bool) -> Result<Expr, String> {
+        if let Expression::Dereference(address) = &e.kind {
+            let Type::Pointer(base) = self.types.get(address.ty)? else {
+                unreachable!()
+            };
+            if self.types.qualifiers(*base)?.constant {
+                return Err(error(&token, "update through const pointer"));
+            }
+            if let Type::Pointer(element) = self.types.get(e.ty)? {
+                self.types.layout(*element).map_err(|e| error(&token, e))?;
+            } else {
+                self.types
+                    .integer_kind(e.ty)
+                    .map_err(|e| error(&token, e))?;
+            }
+            Ok(Expr {
+                ty: e.ty,
+                kind: Expression::IndirectUpdate {
+                    address: address.clone(),
+                    increment: token.text == "++",
+                    postfix,
+                },
+                token,
+            })
+        } else {
+            let symbol = self.lvalue(&e)?;
+            let ty = self.types.unqualified(self.declarations[symbol.0].ty)?;
+            Ok(Expr {
+                ty,
+                kind: Expression::Update {
+                    symbol,
+                    increment: token.text == "++",
+                    postfix,
+                },
+                token,
             })
         }
     }
@@ -1399,12 +1683,13 @@ impl Parser {
     }
     fn lvalue(&self, e: &Expr) -> Result<SymbolId, String> {
         let id = self.modifiable(e)?;
-        self.types.integer_kind(e.ty).map_err(|_| {
-            error(
-                &e.token,
-                "pointer update operations wait for the memory phase",
-            )
-        })?;
+        if let Type::Pointer(base) = self.types.get(e.ty)? {
+            self.types.layout(*base).map_err(|e2| error(&e.token, e2))?;
+        } else {
+            self.types
+                .integer_kind(e.ty)
+                .map_err(|e2| error(&e.token, e2))?;
+        }
         Ok(id)
     }
     fn common(&mut self, a: Expr, b: Expr) -> Result<(Expr, Expr, TypeId), String> {
@@ -1476,8 +1761,62 @@ impl Parser {
                 .integer_kind(b.ty)
                 .map_err(|e| error(&token, e))?;
         }
+        if pointer && matches!(op, Binary::Add | Binary::Subtract) {
+            let (a, b) = if op == Binary::Add && !matches!(self.types.get(a.ty)?, Type::Pointer(_))
+            {
+                (b, a)
+            } else {
+                (a, b)
+            };
+            let Type::Pointer(element) = self.types.get(a.ty)? else {
+                return Err(error(&token, "pointer arithmetic requires a pointer base"));
+            };
+            self.types.layout(*element).map_err(|e| error(&token, e))?;
+            if matches!(self.types.get(b.ty)?, Type::Pointer(_)) {
+                if op != Binary::Subtract {
+                    return Err(error(&token, "cannot add pointers"));
+                }
+                let (a, b, _) = self.common(a, b)?;
+                return Ok(Expr {
+                    token,
+                    ty: self.types.integer(IntegerKind::LongLong),
+                    kind: Expression::PointerDifference(Box::new(a), Box::new(b)),
+                });
+            }
+            self.types
+                .integer_kind(b.ty)
+                .map_err(|e| error(&token, e))?;
+            let index = self.convert(b, self.types.integer(IntegerKind::LongLong))?;
+            return Ok(Expr {
+                token,
+                ty: a.ty,
+                kind: Expression::PointerOffset {
+                    base: Box::new(a),
+                    index: Box::new(index),
+                    subtract: op == Binary::Subtract,
+                },
+            });
+        }
         let (a, b) = if pointer {
-            if !matches!(op, Binary::Equal | Binary::NotEqual) {
+            if op.comparison() && !matches!(op, Binary::Equal | Binary::NotEqual) {
+                let (Type::Pointer(ap), Type::Pointer(bp)) =
+                    (self.types.get(a.ty)?, self.types.get(b.ty)?)
+                else {
+                    return Err(error(
+                        &token,
+                        "pointer ordering requires two object pointers",
+                    ));
+                };
+                self.types.layout(*ap).map_err(|e| error(&token, e))?;
+                self.types.layout(*bp).map_err(|e| error(&token, e))?;
+                if !self
+                    .types
+                    .compatible(self.types.unqualified(*ap)?, self.types.unqualified(*bp)?)?
+                {
+                    return Err(error(&token, "incompatible pointer ordering"));
+                }
+            }
+            if !op.comparison() {
                 return Err(error(
                     &token,
                     "pointer arithmetic/ordering waits for the memory phase",
@@ -1704,26 +2043,57 @@ impl Parser {
                     inner
                 }
             }
-            _ if token.text == "&" => {
+            _ if token.text == "*" => {
                 let e = self.expr(13)?;
-                let Expression::Variable(symbol) = e.kind else {
-                    return Err(error(
-                        &token,
-                        "address requires an object identifier in this phase",
-                    ));
+                let e = self.decay(e)?;
+                let Type::Pointer(base) = self.types.get(e.ty)? else {
+                    return Err(error(&token, "dereference requires a pointer"));
                 };
-                let declaration = &self.declarations[symbol.0];
-                if declaration.kind != DeclarationKind::Global {
-                    return Err(error(
-                        &token,
-                        "automatic/function addresses wait for the memory phase",
-                    ));
+                let base = *base;
+                if base == self.types.void() {
+                    return Err(error(&token, "cannot dereference void pointer"));
                 }
-                let ty = self.types.pointer(declaration.ty)?;
                 Expr {
                     token: token.clone(),
-                    ty,
-                    kind: Expression::Address(symbol),
+                    ty: self.types.unqualified(base)?,
+                    kind: Expression::Dereference(Box::new(e)),
+                }
+            }
+            _ if token.text == "&" => {
+                let e = self.expr(13)?;
+                if let Expression::Dereference(pointer) = e.kind {
+                    *pointer
+                } else {
+                    if matches!(e.kind, Expression::String(_)) {
+                        let ty = self.types.pointer(e.ty)?;
+                        return Ok(Expr {
+                            token,
+                            ty,
+                            kind: Expression::AddressLiteral(Box::new(e)),
+                        });
+                    }
+                    let Expression::Variable(symbol) = e.kind else {
+                        return Err(error(&token, "address requires an lvalue or function"));
+                    };
+                    let declaration = &self.declarations[symbol.0];
+                    if declaration.storage == Storage::Register {
+                        return Err(error(&token, "cannot take address of register object"));
+                    }
+                    if !matches!(
+                        declaration.kind,
+                        DeclarationKind::Global
+                            | DeclarationKind::Local
+                            | DeclarationKind::Parameter
+                            | DeclarationKind::Function
+                    ) {
+                        return Err(error(&token, "address requires an object or function"));
+                    }
+                    let ty = self.types.pointer(declaration.ty)?;
+                    Expr {
+                        token: token.clone(),
+                        ty,
+                        kind: Expression::Address(symbol),
+                    }
                 }
             }
             _ if ["+", "-", "!", "~"].contains(&token.text.as_str()) => {
@@ -1755,17 +2125,7 @@ impl Parser {
             }
             _ if token.text == "++" || token.text == "--" => {
                 let e = self.expr(13)?;
-                let symbol = self.lvalue(&e)?;
-                let ty = self.types.unqualified(self.declarations[symbol.0].ty)?;
-                Expr {
-                    token: token.clone(),
-                    ty,
-                    kind: Expression::Update {
-                        symbol,
-                        increment: token.text == "++",
-                        postfix: false,
-                    },
-                }
+                self.updated(e, token.clone(), false)?
             }
             _ if matches!(
                 token.text.as_str(),
@@ -1796,31 +2156,56 @@ impl Parser {
         Ok(lhs)
     }
     fn postfix(&mut self, mut lhs: Expr) -> Result<Expr, String> {
-        if self.peek().text == "++" || self.peek().text == "--" {
-            let op = self.take();
-            let symbol = self.lvalue(&lhs)?;
-            let ty = self.types.unqualified(self.declarations[symbol.0].ty)?;
-            lhs = Expr {
-                token: op.clone(),
-                ty,
-                kind: Expression::Update {
-                    symbol,
-                    increment: op.text == "++",
-                    postfix: true,
-                },
-            };
-        }
-        if self.eat("(") {
-            let Expression::Variable(symbol) = lhs.kind else {
-                return Err(error(
-                    &lhs.token,
-                    "indirect function calls are not yet supported",
-                ));
-            };
-            if self.declarations[symbol.0].kind != DeclarationKind::Function {
-                return Err(error(&lhs.token, "called identifier is not a function"));
+        loop {
+            if self.eat("[") {
+                let index = self.expr(0)?;
+                let token = lhs.token.clone();
+                self.expect("]")?;
+                let pointer = self.binary(token.clone(), Binary::Add, lhs, index)?;
+                let Type::Pointer(element) = self.types.get(pointer.ty)? else {
+                    return Err(error(&token, "subscript requires a pointer and an integer"));
+                };
+                lhs = Expr {
+                    token,
+                    ty: self.types.unqualified(*element)?,
+                    kind: Expression::Dereference(Box::new(pointer)),
+                };
+                continue;
             }
-            let signature = self.declarations[symbol.0].ty;
+            if self.peek().text == "++" || self.peek().text == "--" {
+                let op = self.take();
+                lhs = self.updated(lhs, op, true)?;
+                break;
+            }
+            if !self.eat("(") {
+                break;
+            }
+            self.expression_operators += 1;
+            if self.expression_operators > 128 {
+                return Err(error(&lhs.token, "expression size limit exceeded"));
+            }
+            let direct = if let Expression::Variable(symbol) = lhs.kind {
+                (self.declarations[symbol.0].kind == DeclarationKind::Function).then_some(symbol)
+            } else {
+                None
+            };
+            let callee = if direct.is_none() {
+                Some(self.decay(lhs.clone())?)
+            } else {
+                None
+            };
+            let signature = if let Some(symbol) = direct {
+                self.declarations[symbol.0].ty
+            } else {
+                let callee = callee.as_ref().ok_or("callee missing")?;
+                let Type::Pointer(base) = self.types.get(callee.ty)? else {
+                    return Err(error(
+                        &lhs.token,
+                        "called expression is not a function pointer",
+                    ));
+                };
+                *base
+            };
             let Type::Function {
                 result,
                 parameters,
@@ -1868,10 +2253,18 @@ impl Parser {
             lhs = Expr {
                 token: lhs.token,
                 ty: self.types.unqualified(result)?,
-                kind: Expression::Call {
-                    symbol,
-                    signature,
-                    arguments: converted,
+                kind: if let Some(symbol) = direct {
+                    Expression::Call {
+                        symbol,
+                        signature,
+                        arguments: converted,
+                    }
+                } else {
+                    Expression::IndirectCall {
+                        callee: Box::new(callee.ok_or("callee missing")?),
+                        signature,
+                        arguments: converted,
+                    }
                 },
             };
         }
@@ -1930,6 +2323,58 @@ impl Parser {
                 precedence + 1
             })?;
             if assignment {
+                if let Expression::Dereference(address) = &lhs.kind {
+                    let Type::Pointer(base) = self.types.get(address.ty)? else {
+                        unreachable!()
+                    };
+                    if self.types.qualifiers(*base)?.constant {
+                        return Err(error(&t, "assignment through const pointer"));
+                    }
+                    self.scalar(*base).map_err(|e| error(&t, e))?;
+                    let target = self.types.unqualified(*base)?;
+                    let (value, operation) = if op == "=" {
+                        (self.convert(rhs, target)?, None)
+                    } else {
+                        let binary = self.binary(
+                            t.clone(),
+                            binary_operator(&op[..op.len() - 1])
+                                .ok_or("unsupported compound operation")?,
+                            lhs.clone(),
+                            rhs,
+                        )?;
+                        match binary.kind {
+                            Expression::Binary(operator, left, right) => {
+                                (*right, Some((operator, left.ty)))
+                            }
+                            Expression::PointerOffset {
+                                base,
+                                index,
+                                subtract,
+                            } => (
+                                *index,
+                                Some((
+                                    if subtract {
+                                        Binary::Subtract
+                                    } else {
+                                        Binary::Add
+                                    },
+                                    base.ty,
+                                )),
+                            ),
+                            _ => return Err(error(&t, "invalid indirect compound operation")),
+                        }
+                    };
+                    lhs = Expr {
+                        token: t,
+                        ty: target,
+                        kind: Expression::IndirectAssign {
+                            address: address.clone(),
+                            value: Box::new(value),
+                            operation,
+                        },
+                    };
+                    continue;
+                }
                 let symbol = self.modifiable(&lhs)?;
                 let target = self.types.unqualified(self.declarations[symbol.0].ty)?;
                 let rhs = if op == "=" {
@@ -2003,11 +2448,28 @@ fn binary_operator(op: &str) -> Option<Binary> {
 fn address_constant(parser: &Parser, e: &Expr) -> Result<(), String> {
     match &e.kind {
         Expression::Address(symbol)
-            if parser.declarations[symbol.0].kind == DeclarationKind::Global =>
+            if matches!(
+                parser.declarations[symbol.0].kind,
+                DeclarationKind::Global | DeclarationKind::Function
+            ) =>
         {
             Ok(())
         }
         Expression::Decay(inner) if matches!(inner.kind, Expression::String(_)) => Ok(()),
+        Expression::Decay(inner) if matches!(inner.kind,Expression::Variable(id) if matches!(parser.declarations[id.0].kind,DeclarationKind::Function|DeclarationKind::Global)) => {
+            Ok(())
+        }
+        Expression::PointerOffset { base, index, .. } => {
+            address_constant(parser, base)?;
+            constant(&parser.types, index).map(|_| ())
+        }
+        Expression::AddressLiteral(_) => Ok(()),
+        Expression::Decay(inner) if matches!(inner.kind, Expression::Dereference(_)) => {
+            let Expression::Dereference(pointer) = &inner.kind else {
+                unreachable!()
+            };
+            address_constant(parser, pointer)
+        }
         Expression::Convert(inner) => address_constant(parser, inner),
         Expression::Conditional(condition, a, b) => {
             let condition = constant(&parser.types, condition)?;

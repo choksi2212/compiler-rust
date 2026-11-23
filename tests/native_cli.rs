@@ -387,7 +387,7 @@ fn explicit_typed_mode_syntax_only_and_mode_conflicts() {
     }
     // No typed fallback is hidden behind the default VM or teaching compiler.
     code(&w.cli(&["source.c", "--semantics=teaching"]), 1);
-    fs::write(w.0.join("bad.c"), "int main(){int a[3];return sizeof(a);}").unwrap();
+    fs::write(w.0.join("bad.c"), "int main(){int a[];return sizeof(a);}").unwrap();
     fs::write(w.0.join("old.exe"), b"preserve").unwrap();
     code(
         &w.cli(&["bad.c", "--std=c11", "-o", "old.exe", "--overwrite"]),

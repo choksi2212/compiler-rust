@@ -210,6 +210,12 @@ impl TypeContext {
         self.depths.push(depth);
         Ok(id)
     }
+    pub fn pointer_existing(&self, base: TypeId) -> Result<TypeId, String> {
+        self.canonical
+            .get(&Type::Pointer(base))
+            .copied()
+            .ok_or_else(|| "pointer type was not interned during analysis".into())
+    }
     pub fn pointer(&mut self, base: TypeId) -> Result<TypeId, String> {
         self.get(base)?;
         self.insert(Type::Pointer(base))

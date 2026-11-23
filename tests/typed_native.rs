@@ -500,3 +500,70 @@ fn independently_compiled_rust_caller_supplies_real_variadic_homes() {
         }
     }
 }
+
+#[test]
+fn real_object_load_store_address_and_alias_widths() {
+    for kind in [
+        Char,
+        UnsignedChar,
+        Short,
+        UnsignedShort,
+        Int,
+        UnsignedInt,
+        LongLong,
+        UnsignedLongLong,
+        Bool,
+    ] {
+        let mut module = program(kind, Binary::Add, 1, 2);
+        let ty = module.types.integer(kind);
+        let pointer = module.types.pointer(ty).unwrap();
+        let align = module.types.layout(ty).unwrap().align;
+        let f = &mut module.functions[0];
+        f.locals = vec![Local {
+            symbol: SymbolId(1),
+            ty,
+        }];
+        f.values = vec![pointer, ty, ty, ty];
+        f.blocks = vec![Block {
+            id: BlockId(0),
+            instructions: vec![
+                Instruction::ResetLocal(LocalId(0)),
+                Instruction::AddressLocal {
+                    dst: ValueId(0),
+                    local: LocalId(0),
+                },
+                Instruction::Constant {
+                    dst: ValueId(1),
+                    bits: if kind == Bool { 1 } else { kind.maximum() },
+                },
+                Instruction::Store {
+                    address: ValueId(0),
+                    src: ValueId(1),
+                    align,
+                    volatile: true,
+                },
+                Instruction::ReadLocal {
+                    dst: ValueId(2),
+                    local: LocalId(0),
+                },
+                Instruction::Load {
+                    dst: ValueId(3),
+                    address: ValueId(0),
+                    align,
+                    volatile: true,
+                },
+            ],
+            end: Terminator::Return(Some(ValueId(2))),
+        }];
+        verify(&module).unwrap();
+        let expected = if kind == Bool { 1 } else { kind.maximum() };
+        let native = Native::new(&module, false);
+        assert_eq!(native.call(), expected, "{kind:?}");
+        module.functions[0].blocks[0].end = Terminator::Return(Some(ValueId(3)));
+        assert_eq!(
+            Native::new(&module, false).call(),
+            expected,
+            "indirect {kind:?}"
+        );
+    }
+}

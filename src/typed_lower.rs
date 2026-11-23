@@ -231,8 +231,38 @@ impl Lower<'_> {
         })?;
         Ok(dst)
     }
+    fn indirect_call(
+        &mut self,
+        callee: &Expr,
+        signature: TypeId,
+        arguments: &[Expr],
+        result: TypeId,
+    ) -> Result<Option<ValueId>, String> {
+        let callee = self.value_expr(callee)?;
+        let mut values = vec![];
+        for argument in arguments {
+            values.push(self.value_expr(argument)?);
+        }
+        let dst = if result == self.unit.types.void() {
+            None
+        } else {
+            Some(self.value(result)?)
+        };
+        self.emit(I::Call {
+            dst,
+            callee,
+            signature,
+            arguments: values,
+        })?;
+        Ok(dst)
+    }
     fn expr(&mut self, e: &Expr) -> Result<Option<ValueId>, String> {
         match &e.kind {
+            Expression::IndirectCall {
+                callee,
+                signature,
+                arguments,
+            } => self.indirect_call(callee, *signature, arguments, e.ty),
             Expression::VaStart { list, last } => {
                 let list = self.variable(*list)?;
                 let last = self.local(*last)?;
@@ -288,6 +318,13 @@ impl Lower<'_> {
     }
     fn value_expr(&mut self, e: &Expr) -> Result<ValueId, String> {
         match &e.kind {
+            Expression::IndirectCall {
+                callee,
+                signature,
+                arguments,
+            } => self
+                .indirect_call(callee, *signature, arguments, e.ty)?
+                .ok_or_else(|| "void expression has no value".into()),
             Expression::Call {
                 symbol,
                 signature,
@@ -305,15 +342,212 @@ impl Lower<'_> {
             Expression::VaStart { .. } | Expression::VaCopy { .. } | Expression::VaEnd { .. } => {
                 Err("void variadic operation has no value".into())
             }
-            Expression::Address(symbol) => {
+            Expression::AddressLiteral(inner) => {
+                let Expression::String(text) = &inner.kind else {
+                    return Err("literal address requires string object".into());
+                };
+                let data = self.literals.add(inner.ty, text);
                 let dst = self.value(e.ty)?;
-                self.emit(I::GlobalAddress {
+                self.emit(I::DataAddress { dst, data })?;
+                Ok(dst)
+            }
+            Expression::PointerOffset {
+                base,
+                index,
+                subtract,
+            } => {
+                let base = self.value_expr(base)?;
+                let index = self.value_expr(index)?;
+                let dst = self.value(e.ty)?;
+                self.emit(I::PointerOffset {
                     dst,
-                    symbol: *symbol,
+                    base,
+                    index,
+                    subtract: *subtract,
                 })?;
                 Ok(dst)
             }
+            Expression::PointerDifference(a, b) => {
+                let lhs = self.value_expr(a)?;
+                let rhs = self.value_expr(b)?;
+                let dst = self.value(e.ty)?;
+                self.emit(I::PointerDifference { dst, lhs, rhs })?;
+                Ok(dst)
+            }
+            Expression::Dereference(pointer) => {
+                let address = self.value_expr(pointer)?;
+                let dst = self.value(e.ty)?;
+                let crate::types::Type::Pointer(base) = self.unit.types.get(pointer.ty)? else {
+                    unreachable!()
+                };
+                self.emit(I::Load {
+                    dst,
+                    address,
+                    align: self.unit.types.layout(*base)?.align,
+                    volatile: self.unit.types.qualifiers(*base)?.volatile,
+                })?;
+                Ok(dst)
+            }
+            Expression::IndirectAssign {
+                address,
+                value,
+                operation,
+            } => {
+                let pointer = self.value_expr(address)?;
+                let crate::types::Type::Pointer(base) = self.unit.types.get(address.ty)? else {
+                    unreachable!()
+                };
+                let align = self.unit.types.layout(*base)?.align;
+                let volatile = self.unit.types.qualifiers(*base)?.volatile;
+                let previous = if let Some((_, ty)) = operation {
+                    let dst = self.value(e.ty)?;
+                    self.emit(I::Load {
+                        dst,
+                        address: pointer,
+                        align,
+                        volatile,
+                    })?;
+                    Some(self.convert(dst, *ty)?)
+                } else {
+                    None
+                };
+                let mut src = self.value_expr(value)?;
+                if let Some((op, ty)) = operation {
+                    let dst = self.value(if op.comparison() { e.ty } else { *ty })?;
+                    let lhs = previous.ok_or("compound load missing")?;
+                    if matches!(self.unit.types.get(*ty)?, crate::types::Type::Pointer(_)) {
+                        self.emit(I::PointerOffset {
+                            dst,
+                            base: lhs,
+                            index: src,
+                            subtract: *op == Binary::Subtract,
+                        })?;
+                    } else {
+                        self.emit(I::Binary {
+                            dst,
+                            op: *op,
+                            lhs,
+                            rhs: src,
+                        })?;
+                    }
+                    src = self.convert(dst, e.ty)?;
+                }
+                self.emit(I::Store {
+                    address: pointer,
+                    src,
+                    align,
+                    volatile,
+                })?;
+                Ok(src)
+            }
+            Expression::IndirectUpdate {
+                address,
+                increment,
+                postfix,
+            } => {
+                let pointer = self.value_expr(address)?;
+                let crate::types::Type::Pointer(base) = self.unit.types.get(address.ty)? else {
+                    unreachable!()
+                };
+                let align = self.unit.types.layout(*base)?.align;
+                let volatile = self.unit.types.qualifiers(*base)?.volatile;
+                let old = self.value(e.ty)?;
+                self.emit(I::Load {
+                    dst: old,
+                    address: pointer,
+                    align,
+                    volatile,
+                })?;
+                if matches!(self.unit.types.get(e.ty)?, crate::types::Type::Pointer(_)) {
+                    let index = self.constant(
+                        self.unit.types.integer(crate::types::IntegerKind::LongLong),
+                        1,
+                    )?;
+                    let src = self.value(e.ty)?;
+                    self.emit(I::PointerOffset {
+                        dst: src,
+                        base: old,
+                        index,
+                        subtract: !*increment,
+                    })?;
+                    self.emit(I::Store {
+                        address: pointer,
+                        src,
+                        align,
+                        volatile,
+                    })?;
+                    return Ok(if *postfix { old } else { src });
+                }
+                let promoted = self.unit.types.promoted(e.ty)?;
+                let lhs = self.convert(old, promoted)?;
+                let rhs = self.constant(promoted, 1)?;
+                let dst = self.value(promoted)?;
+                self.emit(I::Binary {
+                    dst,
+                    op: if *increment {
+                        Binary::Add
+                    } else {
+                        Binary::Subtract
+                    },
+                    lhs,
+                    rhs,
+                })?;
+                let src = self.convert(dst, e.ty)?;
+                self.emit(I::Store {
+                    address: pointer,
+                    src,
+                    align,
+                    volatile,
+                })?;
+                Ok(if *postfix { old } else { src })
+            }
+            Expression::Address(symbol) => {
+                let dst = self.value(e.ty)?;
+                if self.unit.declarations[symbol.0].kind == DeclarationKind::Function {
+                    self.emit(I::FunctionAddress {
+                        dst,
+                        symbol: *symbol,
+                    })?;
+                } else if self.unit.declarations[symbol.0].kind == DeclarationKind::Global {
+                    self.emit(I::GlobalAddress {
+                        dst,
+                        symbol: *symbol,
+                    })?;
+                } else {
+                    let local = self.local(*symbol)?;
+                    self.emit(I::AddressLocal { dst, local })?;
+                }
+                Ok(dst)
+            }
             Expression::Decay(inner) => {
+                if let Expression::Dereference(pointer) = &inner.kind {
+                    let value = self.value_expr(pointer)?;
+                    return self.convert(value, e.ty);
+                }
+                if let Expression::Variable(symbol) = inner.kind {
+                    if self.unit.declarations[symbol.0].kind == DeclarationKind::Function {
+                        let dst = self.value(e.ty)?;
+                        self.emit(I::FunctionAddress { dst, symbol })?;
+                        return Ok(dst);
+                    } else {
+                        let dst = self.value(e.ty)?;
+                        // The IR address keeps the full declared array type; decay
+                        // is an explicit representation-preserving conversion.
+                        let pointer_ty = self
+                            .unit
+                            .types
+                            .pointer_existing(self.unit.declarations[symbol.0].ty)?;
+                        let full = self.value(pointer_ty)?;
+                        if self.unit.declarations[symbol.0].kind == DeclarationKind::Global {
+                            self.emit(I::GlobalAddress { dst: full, symbol })?;
+                        } else {
+                            let local = self.local(symbol)?;
+                            self.emit(I::AddressLocal { dst: full, local })?;
+                        }
+                        self.emit(I::Convert { dst, src: full })?;
+                        return Ok(dst);
+                    }
+                }
                 let Expression::String(text) = &inner.kind else {
                     return Err(
                         "array/function address execution waits for the memory phase".into(),
@@ -323,6 +557,9 @@ impl Lower<'_> {
                 let dst = self.value(e.ty)?;
                 self.emit(I::DataAddress { dst, data })?;
                 Ok(dst)
+            }
+            Expression::ArrayInitial(_) => {
+                Err("array initializer cannot be used as a scalar expression".into())
             }
             Expression::Integer(value) => self.constant(e.ty, value.bits),
             Expression::Variable(symbol) => self.read_variable(*symbol, e.ty),
@@ -362,6 +599,21 @@ impl Lower<'_> {
                 postfix,
             } => {
                 let old = self.read_variable(*symbol, e.ty)?;
+                if matches!(self.unit.types.get(e.ty)?, crate::types::Type::Pointer(_)) {
+                    let index = self.constant(
+                        self.unit.types.integer(crate::types::IntegerKind::LongLong),
+                        1,
+                    )?;
+                    let dst = self.value(e.ty)?;
+                    self.emit(I::PointerOffset {
+                        dst,
+                        base: old,
+                        index,
+                        subtract: !*increment,
+                    })?;
+                    self.write_variable(*symbol, dst)?;
+                    return Ok(if *postfix { old } else { dst });
+                }
                 let promoted = self.unit.types.promoted(e.ty)?;
                 let lhs = self.convert(old, promoted)?;
                 let rhs = self.constant(promoted, 1)?;
@@ -479,6 +731,41 @@ impl Lower<'_> {
         self.blocks[bridge.0].end = Some(Terminator::Jump(self.targets[&target]));
         Ok(bridge)
     }
+    fn initialize_object(&mut self, address: ValueId, initial: &Expr) -> Result<(), String> {
+        if let Expression::ArrayInitial(values) = &initial.kind {
+            let crate::types::Type::Array { element, .. } = self.unit.types.get(initial.ty)? else {
+                unreachable!()
+            };
+            let pointer_ty = self.unit.types.pointer_existing(*element)?;
+            let base = self.convert(address, pointer_ty)?;
+            for (i, value) in values.iter().enumerate() {
+                let index = self.constant(
+                    self.unit.types.integer(crate::types::IntegerKind::LongLong),
+                    i as u64,
+                )?;
+                let dst = self.value(pointer_ty)?;
+                self.emit(I::PointerOffset {
+                    dst,
+                    base,
+                    index,
+                    subtract: false,
+                })?;
+                self.initialize_object(dst, value)?;
+            }
+        } else {
+            let src = self.value_expr(initial)?;
+            let ty = self.unit.types.unqualified(initial.ty)?;
+            let pointer = self.unit.types.pointer_existing(ty)?;
+            let address = self.convert(address, pointer)?;
+            self.emit(I::Store {
+                address,
+                src,
+                align: self.unit.types.layout(ty)?.align,
+                volatile: self.unit.types.qualifiers(initial.ty)?.volatile,
+            })?;
+        }
+        Ok(())
+    }
     fn stmt(&mut self, s: &Statement) -> Result<(), String> {
         match &s.kind {
             StatementKind::Empty => (),
@@ -490,8 +777,15 @@ impl Lower<'_> {
                     let local = self.local(*symbol)?;
                     self.emit(I::ResetLocal(local))?;
                     if let Some(initial) = initial {
-                        let src = self.value_expr(initial)?;
-                        self.emit(I::InitializeLocal { local, src })?;
+                        if matches!(initial.kind, Expression::ArrayInitial(_)) {
+                            let ty = self.unit.types.pointer_existing(initial.ty)?;
+                            let dst = self.value(ty)?;
+                            self.emit(I::AddressLocal { dst, local })?;
+                            self.initialize_object(dst, initial)?;
+                        } else {
+                            let src = self.value_expr(initial)?;
+                            self.emit(I::InitializeLocal { local, src })?;
+                        }
                     }
                 }
             }
@@ -751,7 +1045,7 @@ fn lower_function(
     collect_locals(&definition.body, &mut symbols);
     for symbol in symbols {
         let declaration = &unit.declarations[symbol.0];
-        scalar(unit, declaration.ty).map_err(|e| {
+        unit.types.layout(declaration.ty).map_err(|e| {
             format!(
                 "{}:{}: {e}",
                 declaration.token.line, declaration.token.column
@@ -846,19 +1140,73 @@ fn global_initializer(
         ));
     }
     match &e.kind {
+        Expression::ArrayInitial(values) => {
+            let crate::types::Type::Array { element, .. } = unit.types.get(storage)? else {
+                return Err("array initializer type required".into());
+            };
+            Ok(G::Array(
+                values
+                    .iter()
+                    .map(|value| global_initializer(unit, literals, value, *element))
+                    .collect::<Result<Vec<_>, String>>()?,
+            ))
+        }
+        Expression::AddressLiteral(inner) => {
+            let Expression::String(text) = &inner.kind else {
+                return Err("literal address requires string object".into());
+            };
+            Ok(G::DataAddress {
+                data: literals.add(inner.ty, text),
+                addend: 0,
+            })
+        }
         Expression::Address(symbol) => Ok(G::Address {
             symbol: *symbol,
             addend: 0,
         }),
         Expression::Decay(inner) => {
+            if let Expression::Dereference(pointer) = &inner.kind {
+                return global_initializer(unit, literals, pointer, storage);
+            }
             if let Expression::String(text) = &inner.kind {
                 Ok(G::DataAddress {
                     data: literals.add(inner.ty, text),
                     addend: 0,
                 })
+            } else if let Expression::Variable(symbol) = inner.kind {
+                Ok(G::Address { symbol, addend: 0 })
             } else {
-                Err("static function/array addresses wait for the memory phase".into())
+                Err("unsupported static address".into())
             }
+        }
+        Expression::PointerOffset {
+            base,
+            index,
+            subtract,
+        } => {
+            let crate::types::Type::Pointer(element) = unit.types.get(base.ty)? else {
+                unreachable!()
+            };
+            let index =
+                crate::typed_front::constant(&unit.types, index)?.signed_value(&unit.types)?;
+            let mut delta = index
+                .checked_mul(i128::from(unit.types.layout(*element)?.size))
+                .ok_or("static address offset overflow")?;
+            if *subtract {
+                delta = -delta;
+            }
+            let delta =
+                i64::try_from(delta).map_err(|_| "static address offset exceeds target range")?;
+            let mut initial = global_initializer(unit, literals, base, storage)?;
+            match &mut initial {
+                G::Address { addend, .. } | G::DataAddress { addend, .. } => {
+                    *addend = addend
+                        .checked_add(delta)
+                        .ok_or("static address offset overflow")?
+                }
+                _ => return Err("static pointer offset requires an address constant".into()),
+            }
+            Ok(initial)
         }
         Expression::Convert(inner) => global_initializer(unit, literals, inner, storage),
         Expression::Conditional(condition, a, b) => global_initializer(

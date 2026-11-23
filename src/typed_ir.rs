@@ -46,6 +46,7 @@ pub struct Global {
 }
 #[derive(Debug, Clone)]
 pub enum GlobalInitializer {
+    Array(Vec<GlobalInitializer>),
     Zero,
     Integer(u64),
     Address { symbol: SymbolId, addend: i64 },
@@ -93,6 +94,17 @@ pub enum Instruction {
     Binary {
         dst: ValueId,
         op: Binary,
+        lhs: ValueId,
+        rhs: ValueId,
+    },
+    PointerOffset {
+        dst: ValueId,
+        base: ValueId,
+        index: ValueId,
+        subtract: bool,
+    },
+    PointerDifference {
+        dst: ValueId,
         lhs: ValueId,
         rhs: ValueId,
     },
@@ -149,6 +161,10 @@ pub enum Instruction {
         symbol: SymbolId,
         src: ValueId,
     },
+    FunctionAddress {
+        dst: ValueId,
+        symbol: SymbolId,
+    },
     GlobalAddress {
         dst: ValueId,
         symbol: SymbolId,
@@ -200,6 +216,8 @@ impl Instruction {
             | Self::Convert { dst, .. }
             | Self::Unary { dst, .. }
             | Self::Binary { dst, .. }
+            | Self::PointerOffset { dst, .. }
+            | Self::PointerDifference { dst, .. }
             | Self::ReadLocal { dst, .. }
             | Self::AddressLocal { dst, .. }
             | Self::Load { dst, .. } => Some(*dst),
@@ -207,6 +225,7 @@ impl Instruction {
             Self::DataAddress { dst, .. }
             | Self::ReadGlobal { dst, .. }
             | Self::GlobalAddress { dst, .. }
+            | Self::FunctionAddress { dst, .. }
             | Self::VaArg { dst, .. } => Some(*dst),
             Self::VaStart { .. }
             | Self::VaCopy { .. }
@@ -227,7 +246,10 @@ impl Instruction {
             | Self::WriteGlobal { src, .. } => {
                 vec![*src]
             }
-            Self::Binary { lhs, rhs, .. } => vec![*lhs, *rhs],
+            Self::Binary { lhs, rhs, .. } | Self::PointerDifference { lhs, rhs, .. } => {
+                vec![*lhs, *rhs]
+            }
+            Self::PointerOffset { base, index, .. } => vec![*base, *index],
             Self::Load { address, .. } => vec![*address],
             Self::Store { address, src, .. } => vec![*address, *src],
             Self::DirectCall { arguments, .. } => arguments.clone(),
@@ -243,6 +265,7 @@ impl Instruction {
             | Self::DataAddress { .. }
             | Self::ReadGlobal { .. }
             | Self::GlobalAddress { .. }
+            | Self::FunctionAddress { .. }
             | Self::VaStart { .. }
             | Self::VaArg { .. }
             | Self::VaCopy { .. }
@@ -312,7 +335,10 @@ impl Instruction {
             | Self::Convert { .. }
             | Self::AddressLocal { .. }
             | Self::DataAddress { .. }
-            | Self::GlobalAddress { .. } => Effects::default(),
+            | Self::GlobalAddress { .. }
+            | Self::FunctionAddress { .. }
+            | Self::PointerOffset { .. }
+            | Self::PointerDifference { .. } => Effects::default(),
         })
     }
 }
@@ -399,6 +425,74 @@ fn memory(
     )
 }
 
+fn verify_initial(
+    module: &Module,
+    storage: TypeId,
+    initial: &GlobalInitializer,
+) -> Result<(), String> {
+    let types = &module.types;
+    let ty = types.unqualified(storage)?;
+    match initial {
+        GlobalInitializer::Array(values) => {
+            let Type::Array {
+                element,
+                length: Some(n),
+            } = types.get(ty)?
+            else {
+                return Err("array initializer requires complete array".into());
+            };
+            require(
+                *n == values.len() as u64,
+                "array initializer extent mismatch",
+            )?;
+            for value in values {
+                verify_initial(module, *element, value)?;
+            }
+        }
+        GlobalInitializer::Zero => {
+            types.layout(ty)?;
+        }
+        GlobalInitializer::Integer(bits) => IntegerValue { ty, bits: *bits }.validate(types)?,
+        GlobalInitializer::Address { symbol, addend } => {
+            pointer_target(types, ty)?;
+            if module.functions.iter().any(|f| f.symbol == *symbol)
+                || module.externs.iter().any(|f| f.symbol == *symbol)
+            {
+                require(
+                    matches!(
+                        types.get(pointer_target(types, ty)?)?,
+                        Type::Function { .. }
+                    ),
+                    "function initializer requires function pointer",
+                )?;
+                require(*addend == 0, "function address cannot have an addend")?;
+                return Ok(());
+            }
+            let target = module
+                .globals
+                .iter()
+                .find(|g| g.symbol == *symbol)
+                .ok_or("undefined initializer symbol")?;
+            require(
+                *addend >= 0 && (*addend as u64) <= types.layout(target.ty)?.size,
+                "initializer address addend outside scalar object",
+            )?;
+        }
+        GlobalInitializer::DataAddress { data, addend } => {
+            pointer_target(types, ty)?;
+            let data = module
+                .data
+                .iter()
+                .find(|d| d.id == *data)
+                .ok_or("undefined initializer data")?;
+            require(
+                *addend >= 0 && (*addend as u64) <= data.bytes.len() as u64,
+                "initializer data addend outside object",
+            )?;
+        }
+    }
+    Ok(())
+}
 pub fn verify(module: &Module) -> Result<(), String> {
     let types = &module.types;
     let mut symbols = HashSet::new();
@@ -409,7 +503,9 @@ pub fn verify(module: &Module) -> Result<(), String> {
     )?;
     for global in &module.globals {
         require(symbols.insert(global.symbol), "duplicate symbol identity")?;
-        types.layout(global.ty)?;
+        if global.defined {
+            types.layout(global.ty)?;
+        }
     }
     for external in &module.externs {
         require(
@@ -440,34 +536,8 @@ pub fn verify(module: &Module) -> Result<(), String> {
         )?;
     }
     for global in &module.globals {
-        let ty = types.unqualified(global.ty)?;
-        match &global.initial {
-            GlobalInitializer::Zero => scalar(types, ty)?,
-            GlobalInitializer::Integer(bits) => IntegerValue { ty, bits: *bits }.validate(types)?,
-            GlobalInitializer::Address { symbol, addend } => {
-                pointer_target(types, ty)?;
-                let target = module
-                    .globals
-                    .iter()
-                    .find(|g| g.symbol == *symbol)
-                    .ok_or("undefined initializer symbol")?;
-                require(
-                    *addend >= 0 && (*addend as u64) <= types.layout(target.ty)?.size,
-                    "initializer address addend outside scalar object",
-                )?;
-            }
-            GlobalInitializer::DataAddress { data, addend } => {
-                pointer_target(types, ty)?;
-                let data = module
-                    .data
-                    .iter()
-                    .find(|d| d.id == *data)
-                    .ok_or("undefined initializer data")?;
-                require(
-                    *addend >= 0 && (*addend as u64) <= data.bytes.len() as u64,
-                    "initializer data addend outside object",
-                )?;
-            }
+        if global.defined {
+            verify_initial(module, global.ty, &global.initial)?;
         }
     }
     for function in &module.functions {
@@ -608,18 +678,42 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
                 "unary result type mismatch",
             )
         }
+        Instruction::PointerOffset {
+            dst, base, index, ..
+        } => {
+            let element = pointer_target(t, f.value(*base)?)?;
+            t.layout(element)?;
+            require(
+                f.value(*dst)? == f.value(*base)?
+                    && f.value(*index)? == t.integer(IntegerKind::LongLong),
+                "invalid pointer offset types",
+            )
+        }
+        Instruction::PointerDifference { dst, lhs, rhs } => {
+            let a = pointer_target(t, f.value(*lhs)?)?;
+            let b = pointer_target(t, f.value(*rhs)?)?;
+            t.layout(a)?;
+            require(
+                t.compatible(t.unqualified(a)?, t.unqualified(b)?)?
+                    && f.value(*dst)? == t.integer(IntegerKind::LongLong),
+                "invalid pointer difference types",
+            )
+        }
         Instruction::Binary { dst, op, lhs, rhs } => {
             let (a, b) = (f.value(*lhs)?, f.value(*rhs)?);
             let pointers =
                 matches!(t.get(a)?, Type::Pointer(_)) || matches!(t.get(b)?, Type::Pointer(_));
             if pointers {
                 require(
-                    matches!(
-                        op,
-                        crate::integer::Binary::Equal | crate::integer::Binary::NotEqual
-                    ) && a == b,
-                    "pointer binary operation requires compatible equality operands",
+                    op.comparison() && a == b,
+                    "pointer binary operation requires compatible comparison operands",
                 )?;
+                if !matches!(
+                    op,
+                    crate::integer::Binary::Equal | crate::integer::Binary::NotEqual
+                ) {
+                    t.layout(pointer_target(t, a)?)?;
+                }
             } else {
                 integer(t, a)?;
                 integer(t, b)?;
@@ -742,6 +836,25 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
                 "global store requires explicit conversion",
             )
         }
+        Instruction::FunctionAddress { dst, symbol } => {
+            let signature = module
+                .functions
+                .iter()
+                .find(|f| f.symbol == *symbol)
+                .map(|f| f.signature)
+                .or_else(|| {
+                    module
+                        .externs
+                        .iter()
+                        .find(|f| f.symbol == *symbol)
+                        .map(|f| f.signature)
+                })
+                .ok_or("undefined function address symbol")?;
+            require(
+                pointer_target(t, f.value(*dst)?)? == signature,
+                "function address type mismatch",
+            )
+        }
         Instruction::GlobalAddress { dst, symbol } => {
             let global = module
                 .globals
@@ -763,7 +876,7 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
                 return Err("literal data requires array type".into());
             };
             require(
-                pointer_target(t, f.value(*dst)?)? == *element,
+                matches!(pointer_target(t,f.value(*dst)?)?,base if base==*element || base==record.ty),
                 "literal address type mismatch",
             )
         }

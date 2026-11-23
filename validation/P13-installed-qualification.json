@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "installed_compiler": "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+  "compiler_sha256": "7896bac53300f39c27d16e53abca384d1b854ce4b409396e7973e9a642a628e4",
+  "records": [
+    {
+      "mode": "typed",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P13 compiler ihjd1hac\\source.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P13 compiler ihjd1hac\\program.exe",
+        "--overwrite",
+        "--std=c11"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "42 hello\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "a10cda100403fa33f4e4221e68611c86b32132b3812491c07746673d477e4640"
+    },
+    {
+      "mode": "teaching",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P13 compiler ihjd1hac\\source.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P13 compiler ihjd1hac\\program.exe",
+        "--overwrite"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "Sum = 20\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "1e6a8331b0fffb8acdb087b7ecc21d8a29b0e2c34c05654067e72f56f11f4248"
+    }
+  ]
+}

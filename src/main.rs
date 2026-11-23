@@ -219,7 +219,7 @@ impl Options {
                     env!("CARGO_PKG_VERSION")
                 ),
                 _ => println!(
-                    r#"{{"version":"{}","language":"teaching C subset","full_c11":false,"preprocessor":false,"target":"windows-x86_64","native_pe":true,"external_compiler_required":false,"source_limit_bytes":16777216,"token_limit":1000000,"integer_bits":32,"checked_arithmetic":true,"printf_formats":["%d","%s"],"native_output_default_bytes":16777216,"vm_default":true,"control_flow":["if","while","for","do","break","continue","switch","goto","integer-return"],"integer_updates":true,"comments":true,"integer_radices":[8,10,16],"typed_integer_suffixes":true,"typed_mode_requires":"--std=c11","typed_vm":false,"typed_integer_widths":[8,16,32,64],"typed_calls":true,"typed_globals":true,"typed_variadics":true,"typed_memory_execution":false}}"#,
+                    r#"{{"version":"{}","language":"teaching C subset","full_c11":false,"preprocessor":false,"target":"windows-x86_64","native_pe":true,"external_compiler_required":false,"source_limit_bytes":16777216,"token_limit":1000000,"integer_bits":32,"checked_arithmetic":true,"printf_formats":["%d","%s"],"native_output_default_bytes":16777216,"vm_default":true,"control_flow":["if","while","for","do","break","continue","switch","goto","integer-return"],"integer_updates":true,"comments":true,"integer_radices":[8,10,16],"typed_integer_suffixes":true,"typed_mode_requires":"--std=c11","typed_vm":false,"typed_integer_widths":[8,16,32,64],"typed_calls":true,"typed_globals":true,"typed_variadics":true,"typed_memory_execution":true,"typed_fixed_arrays":true,"typed_indirect_calls":true,"owned_allocator":true}}"#,
                     env!("CARGO_PKG_VERSION")
                 ),
             }

@@ -103,9 +103,10 @@ pub fn build(
         options,
         &strings,
         &BTreeMap::new(),
-        |labels, runtime, context, symbols| {
+        |labels, runtime, context, symbols, memory| {
             let mut bindings = ModuleBindings {
                 functions: HashMap::new(),
+                function_addresses: HashMap::new(),
                 literals: HashMap::new(),
                 context,
                 globals: HashMap::new(),
@@ -115,6 +116,9 @@ pub fn build(
                 let start = labels.fresh()?;
                 let end = labels.fresh()?;
                 bindings.functions.insert(function.symbol, start);
+                bindings
+                    .function_addresses
+                    .insert(function.symbol, symbols.fresh()?);
                 ranges.insert(function.id, (start, end));
             }
             for data in &module.data {
@@ -122,39 +126,103 @@ pub fn build(
                     .literals
                     .insert(data.id, runtime.constants[&data.id.0]);
             }
-            let (data, pointers) = global_data(module, symbols, &mut bindings)?;
-            let used: HashSet<_> = module
+
+            let mut used: HashSet<_> = module
                 .functions
                 .iter()
                 .flat_map(|f| &f.blocks)
                 .flat_map(|b| &b.instructions)
                 .filter_map(|i| {
-                    if let Instruction::DirectCall { symbol, .. } = i {
+                    if let Instruction::DirectCall { symbol, .. }
+                    | Instruction::FunctionAddress { symbol, .. } = i
+                    {
                         Some(*symbol)
                     } else {
                         None
                     }
                 })
                 .collect();
+            let mut static_addresses = HashSet::new();
+            for global in &module.globals {
+                initializer_symbols(&global.initial, &mut static_addresses);
+            }
+            used.extend(static_addresses.iter().copied());
             let mut bridges = vec![];
+            let mut allocation_labels: Option<(Label, Label)> = None;
             for external in &module.externs {
                 if used.contains(&external.symbol) {
+                    if external.name=="printf" && (module.functions.iter().flat_map(|f|&f.blocks).flat_map(|b|&b.instructions).any(|i|matches!(i,Instruction::FunctionAddress{symbol,..} if *symbol==external.symbol)) || static_addresses.contains(&external.symbol)) {
+                        return Err("taking the owned printf address waits for general runtime-format support".into());
+                    }
                     let print = crate::typed_runtime::service(
                         &module.types,
                         &external.name,
                         external.signature,
                         external.linkage,
                     )?;
-                    let start = labels.fresh()?;
+                    use crate::typed_runtime::Service;
+                    if matches!(
+                        print,
+                        Service::Malloc | Service::Free | Service::Calloc | Service::Realloc
+                    ) && allocation_labels.is_none()
+                    {
+                        let allocate = labels.fresh()?;
+                        let allocate_end = labels.fresh()?;
+                        let release = labels.fresh()?;
+                        let release_end = labels.fresh()?;
+                        bridges.push((
+                            allocate,
+                            allocate_end,
+                            crate::native_allocator::malloc(memory.allocate, labels)?,
+                        ));
+                        bridges.push((
+                            release,
+                            release_end,
+                            crate::native_allocator::free(memory.free, labels)?,
+                        ));
+                        allocation_labels = Some((allocate, release));
+                    }
+                    let start = match (print, allocation_labels) {
+                        (Service::Malloc, Some((allocate, _))) => allocate,
+                        (Service::Free, Some((_, release))) => release,
+                        _ => labels.fresh()?,
+                    };
                     let end = labels.fresh()?;
                     bindings.functions.insert(external.symbol, start);
-                    bridges.push((
-                        start,
-                        end,
-                        crate::typed_runtime::bridge(print, runtime.formatter, context, labels)?,
-                    ));
+                    bindings
+                        .function_addresses
+                        .insert(external.symbol, symbols.fresh()?);
+                    match (print, allocation_labels) {
+                        (Service::Malloc | Service::Free, _) => {}
+                        (Service::Calloc, Some((allocate, _))) => bridges.push((
+                            start,
+                            end,
+                            crate::native_allocator::calloc(allocate, labels)?,
+                        )),
+                        (Service::Realloc, Some((allocate, release))) => bridges.push((
+                            start,
+                            end,
+                            crate::native_allocator::realloc(allocate, release, labels)?,
+                        )),
+                        _ => bridges.push((
+                            start,
+                            end,
+                            crate::typed_runtime::bridge(
+                                print,
+                                runtime.formatter,
+                                context,
+                                labels,
+                            )?,
+                        )),
+                    }
                 }
             }
+            let (data, pointers) = global_data(module, symbols, &mut bindings)?;
+            let code_symbols = bindings
+                .function_addresses
+                .iter()
+                .map(|(id, symbol)| (*symbol, bindings.functions[id]))
+                .collect();
             let mut functions: Vec<_> = typed_native::lower_functions(module, labels, &bindings)?
                 .into_iter()
                 .map(|(id, function)| {
@@ -168,6 +236,7 @@ pub fn build(
                 functions,
                 data,
                 pointers,
+                code_symbols,
             })
         },
     )
@@ -218,7 +287,10 @@ fn global_data(
             continue;
         }
         let ty = module.types.unqualified(global.ty)?;
-        if !matches!(module.types.get(ty)?, Type::Integer(_) | Type::Pointer(_)) {
+        if !matches!(
+            module.types.get(ty)?,
+            Type::Integer(_) | Type::Pointer(_) | Type::Array { .. }
+        ) {
             return Err("non-scalar global storage waits for the memory phase".into());
         }
         let layout = module.types.layout(ty)?;
@@ -244,35 +316,49 @@ fn global_data(
         if group != 2 {
             section.bytes.resize(section.virtual_size as usize, 0);
         }
-        match &global.initial {
-            GlobalInitializer::Zero => (),
-            GlobalInitializer::Integer(bits) => section.bytes
-                [offset as usize..(offset + size) as usize]
-                .copy_from_slice(&bits.to_le_bytes()[..size as usize]),
-            GlobalInitializer::Address { symbol, addend } => {
-                let target = bindings
-                    .globals
-                    .get(symbol)
-                    .ok_or("unresolved global initializer target")?
-                    .0;
-                pointers.push(PointerFixup {
-                    section: group,
-                    offset,
-                    target,
-                    addend: *addend,
-                });
-            }
-            GlobalInitializer::DataAddress { data, addend } => {
-                let target = *bindings
-                    .literals
-                    .get(data)
-                    .ok_or("unresolved initializer literal")?;
-                pointers.push(PointerFixup {
-                    section: group,
-                    offset,
-                    target,
-                    addend: *addend,
-                });
+        let mut leaves = vec![];
+        initial_leaves(
+            &module.types,
+            global.ty,
+            &global.initial,
+            offset,
+            &mut leaves,
+        )?;
+        for (offset, size, initial) in leaves {
+            match initial {
+                GlobalInitializer::Array(_) => {
+                    return Err("array initializer was not flattened".into());
+                }
+                GlobalInitializer::Zero => (),
+                GlobalInitializer::Integer(bits) => section.bytes
+                    [offset as usize..(offset + size) as usize]
+                    .copy_from_slice(&bits.to_le_bytes()[..size as usize]),
+                GlobalInitializer::Address { symbol, addend } => {
+                    let target = bindings
+                        .globals
+                        .get(symbol)
+                        .map(|g| g.0)
+                        .or_else(|| bindings.function_addresses.get(symbol).copied())
+                        .ok_or("unresolved initializer target")?;
+                    pointers.push(PointerFixup {
+                        section: group,
+                        offset,
+                        target,
+                        addend: *addend,
+                    });
+                }
+                GlobalInitializer::DataAddress { data, addend } => {
+                    let target = *bindings
+                        .literals
+                        .get(data)
+                        .ok_or("unresolved initializer literal")?;
+                    pointers.push(PointerFixup {
+                        section: group,
+                        offset,
+                        target,
+                        addend: *addend,
+                    });
+                }
             }
         }
     }
@@ -288,4 +374,56 @@ fn global_data(
         pointer.section = indexes[pointer.section].ok_or("initializer section disappeared")?;
     }
     Ok((data, pointers))
+}
+
+fn initial_leaves<'a>(
+    types: &crate::types::TypeContext,
+    ty: crate::types::TypeId,
+    initial: &'a typed_ir::GlobalInitializer,
+    offset: u32,
+    leaves: &mut Vec<(u32, u32, &'a typed_ir::GlobalInitializer)>,
+) -> Result<(), String> {
+    if let typed_ir::GlobalInitializer::Array(values) = initial {
+        let Type::Array { element, .. } = types.get(types.unqualified(ty)?)? else {
+            return Err("array initializer storage mismatch".into());
+        };
+        let stride = u32::try_from(types.layout(*element)?.size)
+            .map_err(|_| "array stride exceeds image budget")?;
+        for (i, value) in values.iter().enumerate() {
+            let at = offset
+                .checked_add(
+                    u32::try_from(i)
+                        .map_err(|_| "array index overflow")?
+                        .checked_mul(stride)
+                        .ok_or("array offset overflow")?,
+                )
+                .ok_or("array layout overflow")?;
+            initial_leaves(types, *element, value, at, leaves)?;
+        }
+    } else {
+        leaves.push((
+            offset,
+            u32::try_from(types.layout(ty)?.size)
+                .map_err(|_| "initializer layout exceeds image budget")?,
+            initial,
+        ));
+    }
+    Ok(())
+}
+
+fn initializer_symbols(
+    initial: &typed_ir::GlobalInitializer,
+    symbols: &mut HashSet<typed_ir::SymbolId>,
+) {
+    match initial {
+        typed_ir::GlobalInitializer::Array(values) => {
+            for value in values {
+                initializer_symbols(value, symbols);
+            }
+        }
+        typed_ir::GlobalInitializer::Address { symbol, .. } => {
+            symbols.insert(*symbol);
+        }
+        _ => {}
+    }
 }

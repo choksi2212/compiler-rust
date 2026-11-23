@@ -597,10 +597,16 @@ pub fn build(ir: &[Ir], options: &RuntimeOptions) -> Result<NativeBuild, String>
     })
 }
 /// Shared owned startup/runtime/PE construction for verified program lowerers.
+#[derive(Clone, Copy)]
+pub struct OsMemory {
+    pub allocate: Symbol,
+    pub free: Symbol,
+}
 pub struct ModuleProgram {
     pub entry: NativeFunction,
     pub functions: Vec<(Label, Label, NativeFunction)>,
     pub data: Vec<DataSection>,
+    pub code_symbols: Vec<(Symbol, Label)>,
     /// Section indexes are relative to this program's data list.
     pub pointers: Vec<crate::pe::PointerFixup>,
 }
@@ -610,12 +616,13 @@ pub fn build_program(
     formats: &BTreeMap<usize, String>,
     lower: impl FnOnce(&mut LabelAllocator, &RuntimeBindings) -> Result<NativeFunction, String>,
 ) -> Result<NativeBuild, String> {
-    build_module(options, strings, formats, |labels, bindings, _, _| {
+    build_module(options, strings, formats, |labels, bindings, _, _, _| {
         Ok(ModuleProgram {
             entry: lower(labels, bindings)?,
             functions: vec![],
             data: vec![],
             pointers: vec![],
+            code_symbols: vec![],
         })
     })
 }
@@ -628,6 +635,7 @@ pub fn build_module(
         &RuntimeBindings,
         Symbol,
         &mut SymbolAllocator,
+        OsMemory,
     ) -> Result<ModuleProgram, String>,
 ) -> Result<NativeBuild, String> {
     if !(1..=64 * 1024 * 1024).contains(&options.output_capacity) {
@@ -681,7 +689,16 @@ pub fn build_module(
         messages.push((status, pool.add(message)?, message.len() as u32));
     }
     let context = pool.allocator.fresh()?;
-    let program = lower(&mut labels, &bindings, context, &mut pool.allocator)?;
+    let program = lower(
+        &mut labels,
+        &bindings,
+        context,
+        &mut pool.allocator,
+        OsMemory {
+            allocate: imports.allocate,
+            free: imports.free,
+        },
+    )?;
     let formatting = formatter(&mut labels)?;
     let writing = write_all(&mut labels, imports.write)?;
     let root = startup(
@@ -770,7 +787,18 @@ pub fn build_module(
     let listing = text.listing.clone();
     let spec = ImageSpec {
         text,
-        code_symbols: vec![],
+        code_symbols: program
+            .code_symbols
+            .iter()
+            .map(|(symbol, label)| {
+                Ok((
+                    *symbol,
+                    *offsets
+                        .get(&label.0)
+                        .ok_or("undefined program code symbol")?,
+                ))
+            })
+            .collect::<Result<Vec<_>, String>>()?,
         data,
         imports: os,
         pointers,

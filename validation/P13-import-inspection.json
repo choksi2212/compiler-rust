@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "image_sha256": "d071a773cd2765f9543d1e2b0ec448c6894c9ca06e78cf1e69d1552f974ce3da",
+  "imported_dlls": [
+    "kernel32.dll"
+  ],
+  "services": [
+    "VirtualAlloc",
+    "VirtualFree",
+    "GetStdHandle",
+    "WriteFile",
+    "ExitProcess"
+  ],
+  "oracle_command": [
+    "objdump",
+    "-p",
+    "N:\\compiler-proj\\target\\P13-oracle\\case000-O1.exe"
+  ]
+}

@@ -2,57 +2,100 @@
 use crate::{
     abi::{FramePlan, FrameRequest},
     native_integer::NativeFunction,
-    types::{IntegerKind, Linkage, Type, TypeContext, TypeId},
+    types::{IntegerKind, Linkage, TypeContext, TypeId},
     x64::{
         Address, Binary, Condition, Immediate, Instruction as M, Label, LabelAllocator, Reg,
         Symbol, Width,
     },
 };
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Service {
+    Print,
+    Strlen,
+    Memcpy,
+    Memmove,
+    Memset,
+    Strcmp,
+    Strcpy,
+    Malloc,
+    Free,
+    Calloc,
+    Realloc,
+}
 pub fn service(
     types: &TypeContext,
     name: &str,
     signature: TypeId,
     linkage: Linkage,
-) -> Result<bool, String> {
-    if linkage != Linkage::External || !matches!(name, "printf" | "strlen") {
-        return Err(format!("unresolved external function {name}"));
+) -> Result<Service, String> {
+    use Service::*;
+    let service = match name {
+        "printf" => Print,
+        "strlen" => Strlen,
+        "memcpy" => Memcpy,
+        "memmove" => Memmove,
+        "memset" => Memset,
+        "strcmp" => Strcmp,
+        "strcpy" => Strcpy,
+        "malloc" => Malloc,
+        "free" => Free,
+        "calloc" => Calloc,
+        "realloc" => Realloc,
+        _ => return Err(format!("unresolved external function {name}")),
+    };
+    if linkage != Linkage::External {
+        return Err(format!("unresolved internal function {name}"));
     }
-    let Type::Function {
-        result,
-        parameters,
-        variadic,
-        prototype,
-    } = types.get(signature)?
-    else {
-        return Err("runtime function signature required".into());
+    let mut t = types.clone();
+    let char_ = t.integer(IntegerKind::Char);
+    let int = t.integer(IntegerKind::Int);
+    let size = t.integer(IntegerKind::UnsignedLongLong);
+    let character = t.pointer(char_)?;
+    let constant = t.qualify(
+        char_,
+        crate::types::Qualifiers {
+            constant: true,
+            ..Default::default()
+        },
+    )?;
+    let const_character = t.pointer(constant)?;
+    let void = t.pointer(t.void())?;
+    let constant = t.qualify(
+        t.void(),
+        crate::types::Qualifiers {
+            constant: true,
+            ..Default::default()
+        },
+    )?;
+    let const_void = t.pointer(constant)?;
+    let (result, parameters) = match service {
+        Print => (int, vec![const_character]),
+        Strlen => (size, vec![const_character]),
+        Memcpy | Memmove => (void, vec![void, const_void, size]),
+        Memset => (void, vec![void, int, size]),
+        Strcmp => (int, vec![const_character, const_character]),
+        Strcpy => (character, vec![character, const_character]),
+        Malloc => (void, vec![size]),
+        Free => (t.void(), vec![void]),
+        Calloc => (void, vec![size, size]),
+        Realloc => (void, vec![void, size]),
     };
-    let character_pointer = if parameters.len() == 1 {
-        if let Type::Pointer(base) = types.get(types.unqualified(parameters[0])?)? {
-            types.unqualified(*base)? == types.integer(IntegerKind::Char)
-                && types.qualifiers(*base)?.constant
-        } else {
-            false
-        }
-    } else {
-        false
-    };
-    let print = name == "printf";
-    let expected = types.integer(if print {
-        IntegerKind::Int
-    } else {
-        IntegerKind::UnsignedLongLong
-    });
-    if !prototype || !character_pointer || *variadic != print || *result != expected {
+    let expected = t.function(result, parameters, service == Print, true)?;
+    if !t.compatible(signature, expected)? {
         return Err(format!("unsupported owned runtime signature for {name}"));
     }
-    Ok(print)
+    Ok(service)
 }
 pub fn bridge(
-    print: bool,
+    service: Service,
     formatter: Label,
     context: Symbol,
     labels: &mut LabelAllocator,
 ) -> Result<NativeFunction, String> {
+    if !matches!(service, Service::Print | Service::Strlen) {
+        return crate::native_memory::bridge(service, labels);
+    }
+    let print = service == Service::Print;
     let frame = FramePlan::new(&FrameRequest {
         has_calls: print,
         ..Default::default()

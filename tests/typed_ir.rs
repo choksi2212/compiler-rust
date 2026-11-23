@@ -375,3 +375,76 @@ fn function_storage_literal_and_variadic_ir_rejects_broken_contracts() {
     }
     assert!(checked >= 5);
 }
+
+#[test]
+fn pointer_memory_array_and_function_address_ir_constraints() {
+    let source = "int a[2]={4,5};int f(int x){return x;}int main(){int x;int*p=&x;*p=1;p++;long long n=p-&x;int(*fn)(int)=f;return fn(a[0])+(int)n;}";
+    let unit = compiler::typed_front::parse(source).unwrap();
+    let module = compiler::typed_lower::lower(&unit).unwrap();
+    verify(&module).unwrap();
+    let mut count = 0;
+    for (fi, f) in module.functions.iter().enumerate() {
+        for (bi, b) in f.blocks.iter().enumerate() {
+            for (ii, i) in b.instructions.iter().enumerate() {
+                let replacement = match i {
+                    Instruction::PointerOffset {
+                        dst,
+                        base,
+                        subtract,
+                        ..
+                    } => Some(Instruction::PointerOffset {
+                        dst: *dst,
+                        base: *base,
+                        index: *base,
+                        subtract: *subtract,
+                    }),
+                    Instruction::PointerDifference { dst, lhs, .. } => {
+                        Some(Instruction::PointerDifference {
+                            dst: *dst,
+                            lhs: *lhs,
+                            rhs: ValueId(99999),
+                        })
+                    }
+                    Instruction::FunctionAddress { dst, .. } => {
+                        Some(Instruction::FunctionAddress {
+                            dst: *dst,
+                            symbol: SymbolId(99999),
+                        })
+                    }
+                    Instruction::Store {
+                        address,
+                        src,
+                        volatile,
+                        ..
+                    } => Some(Instruction::Store {
+                        address: *address,
+                        src: *src,
+                        align: 3,
+                        volatile: *volatile,
+                    }),
+                    Instruction::AddressLocal { dst, .. } => Some(Instruction::AddressLocal {
+                        dst: *dst,
+                        local: LocalId(99999),
+                    }),
+                    _ => None,
+                };
+                if let Some(replacement) = replacement {
+                    let mut bad = module.clone();
+                    bad.functions[fi].blocks[bi].instructions[ii] = replacement;
+                    assert!(verify(&bad).is_err(), "{i:?}");
+                    count += 1;
+                }
+            }
+        }
+    }
+    assert!(count >= 5);
+    let mut bad = module.clone();
+    let GlobalInitializer::Array(values) = &mut bad.globals[0].initial else {
+        panic!()
+    };
+    values.pop();
+    assert!(verify(&bad).is_err());
+    let mut bad = module;
+    bad.globals[0].initial = GlobalInitializer::Integer(1);
+    assert!(verify(&bad).is_err());
+}

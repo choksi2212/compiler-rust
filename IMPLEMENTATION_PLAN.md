@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.9, continuous phase execution; P01-P12 passed, P13 eligible
+**Revision:** 4.0, continuous phase execution; P01-P13 passed, P14 eligible
 **Date:** 2026-11-24 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -642,7 +642,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P12 have passed their recorded gates; P13 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P13 have passed their recorded gates; P14 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -695,7 +695,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P10 | Conventional syntax and control flow | 9 | Passed; evidence in section 13.15.2 |
 | P11 | General type system and typed IR | 10, type portion | Passed; evidence in section 13.16.2 |
 | P12 | Functions, calls, globals and variadics | 10, function/storage portion | Passed |
-| P13 | Pointers, arrays, memory and strings | 11 | Planned |
+| P13 | Pointers, arrays, memory and strings | 11 | Passed |
 | P14 | Aggregates and advanced declaration forms | 12, aggregate portion | Planned |
 | P15 | Floating types and numerical semantics | 12, floating portion | Planned |
 | P16 | Real preprocessor and project headers | 13A | Planned |
@@ -1362,6 +1362,32 @@ Work items:
 **Deliverables:** native object memory, arrays/pointers and actual mutable string programs.
 **Gate:** typed memory instructions and runtime helpers have native evidence; no host-pointer or host-string representation leaks into generated programs.
 
+#### 13.18.1 P13 implementation contract before coding
+
+Keep the existing owned encoder, ABI, runtime and PE builder. Generated pointers are actual Windows64 virtual addresses; every object is target-aligned byte storage with target layout, never a Rust-side handle. Scalar automatic homes retain at least8 bytes for normalized ABI values; address-derived loads/stores use the pointed-to physical1/2/4/8-byte width. Arrays reserve their complete layout in the owned frame/data builder; scalar normalization cannot turn an array into an integer slot. Frame/section budget overflow is diagnosed before publication.
+
+Implement in tested internal steps: (a) native typed AddressLocal/Load/Store and width/alias tests; (b) source lvalue/address/dereference, single-evaluation indirect assignment/update, pointer scaling/difference/comparison and native indirect function calls; (c) complete fixed arrays/multidimensional row layout, string/brace initialization, array decay and subscripts; (d) declared owned memcpy/memmove/memset/strlen/strcmp/strcpy helpers and malloc/free/calloc/realloc over Windows primitives. Each internal step needs focused native and negative tests; none alone completes P13. All existing phase gates and independent P13 defined-behavior GCC comparisons remain required at the final boundary.
+
+Preserve object and pointee qualifiers in address formation and assignment constraints. Distinguish functions, arrays, lvalues and scalar rvalues; suppress decay in sizeof and unary address. Reject void/incomplete/function pointer arithmetic and invalid array assignment. Pointer arithmetic scales by complete element layout, subtraction returns signed64 ptrdiff_t and divides by element stride, and relational comparisons require compatible object pointers. Valid same-object arithmetic, one-past formation and comparisons need evidence; undefined out-of-bounds/dangling/null dereference need no invented language result. Addressed automatic objects follow native C uninitialized-read rules; direct non-addressed scalar locals keep the existing checked diagnostics. Taking an address is not initialization, and alias stores must remain visible to later direct reads. No optimizer may propagate local values across unknown memory effects without alias proof.
+
+Represent source lvalues explicitly enough to evaluate each address once for compound assignment and prefix/postfix updates. Use verified typed IR memory/effect instructions and a dedicated pointer-offset/difference representation rather than pretending pointers are ordinary C integer operands. Lower direct variable access and aliased memory into the same actual object storage. Function addresses bind actual text labels/symbols; indirect calls use CallReg and the same checked signature/caller ABI as direct calls. Static address initializers produce real DIR64 relocation entries, including legal array offsets and function addresses.
+
+Fixed array initializers build exact target bytes/elements and zero-fill the required remainder; incomplete outer bounds are inferred from valid initializers, and string-array sizes follow C's terminator rule. Automatic initializers execute at each lifetime entry; static-duration initializers remain link-time constants/relocations. Nested row strides come from TypeContext layout. Dynamic VLA execution remains explicitly deferred to P23 as allowed above. Designated initializers for arrays and aggregates remain P14 with the unified aggregate initializer; P13 delivers the brace/string forms above.
+
+Memory/string helpers operate on runtime bytes and return actual destination/count/comparison results. memmove chooses a safe direction for overlap; memcpy overlap is outside its defined contract. The allocator uses owned metadata and Windows VirtualAlloc/VirtualFree, enforces16-byte alignment, checks size arithmetic and returns null on failure; calloc clears bytes, realloc preserves the lesser old/new extent and leaves the old allocation live on failure. The selected zero-size policy is malloc(0)/calloc with a zero factor return null, realloc(p,0) frees p and returns null, and free(NULL) is a no-op. Every nonzero allocation has a16-byte owned header (requested byte count at0, reserved bytes at8), followed by a16-byte-aligned user extent; VirtualAlloc supplies actual zero-filled pages. Size overflow or OS allocation failure returns null without setting a fatal output-runtime status. Realloc allocates before copying/freeing, preserving the old extent on allocation failure. Tests must inspect preserved/cleared bytes and the zero/overflow policies before those helpers ship. Taking the limited owned printf service address remains an explicit diagnostic until P19 general format support; user function pointers and the other delivered helper addresses execute normally. No imported CRT or external allocator/compiler is introduced. Helpers bind only unresolved compatible external declarations, preserving user definitions/name lookup.
+
+#### 13.18.2 P13 completion evidence (2026-11-24)
+
+Baseline: `db87d3b`. Real AddressLocal/Load/Store instructions, addressable scalar storage, single-evaluation indirect modification, scaled PointerOffset/PointerDifference IR, object/function addresses, indirect CallReg, fixed arrays and initializer serialization now execute through the owned pipeline. Nested arrays, inferred outer bounds, brace elision, scalar braces, character arrays, zero-filled remainders, static pointer offsets and function-pointer arrays are included. Const/volatile constraints and target widths are preserved; addressed automatic objects follow the selected native C uninitialized-read contract. VLAs, designated initializers and aggregates remain at their documented later boundaries.
+
+Owned native memcpy/memmove/memset/strcpy/strcmp and existing strlen execute on runtime bytes; the allocator emits its own metadata and real VirtualAlloc/VirtualFree calls. Tests observe overlap in both directions, comparison signs, returned destinations, zero-count access, requested size preservation,16-byte alignment, calloc zeroing, grow/shrink realloc, failure preserving the old object, checked size overflow, actual Windows allocation refusal and the chosen zero-size/free-null policy. No Rust host-string/host-pointer execution or imported CRT implements the C program.
+
+`python validation/run_gate.py P13` passed formatting, warnings-denied Clippy and all-target debug/release suites: **162 tests per mode, zero failures/ignored**. [Gate log](validation/P13-gate.log), [results/source manifest](validation/P13-gate.json). Expanded parser mutations found an actual panic for malformed `2[2]` subscripting; it now reports the pointer/integer constraint and the mutation corpus passes. A valid multidimensional static address initially exposed missing decay handling; nested static offsets are now recursively serialized and independently compared. [Depth/resource probes](validation/P13-depth-probes.json) reject excessive initializer nesting/elements/frames cleanly and accept a48-dimensional fixed initializer within the stated budgets.
+
+[Independent GCC comparison](validation/P13-memory-oracle.json):100 defined-behavior Windows LLP64 programs /200 O0/O1 native comparisons, matching stdout and Windows32 result. Cases combine local/global multidimensional arrays, interior static addresses, function-pointer arrays/callbacks, real memory/string helpers and heap allocation/reallocation. [Sources/results](validation/P13-memory-oracle-cases.json), [commands](validation/P13-memory-oracle-commands.json). Final gate/oracle source hashes match. [Import inspection](validation/P13-import-inspection.json) verifies only Kernel32 in an actual heap/string program. The encoder is unchanged from P12's independently verified16533-fixture boundary.
+
+The [installed qualification](validation/P13-installed-qualification.json) proves the installed compiler equals the gated release and compiles/runs a heap/string/callback program and a teaching program outside the repository with empty PATH and sources removed before execution. [Install log](validation/P13-install.log). P14 is eligible; the finite passing gate establishes this scoped delivery, not universal C conformance or absence of every possible bug.
+
 ### 13.19 P14 - Aggregate layout and advanced declarations
 
 **Purpose:** support composed types without guessing their memory or calling layout.
@@ -1756,7 +1782,7 @@ This is a review checklist, not a request to approve six separate actions indivi
 
 ### 15.6 Immediate next action during continuous execution
 
-The user authorized continuous phase execution after P00. P01-P12 have now passed their recorded gates. Proceed to P13's objects, pointers, arrays and mutable strings contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
+The user authorized continuous phase execution after P00. P01-P13 have now passed their recorded gates. Proceed to P14's aggregate layout and advanced declarations contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
 
 ## 16. References and preserved history
 

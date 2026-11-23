@@ -106,7 +106,7 @@ fn casts_promotions_common_types_and_sizeof_are_explicit() {
         "int main(){int x=1;(int)x=3;}",
         "int main(){int x=1;((int)x)++;}",
         "int main(){return sizeof(auto int);}",
-        "int main(){return sizeof(*(int*)0);}",
+        "int main(){return sizeof(*(void*)0);}",
     ] {
         assert!(typed_front::parse(source).is_err(), "{source}");
     }
@@ -177,6 +177,8 @@ fn invalid_declarations_and_control_contexts_fail_cleanly() {
 fn typed_frontend_mutations_and_random_tokens_do_not_panic() {
     use compiler::{native_runtime::RuntimeOptions, typed_image, typed_ir, typed_lower, typed_opt};
     let seeds = [
+        "int a[2][2]={{1,2},{3,4}};int main(){int*p=a[0];*p+=2;return a[0][0];}",
+        "void*malloc(unsigned long long);void free(void*);int main(){int*p=malloc(4);if(p){*p=3;free(p);}return 0;}",
         "int g=2;int f(int n,...){__builtin_va_list p;__builtin_va_start(p,n);int x=__builtin_va_arg(p,int);__builtin_va_end(p);return x+g;}int main(){return f(1,3);}",
         "int printf(const char*,...);int main(){return printf(\"%d\",3);}",
         "typedef unsigned long long U;int main(void){U x=0xffffffffffffffffULL;for(int i=0;i<5;i++){x>>=1;}return (int)x;}",

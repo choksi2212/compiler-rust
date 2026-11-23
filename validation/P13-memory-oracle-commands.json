@@ -1,0 +1,6825 @@
+[
+  {
+    "command": [
+      "gcc",
+      "-dumpmachine"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--manifest-path",
+      "N:\\compiler-proj\\Cargo.toml",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": "   Compiling compiler v0.2.0 (N:\\compiler-proj)\n    Finished `release` profile [optimized] target(s) in 4.22s\n"
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case000.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 144,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case000.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case000-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case000-O0.exe"
+    ],
+    "exit": 144,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case000.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case000-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case000-O1.exe"
+    ],
+    "exit": 144,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case001.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 170,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case001.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case001-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case001-O0.exe"
+    ],
+    "exit": 170,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case001.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case001-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case001-O1.exe"
+    ],
+    "exit": 170,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case002.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 210,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case002.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case002-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case002-O0.exe"
+    ],
+    "exit": 210,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case002.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case002-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case002-O1.exe"
+    ],
+    "exit": 210,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case003.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 252,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case003.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case003-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case003-O0.exe"
+    ],
+    "exit": 252,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case003.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case003-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case003-O1.exe"
+    ],
+    "exit": 252,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case004.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 316,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case004.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case004-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case004-O0.exe"
+    ],
+    "exit": 316,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case004.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case004-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case004-O1.exe"
+    ],
+    "exit": 316,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case005.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 374,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case005.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case005-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case005-O0.exe"
+    ],
+    "exit": 374,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case005.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case005-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case005-O1.exe"
+    ],
+    "exit": 374,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case006.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 462,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case006.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case006-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case006-O0.exe"
+    ],
+    "exit": 462,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case006.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case006-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case006-O1.exe"
+    ],
+    "exit": 462,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case007.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 536,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case007.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case007-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case007-O0.exe"
+    ],
+    "exit": 536,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case007.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case007-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case007-O1.exe"
+    ],
+    "exit": 536,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case008.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 648,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case008.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case008-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case008-O0.exe"
+    ],
+    "exit": 648,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case008.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case008-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case008-O1.exe"
+    ],
+    "exit": 648,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case009.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 189,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case009.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case009-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case009-O0.exe"
+    ],
+    "exit": 189,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case009.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case009-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case009-O1.exe"
+    ],
+    "exit": 189,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case010.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 253,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case010.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case010-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case010-O0.exe"
+    ],
+    "exit": 253,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case010.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case010-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case010-O1.exe"
+    ],
+    "exit": 253,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case011.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 287,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case011.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case011-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case011-O0.exe"
+    ],
+    "exit": 287,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case011.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case011-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case011-O1.exe"
+    ],
+    "exit": 287,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case012.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 375,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case012.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case012-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case012-O0.exe"
+    ],
+    "exit": 375,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case012.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case012-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case012-O1.exe"
+    ],
+    "exit": 375,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case013.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 425,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case013.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case013-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case013-O0.exe"
+    ],
+    "exit": 425,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case013.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case013-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case013-O1.exe"
+    ],
+    "exit": 425,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case014.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 537,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case014.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case014-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case014-O0.exe"
+    ],
+    "exit": 537,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case014.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case014-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case014-O1.exe"
+    ],
+    "exit": 537,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case015.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 603,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case015.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case015-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case015-O0.exe"
+    ],
+    "exit": 603,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case015.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case015-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case015-O1.exe"
+    ],
+    "exit": 603,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case016.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 739,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case016.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case016-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case016-O0.exe"
+    ],
+    "exit": 739,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case016.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case016-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case016-O1.exe"
+    ],
+    "exit": 739,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case017.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 821,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case017.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case017-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case017-O0.exe"
+    ],
+    "exit": 821,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case017.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case017-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case017-O1.exe"
+    ],
+    "exit": 821,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case018.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 270,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case018.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case018-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case018-O0.exe"
+    ],
+    "exit": 270,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case018.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case018-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case018-O1.exe"
+    ],
+    "exit": 270,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case019.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 296,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case019.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case019-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case019-O0.exe"
+    ],
+    "exit": 296,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case019.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case019-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case019-O1.exe"
+    ],
+    "exit": 296,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case020.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 408,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case020.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case020-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case020-O0.exe"
+    ],
+    "exit": 408,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case020.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case020-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case020-O1.exe"
+    ],
+    "exit": 408,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case021.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 450,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case021.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case021-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case021-O0.exe"
+    ],
+    "exit": 450,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case021.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case021-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case021-O1.exe"
+    ],
+    "exit": 450,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case022.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 586,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case022.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case022-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case022-O0.exe"
+    ],
+    "exit": 586,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case022.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case022-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case022-O1.exe"
+    ],
+    "exit": 586,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case023.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 644,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case023.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case023-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case023-O0.exe"
+    ],
+    "exit": 644,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case023.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case023-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case023-O1.exe"
+    ],
+    "exit": 644,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case024.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 804,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case024.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case024-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case024-O0.exe"
+    ],
+    "exit": 804,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case024.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case024-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case024-O1.exe"
+    ],
+    "exit": 804,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case025.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 878,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case025.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case025-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case025-O0.exe"
+    ],
+    "exit": 878,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case025.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case025-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case025-O1.exe"
+    ],
+    "exit": 878,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case026.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 1063,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case026.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case026-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case026-O0.exe"
+    ],
+    "exit": 1063,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case026.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case026-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case026-O1.exe"
+    ],
+    "exit": 1063,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case027.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 279,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case027.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case027-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case027-O0.exe"
+    ],
+    "exit": 279,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case027.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case027-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case027-O1.exe"
+    ],
+    "exit": 279,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case028.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 415,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case028.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case028-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case028-O0.exe"
+    ],
+    "exit": 415,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case028.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case028-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case028-O1.exe"
+    ],
+    "exit": 415,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case029.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 449,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case029.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case029-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case029-O0.exe"
+    ],
+    "exit": 449,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case029.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case029-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case029-O1.exe"
+    ],
+    "exit": 449,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case030.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 609,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case030.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case030-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case030-O0.exe"
+    ],
+    "exit": 609,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case030.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case030-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case030-O1.exe"
+    ],
+    "exit": 609,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case031.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 659,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case031.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case031-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case031-O0.exe"
+    ],
+    "exit": 659,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case031.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case031-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case031-O1.exe"
+    ],
+    "exit": 659,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case032.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 843,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case032.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case032-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case032-O0.exe"
+    ],
+    "exit": 843,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case032.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case032-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case032-O1.exe"
+    ],
+    "exit": 843,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case033.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 909,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case033.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case033-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case033-O0.exe"
+    ],
+    "exit": 909,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case033.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case033-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case033-O1.exe"
+    ],
+    "exit": 909,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case034.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 1118,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case034.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case034-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case034-O0.exe"
+    ],
+    "exit": 1118,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case034.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case034-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case034-O1.exe"
+    ],
+    "exit": 1118,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case035.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 1200,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case035.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case035-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case035-O0.exe"
+    ],
+    "exit": 1200,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case035.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case035-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case035-O1.exe"
+    ],
+    "exit": 1200,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case036.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 396,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case036.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case036-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case036-O0.exe"
+    ],
+    "exit": 396,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case036.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case036-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case036-O1.exe"
+    ],
+    "exit": 396,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case037.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 163,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case037.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case037-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case037-O0.exe"
+    ],
+    "exit": 163,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case037.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case037-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case037-O1.exe"
+    ],
+    "exit": 163,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case038.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 199,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case038.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case038-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case038-O0.exe"
+    ],
+    "exit": 199,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case038.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case038-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case038-O1.exe"
+    ],
+    "exit": 199,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case039.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 241,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case039.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case039-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case039-O0.exe"
+    ],
+    "exit": 241,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case039.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case039-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case039-O1.exe"
+    ],
+    "exit": 241,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case040.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 301,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case040.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case040-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case040-O0.exe"
+    ],
+    "exit": 301,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case040.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case040-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case040-O1.exe"
+    ],
+    "exit": 301,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case041.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 359,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case041.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case041-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case041-O0.exe"
+    ],
+    "exit": 359,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case041.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case041-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case041-O1.exe"
+    ],
+    "exit": 359,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case042.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 443,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case042.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case042-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case042-O0.exe"
+    ],
+    "exit": 443,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case042.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case042-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case042-O1.exe"
+    ],
+    "exit": 443,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case043.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 517,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case043.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case043-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case043-O0.exe"
+    ],
+    "exit": 517,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case043.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case043-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case043-O1.exe"
+    ],
+    "exit": 517,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case044.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 625,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case044.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case044-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case044-O0.exe"
+    ],
+    "exit": 625,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case044.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case044-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case044-O1.exe"
+    ],
+    "exit": 625,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case045.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 184,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case045.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case045-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case045-O0.exe"
+    ],
+    "exit": 184,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case045.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case045-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case045-O1.exe"
+    ],
+    "exit": 184,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case046.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 244,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case046.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case046-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case046-O0.exe"
+    ],
+    "exit": 244,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case046.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case046-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case046-O1.exe"
+    ],
+    "exit": 244,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case047.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 278,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case047.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case047-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case047-O0.exe"
+    ],
+    "exit": 278,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case047.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case047-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case047-O1.exe"
+    ],
+    "exit": 278,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case048.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 362,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case048.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case048-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case048-O0.exe"
+    ],
+    "exit": 362,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case048.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case048-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case048-O1.exe"
+    ],
+    "exit": 362,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case049.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 412,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case049.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case049-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case049-O0.exe"
+    ],
+    "exit": 412,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case049.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case049-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case049-O1.exe"
+    ],
+    "exit": 412,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case050.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 520,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case050.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case050-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case050-O0.exe"
+    ],
+    "exit": 520,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case050.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case050-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case050-O1.exe"
+    ],
+    "exit": 520,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case051.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 586,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case051.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case051-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case051-O0.exe"
+    ],
+    "exit": 586,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case051.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case051-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case051-O1.exe"
+    ],
+    "exit": 586,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case052.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 718,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case052.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case052-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case052-O0.exe"
+    ],
+    "exit": 718,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case052.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case052-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case052-O1.exe"
+    ],
+    "exit": 718,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case053.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 800,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case053.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case053-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case053-O0.exe"
+    ],
+    "exit": 800,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case053.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case053-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case053-O1.exe"
+    ],
+    "exit": 800,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case054.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 263,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case054.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case054-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case054-O0.exe"
+    ],
+    "exit": 263,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case054.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case054-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case054-O1.exe"
+    ],
+    "exit": 263,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case055.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 289,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case055.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case055-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case055-O0.exe"
+    ],
+    "exit": 289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case055.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case055-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case055-O1.exe"
+    ],
+    "exit": 289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case056.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 397,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case056.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case056-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case056-O0.exe"
+    ],
+    "exit": 397,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case056.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case056-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case056-O1.exe"
+    ],
+    "exit": 397,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case057.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 439,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case057.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case057-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case057-O0.exe"
+    ],
+    "exit": 439,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case057.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case057-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case057-O1.exe"
+    ],
+    "exit": 439,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case058.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 571,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case058.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case058-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case058-O0.exe"
+    ],
+    "exit": 571,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case058.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case058-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case058-O1.exe"
+    ],
+    "exit": 571,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case059.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 629,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case059.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case059-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case059-O0.exe"
+    ],
+    "exit": 629,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case059.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case059-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case059-O1.exe"
+    ],
+    "exit": 629,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case060.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 785,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case060.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case060-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case060-O0.exe"
+    ],
+    "exit": 785,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case060.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case060-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case060-O1.exe"
+    ],
+    "exit": 785,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case061.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 859,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case061.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case061-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case061-O0.exe"
+    ],
+    "exit": 859,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case061.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case061-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case061-O1.exe"
+    ],
+    "exit": 859,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case062.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 1040,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case062.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case062-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case062-O0.exe"
+    ],
+    "exit": 1040,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case062.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case062-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case062-O1.exe"
+    ],
+    "exit": 1040,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case063.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 274,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case063.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case063-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case063-O0.exe"
+    ],
+    "exit": 274,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case063.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case063-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case063-O1.exe"
+    ],
+    "exit": 274,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case064.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 406,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case064.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case064-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case064-O0.exe"
+    ],
+    "exit": 406,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case064.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case064-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case064-O1.exe"
+    ],
+    "exit": 406,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case065.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 440,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case065.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case065-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case065-O0.exe"
+    ],
+    "exit": 440,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case065.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case065-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case065-O1.exe"
+    ],
+    "exit": 440,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case066.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 596,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case066.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case066-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case066-O0.exe"
+    ],
+    "exit": 596,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case066.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case066-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case066-O1.exe"
+    ],
+    "exit": 596,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case067.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 646,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case067.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case067-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case067-O0.exe"
+    ],
+    "exit": 646,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case067.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case067-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case067-O1.exe"
+    ],
+    "exit": 646,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case068.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 826,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case068.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case068-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case068-O0.exe"
+    ],
+    "exit": 826,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case068.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case068-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case068-O1.exe"
+    ],
+    "exit": 826,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case069.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 892,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case069.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case069-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case069-O0.exe"
+    ],
+    "exit": 892,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case069.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case069-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case069-O1.exe"
+    ],
+    "exit": 892,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case070.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 1097,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case070.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case070-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case070-O0.exe"
+    ],
+    "exit": 1097,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case070.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case070-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case070-O1.exe"
+    ],
+    "exit": 1097,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case071.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 1179,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case071.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case071-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case071-O0.exe"
+    ],
+    "exit": 1179,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case071.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case071-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case071-O1.exe"
+    ],
+    "exit": 1179,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case072.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 389,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case072.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case072-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case072-O0.exe"
+    ],
+    "exit": 389,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case072.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case072-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case072-O1.exe"
+    ],
+    "exit": 389,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case073.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 415,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case073.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case073-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case073-O0.exe"
+    ],
+    "exit": 415,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case073.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case073-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case073-O1.exe"
+    ],
+    "exit": 415,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case074.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 188,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case074.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case074-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case074-O0.exe"
+    ],
+    "exit": 188,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case074.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case074-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case074-O1.exe"
+    ],
+    "exit": 188,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case075.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 230,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case075.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case075-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case075-O0.exe"
+    ],
+    "exit": 230,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case075.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case075-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case075-O1.exe"
+    ],
+    "exit": 230,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case076.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 286,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case076.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case076-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case076-O0.exe"
+    ],
+    "exit": 286,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case076.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case076-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case076-O1.exe"
+    ],
+    "exit": 286,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case077.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 344,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case077.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case077-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case077-O0.exe"
+    ],
+    "exit": 344,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case077.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case077-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case077-O1.exe"
+    ],
+    "exit": 344,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case078.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 424,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case078.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case078-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case078-O0.exe"
+    ],
+    "exit": 424,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case078.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case078-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case078-O1.exe"
+    ],
+    "exit": 424,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case079.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 498,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case079.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case079-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case079-O0.exe"
+    ],
+    "exit": 498,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case079.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case079-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case079-O1.exe"
+    ],
+    "exit": 498,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case080.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 602,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case080.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case080-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case080-O0.exe"
+    ],
+    "exit": 602,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case080.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case080-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case080-O1.exe"
+    ],
+    "exit": 602,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case081.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 179,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case081.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case081-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case081-O0.exe"
+    ],
+    "exit": 179,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case081.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case081-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case081-O1.exe"
+    ],
+    "exit": 179,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case082.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 235,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case082.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case082-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case082-O0.exe"
+    ],
+    "exit": 235,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case082.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case082-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case082-O1.exe"
+    ],
+    "exit": 235,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case083.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 269,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case083.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case083-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case083-O0.exe"
+    ],
+    "exit": 269,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case083.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case083-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case083-O1.exe"
+    ],
+    "exit": 269,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case084.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 349,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case084.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case084-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case084-O0.exe"
+    ],
+    "exit": 349,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case084.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case084-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case084-O1.exe"
+    ],
+    "exit": 349,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case085.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 399,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case085.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case085-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case085-O0.exe"
+    ],
+    "exit": 399,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case085.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case085-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case085-O1.exe"
+    ],
+    "exit": 399,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case086.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 503,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case086.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case086-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case086-O0.exe"
+    ],
+    "exit": 503,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case086.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case086-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case086-O1.exe"
+    ],
+    "exit": 503,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case087.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 569,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case087.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case087-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case087-O0.exe"
+    ],
+    "exit": 569,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case087.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case087-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case087-O1.exe"
+    ],
+    "exit": 569,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case088.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 697,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case088.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case088-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case088-O0.exe"
+    ],
+    "exit": 697,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case088.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case088-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case088-O1.exe"
+    ],
+    "exit": 697,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case089.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 779,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case089.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case089-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case089-O0.exe"
+    ],
+    "exit": 779,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case089.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case089-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case089-O1.exe"
+    ],
+    "exit": 779,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case090.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 256,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case090.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case090-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case090-O0.exe"
+    ],
+    "exit": 256,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case090.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case090-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case090-O1.exe"
+    ],
+    "exit": 256,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case091.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 282,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case091.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case091-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case091-O0.exe"
+    ],
+    "exit": 282,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case091.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case091-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case091-O1.exe"
+    ],
+    "exit": 282,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case092.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 386,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case092.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case092-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case092-O0.exe"
+    ],
+    "exit": 386,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case092.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case092-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case092-O1.exe"
+    ],
+    "exit": 386,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case093.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 428,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case093.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case093-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case093-O0.exe"
+    ],
+    "exit": 428,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case093.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case093-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case093-O1.exe"
+    ],
+    "exit": 428,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case094.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 556,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case094.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case094-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case094-O0.exe"
+    ],
+    "exit": 556,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case094.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case094-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case094-O1.exe"
+    ],
+    "exit": 556,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case095.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 614,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case095.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case095-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case095-O0.exe"
+    ],
+    "exit": 614,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case095.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case095-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case095-O1.exe"
+    ],
+    "exit": 614,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case096.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 766,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case096.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case096-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case096-O0.exe"
+    ],
+    "exit": 766,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case096.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case096-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case096-O1.exe"
+    ],
+    "exit": 766,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case097.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 840,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case097.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case097-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case097-O0.exe"
+    ],
+    "exit": 840,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case097.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case097-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case097-O1.exe"
+    ],
+    "exit": 840,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case098.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 1016,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case098.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case098-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case098-O0.exe"
+    ],
+    "exit": 1016,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case098.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case098-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case098-O1.exe"
+    ],
+    "exit": 1016,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-Wall",
+      "-Werror",
+      "-O0",
+      "N:\\compiler-proj\\target\\P13-oracle\\case099.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\reference.exe"
+    ],
+    "exit": 269,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case099.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case099-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case099-O0.exe"
+    ],
+    "exit": 269,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P13-oracle\\case099.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P13-oracle\\case099-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P13-oracle\\case099-O1.exe"
+    ],
+    "exit": 269,
+    "empty_path": true,
+    "stderr": ""
+  }
+]

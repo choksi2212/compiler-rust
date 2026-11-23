@@ -65,6 +65,7 @@ fn store(offset: u32, src: Reg) -> M {
 #[derive(Debug)]
 pub struct ModuleBindings {
     pub functions: HashMap<typed_ir::SymbolId, Label>,
+    pub function_addresses: HashMap<typed_ir::SymbolId, x64::Symbol>,
     pub literals: HashMap<typed_ir::DataId, x64::Symbol>,
     pub context: x64::Symbol,
     pub globals: HashMap<typed_ir::SymbolId, (x64::Symbol, TypeId)>,
@@ -79,6 +80,7 @@ struct Lower<'a> {
     overflow: Label,
     divide: Label,
     uninitialized: Label,
+    addressed: std::collections::HashSet<LocalId>,
     bad_shift: Label,
     exit: Label,
     runtime: bool,
@@ -354,11 +356,14 @@ impl Lower<'_> {
     }
     fn load_global(&mut self, symbol: typed_ir::SymbolId) -> Result<(), String> {
         let (symbol, ty) = self.global(symbol)?;
-        let size = self.types.layout(ty)?.size;
         self.code.push(M::LeaSymbol {
             dst: reg(10),
             symbol,
         });
+        self.load_object(ty)
+    }
+    fn load_object(&mut self, ty: TypeId) -> Result<(), String> {
+        let size = self.types.layout(ty)?.size;
         let address = Address::base(reg(10), 0);
         self.code.push(match size {
             1 => M::LoadByte {
@@ -390,11 +395,14 @@ impl Lower<'_> {
     }
     fn store_global(&mut self, symbol: typed_ir::SymbolId) -> Result<(), String> {
         let (symbol, ty) = self.global(symbol)?;
-        let size = self.types.layout(ty)?.size;
         self.code.push(M::LeaSymbol {
             dst: reg(10),
             symbol,
         });
+        self.store_object(ty)
+    }
+    fn store_object(&mut self, ty: TypeId) -> Result<(), String> {
+        let size = self.types.layout(ty)?.size;
         let address = Address::base(reg(10), 0);
         self.code.push(match size {
             1 => M::StoreByte {
@@ -549,6 +557,18 @@ impl Lower<'_> {
             }
             I::ReadGlobal { dst, symbol } => self.read_global(*dst, *symbol)?,
             I::WriteGlobal { symbol, src } => self.write_global(*symbol, *src)?,
+            I::FunctionAddress { dst, symbol } => {
+                let symbol = self
+                    .bindings
+                    .and_then(|b| b.function_addresses.get(symbol))
+                    .copied()
+                    .ok_or("unresolved function address")?;
+                self.code.push(M::LeaSymbol {
+                    dst: Reg::RAX,
+                    symbol,
+                });
+                self.write(*dst, Reg::RAX);
+            }
             I::GlobalAddress { dst, symbol } => {
                 let (symbol, _) = self.global(*symbol)?;
                 self.code.push(M::LeaSymbol {
@@ -598,6 +618,57 @@ impl Lower<'_> {
                 self.normalize(self.value(*dst), Reg::RAX)?;
                 self.write(*dst, Reg::RAX);
             }
+            I::PointerOffset {
+                dst,
+                base,
+                index,
+                subtract,
+            } => {
+                let Type::Pointer(element) = self.types.get(self.value(*base))? else {
+                    unreachable!()
+                };
+                let stride = self.types.layout(*element)?.size;
+                self.read(*base, Reg::RAX);
+                self.read(*index, reg(10));
+                self.code.extend([
+                    immediate(reg(11), stride),
+                    M::Multiply {
+                        width: W,
+                        dst: reg(10),
+                        src: reg(11),
+                    },
+                    M::Binary {
+                        width: W,
+                        op: if *subtract { Binary::Sub } else { Binary::Add },
+                        dst: Reg::RAX,
+                        src: reg(10),
+                    },
+                ]);
+                self.write(*dst, Reg::RAX);
+            }
+            I::PointerDifference { dst, lhs, rhs } => {
+                let Type::Pointer(element) = self.types.get(self.value(*lhs))? else {
+                    unreachable!()
+                };
+                let stride = self.types.layout(*element)?.size;
+                self.read(*lhs, Reg::RAX);
+                self.read(*rhs, reg(10));
+                self.code.extend([
+                    M::Binary {
+                        width: W,
+                        op: Binary::Sub,
+                        dst: Reg::RAX,
+                        src: reg(10),
+                    },
+                    immediate(reg(10), stride),
+                    M::SignExtend(W),
+                    M::Divide {
+                        width: W,
+                        divisor: reg(10),
+                    },
+                ]);
+                self.write(*dst, Reg::RAX);
+            }
             I::Binary { dst, op, lhs, rhs } => self.operation(*dst, *op, *lhs, *rhs)?,
             I::Unary { dst, op, src } => {
                 self.read(*src, Reg::RAX);
@@ -644,21 +715,42 @@ impl Lower<'_> {
                 self.flag(*local, true);
             }
             I::ReadLocal { dst, local } => {
-                self.code.extend([
-                    M::LoadByte {
-                        dst: reg(11),
-                        address: Address::base(Reg::RSP, self.frame.flag_offsets()[local.0] as i32),
-                    },
-                    test(reg(11)),
-                    branch(Condition::Equal, self.uninitialized),
-                    load(Reg::RAX, self.frame.local_offsets()[local.0]),
-                ]);
+                if !self.addressed.contains(local) {
+                    self.code.extend([
+                        M::LoadByte {
+                            dst: reg(11),
+                            address: Address::base(
+                                Reg::RSP,
+                                self.frame.flag_offsets()[local.0] as i32,
+                            ),
+                        },
+                        test(reg(11)),
+                        branch(Condition::Equal, self.uninitialized),
+                    ]);
+                }
+                self.code.push(M::Lea {
+                    dst: reg(10),
+                    address: Address::base(Reg::RSP, self.frame.local_offsets()[local.0] as i32),
+                });
+                self.load_object(self.value(*dst))?;
                 self.write(*dst, Reg::RAX);
             }
-            I::AddressLocal { .. } | I::Load { .. } | I::Store { .. } => {
-                return Err(
-                    "typed memory/call execution is not delivered by the integer type phase".into(),
-                );
+            I::AddressLocal { dst, local } => {
+                self.code.push(M::Lea {
+                    dst: Reg::RAX,
+                    address: Address::base(Reg::RSP, self.frame.local_offsets()[local.0] as i32),
+                });
+                self.write(*dst, Reg::RAX);
+            }
+            I::Load { dst, address, .. } => {
+                self.read(*address, reg(10));
+                self.load_object(self.value(*dst))?;
+                self.write(*dst, Reg::RAX);
+            }
+            I::Store { address, src, .. } => {
+                self.read(*address, reg(10));
+                self.read(*src, Reg::RAX);
+                self.store_object(self.value(*src))?;
             }
         }
         Ok(())
@@ -776,13 +868,11 @@ fn build_body(
     if runtime && (!f.parameters.is_empty() || *result != types.integer(IntegerKind::Int)) {
         return Err("runtime main requires int main(void)".into());
     }
-    for ty in f
-        .locals
-        .iter()
-        .map(|l| l.ty)
-        .chain(f.values.iter().copied())
-    {
-        scalar_kind(types, ty)?;
+    for local in &f.locals {
+        types.layout(local.ty)?;
+    }
+    for ty in &f.values {
+        scalar_kind(types, *ty)?;
     }
     let max_arguments = f
         .blocks
@@ -796,7 +886,18 @@ fn build_body(
     let frame = FramePlan::new(&FrameRequest {
         has_calls: max_arguments.is_some(),
         max_call_arguments: max_arguments.unwrap_or(0),
-        locals: vec![(8, 8); f.locals.len()],
+        locals: f
+            .locals
+            .iter()
+            .map(|local| {
+                let layout = types.layout(local.ty)?;
+                Ok((
+                    u32::try_from(layout.size.max(8))
+                        .map_err(|_| "local object exceeds frame budget")?,
+                    layout.align.max(8),
+                ))
+            })
+            .collect::<Result<Vec<_>, String>>()?,
         temporaries: f.values.len(),
         initialization_flags: f.locals.len(),
         saved: if runtime || bindings.is_some() {
@@ -819,6 +920,18 @@ fn build_body(
         overflow: labels.fresh()?,
         divide: labels.fresh()?,
         uninitialized: labels.fresh()?,
+        addressed: f
+            .blocks
+            .iter()
+            .flat_map(|b| &b.instructions)
+            .filter_map(|i| {
+                if let I::AddressLocal { local, .. } = i {
+                    Some(*local)
+                } else {
+                    None
+                }
+            })
+            .collect(),
         bad_shift: labels.fresh()?,
         exit: labels.fresh()?,
         labels,

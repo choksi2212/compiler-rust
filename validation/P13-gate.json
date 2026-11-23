@@ -1,0 +1,116 @@
+{
+  "phase": "P13",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "Cargo.lock": "91d66a2fe5d0262e6a9794b2bd226c9ac11ac9975c8d6c2405e7d1da334f85b5",
+    "Cargo.toml": "37d9521531e15f20bc931dd81a3c74a7f7ec5036cd1ae2a6a8f6af38f0de7108",
+    "examples\\encoding_oracle.rs": "a68b269c47081a73c4cbe4a0f931111f626ca8313206e891743b4dd67ccf7f45",
+    "examples\\native_oracle_corpus.rs": "7ac4a294e311949db07389e8973c44c9101e4a8190d29a213f1ac683942482c0",
+    "src\\abi.rs": "187f6ebbe9f4da4857d1cec60f789dc0e03698c151ffdd09f9a38fb9c0aeddd6",
+    "src\\bytecode.rs": "0e216a50913645ed58b3f599eaf5ff00eac5741b6e776e22eed9298132e2b2b8",
+    "src\\context.rs": "f7c481e74faadde4c88eaafa13a1e69c3a2603346368b3837eaccccb3560e266",
+    "src\\files.rs": "49b6b6199dde0772d35ca0eb61b81e611e9ceb94b3340cd88cd32754ebfb3714",
+    "src\\integer.rs": "3c274b337077dfafc3649793d58b2eac69a9e4d19f77d271879d3a6f4769c32c",
+    "src\\ir.rs": "5fa728668607444a813d2a65359af3fac4aec481f822e8363abd87703bc7d6b2",
+    "src\\lexer.rs": "d85ffc4610aba379230b2484b28641d0da3cb590ce5810f96e6d275ba1581cf3",
+    "src\\lib.rs": "e17395465f8851afc8b89fd2c5d9818867c80b1c786d58d4e1132a8a152be70d",
+    "src\\main.rs": "2e31e3cc5d909eec7e843c2a9b0ebce5e0b15d0f81e3b18cd32f58af2bf1aa39",
+    "src\\native_allocator.rs": "059ab1a3c5f3d4d6f62883e1d2b1510513fd61d4165d5a8fdb6761737201d395",
+    "src\\native_integer.rs": "2e40b7926c790b7b0d19c0f4e7ce0407f23c07db9cd34d3eb6860b7ef5fae81f",
+    "src\\native_memory.rs": "4c5e830b9416cbdcf166499cfa5d3105c2c78d6506062c588d8cc15ad3b58a3f",
+    "src\\native_pe.rs": "23828486146176f4d6f955406cb5533703b98ce6ea27e390c2d3597289e5a461",
+    "src\\native_runtime.rs": "5845aac7e4f4f0099d518f01da074935f66829d10b93d627ca374eb2ececfd93",
+    "src\\optimize.rs": "30efc4a77f7e051f1e660f899fcae22720019d2210d6c727490552691b97f75c",
+    "src\\parser.rs": "14db0ce3c9200a3d263816bce25bc86ebe06e70740213b4a2fc949f985860267",
+    "src\\pe.rs": "053ad5abb645087a0e16569cfc4996b1f94e9d3ec8b77ec3f2f0f683b3ac7b72",
+    "src\\pipeline.rs": "03d954f0a034dee2d1d66bb14852fac5a84c6a44375d6136a46c63543cf9aba8",
+    "src\\semantic.rs": "793f3d14dece07d5c06109bfc02e26a8320efab3d55dcafc82d52ae049c6260e",
+    "src\\stress.rs": "a1219d4f80d702d4e8c453dc888d51599cdd6776a903a4204adba81e175253cd",
+    "src\\typed_front.rs": "4d85267a0de81e7480dde4936b10a3527e8588c2ed02aee1c831c2693f54da71",
+    "src\\typed_image.rs": "670733f9be561a79b95a1696c6a5b3f4301fdaa777afc8f521cef6454dd7e0f0",
+    "src\\typed_ir.rs": "f25c4b6b19990a87a78dc3833aed5a1b834a3ac66f504e21fd7207e7c2291350",
+    "src\\typed_lower.rs": "c3c5f830bd2ba95f286aab49780525dcf482746e50eba97de155679465fb4d22",
+    "src\\typed_native.rs": "d53baec95abc8918767b2f59db0deb65087cd44a28e62695b26563e25a2db75f",
+    "src\\typed_opt.rs": "56645968c6d17b6cd3b0cd07fbc82e70c10115bb6c228a3484b82b62e3488c9c",
+    "src\\typed_pipeline.rs": "177a05233683ed5da19c58b089a66635c77e01bee70fa30423ef636d5221ef47",
+    "src\\typed_runtime.rs": "9f58412d522e0cf91fc0c2db25670b4a201f388c44651e9bd1e2ffc94c6d9cb0",
+    "src\\types.rs": "f0755434c7d601020be6e8e97786aae268b212822adc57dddb700d1ad12e0f6f",
+    "src\\verify.rs": "8287ee017e1f211894a757bfa9e91c09caff27314f7a4a8f98a042bed07ab266",
+    "src\\x64.rs": "07b5d61f64b8576f9b80473dab6a44baf3e82077067bcd30d357bcc17a373a08",
+    "tests\\abi_frames.rs": "a7068573e7896e0b77112a987be57c9210a051a76d2b5de68c6c905e8fb73479",
+    "tests\\abi_image.rs": "ab759467e428da366585fa80f36ca2d473e0ad1d044def68a2f1cdebb15d9157",
+    "tests\\cli.rs": "391d278ee19b1baa63118bc832047a339f5bf0d2ab16bae656e8e664d8fd43d9",
+    "tests\\control_flow.rs": "1313b38fdcd2ac13226953a96fc030a01a8aa7846da1b285714e3d2977dcb2dd",
+    "tests\\dynamic_pe.rs": "bf9dfc3dd2f80425d3c5a3ddf2a51ebc4bb30f0cbd1905c6fb8a96e651f43d89",
+    "tests\\functions.rs": "eaf3975aaf075d75b3e6adf81073f6ef17a19807118ee24cd27c0d78926f39c1",
+    "tests\\memory.rs": "3128ed1acb9ee8cf7831f6e23373b779c3872e95377477eab18d5c9bafe66f5c",
+    "tests\\native_cli.rs": "556e93ad1c5df45ed79d9274ec699975fcaca851831ae17831ea9852be983615",
+    "tests\\native_integer.rs": "6c6fe7d129b89d6ee91531161e9e55f9f98fa5a35e33c20c69f81322d3d4a439",
+    "tests\\native_runtime.rs": "6771990c29627c79891ccb560923697938ecbd1a6c1ca41fc84fc98052979c14",
+    "tests\\native_source.rs": "faa87de2a2666db6b7434ff540c0edc4efa9d8a7d7107b5e83a56502ac938a9c",
+    "tests\\pe_foundation.rs": "ea5f52ba9239bcaa5d084b355114c2bb7a2066b673e46b2d1fd0bae9c8244d92",
+    "tests\\runtime_io.rs": "c97a2895a196bc3694d7cc0645235bdfbaa7866dc0ebf90e17d7aed35af8ddbe",
+    "tests\\type_model.rs": "8f155f942c4167786cab38634b42a970b8f4a5d4477ebd84662871372c7cf86d",
+    "tests\\typed_arithmetic.rs": "bd5ad5a0131f1c4615f0ccbbb690e272e42682acae1797816f81dafb62ef3a00",
+    "tests\\typed_front.rs": "f0d2cdc569832a8e1973a85b49b0f49adeba37812db79acf7d814fd309e16fa4",
+    "tests\\typed_ir.rs": "7387e422d903ed56d4c93ef6b4c049b4d5cb38ae168e8df2effcd91f53814a70",
+    "tests\\typed_native.rs": "c1897b46d2c063c362ec9713ae7f07f6e5337d760fc150febb57ee608d68987e",
+    "tests\\typed_opt.rs": "0f6f86a33ecd26bcaa6cce83bfb53410ab6cca77f33781cfda617d72ef2de7ad",
+    "tests\\typed_source.rs": "377558675f44357ed6cbd931e081c7787b5afdfe4995315447217cd9f6f8c15e",
+    "tests\\x64_encoder.rs": "c65e5874a9c7e425a5891a81e27c8b9fc460d4acaf5ce10ac8a3159886c02437",
+    "validation\\run_gate.py": "48128bdb8cfbe43cd753417a7c4cb7e16dff930f80f51ea419f9a2c1bfbc612c"
+  },
+  "required_commands_executed": true,
+  "commands_passed": true
+}

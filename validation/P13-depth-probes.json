@@ -1,0 +1,37 @@
+[
+  {
+    "case": "scalar-initializer",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P13-depth\\scalar-initializer.c:1:81: initializer nesting limit exceeded\n",
+    "source_sha256": "308f29521f96bb7230a57cfb8a92c8f8931d6e920a303f580a4aecc124cdafd0",
+    "image_exists": false
+  },
+  {
+    "case": "array-initializer",
+    "exit": 0,
+    "stderr": "",
+    "source_sha256": "7686eb5cc7950f707ff4f738a70fd23fc61521b7692f058ffc8e1aaaa7614fde",
+    "image_exists": true
+  },
+  {
+    "case": "initializer-budget",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P13-depth\\initializer-budget.c:1:26: initializer element budget exceeded\n",
+    "source_sha256": "a485b3e06e97d119d55fb4193c056b30b8b8abdbc82b9ca7545d010417b0db3e",
+    "image_exists": false
+  },
+  {
+    "case": "frame-budget",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P13-depth\\frame-budget.c:initial frame limit is1MiB\n",
+    "source_sha256": "aa94d234217baf27307b7c45924e841a4d2749ee2e9445bdf1a4e77c0df5aa55",
+    "image_exists": false
+  },
+  {
+    "case": "bad-subscript",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P13-depth\\bad-subscript.c:1:7: subscript requires a pointer and an integer\n",
+    "source_sha256": "1268d28ffaa8ff64ca74431f819acf1e82f0c1c240d6b44b4911a2af7533b674",
+    "image_exists": false
+  }
+]

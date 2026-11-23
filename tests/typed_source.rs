@@ -151,8 +151,8 @@ fn compiler_modes_and_incomplete_features_fail_explicitly() {
     for (source, stage) in [
         ("#include <stdio.h>\nint main(){}", Stage::Lex),
         ("int main(){return 1.0;}", Stage::Parse),
-        ("int main(){int a[3];return sizeof(a);}", Stage::Ir),
-        ("int main(){int *p;return *p;}", Stage::Parse),
+        ("int main(){int n=3;int a[n];return 0;}", Stage::Parse),
+        ("int main(){void *p;return *p;}", Stage::Parse),
         ("int main(){printf(\"x\");}", Stage::Parse),
         ("typedef int T;", Stage::Ir),
     ] {
@@ -167,7 +167,7 @@ fn compiler_modes_and_incomplete_features_fail_explicitly() {
     assert!(c.check_typed(id).is_ok());
     assert!(c.compile_typed(SourceId(999), &Default::default()).is_err());
     let frontend = c.check_typed(id).unwrap();
-    assert!(typed_lower::lower(&frontend.unit).is_err());
+    assert!(typed_lower::lower(&frontend.unit).is_ok());
     let mut wrong = CompilationContext::default();
     let id = wrong.add_source("mode.c", "int main(){return 0;}");
     assert_eq!(
