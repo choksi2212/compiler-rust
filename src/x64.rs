@@ -503,3 +503,18 @@ pub fn encode(instructions: &[Instruction]) -> Result<MachineFragment, String> {
         external_fixups,
     })
 }
+/// Shared allocation across function bodies, probes, wrappers and helpers.
+#[derive(Debug, Default)]
+pub struct LabelAllocator {
+    next: usize,
+}
+impl LabelAllocator {
+    pub fn fresh(&mut self) -> Result<Label, String> {
+        let id = self.next;
+        self.next = self
+            .next
+            .checked_add(1)
+            .ok_or("machine label space exhausted")?;
+        Ok(Label(id))
+    }
+}

@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.2, continuous phase execution; P01-P04 passed, P05 in progress
+**Revision:** 3.2, continuous phase execution; P01-P05 passed, P06 in progress
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -688,7 +688,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P03 | Project x64 instruction encoder | 8B-2 | Passed; evidence in section 13.8.2 |
 | P04 | Dynamic PE layout, imports and fixups | 8B-3 | Passed; evidence in section 13.9.2 |
 | P05 | ABI, stack frames and unwind generation | 8B-4 | Passed; evidence in section 13.10.2 |
-| P06 | Native subset arithmetic and control flow | 8B-5/6 | Planned |
+| P06 | Native subset arithmetic and control flow | 8B-5/6 | Passed; evidence in section 13.11.2 |
 | P07 | Native subset runtime and startup | 8B-7/8 | Planned |
 | P08 | Complete C-subset-to-native integration | 8B-9 | Planned |
 | P09 | Native CLI and usable distribution | 8C | Planned |
@@ -1058,6 +1058,22 @@ Work items:
 **Deliverables:** native lowering for the legacy arithmetic/control-flow IR and source-linked machine dumps.
 **Gate:** native execution matches independent expected results for the supported operations and checked failure branches.
 **Boundary:** print/string behavior and complete source-to-executable demos wait for P07/P08.
+
+#### 13.11.1 P06 implementation contract before coding
+
+`lower_integer` accepts verified legacy integer IR and a shared machine-label allocator, producing an actual zero-argument Windows-ABI function with matching frame/unwind records. Success/Halt returns status0; checked division-by-zero, overflow and uninitialized reads return1/2/3 respectively. These statuses are internal native teaching results; P07 supplies messages/startup behavior. No arithmetic result is precomputed by a test-only interpreter.
+
+Each distinct slot gets an eight-byte home and a one-byte initialization flag, allocated by slot identity rather than maximum numeric ID. All flags start clear; Reset clears the corresponding flag on every execution. Reads check flags; stores set them. Integer arithmetic uses32-bit signed instructions and immediate overflow checks. Division/remainder explicitly handle zero and minimum/-1 before IDIV. Comparisons/boolean normalization produce0/1; IR labels preserve short circuit and loop flow. A shared fresh-label allocator prevents collisions among IR labels, frame probes, handlers and wrappers.
+
+String constants, strlen and Print are explicit unsupported operations at this P06 boundary, not stubs or fallbacks. P07 will implement their real native behavior before P08 can qualify all demos. Tests observe computed values by native comparisons/branches into known checked failure paths, plus direct checked-error statuses. Source programs without output can be compiled and executed for success/error evidence. Initial slot-count budget is65535 within the existing1MiB frame limit; resource rejection is explicit.
+
+#### 13.11.2 P06 completion evidence
+
+Baseline: `97cb510`. `src/native_integer.rs` lowers verified integer IR to owned CPU instructions with P05 frames/unwind records. Sparse slot identities map to bounded stack homes/flags; each read is checked, entry flags are cleared, and Reset clears lifetime state on every execution. Add/sub/multiply/negation check OF; division/remainder guard zero and minimum/-1; signed comparisons/boolean operations and label branches execute natively. Success/errors return the specified status0/1/2/3. `LabelAllocator` supplies shared collision-free labels. No output or string operation is mocked; unsupported cases are rejected at this boundary.
+
+Tests execute 6825 small arithmetic/comparison cases plus845 integer-boundary cases as actual Windows-ABI native calls per build mode. Additional cases test all checked error categories, sparse usize::MAX slot identity, lifetime resets, source-level loops/scopes/short circuit in both optimization modes, a600-declaration probed stack frame, label namespace isolation and explicit rejection at65536 slots. Two real C factorial/check programs are also packaged with own startup/PE/unwind metadata and launched as independent processes: expected-factorial720 exits0, deliberately wrong expected721 reaches the generated divide-error path and exits1.
+
+`python validation/run_gate.py P06` passed formatting, warnings-denied Clippy and all-target debug/release tests: 70 passed each, zero failed/ignored. [Command output](validation/P06-gate.log), [results/source hashes](validation/P06-gate.json). Reproduce focused native tests with `cargo test --test native_integer`; fixed matrices and inputs are in the hashed test source. No unresolved P06 failure. This proves tested integer lowering, not full native demo support or a public `-o` option. Printing/strings/startup messages remain P07; complete source integration remains P08. Next eligible phase: P07.
 
 ### 13.12 P07 - Project native runtime and startup for the subset
 
