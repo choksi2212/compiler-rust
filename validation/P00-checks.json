@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "cargo",
+      "fmt",
+      "--check"
+    ],
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "command": [
+      "cargo",
+      "clippy",
+      "--all-targets",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--all-targets",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "passed": true
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "passed": true
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "baseline_commit": "47c881d11ff332eb7d11b071b36be6956906861b",
+  "source_manifest_files_unchanged": 26,
+  "user_sample_sha256_after": "fc5edc963aa676279b25a9172908d7bbcc5ec842d212b99af84cef9f64e2d162",
+  "production_dependencies": [],
+  "debug_tests_passed": 31,
+  "release_tests_passed": 31,
+  "required_tests_ignored": 0,
+  "required_command_checks_passed": 5,
+  "release_probes_passed": 36,
+  "differential_programs": 100,
+  "differential_comparisons": 200,
+  "differential_seed": 2212,
+  "release_binary_sha256": "3446e6172052dcff519d7bbb01ea1e29ad561b9c517596b193692fda9214f7ea",
+  "gate": "P00 evidence checks passed; P01 not started"
+}

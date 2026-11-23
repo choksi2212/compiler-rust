@@ -1,0 +1,5 @@
+COMMAND: python tools/differential.py
+Seed: 2212
+100 generated C programs matched GCC in both modes (200 comparisons). Seed: 2212.
+EXIT: 0
+ELAPSED_SECONDS: 22.219

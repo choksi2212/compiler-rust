@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.0, phased execution specification for review
+**Revision:** 3.1, strict evidence gates; P00 passed, P01 not started
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -11,7 +11,7 @@
 
 This is the project's single source of truth. It combines the PRD, technical requirements, architecture, execution flows, implementation sequence, validation strategy, and change control. The README is a usage guide and must derive scope claims from this document. Git history preserves earlier plans; no parallel roadmap or competing specification should be introduced.
 
-**Document-only revision:** this revision specifies future work; it does not implement or certify it. No implementation phase is authorized to start merely because this planning update has been committed. Review this complete phased revision before native backend or language expansion implementation continues. The user has authorized project-owned development and stage-by-stage testing. A change to the agreed architecture, dependency policy, target, or scope requires asking the user first, then updating this file before coding.
+**Execution authorization:** after revision 3.0, the user explicitly instructed us to start P00 and impose aggressive, evidence-based phase gates. This authorizes P00 baseline work against the phased specification; it does not turn future features into implemented capabilities or make a commit itself sufficient authorization to skip gates. A change to the agreed architecture, dependency policy, target, or scope requires asking the user first, then updating this file before coding.
 
 ## Contents
 
@@ -75,7 +75,7 @@ No fabricated speed, coverage, security, or conformance claims are permitted. Pa
 
 ## 2. Current implementation and evidence
 
-This section records the inspected repository at commit `da66051`; later stages below are planned unless marked otherwise. Existing validation was recorded in prior implementation turns; this documentation revision does not rerun compiler tests.
+This section records the inspected repository at commit `da66051`; later stages below are planned unless marked otherwise. Prior validation was recorded in earlier implementation turns. P00 has now reproduced the baseline at commit `47c881d11ff332eb7d11b071b36be6956906861b`; its new evidence and limitations are recorded in section 13.5.1.
 
 | Component | File | Verified baseline | Gap to native/full C |
 | --- | --- | --- | --- |
@@ -642,7 +642,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested this revision before code. Every new phase below remains unstarted unless existing foundation work is explicitly identified. Document checks performed for this revision do not count as phase implementation tests. Do not change compiler source while preparing or reviewing this revision.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate; P01-P24 remain unstarted except for historically identified foundation work. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -665,11 +665,24 @@ At phase start, record baseline commit, scope, relevant requirement IDs, depende
 
 Every phase requires focused tests plus previous regression tests appropriate to the change. Native behavior requires real process execution. A developer may perform routine choices within these contracts; an architecture/dependency/target change requires user approval under section 15.4.
 
+### Mandatory aggressive testing and evidence rule
+
+User instruction on 2026-11-23: no phase may advance until its work has been aggressively tested and passes; no conclusion may be reported without proof.
+
+1. Before implementation, enumerate the current phase's acceptance obligations and relevant baseline regressions. The tests must cover success, rejection/failure, boundaries and interactions appropriate to that phase, not only happy-path demos.
+2. Any failed, crashed, hung, unexpectedly skipped, unexecuted or inconclusive required check prevents `passed`. Fix the cause, add a regression for a new defect, and rerun affected checks plus relevant earlier regressions. Do not weaken expectations or remove a failing case merely to obtain green results.
+3. Do not start the next phase, implement around an unmet prerequisite, or declare downstream work complete while the current gate is unresolved. Passing a subset of the gate is partial progress only.
+4. Preserve evidence: exact command/input, baseline or changed-source identity, environment/mode, actual exit status, output/assertions and any random seed. Reference the evidence from this document's phase completion record. Evidence files are records, not a second implementation plan.
+5. State conclusions at the scope actually demonstrated. A test count or a successful build does not prove arbitrary-program correctness, full C conformance, absence of defects, or future phases. Identify gaps and distinguish prior evidence from new runs.
+6. Independent expectations are required where shared implementation could hide common bugs. Native behavior requires executing actual generated machine code; byte snapshots alone do not establish it. Differential oracles must only compare defined behavior and remain outside the production toolchain.
+7. Resource-heavy checks need bounded child execution and cleanup; a timeout is evidence to investigate, never a pass. Do not silently bypass a missing tool, unavailable native platform, or environmental failure.
+8. Record the phase result and first eligible next phase here. An eligible phase is not automatically started in a phase-specific user request. For the current request, stop after P00 and report its evidence.
+
 ### 13.3 Phase map and current status
 
-| Phase | Bounded deliverable | Historical alias | Initial status |
+| Phase | Bounded deliverable | Historical alias | Current status |
 | --- | --- | --- | --- |
-| P00 | Review, baseline and specification freeze | Plan review | Documentation only; review pending |
+| P00 | Review, baseline and specification freeze | Plan review | Passed; evidence in section 13.5.1 |
 | P01 | Native foundation audit | 8A audit | Existing foundation; expanded gate not passed |
 | P02 | Shared compiler library and legacy IR verification | 8B-1 | Planned |
 | P03 | Project x64 instruction encoder | 8B-2 | Planned |
@@ -775,6 +788,49 @@ Work items:
 **Deliverables:** reviewed specification, reproducible baseline record, explicit unresolved-decision list.
 **Gate:** no ambiguity that would change P01-P09 architecture; user has authorized implementation against this reviewed revision; baseline checks pass or preexisting failures are repaired before dependent work.
 **Boundary:** this phase adds no language or native CLI feature. If review changes the target, revise relevant contracts before proceeding.
+
+#### 13.5.1 P00 completion record - 2026-11-23
+
+**Result: passed for the specified baseline gate. P01 has not started.** The user's instruction to start P00 establishes revision 3.0 as the baseline for this work. Revision 3.1 adds the requested strict aggressive-testing/evidence rule; no production compiler capability changed.
+
+| Record | Evidence and scope |
+| --- | --- |
+| Baseline commit | `47c881d11ff332eb7d11b071b36be6956906861b` |
+| Requirements | PR-02, PR-10, PR-12; P00 work items 1-6 |
+| Target frozen for baseline | Rust compiler; project-owned native Windows x64 path; hosted C11 coverage target, not current conformance |
+| Ownership boundary | Rust toolchain builds the compiler; Windows services are allowed runtime primitives; no external C production compiler/assembler/linker/CRT implementation |
+| CLI/mode direction | Existing VM default retained; later explicit native `-o`; teaching checks separate from strict-mode semantics |
+| Environment | rustc/cargo 1.96.0, Rust host `x86_64-pc-windows-msvc`; GCC 13.2.0 target `x86_64-w64-mingw32` used only as a development oracle; Python 3.11.0 |
+| Working-tree input | No tracked production changes at start; user-owned untracked `addition.c` preserved |
+| Formatting | `cargo fmt --check`: exit 0 |
+| Lint | `cargo clippy --all-targets --locked --offline -- -D warnings`: exit 0 |
+| Debug regression | `cargo test --all-targets --locked --offline`: 31 passed, 0 failed, 0 ignored |
+| Release regression | `cargo test --all-targets --release --locked --offline`: 31 passed, 0 failed, 0 ignored |
+| Release build | `cargo build --release --locked --offline`: exit 0 |
+| Aggressive tests within each suite | Existing 16,150 arithmetic executions, 10,000 random malformed inputs, source mutation, deep-input rejection, errors, scope/control-flow tests and all six demos |
+| Native baseline evidence | Each native foundation process test launched real generated x64 entrypoints with exit statuses 0/37/255; this does not validate native C lowering |
+| Independent comparison | `python tools/differential.py`: 100 generated programs, 200 comparisons across both modes, seed 2212, exit 0 |
+| Additional process probes | `python validation/P00-probes.py`: 36 passed; exact inputs, expected outputs/errors, arguments, working directories and actual results are recorded |
+| Process-probe coverage | Arithmetic, factorial, pattern, short circuit, printf count, strlen, scope/loops, precedence; invalid source and runtime failures; external working directory; empty PATH; missing input |
+| Dependency check | `cargo metadata --no-deps --locked --offline --format-version 1`: one project package with no Cargo dependencies |
+| Preservation check | SHA256 manifest confirms 26 tracked source/test/example/tool/Cargo files unchanged; user sample hash unchanged |
+| User sample SHA256 | `fc5edc963aa676279b25a9172908d7bbcc5ec842d212b99af84cef9f64e2d162` |
+| Release compiler SHA256 | `3446e6172052dcff519d7bbb01ea1e29ad561b9c517596b193692fda9214f7ea` |
+| Changed components | This specification and supporting `validation/P00-*` evidence/reproduction files only |
+| Failures/open baseline blockers | No required P00 check failed or was skipped; no P01-P09 architecture decision is left unresolved by this baseline |
+| Later decisions | Detailed bitfield/numerical/concurrency and other future-phase contracts remain their explicit prerequisite tasks; they are not prematurely certified by P00 |
+| Next eligible phase | P01 only; eligibility does not mean it has started |
+
+Supporting evidence (records, not additional plans):
+
+- [Baseline command output and environment](validation/P00-baseline.log).
+- [Required command exit statuses](validation/P00-checks.json).
+- [Source/test/example/tool SHA256 manifest](validation/P00-source-manifest.json).
+- [Independent comparison output](validation/P00-differential.log) and [result](validation/P00-differential-result.json).
+- [Exact release-probe inputs and results](validation/P00-probes.json), [raw probe records](validation/P00-probes.log), and [reproduction script](validation/P00-probes.py).
+- [Machine-readable evidence consistency summary](validation/P00-summary.json).
+
+**Bounded conclusion:** the existing tested subset and limited native foundation pass the P00 baseline checks on this recorded Windows environment. These checks do not establish absence of all bugs, a completed PE audit, end-to-end native C compilation, full hosted C11, or portability to untested systems. No production code was changed and no downstream phase work was begun.
 
 ### 13.6 P01 - Audit the native executable foundation
 
@@ -1442,7 +1498,7 @@ This is a review checklist, not a request to approve six separate actions indivi
 
 ### 15.6 Immediate next action after document review
 
-Complete P00's reviewed baseline and record its passing evidence. Then start P01's native foundation audit. Follow P02-P08 in order to qualify actual native compilation before P09 delivers the user-facing `-o` workflow. Do not jump directly into broad language expansion or native CLI work. The first user-visible native milestone is the current six demos compiling into standalone `.exe` files through the entirely project-owned path. P10-P24 subsequently expand language/runtime coverage without claiming unfinished capabilities. Historical package aliases may explain past commits but cannot override this phase sequence.
+P00 has passed with the evidence in section 13.5.1. P01 is eligible but unstarted; the current P00-specific request stops here. When implementation continues, begin P01's native foundation audit, not a downstream phase. Follow P02-P08 in order to qualify actual native compilation before P09 delivers the user-facing `-o` workflow. Do not jump directly into broad language expansion or native CLI work. The first user-visible native milestone is the current six demos compiling into standalone `.exe` files through the entirely project-owned path. P10-P24 subsequently expand language/runtime coverage without claiming unfinished capabilities. Historical package aliases may explain past commits but cannot override this phase sequence.
 
 ## 16. References and preserved history
 
@@ -1474,3 +1530,5 @@ Revision 2.0 (historical): documentation-only consolidation into PRD, TRD, archi
 
 
 Revision 3.0: documentation-only refinement into 25 ordered phases, P00-P24. Section 13 is the sole detailed execution sequence, replacing the earlier broad work-package sequence while preserving its dependency order and ownership contracts. Every phase identifies prerequisites, concrete tasks, tests, deliverables, acceptance gate and scope boundaries. Phase status and completion-record rules distinguish historical foundation work from new verified progress. No compiler source, tests, runtime implementation or user sample changed in this revision.
+
+Revision 3.1: user-authorized P00 baseline verification; mandatory aggressive-testing and evidence rule added. Recorded fresh debug/release, lint/build, differential and release-process results with source-preservation hashes. P00 passed its bounded gate; P01 remains unstarted. Production compiler source and user samples were unchanged.

@@ -1,0 +1,215 @@
+P00 baseline validation evidence
+Client date: 2026-11-23 (Asia/Calcutta)
+Baseline: 47c881d11ff332eb7d11b071b36be6956906861b
+Scope: existing repository behavior; P01 audit and native C implementation not started.
+Commands below record actual output and process exit status. This log is supporting evidence; IMPLEMENTATION_PLAN.md controls scope and phase status.
+User sample addition.c SHA256 before validation: FC5EDC963AA676279B25A9172908D7BBCC5EC842D212B99AF84CEF9F64E2D162
+
+COMMAND: git status --short --branch
+## main...origin/main
+ M IMPLEMENTATION_PLAN.md
+?? addition.c
+?? validation/
+EXIT: 0
+
+COMMAND: git rev-parse HEAD
+47c881d11ff332eb7d11b071b36be6956906861b
+EXIT: 0
+
+COMMAND: rustc -vV
+rustc 1.96.0 (ac68faa20 2026-05-25)
+binary: rustc
+commit-hash: ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96
+commit-date: 2026-05-25
+host: x86_64-pc-windows-msvc
+release: 1.96.0
+LLVM version: 22.1.2
+EXIT: 0
+
+COMMAND: cargo --version
+cargo 1.96.0 (30a34c682 2026-05-25)
+EXIT: 0
+
+COMMAND: gcc -dumpmachine
+x86_64-w64-mingw32
+EXIT: 0
+
+COMMAND: gcc --version
+gcc.exe (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r8) 13.2.0
+Copyright (C) 2023 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+EXIT: 0
+
+COMMAND: python --version
+Python 3.11.0
+EXIT: 0
+
+COMMAND: git ls-files src tests examples tools Cargo.toml Cargo.lock
+Cargo.lock
+Cargo.toml
+examples/addition.c
+examples/addition.expected
+examples/conditional.c
+examples/conditional.expected
+examples/factorial.c
+examples/factorial.expected
+examples/loop.c
+examples/loop.expected
+examples/pattern.c
+examples/pattern.expected
+examples/strings.c
+examples/strings.expected
+src/bytecode.rs
+src/ir.rs
+src/lexer.rs
+src/lib.rs
+src/main.rs
+src/native_pe.rs
+src/optimize.rs
+src/parser.rs
+src/semantic.rs
+src/stress.rs
+tests/cli.rs
+tools/differential.py
+EXIT: 0
+
+COMMAND: cargo fmt --check
+EXIT: 0
+
+COMMAND: cargo clippy --all-targets --locked --offline -- -D warnings
+    Checking compiler v0.1.0 (N:\compiler-proj)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s
+EXIT: 0
+
+COMMAND: cargo test --all-targets --locked --offline
+   Compiling compiler v0.1.0 (N:\compiler-proj)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.96s
+     Running unittests src\lib.rs (target\debug\deps\compiler-d1a7b3ca78285500.exe)
+
+running 2 tests
+test native_pe::tests::headers_and_bounds ... ok
+test native_pe::tests::windows_executes_generated_machine_code ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running unittests src\main.rs (target\debug\deps\compiler-99b7a8f08c969833.exe)
+
+running 27 tests
+test lexer::tests::header ... ok
+test lexer::tests::positions ... ok
+test lexer::tests::operators ... ok
+test optimize::tests::folding ... ok
+test ir::tests::lowers_control_flow ... ok
+test parser::tests::errors ... ok
+test bytecode::tests::strings_and_while ... ok
+test parser::tests::precedence ... ok
+test optimize::tests::preserves_errors_and_boundaries ... ok
+test parser::tests::constructs ... ok
+test bytecode::tests::loops_scopes_and_optimization ... ok
+test semantic::tests::rejects ... ok
+test semantic::tests::valid ... ok
+test lexer::tests::invalid ... ok
+test stress::decimal_literals_do_not_reinterpret_c_octal ... ok
+test bytecode::tests::runtime_errors ... ok
+test stress::control_flow_and_errors ... ok
+test lexer::tests::strings ... ok
+test stress::loop_declarations_are_fresh ... ok
+test stress::unsupported_compound_tokens ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test stress::reject_invalid_c ... ok
+test bytecode::tests::short_circuit ... ok
+test stress::mutations_never_panic ... ok
+test stress::huge_inputs_fail_cleanly ... ok
+test stress::deterministic_random_input ... ok
+test stress::arithmetic_matrix ... ok
+
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+     Running tests\cli.rs (target\debug\deps\cli-84cf93a62d3ca117.exe)
+
+running 2 tests
+test stage_dumps_and_cli_errors ... ok
+test all_demos_with_and_without_optimization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+EXIT: 0
+
+COMMAND: cargo test --all-targets --release --locked --offline
+   Compiling compiler v0.1.0 (N:\compiler-proj)
+    Finished `release` profile [optimized] target(s) in 0.91s
+     Running unittests src\lib.rs (target\release\deps\compiler-c93439a71343cf40.exe)
+
+running 2 tests
+test native_pe::tests::headers_and_bounds ... ok
+test native_pe::tests::windows_executes_generated_machine_code ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running unittests src\main.rs (target\release\deps\compiler-2a63c9397db0b14f.exe)
+
+running 27 tests
+test bytecode::tests::short_circuit ... ok
+test bytecode::tests::runtime_errors ... ok
+test bytecode::tests::loops_scopes_and_optimization ... ok
+test lexer::tests::header ... ok
+test lexer::tests::operators ... ok
+test semantic::tests::valid ... ok
+test optimize::tests::folding ... ok
+test bytecode::tests::strings_and_while ... ok
+test lexer::tests::strings ... ok
+test stress::reject_invalid_c ... ok
+test stress::loop_declarations_are_fresh ... ok
+test parser::tests::errors ... ok
+test optimize::tests::preserves_errors_and_boundaries ... ok
+test ir::tests::lowers_control_flow ... ok
+test semantic::tests::rejects ... ok
+test lexer::tests::invalid ... ok
+test stress::control_flow_and_errors ... ok
+test stress::decimal_literals_do_not_reinterpret_c_octal ... ok
+test lexer::tests::positions ... ok
+test parser::tests::constructs ... ok
+test parser::tests::precedence ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test stress::unsupported_compound_tokens ... ok
+test stress::mutations_never_panic ... ok
+test stress::huge_inputs_fail_cleanly ... ok
+test stress::deterministic_random_input ... ok
+test stress::arithmetic_matrix ... ok
+
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests\cli.rs (target\release\deps\cli-7085eb84fcdf577f.exe)
+
+running 2 tests
+test stage_dumps_and_cli_errors ... ok
+test all_demos_with_and_without_optimization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+EXIT: 0
+
+COMMAND: cargo build --release --locked --offline
+    Finished `release` profile [optimized] target(s) in 0.02s
+EXIT: 0
+
+FINAL EVIDENCE CONSISTENCY CHECK
+{
+  "baseline_commit": "47c881d11ff332eb7d11b071b36be6956906861b",
+  "source_manifest_files_unchanged": 26,
+  "user_sample_sha256_after": "fc5edc963aa676279b25a9172908d7bbcc5ec842d212b99af84cef9f64e2d162",
+  "production_dependencies": [],
+  "debug_tests_passed": 31,
+  "release_tests_passed": 31,
+  "required_tests_ignored": 0,
+  "required_command_checks_passed": 5,
+  "release_probes_passed": 36,
+  "differential_programs": 100,
+  "differential_comparisons": 200,
+  "differential_seed": 2212,
+  "release_binary_sha256": "3446e6172052dcff519d7bbb01ea1e29ad561b9c517596b193692fda9214f7ea",
+  "gate": "P00 evidence checks passed; P01 not started"
+}
+EXIT: 0
