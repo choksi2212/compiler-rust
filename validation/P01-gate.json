@@ -8,6 +8,7 @@
         "--check"
       ],
       "exit": 0,
+      "ignored_tests": 0,
       "passed": true
     },
     {
@@ -22,6 +23,7 @@
         "warnings"
       ],
       "exit": 0,
+      "ignored_tests": 0,
       "passed": true
     },
     {
@@ -33,6 +35,7 @@
         "--offline"
       ],
       "exit": 0,
+      "ignored_tests": 0,
       "passed": true
     },
     {
@@ -45,6 +48,7 @@
         "--offline"
       ],
       "exit": 0,
+      "ignored_tests": 0,
       "passed": true
     }
   ],

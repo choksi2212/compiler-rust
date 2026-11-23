@@ -1,5 +1,5 @@
 Phase gate evidence; phase status is governed by IMPLEMENTATION_PLAN.md.
-Baseline HEAD: 4d26c534ea8a4ef804221656ff0c8d1d428b086f
+Baseline HEAD: 6c0d73991cebf0dd8e6942c59189d4ef3ae013e0
 
 COMMAND: cargo fmt --check
 
@@ -7,53 +7,53 @@ EXIT: 0
 
 COMMAND: cargo clippy --all-targets --locked --offline -- -D warnings
     Checking compiler v0.1.0 (N:\compiler-proj)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.19s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.29s
 
 EXIT: 0
 
 COMMAND: cargo test --all-targets --locked --offline
    Compiling compiler v0.1.0 (N:\compiler-proj)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.55s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.45s
      Running unittests src\lib.rs (target\debug\deps\compiler-d1a7b3ca78285500.exe)
 
 running 2 tests
 test native_pe::tests::headers_and_bounds ... ok
 test native_pe::tests::windows_executes_generated_machine_code ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
 
      Running unittests src\main.rs (target\debug\deps\compiler-99b7a8f08c969833.exe)
 
 running 27 tests
-test lexer::tests::header ... ok
-test lexer::tests::strings ... ok
-test lexer::tests::invalid ... ok
-test parser::tests::constructs ... ok
-test bytecode::tests::short_circuit ... ok
-test lexer::tests::operators ... ok
 test bytecode::tests::runtime_errors ... ok
-test stress::shadow_initializer_is_not_outer_value ... ok
-test optimize::tests::folding ... ok
+test bytecode::tests::short_circuit ... ok
+test lexer::tests::invalid ... ok
 test bytecode::tests::loops_scopes_and_optimization ... ok
-test bytecode::tests::strings_and_while ... ok
-test parser::tests::errors ... ok
-test parser::tests::precedence ... ok
+test ir::tests::lowers_control_flow ... ok
+test lexer::tests::positions ... ok
+test lexer::tests::operators ... ok
 test optimize::tests::preserves_errors_and_boundaries ... ok
+test lexer::tests::strings ... ok
+test optimize::tests::folding ... ok
+test parser::tests::constructs ... ok
+test parser::tests::precedence ... ok
+test parser::tests::errors ... ok
 test semantic::tests::rejects ... ok
 test semantic::tests::valid ... ok
 test stress::decimal_literals_do_not_reinterpret_c_octal ... ok
-test stress::unsupported_compound_tokens ... ok
-test lexer::tests::positions ... ok
-test stress::control_flow_and_errors ... ok
-test stress::reject_invalid_c ... ok
+test bytecode::tests::strings_and_while ... ok
 test stress::loop_declarations_are_fresh ... ok
-test ir::tests::lowers_control_flow ... ok
+test stress::reject_invalid_c ... ok
+test stress::unsupported_compound_tokens ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test stress::control_flow_and_errors ... ok
+test lexer::tests::header ... ok
 test stress::mutations_never_panic ... ok
 test stress::huge_inputs_fail_cleanly ... ok
 test stress::deterministic_random_input ... ok
 test stress::arithmetic_matrix ... ok
 
-test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
 
      Running tests\cli.rs (target\debug\deps\cli-84cf93a62d3ca117.exe)
 
@@ -61,7 +61,7 @@ running 2 tests
 test stage_dumps_and_cli_errors ... ok
 test all_demos_with_and_without_optimization ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
 
      Running tests\pe_foundation.rs (target\debug\deps\pe_foundation-eea157b8a52b02c8.exe)
 
@@ -70,54 +70,54 @@ test invalid_sizes_and_address_domains ... ok
 test all_supported_code_sizes_and_padding ... ok
 test executes_padded_images_at_boundaries ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
 
 
 EXIT: 0
 
 COMMAND: cargo test --all-targets --release --locked --offline
    Compiling compiler v0.1.0 (N:\compiler-proj)
-    Finished `release` profile [optimized] target(s) in 0.44s
+    Finished `release` profile [optimized] target(s) in 0.91s
      Running unittests src\lib.rs (target\release\deps\compiler-c93439a71343cf40.exe)
 
 running 2 tests
 test native_pe::tests::headers_and_bounds ... ok
 test native_pe::tests::windows_executes_generated_machine_code ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.13s
 
      Running unittests src\main.rs (target\release\deps\compiler-2a63c9397db0b14f.exe)
 
 running 27 tests
-test lexer::tests::positions ... ok
-test parser::tests::errors ... ok
-test bytecode::tests::short_circuit ... ok
-test bytecode::tests::loops_scopes_and_optimization ... ok
+test ir::tests::lowers_control_flow ... ok
 test lexer::tests::header ... ok
-test semantic::tests::rejects ... ok
+test lexer::tests::invalid ... ok
+test bytecode::tests::short_circuit ... ok
+test parser::tests::constructs ... ok
 test lexer::tests::operators ... ok
-test lexer::tests::strings ... ok
+test bytecode::tests::loops_scopes_and_optimization ... ok
 test bytecode::tests::strings_and_while ... ok
+test stress::reject_invalid_c ... ok
 test optimize::tests::folding ... ok
 test optimize::tests::preserves_errors_and_boundaries ... ok
-test ir::tests::lowers_control_flow ... ok
-test parser::tests::precedence ... ok
-test semantic::tests::valid ... ok
 test bytecode::tests::runtime_errors ... ok
+test parser::tests::errors ... ok
+test parser::tests::precedence ... ok
+test semantic::tests::rejects ... ok
 test stress::decimal_literals_do_not_reinterpret_c_octal ... ok
-test stress::unsupported_compound_tokens ... ok
-test lexer::tests::invalid ... ok
 test stress::control_flow_and_errors ... ok
-test parser::tests::constructs ... ok
 test stress::loop_declarations_are_fresh ... ok
-test stress::reject_invalid_c ... ok
+test lexer::tests::strings ... ok
+test lexer::tests::positions ... ok
+test stress::unsupported_compound_tokens ... ok
 test stress::shadow_initializer_is_not_outer_value ... ok
+test semantic::tests::valid ... ok
 test stress::mutations_never_panic ... ok
 test stress::huge_inputs_fail_cleanly ... ok
 test stress::deterministic_random_input ... ok
 test stress::arithmetic_matrix ... ok
 
-test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
 
      Running tests\cli.rs (target\release\deps\cli-7085eb84fcdf577f.exe)
 
@@ -125,7 +125,7 @@ running 2 tests
 test stage_dumps_and_cli_errors ... ok
 test all_demos_with_and_without_optimization ... ok
 
-test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
 
      Running tests\pe_foundation.rs (target\release\deps\pe_foundation-204ee29b05b28a99.exe)
 
@@ -134,7 +134,7 @@ test invalid_sizes_and_address_domains ... ok
 test all_supported_code_sizes_and_padding ... ok
 test executes_padded_images_at_boundaries ... ok
 
-test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
 
 
 EXIT: 0
