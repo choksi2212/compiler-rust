@@ -1,0 +1,64 @@
+Phase gate evidence; phase status is governed by IMPLEMENTATION_PLAN.md.
+Baseline HEAD: eb98c807aa0b5adb3ea45d5c826c807e37f83230
+
+COMMAND: cargo fmt --check
+
+EXIT: 0
+
+COMMAND: cargo clippy --all-targets --locked --offline -- -D warnings
+    Checking compiler v0.1.0 (N:\compiler-proj)
+error: manual implementation of `.is_multiple_of()`
+   --> src\pe.rs:170:20
+    |
+170 |                 if out.bytes.len() % 2 != 0 {
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^ help: replace with: `!out.bytes.len().is_multiple_of(2)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#manual_is_multiple_of
+    = note: `-D clippy::manual-is-multiple-of` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::manual_is_multiple_of)]`
+
+error: manual implementation of `.is_multiple_of()`
+   --> src\pe.rs:259:8
+    |
+259 |     if spec.image_base % 65536 != 0 || spec.image_base == 0 {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: replace with: `!spec.image_base.is_multiple_of(65536)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#manual_is_multiple_of
+
+error: manual implementation of `.is_multiple_of()`
+   --> src\pe.rs:634:35
+    |
+634 |         if s.virtual_size == 0 || s.rva % 4096 != 0 || s.rva < previous_virtual || end > image_size
+    |                                   ^^^^^^^^^^^^^^^^^ help: replace with: `!s.rva.is_multiple_of(4096)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#manual_is_multiple_of
+
+error: manual implementation of `.is_multiple_of()`
+   --> src\pe.rs:651:16
+    |
+651 |             if s.raw_offset % 512 != 0
+    |                ^^^^^^^^^^^^^^^^^^^^^^^ help: replace with: `!s.raw_offset.is_multiple_of(512)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#manual_is_multiple_of
+
+error: manual implementation of `.is_multiple_of()`
+   --> src\pe.rs:652:20
+    |
+652 |                 || s.raw_size % 512 != 0
+    |                    ^^^^^^^^^^^^^^^^^^^^^ help: replace with: `!s.raw_size.is_multiple_of(512)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#manual_is_multiple_of
+
+error: manual implementation of `.is_multiple_of()`
+   --> src\pe.rs:736:56
+    |
+736 |                     if page % 4096 != 0 || size < 8 || size % 4 != 0 || end > data.len() {
+    |                                                        ^^^^^^^^^^^^^ help: replace with: `!size.is_multiple_of(4)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#manual_is_multiple_of
+
+error: could not compile `compiler` (lib) due to 6 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `compiler` (lib test) due to 6 previous errors
+
+EXIT: 101

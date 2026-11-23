@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.2, continuous phase execution; P01/P02 passed, P03 in progress
+**Revision:** 3.2, continuous phase execution; P01-P03 passed, P04 in progress
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -686,7 +686,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P01 | Native foundation audit | 8A audit | Passed; evidence in section 13.6.1 |
 | P02 | Shared compiler library and legacy IR verification | 8B-1 | Passed; evidence in section 13.7.1 |
 | P03 | Project x64 instruction encoder | 8B-2 | Passed; evidence in section 13.8.2 |
-| P04 | Dynamic PE layout, imports and fixups | 8B-3 | Planned |
+| P04 | Dynamic PE layout, imports and fixups | 8B-3 | Passed; evidence in section 13.9.2 |
 | P05 | ABI, stack frames and unwind generation | 8B-4 | Planned |
 | P06 | Native subset arithmetic and control flow | 8B-5/6 | Planned |
 | P07 | Native subset runtime and startup | 8B-7/8 | Planned |
@@ -973,6 +973,28 @@ Work items:
 **Deliverables:** dynamic PE serializer/layout engine, import/fixup engine, image validator.
 **Gate:** no production import call depends on a magic fixed IAT offset; image bounds and relocation claims are independently checked; representative expanded images execute.
 **Boundary:** this is in-memory executable linking, not delivered COFF file or static archive support.
+
+#### 13.9.1 P04 implementation contract before coding
+
+The initial dynamic builder caps file and virtual image sizes at 64 MiB, section count at 96, import count at65535 and import-name input at32 MiB; failures are explicit implementation limits, not hosted-C conformance claims. A native image specification contains an encoded text fragment, code symbol exports, data sections with explicit read/write/zero-fill intent, OS imports, absolute64 data fixups and an entry offset. The builder owns section/file/RVA layout, symbol resolution, import tables and PE serialization. A build returns bytes plus a section/symbol report for inspection. Text/data/import symbol IDs share one checked namespace; missing/duplicate definitions are errors.
+
+Imports are grouped deterministically by ASCII DLL name (case-insensitive DLL identity) and function name; equivalent imports may alias the same IAT address. Descriptor and lookup/address tables are terminated and aligned; distinct OS DLL groups are supported. Input strings reject NUL/non-ASCII invalid names. Data virtual size must cover its bytes; zero-fill sections have no raw payload. Section count, all u32 PE fields and relative/absolute fixups use checked sizes before allocation.
+
+Absolute64 data references produce actual DIR64 base relocation entries grouped by page with legal padding. Images without absolute references are position-independent through RIP-relative addressing; if a padding-only relocation block is used to describe a movable image, this is recorded and actual OS relocation behavior must be tested before enabling flags. No image may claim ASLR merely by setting a flag. Unwind section emission is reserved through generic readonly sections plus a checked exception-directory descriptor; P05 owns generation of valid function unwind records.
+
+Tests must decode layout independently, execute multiple-import/code/data images larger than the old limit, exercise real loader base relocation, reject invalid/duplicate/missing symbols and field overflow, and retain every prior phase regression. Dynamic PE generation is not yet a C CLI or hosted runtime.
+
+#### 13.9.2 P04 completion evidence
+
+Baseline: `eb98c80`. `src/pe.rs` now builds dynamic code/readonly/writable/zero-fill/import/relocation sections, deterministic OS import tables with aliases, checked code/data/import symbols and absolute64 data fixups. It resolves P03 machine fixups and runs the owned structural validator before returning bytes. It enforces the documented initial budgets and rejects missing/duplicate symbols, invalid names/ranges, entry offsets, malformed exception-directory ranges and address overflow. Exception metadata placement is supported; actual unwind records remain P05.
+
+Actual Windows process tests executed code beyond6000 bytes with two DLL groups; loaded/used relocated absolute data pointers; read zero-filled storage; verified changed load base both with DIR64 relocations and a fully RIP-relative image; and executed an image containing the maximum96 sections with headers extending beyond the first page. Position-independent images have a valid padding-only relocation block because they require no address edits; tests verify the OS really moves them before enabling the mobility claim. Absolute pointer images contain actual DIR64 entries, not just padding.
+
+Validation: `python validation/run_gate.py P04` passed formatting, warnings-denied Clippy and all-target debug/release suites: 55 passed per mode, zero failed/ignored. Dynamic-image tests cover deterministic layout/import ordering, alias IAT identity, invalid specs, every truncated length of the representative image, directory corruption, 5000 random buffers and 5000 mutations of a valid image without parser panic. Five dynamic native process launches per mode complement all prior native/VM regressions. [Gate output](validation/P04-gate.log), [results/source hashes](validation/P04-gate.json).
+
+Independent `objdump -p/-h` inspection of the same actual pointer-test executable confirmed PE32+, real Kernel32 ExitProcess import, DIR64 relocation, section layout/protection intent and dynamic-base/NX/high-entropy flags. [Inspection output](validation/P04-independent-image-inspection.log), [artifact identity/reproduction commands](validation/P04-artifact.json). The executable is regenerated by the `loader_relocates_absolute_pointer_and_zero_fill` test at ignored path `target/P04-relocation-audit.exe`.
+
+An initial malformed-directory fixture accidentally left an absent directory unchanged; its [failure and diagnosis](validation/P04-first-fixture-failure.log) were retained, and the fixture was corrected to actually be invalid. A subsequent [lint failure](validation/P04-first-lint-failure.log) was corrected without suppressions. All gates were rerun before advancement. No remaining P04 failure; no native C CLI or runtime is claimed. Next eligible phase: P05.
 
 ### 13.10 P05 - Calling convention, frames and unwind metadata
 

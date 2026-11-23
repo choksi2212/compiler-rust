@@ -1,0 +1,16 @@
+{
+  "path": "target/P04-relocation-audit.exe",
+  "sha256": "70ab0e22aa631cad1bcb81c34743e14c9d1090786451e6c9b250e2c638864f73",
+  "inspection_commands": [
+    [
+      "objdump",
+      "-p",
+      "target/P04-relocation-audit.exe"
+    ],
+    [
+      "objdump",
+      "-h",
+      "target/P04-relocation-audit.exe"
+    ]
+  ]
+}
