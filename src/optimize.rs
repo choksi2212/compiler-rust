@@ -25,13 +25,14 @@ pub fn binary(op: &str, a: i32, b: i32) -> Result<i32, String> {
 }
 pub fn unary(op: &str, v: Value) -> Result<Value, String> {
     match (op, v) {
+        ("+", Value::Int(n)) => Ok(Value::Int(n)),
         ("-", Value::Int(n)) => n
             .checked_neg()
             .map(Value::Int)
             .ok_or("integer overflow".into()),
         ("!", Value::Int(n)) => Ok(Value::Int((n == 0) as i32)),
         ("bool", Value::Int(n)) => Ok(Value::Int((n != 0) as i32)),
-        ("strlen", Value::Str(s)) => Ok(Value::Int(s.len() as i32)),
+        ("strlen", Value::Str(s)) => Ok(Value::Int(s.split('\0').next().unwrap().len() as i32)),
         _ => Err("invalid unary instruction".into()),
     }
 }
@@ -74,12 +75,12 @@ pub fn optimize(code: &[Ir]) -> Vec<Ir> {
             | Ir::Binary(d, ..) => {
                 known.remove(d);
             }
-            Ir::Jump(_) | Ir::Zero(..) | Ir::Halt => {
+            Ir::Jump(_) | Ir::Zero(..) | Ir::Halt | Ir::Return(_) => {
                 known.clear();
             }
             _ => (),
         };
-        if matches!(i, Ir::Jump(_) | Ir::Halt) {
+        if matches!(i, Ir::Jump(_) | Ir::Halt | Ir::Return(_)) {
             dead = true;
         }
         out.push(i);

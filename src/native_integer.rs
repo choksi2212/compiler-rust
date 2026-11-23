@@ -119,12 +119,9 @@ fn lower(
     let mut max_arguments = 0;
     for (index, op) in ir.iter().enumerate() {
         match op {
-            Ir::Const(d, Value::Str(text)) => {
+            Ir::Const(d, Value::Str(_)) => {
                 let bindings =
                     runtime.ok_or("integer native phase does not support string/print IR yet")?;
-                if text.contains('\0') {
-                    return Err("embedded NUL is not supported by this native literal mode".into());
-                }
                 if !bindings.constants.contains_key(&index) {
                     return Err("missing runtime literal binding".into());
                 }
@@ -368,7 +365,7 @@ fn lower(
                         reg: Reg::RAX,
                     });
                     l.check_overflow();
-                } else {
+                } else if op != "+" {
                     l.code.extend([
                         Instruction::Binary {
                             width: Width::Dword,
@@ -499,6 +496,22 @@ fn lower(
                         label: targets[label],
                     },
                 ]);
+            }
+            Ir::Return(a) => {
+                l.load(*a, Reg::RAX);
+                if runtime.is_some() {
+                    l.code.push(Instruction::Store {
+                        width: Width::Dword,
+                        address: Address::base(Reg::new(3)?, 28),
+                        src: Reg::RAX,
+                    });
+                    l.code.push(Instruction::MovImm {
+                        width: Width::Dword,
+                        dst: Reg::RAX,
+                        value: 0,
+                    });
+                }
+                l.code.push(Instruction::Jump(l.exit));
             }
             Ir::Halt => l.code.extend([
                 Instruction::MovImm {

@@ -1,16 +1,32 @@
 use crate::parser::{E, Expr, Stmt};
 use std::collections::HashSet;
 pub fn check(s: &Stmt) -> Result<(), String> {
-    let mut c = Checker { scopes: vec![] };
+    let mut c = Checker {
+        scopes: vec![HashSet::new()],
+        loops: 0,
+        breaks: 0,
+        switches: vec![],
+        labels: HashSet::new(),
+        gotos: vec![],
+    };
     c.stmt(s)?;
-    if !matches!(s,Stmt::Block(v) if matches!(v.last(),Some(Stmt::Return(_,Expr{kind:E::Int(0),..}))))
-    {
-        return Err("1:1: main must end with return 0;".into());
+    for token in &c.gotos {
+        if !c.labels.contains(&token.text) {
+            return Err(format!(
+                "{}:{}: undefined label {}",
+                token.line, token.column, token.text
+            ));
+        }
     }
     Ok(())
 }
 struct Checker {
     scopes: Vec<HashSet<String>>,
+    loops: usize,
+    breaks: usize,
+    switches: Vec<(HashSet<i32>, bool)>,
+    labels: HashSet<String>,
+    gotos: Vec<crate::lexer::Token>,
 }
 impl Checker {
     fn fail<T>(&self, e: &Expr, msg: &str) -> Result<T, String> {
@@ -24,6 +40,15 @@ impl Checker {
                 if !self.scopes.iter().rev().any(|s| s.contains(n)) {
                     return self.fail(e, "undeclared variable");
                 }
+                Ok(false)
+            }
+            E::Assign(_, a, b) => {
+                self.lvalue(a)?;
+                self.integer(b)?;
+                Ok(false)
+            }
+            E::Update(_, a, _) => {
+                self.lvalue(a)?;
                 Ok(false)
             }
             E::Unary(_, a) => {
@@ -55,7 +80,7 @@ impl Checker {
                     return self.fail(e, "printf requires a literal format");
                 };
                 let mut specs = vec![];
-                let mut chars = f.chars();
+                let mut chars = f.split('\0').next().unwrap().chars();
                 while let Some(c) = chars.next() {
                     if c == '%' {
                         match chars.next() {
@@ -77,6 +102,12 @@ impl Checker {
             }
             E::Call(..) => self.fail(e, "unsupported function"),
         }
+    }
+    fn lvalue(&self, e: &Expr) -> Result<(), String> {
+        if !matches!(e.kind, E::Var(_)) {
+            return self.fail(e, "modifiable int variable required");
+        }
+        self.integer(e)
     }
     fn integer(&self, e: &Expr) -> Result<(), String> {
         if self.expr(e)? {
@@ -124,27 +155,126 @@ impl Checker {
             }
             Stmt::While(e, b) => {
                 self.integer(e)?;
+                self.loops += 1;
+                self.breaks += 1;
                 self.stmt(b)?;
+                self.loops -= 1;
+                self.breaks -= 1;
             }
             Stmt::For(a, e, b, body) => {
                 self.scopes.push(HashSet::new());
                 self.stmt(a)?;
                 self.integer(e)?;
                 self.stmt(b)?;
+                self.loops += 1;
+                self.breaks += 1;
                 self.stmt(body)?;
+                self.loops -= 1;
+                self.breaks -= 1;
                 self.scopes.pop();
             }
-            Stmt::Return(t, e) => {
-                if !matches!(e.kind, E::Int(0)) {
-                    return Err(format!(
-                        "{}:{}: only return 0 is supported",
-                        t.line, t.column
-                    ));
-                }
+            Stmt::Return(_, e) => self.integer(e)?,
+            Stmt::Do(body, e) => {
+                self.loops += 1;
+                self.breaks += 1;
+                self.stmt(body)?;
+                self.integer(e)?;
+                self.loops -= 1;
+                self.breaks -= 1;
             }
+            Stmt::Break(t) if self.breaks == 0 => {
+                return Err(format!(
+                    "{}:{}: break outside loop/switch",
+                    t.line, t.column
+                ));
+            }
+            Stmt::Continue(t) if self.loops == 0 => {
+                return Err(format!("{}:{}: continue outside loop", t.line, t.column));
+            }
+            Stmt::Break(_) | Stmt::Continue(_) => (),
+            Stmt::Switch(e, body) => {
+                self.integer(e)?;
+                self.breaks += 1;
+                self.switches.push((HashSet::new(), false));
+                self.stmt(body)?;
+                self.switches.pop();
+                self.breaks -= 1;
+            }
+            Stmt::Case(t, e, body) => {
+                let value = e.as_ref().map(constant).transpose()?;
+                let context = self.switches.last_mut().ok_or_else(|| {
+                    format!("{}:{}: case/default outside switch", t.line, t.column)
+                })?;
+                if let Some(value) = value {
+                    if !context.0.insert(value) {
+                        return Err(format!("{}:{}: duplicate case value", t.line, t.column));
+                    }
+                } else {
+                    if context.1 {
+                        return Err(format!("{}:{}: duplicate default", t.line, t.column));
+                    }
+                    context.1 = true;
+                }
+                self.stmt(body)?;
+            }
+            Stmt::Label(t, body) => {
+                if !self.labels.insert(t.text.clone()) {
+                    return Err(format!("{}:{}: duplicate label", t.line, t.column));
+                }
+                self.stmt(body)?;
+            }
+            Stmt::Goto(t) => self.gotos.push(t.clone()),
             Stmt::Empty => (),
         };
         Ok(())
+    }
+}
+/// Current int-only integer constant expression evaluator for case labels.
+pub fn constant(e: &Expr) -> Result<i32, String> {
+    let result = match &e.kind {
+        E::Int(n) => Ok(*n),
+        E::Unary(op, a) => {
+            let value = crate::optimize::unary(op, crate::ir::Value::Int(constant(a)?))?;
+            if let crate::ir::Value::Int(value) = value {
+                Ok(value)
+            } else {
+                Err("integer constant required".into())
+            }
+        }
+        E::Binary(op, a, b) => {
+            // Both operands must be constant expressions even when short circuited.
+            constant_shape(a)?;
+            constant_shape(b)?;
+            let a = constant(a)?;
+            if op == "&&" {
+                if a == 0 {
+                    Ok(0)
+                } else {
+                    Ok(i32::from(constant(b)? != 0))
+                }
+            } else if op == "||" {
+                if a != 0 {
+                    Ok(1)
+                } else {
+                    Ok(i32::from(constant(b)? != 0))
+                }
+            } else {
+                crate::optimize::binary(op, a, constant(b)?)
+            }
+        }
+        _ => Err("integer constant expression required".into()),
+    };
+    result.map_err(|message: String| format!("{}:{}: {message}", e.token.line, e.token.column))
+}
+fn constant_shape(e: &Expr) -> Result<(), String> {
+    match &e.kind {
+        E::Int(_) => Ok(()),
+        E::Unary(_, a) => constant_shape(a),
+        E::Binary(_, a, b) => {
+            constant_shape(a)?;
+            constant_shape(b)
+        }
+        _ => Err("integer constant expression required".into()),
     }
 }
 #[cfg(test)]
@@ -167,13 +297,13 @@ mod tests {
             "printf(\"%d\");",
             "unknown();",
             "int x=strlen(1);",
-            "return 1;",
+            "return \"str\";",
         ] {
             assert!(
                 run(&format!("int main(){{{body}return 0;}}")).is_err(),
                 "{body}"
             );
         }
-        assert!(run("int main(){}").is_err());
+        assert!(run("int main(){return \"str\";}").is_err());
     }
 }

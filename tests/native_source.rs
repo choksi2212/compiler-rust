@@ -19,7 +19,7 @@ fn malformed_and_unsupported_source_is_diagnostic_not_an_image() {
         ("int main(){int x=;return 0;}", Stage::Parse),
         ("int main(){x=2;return 0;}", Stage::Semantic),
         ("int main(){unknown();return 0;}", Stage::Semantic),
-        ("int main(){int x=1;x++;return 0;}", Stage::Lex),
+        ("int main(){int x=1;x <<= 1;return 0;}", Stage::Parse),
         (
             "int main(){printf(\"%d\",\"s\");return 0;}",
             Stage::Semantic,

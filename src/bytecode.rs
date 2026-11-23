@@ -13,6 +13,7 @@ pub enum Op {
     Zero(usize),
     Print(String, usize),
     Halt,
+    Return,
 }
 pub fn generate(ir: &[Ir]) -> Result<Vec<Op>, String> {
     crate::verify::verify(ir)?;
@@ -50,6 +51,7 @@ pub fn generate(ir: &[Ir]) -> Result<Vec<Op>, String> {
                 out.push(Op::Print(f.clone(), args.len()));
                 out.push(Op::Store(*d));
             }
+            Ir::Return(a) => out.extend([Op::Load(*a), Op::Return]),
             Ir::Halt => out.push(Op::Halt),
         }
     }
@@ -73,6 +75,14 @@ fn int(v: Value) -> Result<i32, String> {
     }
 }
 pub fn run(code: &[Op]) -> Result<String, String> {
+    Ok(execute(code)?.output)
+}
+#[derive(Debug, PartialEq, Eq)]
+pub struct Execution {
+    pub output: String,
+    pub exit_code: i32,
+}
+pub fn execute(code: &[Op]) -> Result<Execution, String> {
     let mut pc = 0;
     let mut stack = vec![];
     let mut vars = HashMap::new();
@@ -122,7 +132,7 @@ pub fn run(code: &[Op]) -> Result<String, String> {
                 }
                 let args = stack.split_off(stack.len() - n);
                 let mut args = args.into_iter();
-                let mut chars = f.chars();
+                let mut chars = f.split('\0').next().unwrap().chars();
                 while let Some(c) = chars.next() {
                     if c != '%' {
                         output.push(c);
@@ -130,7 +140,9 @@ pub fn run(code: &[Op]) -> Result<String, String> {
                     }
                     match (chars.next(), args.next()) {
                         (Some('d'), Some(Value::Int(n))) => output.push_str(&n.to_string()),
-                        (Some('s'), Some(Value::Str(s))) => output.push_str(&s),
+                        (Some('s'), Some(Value::Str(s))) => {
+                            output.push_str(s.split('\0').next().unwrap())
+                        }
                         _ => return Err("bytecode format mismatch".into()),
                     }
                 }
@@ -139,7 +151,18 @@ pub fn run(code: &[Op]) -> Result<String, String> {
                     return Err("unused bytecode print arguments".into());
                 }
             }
-            Op::Halt => return Ok(output),
+            Op::Return => {
+                return Ok(Execution {
+                    output,
+                    exit_code: int(pop(&mut stack)?)?,
+                });
+            }
+            Op::Halt => {
+                return Ok(Execution {
+                    output,
+                    exit_code: 0,
+                });
+            }
         }
     }
 }

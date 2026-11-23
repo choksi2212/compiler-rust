@@ -1,0 +1,92 @@
+{
+  "phase": "P10",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "Cargo.lock": "91d66a2fe5d0262e6a9794b2bd226c9ac11ac9975c8d6c2405e7d1da334f85b5",
+    "Cargo.toml": "37d9521531e15f20bc931dd81a3c74a7f7ec5036cd1ae2a6a8f6af38f0de7108",
+    "src\\abi.rs": "8a6b4ed7072ebfc8a6f5fefef92f2b385351003fdd3020f81377bdd0fcac3116",
+    "src\\bytecode.rs": "0e216a50913645ed58b3f599eaf5ff00eac5741b6e776e22eed9298132e2b2b8",
+    "src\\context.rs": "e42f146eb6c552b923c66392ec1eed64065853479eeeaa2e0154f206e6b56705",
+    "src\\files.rs": "49b6b6199dde0772d35ca0eb61b81e611e9ceb94b3340cd88cd32754ebfb3714",
+    "src\\ir.rs": "5fa728668607444a813d2a65359af3fac4aec481f822e8363abd87703bc7d6b2",
+    "src\\lexer.rs": "a6b835e6ec221eeeaef653a981ea3424a0c75ae36293726dab9e8358e79917b2",
+    "src\\lib.rs": "f9afbeb1350cfb6e74bd8d5f3a50e449e9beb674a3e4cfd75b02af48a15b1c2d",
+    "src\\main.rs": "22e7b51c7814f8e37ee625e19008c03f2debc60d3fadb61d3758f7613166cbd5",
+    "src\\native_integer.rs": "2e40b7926c790b7b0d19c0f4e7ce0407f23c07db9cd34d3eb6860b7ef5fae81f",
+    "src\\native_pe.rs": "23828486146176f4d6f955406cb5533703b98ce6ea27e390c2d3597289e5a461",
+    "src\\native_runtime.rs": "5f7e725038dbadd91289f7f38c53d6ce37c3093181603ba54fac79f978547c54",
+    "src\\optimize.rs": "30efc4a77f7e051f1e660f899fcae22720019d2210d6c727490552691b97f75c",
+    "src\\parser.rs": "ddb854542a6e6e666add56fa7425532a80c738f529b6c67b6b4f7ea8b9e97dab",
+    "src\\pe.rs": "053ad5abb645087a0e16569cfc4996b1f94e9d3ec8b77ec3f2f0f683b3ac7b72",
+    "src\\pipeline.rs": "9efe7d7779c50815214d152669d30c5088eafc6a0ffad6af6f83aab26a8d5aff",
+    "src\\semantic.rs": "793f3d14dece07d5c06109bfc02e26a8320efab3d55dcafc82d52ae049c6260e",
+    "src\\stress.rs": "a1219d4f80d702d4e8c453dc888d51599cdd6776a903a4204adba81e175253cd",
+    "src\\verify.rs": "8287ee017e1f211894a757bfa9e91c09caff27314f7a4a8f98a042bed07ab266",
+    "src\\x64.rs": "c14d4b7faaf298e1e29cc43af13b46017d0fee68004dcd566b46cb3ebfc785c6",
+    "tests\\abi_frames.rs": "a7068573e7896e0b77112a987be57c9210a051a76d2b5de68c6c905e8fb73479",
+    "tests\\abi_image.rs": "ab759467e428da366585fa80f36ca2d473e0ad1d044def68a2f1cdebb15d9157",
+    "tests\\cli.rs": "391d278ee19b1baa63118bc832047a339f5bf0d2ab16bae656e8e664d8fd43d9",
+    "tests\\control_flow.rs": "1313b38fdcd2ac13226953a96fc030a01a8aa7846da1b285714e3d2977dcb2dd",
+    "tests\\dynamic_pe.rs": "bf9dfc3dd2f80425d3c5a3ddf2a51ebc4bb30f0cbd1905c6fb8a96e651f43d89",
+    "tests\\native_cli.rs": "3abcdbc2bc6c69e17d13b4b12b6b2e09848fc50ba41c64e80e37e3f63d6e407c",
+    "tests\\native_integer.rs": "6c6fe7d129b89d6ee91531161e9e55f9f98fa5a35e33c20c69f81322d3d4a439",
+    "tests\\native_runtime.rs": "6771990c29627c79891ccb560923697938ecbd1a6c1ca41fc84fc98052979c14",
+    "tests\\native_source.rs": "faa87de2a2666db6b7434ff540c0edc4efa9d8a7d7107b5e83a56502ac938a9c",
+    "tests\\pe_foundation.rs": "ea5f52ba9239bcaa5d084b355114c2bb7a2066b673e46b2d1fd0bae9c8244d92",
+    "tests\\runtime_io.rs": "c97a2895a196bc3694d7cc0645235bdfbaa7866dc0ebf90e17d7aed35af8ddbe",
+    "tests\\x64_encoder.rs": "716e0d2d3435342635f933d49670884aa975500f1882a94aa2b043f4fcef3895"
+  },
+  "required_commands_executed": true,
+  "commands_passed": true
+}

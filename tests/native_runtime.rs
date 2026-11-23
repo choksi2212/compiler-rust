@@ -18,7 +18,7 @@ fn runtime_configuration_and_ir_errors() {
             &[Ir::Const(0, Value::Str("embedded\0nul".into())), Ir::Halt],
             &RuntimeOptions::default()
         )
-        .is_err()
+        .is_ok()
     );
 }
 #[cfg(all(windows, target_arch = "x86_64"))]

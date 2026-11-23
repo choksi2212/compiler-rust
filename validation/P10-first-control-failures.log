@@ -1,0 +1,35 @@
+   Compiling compiler v0.2.0 (N:\compiler-proj)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.41s
+     Running tests\control_flow.rs (target\debug\deps\control_flow-e7792e30b34398d7.exe)
+
+running 8 tests
+test semantic_errors_do_not_become_executables ... ok
+test switch_fallthrough_nested_dispatch_and_loop_continue ... FAILED
+test loops_continue_break_and_empty_clauses ... FAILED
+test new_control_syntax_mutations_and_depth_fail_without_panics ... ok
+test bases_character_escapes_nul_and_comments ... ok
+test updates_assignment_precedence_and_short_circuit ... ok
+test gotos_scope_entries_and_return_status_are_real ... ok
+test update_faults_and_jumps_cannot_reuse_a_previous_scope_lifetime ... ok
+
+failures:
+
+---- switch_fallthrough_nested_dispatch_and_loop_continue stdout ----
+
+thread 'switch_fallthrough_nested_dispatch_and_loop_continue' (30012) panicked at src\ir.rs:289:62:
+called `Option::unwrap()` on a `None` value
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- loops_continue_break_and_empty_clauses stdout ----
+
+thread 'loops_continue_break_and_empty_clauses' (45656) panicked at src\ir.rs:289:62:
+called `Option::unwrap()` on a `None` value
+
+
+failures:
+    loops_continue_break_and_empty_clauses
+    switch_fallthrough_nested_dispatch_and_loop_continue
+
+test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s
+
+error: test failed, to rerun pass `--test control_flow`

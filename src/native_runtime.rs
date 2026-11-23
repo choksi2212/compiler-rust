@@ -404,9 +404,6 @@ struct Pool {
 }
 impl Pool {
     fn add(&mut self, text: &str) -> Result<Symbol, String> {
-        if text.contains('\0') {
-            return Err("embedded NUL source literal is unsupported".into());
-        }
         if let Some(s) = self.cache.get(text) {
             return Ok(*s);
         }
@@ -458,6 +455,7 @@ fn startup(
     let cleanup = labels.fresh()?;
     let quit = labels.fresh()?;
     let free_ok = labels.fresh()?;
+    let output_ok = labels.fresh()?;
     code.extend([
         Instruction::LeaSymbol {
             dst: r(3),
@@ -483,9 +481,16 @@ fn startup(
         load(r(8), r(3), 8),
         Instruction::Call(writer),
         test(Reg::RAX),
-        branch(Condition::Equal, cleanup),
+        branch(Condition::Equal, output_ok),
         small(r(14), 7),
         Instruction::Jump(dispatch),
+        Instruction::Bind(output_ok),
+        Instruction::Load {
+            width: Width::Dword,
+            dst: r(14),
+            address: Address::base(r(3), 28),
+        },
+        Instruction::Jump(cleanup),
         Instruction::Bind(alloc_failure),
         small(r(14), 6),
         Instruction::Bind(dispatch),

@@ -12,6 +12,8 @@ pub enum E {
     Unary(String, Box<Expr>),
     Binary(String, Box<Expr>, Box<Expr>),
     Call(String, Vec<Expr>),
+    Assign(String, Box<Expr>, Box<Expr>),
+    Update(String, Box<Expr>, bool),
 }
 #[derive(Debug, Clone)]
 pub enum Stmt {
@@ -24,6 +26,27 @@ pub enum Stmt {
     For(Box<Stmt>, Expr, Box<Stmt>, Box<Stmt>),
     Return(Token, Expr),
     Empty,
+    Do(Box<Stmt>, Expr),
+    Break(Token),
+    Continue(Token),
+    Switch(Expr, Box<Stmt>),
+    Case(Token, Option<Expr>, Box<Stmt>),
+    Label(Token, Box<Stmt>),
+    Goto(Token),
+}
+pub(crate) fn children(s: &Stmt) -> Vec<&Stmt> {
+    match s {
+        Stmt::Block(v) => v.iter().collect(),
+        Stmt::If(_, a, Some(b)) => vec![a, b],
+        Stmt::If(_, a, None)
+        | Stmt::While(_, a)
+        | Stmt::Do(a, _)
+        | Stmt::Switch(_, a)
+        | Stmt::Label(_, a)
+        | Stmt::Case(_, _, a) => vec![a],
+        Stmt::For(a, _, update, body) => vec![a, body, update],
+        _ => vec![],
+    }
 }
 pub fn parse(tokens: Vec<Token>) -> Result<Stmt, String> {
     let mut p = Parser {
@@ -34,6 +57,7 @@ pub fn parse(tokens: Vec<Token>) -> Result<Stmt, String> {
     p.expect("int")?;
     p.expect("main")?;
     p.expect("(")?;
+    p.eat("void");
     p.expect(")")?;
     let s = p.block()?;
     if p.peek().kind != Kind::End {
@@ -156,17 +180,7 @@ impl Parser {
             };
             return Ok(Stmt::Decl(t, e));
         }
-        if self.peek().kind == Kind::Word
-            && self.tokens.get(self.i + 1).is_some_and(|t| t.text == "=")
-        {
-            let t = self.take();
-            self.expect("=")?;
-            return Ok(Stmt::Assign(t, self.expr(0)?));
-        }
         let e = self.expr(0)?;
-        if !matches!(e.kind, E::Call(..)) {
-            return self.error("only calls and assignments are supported as statements");
-        }
         Ok(Stmt::Call(e))
     }
     fn controlled(&mut self) -> Result<Stmt, String> {
@@ -217,7 +231,14 @@ impl Parser {
                 self.simple()?
             };
             self.expect(";")?;
-            let e = self.expr(0)?;
+            let e = if self.peek().text == ";" {
+                Expr {
+                    token: self.peek().clone(),
+                    kind: E::Int(1),
+                }
+            } else {
+                self.expr(0)?
+            };
             self.expect(";")?;
             let b = if self.peek().text == ")" {
                 Stmt::Empty
@@ -234,6 +255,57 @@ impl Parser {
                 Box::new(b),
                 Box::new(self.controlled()?),
             ));
+        }
+        if self.peek().kind == Kind::Word
+            && !reserved(&self.peek().text)
+            && self.tokens.get(self.i + 1).is_some_and(|t| t.text == ":")
+        {
+            let name = self.take();
+            self.expect(":")?;
+            return Ok(Stmt::Label(name, Box::new(self.controlled()?)));
+        }
+        if self.peek().text == "goto" {
+            self.take();
+            let name = self.take();
+            if name.kind != Kind::Word || reserved(&name.text) {
+                return self.error("expected label name");
+            }
+            self.expect(";")?;
+            return Ok(Stmt::Goto(name));
+        }
+        if self.peek().text == "break" || self.peek().text == "continue" {
+            let token = self.take();
+            self.expect(";")?;
+            return Ok(if token.text == "break" {
+                Stmt::Break(token)
+            } else {
+                Stmt::Continue(token)
+            });
+        }
+        if self.eat("do") {
+            let body = self.controlled()?;
+            self.expect("while")?;
+            self.expect("(")?;
+            let e = self.expr(0)?;
+            self.expect(")")?;
+            self.expect(";")?;
+            return Ok(Stmt::Do(Box::new(body), e));
+        }
+        if self.eat("switch") {
+            self.expect("(")?;
+            let e = self.expr(0)?;
+            self.expect(")")?;
+            return Ok(Stmt::Switch(e, Box::new(self.controlled()?)));
+        }
+        if self.peek().text == "case" || self.peek().text == "default" {
+            let token = self.take();
+            let e = if token.text == "case" {
+                Some(self.expr(1)?)
+            } else {
+                None
+            };
+            self.expect(":")?;
+            return Ok(Stmt::Case(token, e, Box::new(self.controlled()?)));
         }
         if self.peek().text == "return" {
             let t = self.take();
@@ -258,14 +330,23 @@ impl Parser {
         let t = self.take();
         let k = match &t.kind {
             Kind::Number(n) => E::Int(*n),
+            Kind::Integer(n) if n.suffix.is_empty() && n.magnitude <= i32::MAX as u64 => {
+                E::Int(n.magnitude as i32)
+            }
+            Kind::Integer(_) => {
+                return self.error("wide or suffixed integer requires the P11 type system");
+            }
             Kind::String(s) => E::Str(s.clone()),
             _ if t.text == "(" => {
                 let e = self.expr(0)?;
                 self.expect(")")?;
                 return self.tail(e, min);
             }
-            _ if ["-", "!"].contains(&t.text.as_str()) => {
+            _ if ["+", "-", "!"].contains(&t.text.as_str()) => {
                 E::Unary(t.text.clone(), Box::new(self.expr(7)?))
+            }
+            _ if t.text == "++" || t.text == "--" => {
+                E::Update(t.text.clone(), Box::new(self.expr(7)?), false)
             }
             Kind::Word if !reserved(&t.text) => {
                 if self.eat("(") {
@@ -289,10 +370,19 @@ impl Parser {
         self.tail(Expr { token: t, kind: k }, min)
     }
     fn tail(&mut self, mut lhs: Expr, min: u8) -> Result<Expr, String> {
+        if self.peek().text == "++" || self.peek().text == "--" {
+            let token = self.take();
+            lhs = Expr {
+                token: token.clone(),
+                kind: E::Update(token.text, Box::new(lhs), true),
+            };
+        }
         let mut operators = 0;
         loop {
             let op = self.peek().text.clone();
+            let assignment = ["=", "+=", "-=", "*=", "/=", "%="].contains(&op.as_str());
             let p = match op.as_str() {
+                "=" | "+=" | "-=" | "*=" | "/=" | "%=" => 0,
                 "||" => 1,
                 "&&" => 2,
                 "==" | "!=" => 3,
@@ -309,10 +399,14 @@ impl Parser {
                 return self.error("expression size limit exceeded");
             }
             let t = self.take();
-            let rhs = self.expr(p + 1)?;
+            let rhs = self.expr(if assignment { p } else { p + 1 })?;
             lhs = Expr {
                 token: t,
-                kind: E::Binary(op, Box::new(lhs), Box::new(rhs)),
+                kind: if assignment {
+                    E::Assign(op, Box::new(lhs), Box::new(rhs))
+                } else {
+                    E::Binary(op, Box::new(lhs), Box::new(rhs))
+                },
             };
         }
         Ok(lhs)

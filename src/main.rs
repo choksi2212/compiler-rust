@@ -1,9 +1,9 @@
 use compiler::context::{CompilationContext, Stage};
 use compiler::{bytecode, ir, lexer, optimize, parser, semantic};
-fn compile() -> Result<(), (i32, String)> {
+fn compile() -> Result<i32, (i32, String)> {
     let options = Options::parse().map_err(|e| (2, e))?;
     let Some(options) = options else {
-        return Ok(());
+        return Ok(0);
     };
     let file = &options.input;
     let (resolved, source) =
@@ -53,7 +53,7 @@ fn compile() -> Result<(), (i32, String)> {
             eprint!("{}", built.machine_dump);
         }
         target.publish(&built.image.bytes).map_err(|e| (1, e))?;
-        return Ok(());
+        return Ok(0);
     }
     let source = &context
         .source(source_id)
@@ -90,16 +90,20 @@ fn compile() -> Result<(), (i32, String)> {
                 eprintln!("{i:04} {op:?}");
             }
         }
-        let output = context.run_stage(source_id, Stage::Runtime, || bytecode::run(&code))?;
-        print!("{output}");
-        Ok(())
+        let output = context.run_stage(source_id, Stage::Runtime, || bytecode::execute(&code))?;
+        print!("{}", output.output);
+        Ok(output.exit_code)
     })();
     result.map_err(|e| (1, context.render(&e)))
 }
 fn main() {
-    if let Err((code, e)) = compile() {
-        eprintln!("{e}");
-        std::process::exit(code);
+    match compile() {
+        Ok(0) => (),
+        Ok(code) => std::process::exit(code),
+        Err((code, message)) => {
+            eprintln!("{message}");
+            std::process::exit(code);
+        }
     }
 }
 
@@ -156,7 +160,7 @@ impl Options {
                     env!("CARGO_PKG_VERSION")
                 ),
                 _ => println!(
-                    r#"{{"version":"{}","language":"teaching C subset","full_c11":false,"preprocessor":false,"target":"windows-x86_64","native_pe":true,"external_compiler_required":false,"source_limit_bytes":16777216,"token_limit":1000000,"integer_bits":32,"checked_arithmetic":true,"printf_formats":["%d","%s"],"native_output_default_bytes":16777216,"vm_default":true}}"#,
+                    r#"{{"version":"{}","language":"teaching C subset","full_c11":false,"preprocessor":false,"target":"windows-x86_64","native_pe":true,"external_compiler_required":false,"source_limit_bytes":16777216,"token_limit":1000000,"integer_bits":32,"checked_arithmetic":true,"printf_formats":["%d","%s"],"native_output_default_bytes":16777216,"vm_default":true,"control_flow":["if","while","for","do","break","continue","switch","goto","integer-return"],"integer_updates":true,"comments":true,"integer_radices":[8,10,16],"typed_integer_suffixes":false}}"#,
                     env!("CARGO_PKG_VERSION")
                 ),
             }

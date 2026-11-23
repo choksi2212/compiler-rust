@@ -1,0 +1,414 @@
+Phase gate evidence; phase status is governed by IMPLEMENTATION_PLAN.md.
+Baseline HEAD: 2507602e488f67606e444ea2bfe54d799dfda372
+
+COMMAND: cargo fmt --check
+
+EXIT: 0
+
+COMMAND: cargo clippy --all-targets --locked --offline -- -D warnings
+    Checking compiler v0.2.0 (N:\compiler-proj)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.82s
+
+EXIT: 0
+
+COMMAND: cargo test --all-targets --locked --offline
+   Compiling compiler v0.2.0 (N:\compiler-proj)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.17s
+     Running unittests src\lib.rs (target\debug\deps\compiler-213debba5ddad675.exe)
+
+running 36 tests
+test lexer::tests::operators ... ok
+test context::tests::identities_and_errors ... ok
+test lexer::tests::header ... ok
+test lexer::tests::invalid ... ok
+test verify::adversarial::malformed_fragments_do_not_panic ... ok
+test optimize::tests::folding ... ok
+test ir::tests::lowers_control_flow ... ok
+test native_pe::tests::headers_and_bounds ... ok
+test parser::tests::precedence ... ok
+test bytecode::tests::strings_and_while ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test parser::tests::constructs ... ok
+test bytecode::tests::runtime_errors ... ok
+test bytecode::tests::short_circuit ... ok
+test lexer::tests::positions ... ok
+test bytecode::tests::loops_scopes_and_optimization ... ok
+test lexer::tests::strings ... ok
+test stress::octal_literals_use_c_radix ... ok
+test stress::reject_invalid_c ... ok
+test stress::malformed_compound_token_sequences ... ok
+test verify::adversarial::valid_branch_and_string_flow ... ok
+test parser::tests::errors ... ok
+test semantic::tests::valid ... ok
+test semantic::tests::rejects ... ok
+test verify::adversarial::every_operand_and_format_is_checked ... ok
+test stress::control_flow_and_errors ... ok
+test optimize::tests::preserves_errors_and_boundaries ... ok
+test verify::tests::uninitialized_is_a_runtime_error ... ok
+test stress::loop_declarations_are_fresh ... ok
+test verify::tests::invalid_programs ... ok
+test verify::tests::demos_before_and_after_optimization ... ok
+test stress::huge_inputs_fail_cleanly ... ok
+test stress::deterministic_random_input ... ok
+test native_pe::tests::windows_executes_generated_machine_code ... ok
+test stress::arithmetic_matrix ... ok
+test stress::mutations_never_panic ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.45s
+
+     Running unittests src\main.rs (target\debug\deps\compiler-7ed9802947c84ca8.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\abi_frames.rs (target\debug\deps\abi_frames-c075ca32171884ba.exe)
+
+running 4 tests
+test unwind_allocation_encoding_boundaries ... ok
+test windows::os_unwinds_actual_generated_small_and_probed_large_frames ... ok
+test windows::native_scalar_arguments_and_nonvolatile_preservation ... ok
+test frame_layout_and_unwind_fixtures ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\abi_image.rs (target\debug\deps\abi_image-86b4ab27446430bc.exe)
+
+running 3 tests
+test rejects_invalid_unwind_records ... ok
+test metadata_attachment_checks_ranges_transactionally ... ok
+test windows_finds_serialized_function_unwind_table ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests\cli.rs (target\debug\deps\cli-4ebc9b86fe9af352.exe)
+
+running 2 tests
+test stage_dumps_and_cli_errors ... ok
+test all_demos_with_and_without_optimization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+     Running tests\control_flow.rs (target\debug\deps\control_flow-e7792e30b34398d7.exe)
+
+running 8 tests
+test semantic_errors_do_not_become_executables ... ok
+test new_control_syntax_mutations_and_depth_fail_without_panics ... ok
+test bases_character_escapes_nul_and_comments ... ok
+test updates_assignment_precedence_and_short_circuit ... ok
+test switch_fallthrough_nested_dispatch_and_loop_continue ... ok
+test loops_continue_break_and_empty_clauses ... ok
+test gotos_scope_entries_and_return_status_are_real ... ok
+test update_faults_and_jumps_cannot_reuse_a_previous_scope_lifetime ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s
+
+     Running tests\dynamic_pe.rs (target\debug\deps\dynamic_pe-289b95e039619b0a.exe)
+
+running 8 tests
+test invalid_specs_rejected ... ok
+test dynamic_layout_is_deterministic_and_exceeds_foundation ... ok
+test import_aliases_and_input_order ... ok
+test truncated_and_mutated_images_do_not_panic ... ok
+test maximum_section_table_and_invalid_directory_boundaries ... ok
+test windows_runs_large_pic_and_multiple_dll_imports ... ok
+test position_independent_image_really_moves_and_large_headers_execute ... ok
+test loader_relocates_absolute_pointer_and_zero_fill ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests\native_cli.rs (target\debug\deps\native_cli-14c4d0ad913df45a.exe)
+
+running 6 tests
+test publication_rechecks_races_and_rejects_invalid_pe_without_partial_output ... ok
+test bounded_file_input_rejects_oversize_bad_utf8_and_directories ... ok
+test options_exit_codes_dumps_unicode_paths_and_default_vm ... ok
+test successful_nonzero_returns_flush_stdout_without_runtime_diagnostics ... ok
+test destination_safety_preserves_sources_compiler_and_old_output ... ok
+test native_compiles_all_six_demos_both_modes_without_running_them ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.73s
+
+     Running tests\native_integer.rs (target\debug\deps\native_integer-37045e636bbb63c2.exe)
+
+running 8 tests
+test unsupported_and_malformed_ir_is_not_a_fallback ... ok
+test windows::checked_errors_and_sparse_slots ... ok
+test windows::real_source_loops_scopes_and_short_circuit ... ok
+test windows::large_frame_probes_and_label_namespaces ... ok
+test integer_boundaries_and_all_checked_faults_on_cpu ... ok
+test slot_budget_is_explicit ... ok
+test source_integer_programs_execute_as_standalone_pe ... ok
+test windows::arithmetic_and_comparison_matrix_executes_on_cpu ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+     Running tests\native_runtime.rs (target\debug\deps\native_runtime-671a9a498939eef8.exe)
+
+running 9 tests
+test raw_nul_source_is_rejected_before_native_string_lowering ... ok
+test runtime_configuration_and_ir_errors ... ok
+test windows::integer_string_and_return_count ... ok
+test formatter_integer_matrix_in_one_real_program ... ok
+test windows::large_output_and_many_arguments ... ok
+test actual_os_failure_paths_and_literal_reassignment ... ok
+test windows::runtime_errors_discard_buffered_output ... ok
+test formatter_checks_actual_argument_arity_and_format ... ok
+test windows::empty_zero_negative_and_exact_capacity ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+
+     Running tests\native_source.rs (target\debug\deps\native_source-b1942f2d462c057c.exe)
+
+running 5 tests
+test malformed_and_unsupported_source_is_diagnostic_not_an_image ... ok
+test source_and_token_resource_bounds ... ok
+test windows::all_six_sources_match_expected_and_both_vm_modes ... ok
+test windows::source_interactions_and_checked_failures ... ok
+test windows::large_output_and_native_execution_without_vm_budget ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.89s
+
+     Running tests\pe_foundation.rs (target\debug\deps\pe_foundation-c60b2075e8c4415d.exe)
+
+running 3 tests
+test invalid_sizes_and_address_domains ... ok
+test all_supported_code_sizes_and_padding ... ok
+test executes_padded_images_at_boundaries ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests\runtime_io.rs (target\debug\deps\runtime_io-52bcbe58b755cf9d.exe)
+
+running 1 test
+test nonblocking_byte_and_message_pipes_are_real_partial_write_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests\x64_encoder.rs (target\debug\deps\x64_encoder-66a8429833bc49b1.exe)
+
+running 6 tests
+test labels_symbols_and_ranges ... ok
+test reviewed_byte_fixtures ... ok
+test native_memory_and_calls ... ok
+test native_arithmetic_conditions_and_division ... ok
+test native_extended_registers_indexing_and_qword_math ... ok
+test native_every_condition_and_stack_register_ops ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.84s
+
+     Running unittests examples\encoding_oracle.rs (target\debug\examples\encoding_oracle-f1dd5077fafafe0a.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples\native_oracle_corpus.rs (target\debug\examples\native_oracle_corpus-9f424b57aa9afa18.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+EXIT: 0
+
+COMMAND: cargo test --all-targets --release --locked --offline
+   Compiling compiler v0.2.0 (N:\compiler-proj)
+    Finished `release` profile [optimized] target(s) in 2.71s
+     Running unittests src\lib.rs (target\release\deps\compiler-d650928975f7aadf.exe)
+
+running 36 tests
+test optimize::tests::folding ... ok
+test ir::tests::lowers_control_flow ... ok
+test bytecode::tests::runtime_errors ... ok
+test bytecode::tests::loops_scopes_and_optimization ... ok
+test lexer::tests::header ... ok
+test lexer::tests::invalid ... ok
+test lexer::tests::positions ... ok
+test native_pe::tests::headers_and_bounds ... ok
+test bytecode::tests::short_circuit ... ok
+test parser::tests::errors ... ok
+test optimize::tests::preserves_errors_and_boundaries ... ok
+test parser::tests::constructs ... ok
+test bytecode::tests::strings_and_while ... ok
+test parser::tests::precedence ... ok
+test semantic::tests::rejects ... ok
+test context::tests::identities_and_errors ... ok
+test stress::loop_declarations_are_fresh ... ok
+test stress::malformed_compound_token_sequences ... ok
+test stress::octal_literals_use_c_radix ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test stress::reject_invalid_c ... ok
+test verify::adversarial::malformed_fragments_do_not_panic ... ok
+test verify::adversarial::every_operand_and_format_is_checked ... ok
+test lexer::tests::operators ... ok
+test lexer::tests::strings ... ok
+test verify::tests::invalid_programs ... ok
+test semantic::tests::valid ... ok
+test verify::adversarial::valid_branch_and_string_flow ... ok
+test stress::control_flow_and_errors ... ok
+test verify::tests::uninitialized_is_a_runtime_error ... ok
+test verify::tests::demos_before_and_after_optimization ... ok
+test stress::huge_inputs_fail_cleanly ... ok
+test stress::deterministic_random_input ... ok
+test native_pe::tests::windows_executes_generated_machine_code ... ok
+test stress::arithmetic_matrix ... ok
+test stress::mutations_never_panic ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running unittests src\main.rs (target\release\deps\compiler-726e6c1d61b1696c.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\abi_frames.rs (target\release\deps\abi_frames-03607046d2e6f686.exe)
+
+running 4 tests
+test unwind_allocation_encoding_boundaries ... ok
+test windows::native_scalar_arguments_and_nonvolatile_preservation ... ok
+test windows::os_unwinds_actual_generated_small_and_probed_large_frames ... ok
+test frame_layout_and_unwind_fixtures ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\abi_image.rs (target\release\deps\abi_image-33fb063e338bf075.exe)
+
+running 3 tests
+test rejects_invalid_unwind_records ... ok
+test metadata_attachment_checks_ranges_transactionally ... ok
+test windows_finds_serialized_function_unwind_table ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests\cli.rs (target\release\deps\cli-c37725e1085d8fc4.exe)
+
+running 2 tests
+test stage_dumps_and_cli_errors ... ok
+test all_demos_with_and_without_optimization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running tests\control_flow.rs (target\release\deps\control_flow-e07abc1d911e2173.exe)
+
+running 8 tests
+test semantic_errors_do_not_become_executables ... ok
+test new_control_syntax_mutations_and_depth_fail_without_panics ... ok
+test bases_character_escapes_nul_and_comments ... ok
+test loops_continue_break_and_empty_clauses ... ok
+test switch_fallthrough_nested_dispatch_and_loop_continue ... ok
+test updates_assignment_precedence_and_short_circuit ... ok
+test gotos_scope_entries_and_return_status_are_real ... ok
+test update_faults_and_jumps_cannot_reuse_a_previous_scope_lifetime ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.85s
+
+     Running tests\dynamic_pe.rs (target\release\deps\dynamic_pe-48fd7e885fdee4fa.exe)
+
+running 8 tests
+test import_aliases_and_input_order ... ok
+test invalid_specs_rejected ... ok
+test dynamic_layout_is_deterministic_and_exceeds_foundation ... ok
+test truncated_and_mutated_images_do_not_panic ... ok
+test maximum_section_table_and_invalid_directory_boundaries ... ok
+test windows_runs_large_pic_and_multiple_dll_imports ... ok
+test loader_relocates_absolute_pointer_and_zero_fill ... ok
+test position_independent_image_really_moves_and_large_headers_execute ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests\native_cli.rs (target\release\deps\native_cli-6682a9b027c49f87.exe)
+
+running 6 tests
+test publication_rechecks_races_and_rejects_invalid_pe_without_partial_output ... ok
+test bounded_file_input_rejects_oversize_bad_utf8_and_directories ... ok
+test options_exit_codes_dumps_unicode_paths_and_default_vm ... ok
+test destination_safety_preserves_sources_compiler_and_old_output ... ok
+test successful_nonzero_returns_flush_stdout_without_runtime_diagnostics ... ok
+test native_compiles_all_six_demos_both_modes_without_running_them ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s
+
+     Running tests\native_integer.rs (target\release\deps\native_integer-bcea0c32958ec429.exe)
+
+running 8 tests
+test unsupported_and_malformed_ir_is_not_a_fallback ... ok
+test windows::checked_errors_and_sparse_slots ... ok
+test windows::real_source_loops_scopes_and_short_circuit ... ok
+test windows::large_frame_probes_and_label_namespaces ... ok
+test slot_budget_is_explicit ... ok
+test integer_boundaries_and_all_checked_faults_on_cpu ... ok
+test source_integer_programs_execute_as_standalone_pe ... ok
+test windows::arithmetic_and_comparison_matrix_executes_on_cpu ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests\native_runtime.rs (target\release\deps\native_runtime-fc1456e4a43327e4.exe)
+
+running 9 tests
+test raw_nul_source_is_rejected_before_native_string_lowering ... ok
+test runtime_configuration_and_ir_errors ... ok
+test windows::integer_string_and_return_count ... ok
+test formatter_integer_matrix_in_one_real_program ... ok
+test windows::large_output_and_many_arguments ... ok
+test actual_os_failure_paths_and_literal_reassignment ... ok
+test windows::runtime_errors_discard_buffered_output ... ok
+test formatter_checks_actual_argument_arity_and_format ... ok
+test windows::empty_zero_negative_and_exact_capacity ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+     Running tests\native_source.rs (target\release\deps\native_source-b72bee787c39fa08.exe)
+
+running 5 tests
+test malformed_and_unsupported_source_is_diagnostic_not_an_image ... ok
+test source_and_token_resource_bounds ... ok
+test windows::large_output_and_native_execution_without_vm_budget ... ok
+test windows::all_six_sources_match_expected_and_both_vm_modes ... ok
+test windows::source_interactions_and_checked_failures ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.87s
+
+     Running tests\pe_foundation.rs (target\release\deps\pe_foundation-dbe7ffaeb6b69d94.exe)
+
+running 3 tests
+test invalid_sizes_and_address_domains ... ok
+test all_supported_code_sizes_and_padding ... ok
+test executes_padded_images_at_boundaries ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running tests\runtime_io.rs (target\release\deps\runtime_io-1855dd6f5c8ce345.exe)
+
+running 1 test
+test nonblocking_byte_and_message_pipes_are_real_partial_write_failures ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests\x64_encoder.rs (target\release\deps\x64_encoder-9cde29c395cccb6d.exe)
+
+running 6 tests
+test labels_symbols_and_ranges ... ok
+test reviewed_byte_fixtures ... ok
+test native_memory_and_calls ... ok
+test native_arithmetic_conditions_and_division ... ok
+test native_extended_registers_indexing_and_qword_math ... ok
+test native_every_condition_and_stack_register_ops ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+
+     Running unittests examples\encoding_oracle.rs (target\release\examples\encoding_oracle-8f9fc3c132af6662.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests examples\native_oracle_corpus.rs (target\release\examples\native_oracle_corpus-47d1aba5e729c2ce.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+EXIT: 0

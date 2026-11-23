@@ -15,7 +15,9 @@ The compiler performs lexical analysis, parsing, semantic checks, three-address 
 
 Six examples and their expected output are in `examples/`: addition, loop, factorial, pattern, conditional, and strings.
 
-Use explicit loop updates such as `i = i + 1`. This version requires a condition in a `for` loop and supports one `int main()` ending in `return 0;`. It accepts the leading `#include <stdio.h>` directive; it does not implement a preprocessor. `printf` and `strlen` are built-ins. Strings are literals, and `strlen` counts their UTF-8 bytes. General pointers, mutable strings, arrays, input functions, comments, increment operators, other headers, and user-defined functions are outside this version. Integer operations use checked signed 32-bit arithmetic. Reading an uninitialized variable reports a runtime error.
+The current subset supports one `int main()` or `int main(void)`, integer locals/expressions/returns, assignment and arithmetic compound assignment, prefix/postfix `++`/`--`, `if`, `while`, `for` (including empty clauses), `do/while`, `break`, `continue`, `switch` with constant cases/fallthrough, labels and `goto`. Falling off main returns zero. `//` and `/* */` comments, decimal/octal/hex values fitting signed32, ASCII character constants, and simple/octal/hex ASCII escapes are supported. Wider/unsigned/suffixed literals remain explicit errors until the type-system phase; bitwise/shift operations are not implemented yet.
+
+It accepts a leading `#include <stdio.h>` directive; this is not a preprocessor. `printf` and `strlen` remain built-ins. Strings are UTF-8 literals; escaped NUL terminates C string operations, and `strlen` counts bytes before that terminator. General pointers, mutable strings, arrays, input functions, other headers and user-defined functions are future phases. Integer operations use checked signed32 arithmetic. Uninitialized reads report a runtime error; jumping into a new scope clears its locals' initialization state rather than reusing a previous lifetime's values.
 
 Bytecode instruction reference:
 
@@ -28,7 +30,7 @@ Bytecode instruction reference:
 | Jump | Set the instruction pointer |
 | Zero | Pop a condition and branch if zero |
 | Print | Pop arguments, format output, push byte count |
-| Halt | Finish execution |
+| Halt / Return | Finish with zero / computed integer process result |
 
 Runtime errors include division by zero, integer overflow, uninitialized reads, invalid stack operations, and invalid instruction targets. Execution is limited to ten million VM instructions to bound accidental infinite loops. Program output is buffered until execution succeeds.
 
@@ -74,10 +76,10 @@ cargo build --release
 python tools/differential.py
 ```
 
-It requires Python and GCC and compares 100 generated, defined-behavior C programs with optimized and unoptimized execution. GCC is only a test oracle. Leading-zero nondecimal literals and unsupported compound operators are rejected. Reserved C keywords and the built-in names `main`, `printf`, and `strlen` cannot be declared as local variables.
+It requires Python and GCC and compares 100 generated, defined-behavior C programs with optimized and unoptimized execution. GCC is only a test oracle. Octal and hexadecimal literals use C radix rules; typed suffixes, wide values and bitwise/shift operations are rejected until their semantics are implemented. Reserved C keywords and the built-in names `main`, `printf`, and `strlen` cannot be declared as local variables.
 
 ## Native backend development status
 
 Version 0.2.0 compiles the documented teaching C subset to real Windows x64 PE32+ executables. Generated programs use owned checked integer arithmetic, short-circuit control flow, pooled UTF-8 literals, `%d`/`%s` formatting, `strlen`, buffered output, Windows stack frames, unwind metadata and ASLR relocations. Native output is limited to 16MiB by default; unlike the VM, native loops have no instruction quota. Production compilation does not invoke an external C compiler, assembler, linker or C runtime. Full C11 and the full standard library are future phases; current capability and evidence are tracked in the canonical plan.
 
-Run the phase gate with `python validation/run_gate.py P09`. Optional independent encoder/native-source comparisons use GNU tools only as development oracles. Evidence is in `validation/`. The portable Windows package is assembled from the tested release binary under `target/P09-package/`; no official release upload is performed automatically.
+P09 distribution evidence covers its frozen subset release; P10 adds the documented control flow. Run the current phase gate with `python validation/run_gate.py P10` and its optional GCC comparison with `python tools/control_differential.py`. Optional independent encoder/native-source comparisons use GNU tools only as development oracles. Evidence is in `validation/`. The portable Windows package is assembled from the tested release binary under `target/P09-package/`; no official release upload is performed automatically.

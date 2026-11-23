@@ -32,7 +32,7 @@ pub fn verify(code: &[Ir]) -> Result<(), String> {
     if code.is_empty() {
         return Err("invalid IR: empty program".into());
     }
-    if !matches!(code.last(), Some(Ir::Halt | Ir::Jump(_))) {
+    if !matches!(code.last(), Some(Ir::Halt | Ir::Jump(_) | Ir::Return(_))) {
         return Err("invalid IR: program can fall off its final instruction".into());
     }
     let mut labels = HashSet::new();
@@ -58,7 +58,7 @@ pub fn verify(code: &[Ir]) -> Result<(), String> {
                 Ir::Unary(d, op, a) => {
                     let k = match op.as_str() {
                         "strlen" => Kind::String,
-                        "-" | "!" | "bool" => Kind::Integer,
+                        "+" | "-" | "!" | "bool" => Kind::Integer,
                         _ => return Err(format!("unsupported unary operator {op}")),
                     };
                     operand(&slots, *a, k)?;
@@ -105,6 +105,7 @@ pub fn verify(code: &[Ir]) -> Result<(), String> {
                     }
                     define(&mut slots, *d, Kind::Integer)?;
                 }
+                Ir::Return(a) => operand(&slots, *a, Kind::Integer)?,
                 Ir::Label(_) | Ir::Halt => (),
             }
             Ok(())
@@ -120,6 +121,11 @@ mod tests {
     fn invalid_programs() {
         let bad = vec![
             vec![],
+            vec![Ir::Return(999)],
+            vec![
+                Ir::Const(0, Value::Str("wrong return type".into())),
+                Ir::Return(0),
+            ],
             vec![Ir::Label(0), Ir::Label(0), Ir::Halt],
             vec![Ir::Jump(12)],
             vec![Ir::Copy(0, 999), Ir::Halt],

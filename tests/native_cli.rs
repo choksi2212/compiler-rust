@@ -280,3 +280,35 @@ fn bounded_file_input_rejects_oversize_bad_utf8_and_directories() {
     assert!(!w.0.join("out.exe").exists());
     w.clean_temps();
 }
+
+#[test]
+fn successful_nonzero_returns_flush_stdout_without_runtime_diagnostics() {
+    let w = Workspace::new();
+    for result in [1, 2, 7, 27, -1, i32::MIN] {
+        let expression = if result == i32::MIN {
+            "-2147483647-1".into()
+        } else {
+            result.to_string()
+        };
+        fs::write(
+            w.0.join("source.c"),
+            format!("int main(){{printf(\"visible\");return {expression};}}"),
+        )
+        .unwrap();
+        for flag in ["--run-vm", "--no-opt"] {
+            let out = w.cli(&["source.c", flag]);
+            code(&out, result);
+            assert_eq!(out.stdout, b"visible");
+            assert!(out.stderr.is_empty());
+        }
+        code(&w.cli(&["source.c", "-o", "program.exe", "--overwrite"]), 0);
+        let out = Command::new(w.0.join("program.exe"))
+            .env("PATH", "")
+            .output()
+            .unwrap();
+        code(&out, result);
+        assert_eq!(out.stdout, b"visible");
+        assert!(out.stderr.is_empty());
+    }
+    w.clean_temps();
+}

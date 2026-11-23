@@ -1,0 +1,8516 @@
+[
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--manifest-path",
+      "N:\\compiler-proj\\Cargo.toml",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": "    Finished `release` profile [optimized] target(s) in 0.01s\n"
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case000.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case000.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case000-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case000-False.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case000.c",
+      "--run-vm"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case000.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case000-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case000-True.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case000.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case001.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case001.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case001-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case001-False.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case001.c",
+      "--run-vm"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case001.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case001-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case001-True.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case001.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case002.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case002.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case002-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case002-False.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case002.c",
+      "--run-vm"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case002.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case002-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case002-True.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case002.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case003.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case003.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case003-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case003-False.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case003.c",
+      "--run-vm"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case003.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case003-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case003-True.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case003.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case004.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case004.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case004-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case004-False.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case004.c",
+      "--run-vm"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case004.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case004-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case004-True.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case004.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case005.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case005.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case005-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case005-False.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case005.c",
+      "--run-vm"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case005.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case005-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case005-True.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case005.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case006.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case006.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case006-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case006-False.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case006.c",
+      "--run-vm"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case006.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case006-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case006-True.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case006.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case007.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case007.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case007-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case007-False.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case007.c",
+      "--run-vm"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case007.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case007-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case007-True.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case007.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case008.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 1,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case008.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case008-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case008-False.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case008.c",
+      "--run-vm"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case008.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case008-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case008-True.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case008.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case009.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 2,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case009.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case009-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case009-False.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case009.c",
+      "--run-vm"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case009.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case009-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case009-True.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case009.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case010.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 3,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case010.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case010-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case010-False.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case010.c",
+      "--run-vm"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case010.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case010-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case010-True.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case010.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case011.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case011.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case011-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case011-False.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case011.c",
+      "--run-vm"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case011.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case011-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case011-True.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case011.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case012.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 5,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case012.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case012-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case012-False.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case012.c",
+      "--run-vm"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case012.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case012-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case012-True.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case012.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case013.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 6,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case013.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case013-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case013-False.exe"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case013.c",
+      "--run-vm"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case013.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case013-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case013-True.exe"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case013.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case014.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 7,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case014.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case014-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case014-False.exe"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case014.c",
+      "--run-vm"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case014.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case014-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case014-True.exe"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case014.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case015.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 8,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case015.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case015-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case015-False.exe"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case015.c",
+      "--run-vm"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case015.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case015-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case015-True.exe"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case015.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case016.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 9,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case016.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case016-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case016-False.exe"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case016.c",
+      "--run-vm"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case016.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case016-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case016-True.exe"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case016.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case017.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 10,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case017.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case017-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case017-False.exe"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case017.c",
+      "--run-vm"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case017.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case017-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case017-True.exe"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case017.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case018.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 11,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case018.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case018-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case018-False.exe"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case018.c",
+      "--run-vm"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case018.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case018-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case018-True.exe"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case018.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case019.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 12,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case019.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case019-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case019-False.exe"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case019.c",
+      "--run-vm"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case019.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case019-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case019-True.exe"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case019.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case020.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 13,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case020.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case020-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case020-False.exe"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case020.c",
+      "--run-vm"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case020.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case020-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case020-True.exe"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case020.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case021.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 14,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case021.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case021-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case021-False.exe"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case021.c",
+      "--run-vm"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case021.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case021-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case021-True.exe"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case021.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case022.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 15,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case022.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case022-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case022-False.exe"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case022.c",
+      "--run-vm"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case022.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case022-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case022-True.exe"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case022.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case023.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 16,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case023.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case023-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case023-False.exe"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case023.c",
+      "--run-vm"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case023.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case023-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case023-True.exe"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case023.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case024.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 17,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case024.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case024-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case024-False.exe"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case024.c",
+      "--run-vm"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case024.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case024-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case024-True.exe"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case024.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case025.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 18,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case025.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case025-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case025-False.exe"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case025.c",
+      "--run-vm"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case025.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case025-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case025-True.exe"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case025.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case026.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 19,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case026.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case026-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case026-False.exe"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case026.c",
+      "--run-vm"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case026.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case026-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case026-True.exe"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case026.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case027.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 20,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case027.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case027-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case027-False.exe"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case027.c",
+      "--run-vm"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case027.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case027-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case027-True.exe"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case027.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case028.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 21,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case028.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case028-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case028-False.exe"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case028.c",
+      "--run-vm"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case028.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case028-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case028-True.exe"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case028.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case029.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case029.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case029-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case029-False.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case029.c",
+      "--run-vm"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case029.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case029-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case029-True.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case029.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case030.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case030.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case030-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case030-False.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case030.c",
+      "--run-vm"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case030.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case030-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case030-True.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case030.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case031.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case031.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case031-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case031-False.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case031.c",
+      "--run-vm"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case031.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case031-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case031-True.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case031.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case032.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case032.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case032-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case032-False.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case032.c",
+      "--run-vm"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case032.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case032-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case032-True.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case032.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case033.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case033.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case033-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case033-False.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case033.c",
+      "--run-vm"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case033.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case033-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case033-True.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case033.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case034.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case034.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case034-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case034-False.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case034.c",
+      "--run-vm"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case034.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case034-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case034-True.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case034.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case035.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case035.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case035-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case035-False.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case035.c",
+      "--run-vm"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case035.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case035-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case035-True.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case035.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case036.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case036.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case036-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case036-False.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case036.c",
+      "--run-vm"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case036.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case036-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case036-True.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case036.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case037.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 1,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case037.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case037-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case037-False.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case037.c",
+      "--run-vm"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case037.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case037-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case037-True.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case037.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case038.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 2,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case038.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case038-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case038-False.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case038.c",
+      "--run-vm"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case038.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case038-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case038-True.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case038.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case039.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 3,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case039.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case039-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case039-False.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case039.c",
+      "--run-vm"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case039.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case039-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case039-True.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case039.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case040.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case040.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case040-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case040-False.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case040.c",
+      "--run-vm"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case040.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case040-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case040-True.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case040.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case041.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 5,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case041.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case041-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case041-False.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case041.c",
+      "--run-vm"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case041.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case041-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case041-True.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case041.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case042.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 6,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case042.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case042-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case042-False.exe"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case042.c",
+      "--run-vm"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case042.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case042-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case042-True.exe"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case042.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case043.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 7,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case043.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case043-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case043-False.exe"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case043.c",
+      "--run-vm"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case043.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case043-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case043-True.exe"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case043.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case044.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 8,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case044.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case044-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case044-False.exe"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case044.c",
+      "--run-vm"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case044.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case044-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case044-True.exe"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case044.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case045.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 9,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case045.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case045-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case045-False.exe"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case045.c",
+      "--run-vm"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case045.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case045-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case045-True.exe"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case045.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case046.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 10,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case046.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case046-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case046-False.exe"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case046.c",
+      "--run-vm"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case046.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case046-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case046-True.exe"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case046.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case047.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 11,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case047.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case047-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case047-False.exe"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case047.c",
+      "--run-vm"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case047.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case047-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case047-True.exe"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case047.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case048.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 12,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case048.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case048-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case048-False.exe"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case048.c",
+      "--run-vm"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case048.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case048-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case048-True.exe"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case048.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case049.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 13,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case049.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case049-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case049-False.exe"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case049.c",
+      "--run-vm"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case049.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case049-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case049-True.exe"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case049.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case050.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 14,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case050.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case050-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case050-False.exe"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case050.c",
+      "--run-vm"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case050.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case050-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case050-True.exe"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case050.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case051.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 15,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case051.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case051-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case051-False.exe"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case051.c",
+      "--run-vm"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case051.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case051-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case051-True.exe"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case051.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case052.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 16,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case052.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case052-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case052-False.exe"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case052.c",
+      "--run-vm"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case052.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case052-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case052-True.exe"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case052.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case053.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 17,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case053.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case053-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case053-False.exe"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case053.c",
+      "--run-vm"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case053.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case053-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case053-True.exe"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case053.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case054.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 18,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case054.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case054-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case054-False.exe"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case054.c",
+      "--run-vm"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case054.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case054-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case054-True.exe"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case054.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case055.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 19,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case055.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case055-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case055-False.exe"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case055.c",
+      "--run-vm"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case055.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case055-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case055-True.exe"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case055.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case056.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 20,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case056.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case056-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case056-False.exe"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case056.c",
+      "--run-vm"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case056.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case056-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case056-True.exe"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case056.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case057.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 21,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case057.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case057-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case057-False.exe"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case057.c",
+      "--run-vm"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case057.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case057-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case057-True.exe"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case057.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case058.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case058.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case058-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case058-False.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case058.c",
+      "--run-vm"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case058.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case058-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case058-True.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case058.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case059.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case059.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case059-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case059-False.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case059.c",
+      "--run-vm"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case059.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case059-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case059-True.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case059.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case060.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case060.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case060-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case060-False.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case060.c",
+      "--run-vm"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case060.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case060-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case060-True.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case060.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case061.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case061.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case061-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case061-False.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case061.c",
+      "--run-vm"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case061.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case061-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case061-True.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case061.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case062.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case062.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case062-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case062-False.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case062.c",
+      "--run-vm"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case062.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case062-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case062-True.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case062.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case063.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case063.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case063-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case063-False.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case063.c",
+      "--run-vm"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case063.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case063-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case063-True.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case063.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case064.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case064.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case064-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case064-False.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case064.c",
+      "--run-vm"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case064.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case064-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case064-True.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case064.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case065.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case065.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case065-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case065-False.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case065.c",
+      "--run-vm"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case065.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case065-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case065-True.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case065.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case066.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 1,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case066.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case066-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case066-False.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case066.c",
+      "--run-vm"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case066.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case066-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case066-True.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case066.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case067.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 2,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case067.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case067-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case067-False.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case067.c",
+      "--run-vm"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case067.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case067-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case067-True.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case067.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case068.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 3,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case068.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case068-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case068-False.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case068.c",
+      "--run-vm"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case068.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case068-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case068-True.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case068.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case069.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case069.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case069-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case069-False.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case069.c",
+      "--run-vm"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case069.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case069-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case069-True.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case069.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case070.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 5,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case070.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case070-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case070-False.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case070.c",
+      "--run-vm"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case070.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case070-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case070-True.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case070.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case071.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 6,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case071.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case071-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case071-False.exe"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case071.c",
+      "--run-vm"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case071.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case071-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case071-True.exe"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case071.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 6,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case072.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 7,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case072.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case072-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case072-False.exe"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case072.c",
+      "--run-vm"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case072.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case072-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case072-True.exe"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case072.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 7,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case073.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 8,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case073.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case073-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case073-False.exe"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case073.c",
+      "--run-vm"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case073.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case073-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case073-True.exe"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case073.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 8,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case074.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 9,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case074.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case074-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case074-False.exe"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case074.c",
+      "--run-vm"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case074.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case074-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case074-True.exe"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case074.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 9,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case075.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 10,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case075.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case075-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case075-False.exe"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case075.c",
+      "--run-vm"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case075.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case075-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case075-True.exe"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case075.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 10,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case076.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 11,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case076.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case076-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case076-False.exe"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case076.c",
+      "--run-vm"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case076.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case076-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case076-True.exe"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case076.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 11,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case077.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 12,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case077.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case077-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case077-False.exe"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case077.c",
+      "--run-vm"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case077.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case077-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case077-True.exe"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case077.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 12,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case078.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 13,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case078.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case078-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case078-False.exe"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case078.c",
+      "--run-vm"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case078.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case078-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case078-True.exe"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case078.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 13,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case079.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 14,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case079.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case079-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case079-False.exe"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case079.c",
+      "--run-vm"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case079.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case079-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case079-True.exe"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case079.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 14,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case080.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 15,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case080.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case080-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case080-False.exe"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case080.c",
+      "--run-vm"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case080.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case080-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case080-True.exe"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case080.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 15,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case081.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 16,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case081.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case081-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case081-False.exe"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case081.c",
+      "--run-vm"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case081.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case081-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case081-True.exe"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case081.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 16,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case082.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 17,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case082.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case082-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case082-False.exe"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case082.c",
+      "--run-vm"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case082.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case082-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case082-True.exe"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case082.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 17,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case083.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 18,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case083.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case083-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case083-False.exe"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case083.c",
+      "--run-vm"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case083.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case083-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case083-True.exe"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case083.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 18,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case084.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 19,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case084.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case084-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case084-False.exe"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case084.c",
+      "--run-vm"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case084.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case084-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case084-True.exe"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case084.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 19,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case085.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 20,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case085.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case085-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case085-False.exe"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case085.c",
+      "--run-vm"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case085.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case085-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case085-True.exe"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case085.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 20,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case086.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 21,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case086.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case086-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case086-False.exe"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case086.c",
+      "--run-vm"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case086.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case086-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case086-True.exe"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case086.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 21,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case087.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case087.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case087-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case087-False.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case087.c",
+      "--run-vm"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case087.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case087-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case087-True.exe"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case087.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967289,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case088.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case088.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case088-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case088-False.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case088.c",
+      "--run-vm"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case088.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case088-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case088-True.exe"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case088.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967290,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case089.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case089.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case089-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case089-False.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case089.c",
+      "--run-vm"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case089.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case089-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case089-True.exe"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case089.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967291,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case090.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case090.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case090-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case090-False.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case090.c",
+      "--run-vm"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case090.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case090-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case090-True.exe"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case090.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967292,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case091.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case091.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case091-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case091-False.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case091.c",
+      "--run-vm"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case091.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case091-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case091-True.exe"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case091.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967293,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case092.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case092.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case092-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case092-False.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case092.c",
+      "--run-vm"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case092.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case092-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case092-True.exe"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case092.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967294,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case093.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case093.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case093-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case093-False.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case093.c",
+      "--run-vm"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case093.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case093-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case093-True.exe"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case093.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4294967295,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case094.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case094.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case094-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case094-False.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case094.c",
+      "--run-vm"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case094.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case094-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case094-True.exe"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case094.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case095.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 1,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case095.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case095-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case095-False.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case095.c",
+      "--run-vm"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case095.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case095-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case095-True.exe"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case095.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 1,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case096.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 2,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case096.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case096-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case096-False.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case096.c",
+      "--run-vm"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case096.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case096-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case096-True.exe"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case096.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 2,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case097.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 3,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case097.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case097-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case097-False.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case097.c",
+      "--run-vm"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case097.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case097-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case097-True.exe"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case097.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 3,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case098.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 4,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case098.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case098-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case098-False.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case098.c",
+      "--run-vm"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case098.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case098-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case098-True.exe"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case098.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 4,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-O0",
+      "-Wall",
+      "-Werror",
+      "N:\\compiler-proj\\target\\P10-oracle\\case099.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 0,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\reference.exe"
+    ],
+    "exit": 5,
+    "empty_path": false,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case099.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case099-False.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case099-False.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case099.c",
+      "--run-vm"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case099.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P10-oracle\\case099-True.exe",
+      "--overwrite",
+      "--no-opt"
+    ],
+    "exit": 0,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P10-oracle\\case099-True.exe"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P10-oracle\\case099.c",
+      "--run-vm",
+      "--no-opt"
+    ],
+    "exit": 5,
+    "empty_path": true,
+    "stderr": ""
+  }
+]

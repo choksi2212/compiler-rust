@@ -50,8 +50,8 @@ fn loop_declarations_are_fresh() {
     }
 }
 #[test]
-fn decimal_literals_do_not_reinterpret_c_octal() {
-    assert!(body("printf(\"%d\",010);", true).is_err());
+fn octal_literals_use_c_radix() {
+    assert_eq!(body("printf(\"%d\",010);", true).unwrap(), "8");
 }
 #[test]
 fn arithmetic_matrix() {
@@ -136,11 +136,11 @@ fn huge_inputs_fail_cleanly() {
     assert!(body(&blocks, true).is_err());
 }
 #[test]
-fn unsupported_compound_tokens() {
+fn malformed_compound_token_sequences() {
     for s in [
         "int a=3;int b=2;printf(\"%d\",a--b);",
         "int a=3;int b=2;printf(\"%d\",a++b);",
-        "int a=1;a+=2;",
+        "int a=1;a+==2;",
     ] {
         assert!(body(s, true).is_err(), "{s}");
     }

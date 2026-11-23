@@ -2,8 +2,8 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.3, continuous phase execution; P01-P09 passed
-**Date:** 2026-11-23 (Asia/Calcutta)
+**Revision:** 3.5, continuous phase execution; P01-P10 passed
+**Date:** 2026-11-24 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
 **Immediate implementation delivery after review:** compile the existing supported C subset into genuine native Windows executables
@@ -642,7 +642,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01 has passed its recorded gate; P02 is now in progress. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P10 have passed their recorded gates; P11 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -692,7 +692,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P07 | Native subset runtime and startup | 8B-7/8 | Passed; evidence in section 13.12.2 |
 | P08 | Complete C-subset-to-native integration | 8B-9 | Passed; evidence in section 13.13.2 |
 | P09 | Native CLI and usable distribution | 8C | Passed: output safety, CLI and packaging |
-| P10 | Conventional syntax and control flow | 9 | Planned |
+| P10 | Conventional syntax and control flow | 9 | Passed; evidence in section 13.15.2 |
 | P11 | General type system and typed IR | 10, type portion | Planned |
 | P12 | Functions, calls, globals and variadics | 10, function/storage portion | Planned |
 | P13 | Pointers, arrays, memory and strings | 11 | Planned |
@@ -1219,6 +1219,28 @@ Work items:
 **Gate:** each accepted construct executes correctly natively; no newly tokenized feature is silently assigned wrong types.
 **Boundary:** user functions and pointer-address updates still wait for their type/memory phases.
 
+#### 13.15.1 P10 implementation contract before coding
+
+Add real comment skipping with accurate line/column reporting; decimal/octal/hex token metadata (magnitude, radix, suffix); ASCII character constants and simple/octal/hex escapes. Literal integer values that fit current signed int execute; suffixes and wider/unsigned values remain explicit diagnostics until P11's type system, never truncated into i32. Numeric character/string escapes outside ASCII remain explicit diagnostics until byte-oriented character representation is delivered. Escaped NUL is stored in pooled strings, and printf/strlen use C's first-NUL semantics; raw source NUL remains invalid.
+
+Use expression AST nodes for assignment, arithmetic compound assignment and prefix/postfix updates; validate modifiable int-variable operands. Lower lvalue evaluation once, preserve postfix old values and prefix/new assignment values, and retain checked arithmetic. Existing arithmetic/logical precedence remains; assignment is right-associative below logical OR. Unary plus is supported. Bitwise/shift semantics are not advertised before P11.
+
+Implement optional for clauses, do/while, break/continue, switch/case/default with fallthrough and nested dispatch, function-wide labels/goto, general int returns and implicit main return0. Reject duplicate/undefined labels, misplaced break/continue/case/default and duplicate/nonconstant case values. Preallocate fixed int local slots and reset locals on entering a new lexical scope through a goto/switch dispatch so bypassed initializers cannot reuse a previous lifetime's values. No VLA/lifetime feature is claimed. Future declaration/type phases extend that model.
+
+Add verified Return(slot) IR and real bytecode/native return handling. Keep runtime-error status separate from main's signed32 process result in the native context; successful nonzero returns flush stdout and do not become runtime-error diagnostics. CLI VM execution propagates the program result; library run() retains its output-only compatibility API alongside a result-bearing execution API. Native loops keep no artificial step quota. Aggressive tests cover each construct in both backends/modes, faults, positions, malformed and mutated syntax; development-only GCC comparisons independently check defined behavior and process results.
+
+#### 13.15.2 P10 completion evidence (2026-11-24)
+
+P10 passed its defined gate. `validation/P10-gate.json` and `.log` record formatting, strict all-target Clippy, and debug/release all-target tests: **99 passed per mode, zero failed/ignored**. Source hashes match the tested files. All six original demos remain stable.
+
+`tests/control_flow.rs` executes updates/assignment/short-circuit combinations, all loop forms and continue destinations, switch nesting/fallthrough/default, labels/goto scope entry, implicit/early/general integer returns, decimal/octal/hex and ASCII character/escape handling, embedded-NUL string operations and comments. Each behavior fixture runs both native/VM and optimized/unoptimized paths; native fixtures execute real PE images with empty PATH and a timeout. Error fixtures verify checked overflow/division/initialization and fresh scope lifetime across inward jumps. Mutation tests drive successful frontend results through verified optimized IR and native image generation without executing potentially unbounded mutated programs. Negative IR return operands/types, malformed case/label/control contexts, nonconstant/duplicate cases and invalid update targets are checked. CLI tests cover return codes1,2,7,27,-1,INT_MIN with stdout visible and stderr empty, distinguishing successful process results from runtime faults.
+
+`tools/control_differential.py` independently compiled100 deterministic defined-behavior C11 programs with GCC and compared **200 native plus200 VM executions** across optimization modes. `validation/P10-control-oracle*.json` records all sources, commands, expected stdout/process codes and image/source hashes; final run passed100/100, with only CRLF/LF and unsigned32 Windows-status normalization. GCC is a development oracle only. Both the gate and oracle source manifests match the final implementation.
+
+The initial native-control tests found a real for-loop lowering defect: the body lacked an active control context. The correction installs the context around the body and gives continue a distinct update destination. `validation/P10-first-control-failures.log` preserves the failing run. `validation/P10-legacy-expectation-failures.log` preserves old rejection tests that became obsolete; those were migrated only after positive native/VM tests proved the new octal/update/return semantics. Raw source NUL is still rejected; escaped NUL is real stored data with C string termination. Unary plus retains an rvalue AST node so (+x) is not accepted as a modifiable lvalue.
+
+This is the extended checked teaching subset, not full C11. Wide/unsigned/suffixed values, non-ASCII numeric escapes/character constants, bitwise/shift operations, general declarations/functions/pointers and preprocessing remain explicitly unsupported until their planned phases. P11 is eligible because all P10 gates passed.
+
 ### 13.16 P11 - General C types and typed intermediate representation
 
 **Purpose:** replace integer-only assumptions with target-correct types before general functions and memory.
@@ -1676,7 +1698,7 @@ This is a review checklist, not a request to approve six separate actions indivi
 
 ### 15.6 Immediate next action during continuous execution
 
-The user authorized continuous phase execution after P00. P01-P08 have now passed their recorded gates. Proceed to P09's native CLI/output-publication/distribution contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
+The user authorized continuous phase execution after P00. P01-P10 have now passed their recorded gates. Proceed to P11's target type system, typed frontend/IR and native integer-width contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
 
 ## 16. References and preserved history
 

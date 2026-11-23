@@ -1,0 +1,69 @@
+   Compiling compiler v0.2.0 (N:\compiler-proj)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.11s
+     Running unittests src\lib.rs (target\debug\deps\compiler-213debba5ddad675.exe)
+
+running 36 tests
+test context::tests::identities_and_errors ... ok
+test optimize::tests::preserves_errors_and_boundaries ... ok
+test bytecode::tests::strings_and_while ... ok
+test lexer::tests::positions ... ok
+test native_pe::tests::headers_and_bounds ... ok
+test bytecode::tests::runtime_errors ... ok
+test bytecode::tests::short_circuit ... ok
+test lexer::tests::strings ... ok
+test stress::decimal_literals_do_not_reinterpret_c_octal ... FAILED
+test bytecode::tests::loops_scopes_and_optimization ... ok
+test parser::tests::precedence ... ok
+test parser::tests::errors ... ok
+test parser::tests::constructs ... ok
+test lexer::tests::header ... ok
+test ir::tests::lowers_control_flow ... ok
+test semantic::tests::rejects ... FAILED
+test lexer::tests::invalid ... ok
+test stress::control_flow_and_errors ... ok
+test stress::reject_invalid_c ... ok
+test stress::unsupported_compound_tokens ... FAILED
+test stress::loop_declarations_are_fresh ... ok
+test verify::adversarial::every_operand_and_format_is_checked ... ok
+test verify::adversarial::malformed_fragments_do_not_panic ... ok
+test optimize::tests::folding ... ok
+test verify::tests::invalid_programs ... ok
+test lexer::tests::operators ... ok
+test semantic::tests::valid ... ok
+test verify::adversarial::valid_branch_and_string_flow ... ok
+test verify::tests::uninitialized_is_a_runtime_error ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test verify::tests::demos_before_and_after_optimization ... ok
+test stress::huge_inputs_fail_cleanly ... ok
+test stress::deterministic_random_input ... ok
+test native_pe::tests::windows_executes_generated_machine_code ... ok
+test stress::arithmetic_matrix ... ok
+test stress::mutations_never_panic ... ok
+
+failures:
+
+---- stress::decimal_literals_do_not_reinterpret_c_octal stdout ----
+
+thread 'stress::decimal_literals_do_not_reinterpret_c_octal' (7992) panicked at src\stress.rs:54:5:
+assertion failed: body("printf(\"%d\",010);", true).is_err()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- semantic::tests::rejects stdout ----
+
+thread 'semantic::tests::rejects' (37424) panicked at src\semantic.rs:302:13:
+return 1;
+
+---- stress::unsupported_compound_tokens stdout ----
+
+thread 'stress::unsupported_compound_tokens' (20492) panicked at src\stress.rs:145:9:
+int a=1;a+=2;
+
+
+failures:
+    semantic::tests::rejects
+    stress::decimal_literals_do_not_reinterpret_c_octal
+    stress::unsupported_compound_tokens
+
+test result: FAILED. 33 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.61s
+
+error: test failed, to rerun pass `--lib`

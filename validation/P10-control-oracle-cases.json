@@ -1,0 +1,2102 @@
+[
+  {
+    "case": 0,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 0. All arithmetic is within int. */\nint main(void){\n int sum=-2;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -7;\n}\n",
+    "source_sha256": "54a07200bcf5e5bf3a75e78dd74782bfb3924cc6a45e92720b15d31a38aea458",
+    "expected_exit": 4294967289,
+    "expected_stdout": "77 4 70 72 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "f92b411bf46d8420001f8687ceb854aeefbfab81a10c6c49990c6f3112f75026",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "e4199822b52a06953af7e98205dff0152a67fa6094999e0aaceb6b9ae799a435",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      }
+    ]
+  },
+  {
+    "case": 1,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 1. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -6;\n}\n",
+    "source_sha256": "f50f011481c8871d188f3deb55b4536d353535f017b390cd53d5c844afb79b94",
+    "expected_exit": 4294967290,
+    "expected_stdout": "98 4 87 89 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "af747bde7e2c9bfcc91b755cc793ff86ec8e3de8e868787a1c1b139f60fd5294",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "4b4f80a072d621d184a754d05330d7bddc516b518cfb2a52abb53ef2947365ed",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      }
+    ]
+  },
+  {
+    "case": 2,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 2. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -5;\n}\n",
+    "source_sha256": "a95faf8d6ca71f3d764b352fd98034e3538e1c3dff080b382264b049ad8655bd",
+    "expected_exit": 4294967291,
+    "expected_stdout": "31 4 20 22 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "be3da17d1498716de648113f3e3d17cb7965ac43d74b11a0a45a6d107bc470d0",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "29b3f14fef0bfd97f41778b74d9bd688c9b3b58741d81c6409244db6d1b92373",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      }
+    ]
+  },
+  {
+    "case": 3,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 3. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<9;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -4;\n}\n",
+    "source_sha256": "ee57bdae11886c4e1257154f286020fe176fb9cea6f4b2347cc5476317e32611",
+    "expected_exit": 4294967292,
+    "expected_stdout": "53 4 43 45 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "a5e7ebf259e3874597fd5745b9596018e0313ea154d4cccec68e356215186a30",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "cfc9f27c46659b3fecdc04bd9f7299aa016909bdebfe8c5bd7df3cc46bbf655a",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      }
+    ]
+  },
+  {
+    "case": 4,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 4. All arithmetic is within int. */\nint main(void){\n int sum=-6;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -3;\n}\n",
+    "source_sha256": "4dc5722c2af83fd572e455a1c0e57f5c026eaa1767c39c7eb6379b3a76040293",
+    "expected_exit": 4294967293,
+    "expected_stdout": "18 4 8 10 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "82366ccb6fff1491ce042afd4bfa38965c263be490f600f0c04f2d4718964bd6",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "34c1c5c5d00439f7c1d595f69e1d66877d15c1be89c9c03b050c478b574fd0a5",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      }
+    ]
+  },
+  {
+    "case": 5,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 5. All arithmetic is within int. */\nint main(void){\n int sum=-3;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -2;\n}\n",
+    "source_sha256": "93824b64ad4afd6882a2b188a0e4db15fba3032a51bedbb0d846a2a1292912fa",
+    "expected_exit": 4294967294,
+    "expected_stdout": "88 4 78 80 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "6cffd970ccc0226d107a7d86271e60134c9a3ed12d7fcdb7af43bae1ceab0f55",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "cd2491648638796af36e34e02eecb31ee06c52764c35fa48b0edbb14fd996fd2",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      }
+    ]
+  },
+  {
+    "case": 6,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 6. All arithmetic is within int. */\nint main(void){\n int sum=-5;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -1;\n}\n",
+    "source_sha256": "4c9a7429c371bd56f133383b8529cf8bb2638b128251bc56dea8eabb2ee4fd6f",
+    "expected_exit": 4294967295,
+    "expected_stdout": "90 4 79 81 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "083368592a192c73210c5ea1068165809c6fb301a9babb0854f5f1ce041832af",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "e4319dc7c2fba4b6e5d551dde5b19e39ee5036bc5a718b79de623e8a7888c964",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      }
+    ]
+  },
+  {
+    "case": 7,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 7. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 0;\n}\n",
+    "source_sha256": "89396a2a8ceaf2508148f4b7ee1990ba34440d419590a96a7ea1e63a1588dea5",
+    "expected_exit": 0,
+    "expected_stdout": "92 4 82 84 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "a6cabbac546dfbbcf33e6a0e0b5c12dcec0b71ecba96cfc3e07ada43d9584e41",
+        "native_exit": 0,
+        "vm_exit": 0
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "04607fc2703a3d80fd9e9e9eea462380a803626da37cbabbb44270dbf0924b68",
+        "native_exit": 0,
+        "vm_exit": 0
+      }
+    ]
+  },
+  {
+    "case": 8,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 8. All arithmetic is within int. */\nint main(void){\n int sum=2;int count=0;\n for(int j=0;j<9;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 1;\n}\n",
+    "source_sha256": "91cf6123956f51d4ab9df1187341330d6083e23197d6a7e638baa23f1f58c86a",
+    "expected_exit": 1,
+    "expected_stdout": "50 4 40 42 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "baac163e441a91d1287f11d7b82c8037d7b9ad9bd2e4b1fa79a0e3e8193c24f5",
+        "native_exit": 1,
+        "vm_exit": 1
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "2a4005fe28931254dfcb3bb32f66f90b793e4ec68c707b1e74067329be073228",
+        "native_exit": 1,
+        "vm_exit": 1
+      }
+    ]
+  },
+  {
+    "case": 9,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 9. All arithmetic is within int. */\nint main(void){\n int sum=4;int count=0;\n for(int j=0;j<4;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 2;\n}\n",
+    "source_sha256": "5796138e5db156800d991b5c5c21f0d11c47273b50311e2ef9933872d6bc9a9a",
+    "expected_exit": 2,
+    "expected_stdout": "22 4 16 18 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "e5ac9a9c9cb4549f6b4cbe4d32726407e583c763e3d306ffcfb08304d36ad5c8",
+        "native_exit": 2,
+        "vm_exit": 2
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "1075aa9d580e4f6e1b5fc1e989096f7b1b4f90c100235acc8d145abb58589dee",
+        "native_exit": 2,
+        "vm_exit": 2
+      }
+    ]
+  },
+  {
+    "case": 10,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 10. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<12;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 3;\n}\n",
+    "source_sha256": "d5194ec5b794c400bfa2d91707c8ba4382cbdad3c3a40bd7aa8f520b37735ef2",
+    "expected_exit": 3,
+    "expected_stdout": "79 4 69 71 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "2ec064e6def449a40f54d5958ec9d04ef1c7b32d8445642d231bcedb61ae7e08",
+        "native_exit": 3,
+        "vm_exit": 3
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "8fae6131fd094a95d6d800152bed1a77cd01d53edaa262ff6c95b03540bb373a",
+        "native_exit": 3,
+        "vm_exit": 3
+      }
+    ]
+  },
+  {
+    "case": 11,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 11. All arithmetic is within int. */\nint main(void){\n int sum=-3;int count=0;\n for(int j=0;j<1;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 4;\n}\n",
+    "source_sha256": "18b827e71ac75d91c9b8409e6854ee0107c77ad90fbf938e3648cfede5c68f7a",
+    "expected_exit": 4,
+    "expected_stdout": "18 4 9 11 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "137d721d78650dc7cc576fbc191c41a024c8bf8836ad8ad618ae99c61b454723",
+        "native_exit": 4,
+        "vm_exit": 4
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "11310f74c84f92380d9ac3554266bb48b4f78e9ad4c19593304a76413a743ac7",
+        "native_exit": 4,
+        "vm_exit": 4
+      }
+    ]
+  },
+  {
+    "case": 12,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 12. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<12;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 5;\n}\n",
+    "source_sha256": "7ed9bf6c2e34d28ab8979cb8d22c0cfe97c8edb52eaa9fe9b6414bf97ab020bf",
+    "expected_exit": 5,
+    "expected_stdout": "85 4 74 76 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "3a7e8061a7358d70e8994a7206609997156c72b89bc3644686f4ef885cb3cb38",
+        "native_exit": 5,
+        "vm_exit": 5
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "092aa214d088f1d96cd7343a29b2fa5010e2abd67d09cbfb5ac6ca5c597c8863",
+        "native_exit": 5,
+        "vm_exit": 5
+      }
+    ]
+  },
+  {
+    "case": 13,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 13. All arithmetic is within int. */\nint main(void){\n int sum=-2;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 6;\n}\n",
+    "source_sha256": "5221bc9dced25e19c13b7d013f258cbf3adde5fdcf456c5a3971e1a6ad81afa0",
+    "expected_exit": 6,
+    "expected_stdout": "26 4 14 16 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "5cedb061f0b9fbbbab2eb047c7ec917e893dce0cd0fac32b9f20804fe709ad09",
+        "native_exit": 6,
+        "vm_exit": 6
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "863c7e87f4325864801a0d7e02c44c302f7507f4c4c94d27378e7404c680e59d",
+        "native_exit": 6,
+        "vm_exit": 6
+      }
+    ]
+  },
+  {
+    "case": 14,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 14. All arithmetic is within int. */\nint main(void){\n int sum=-5;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 7;\n}\n",
+    "source_sha256": "8c46a1a109bb80268881c341cc60ad8999755f648fdfe2dbf7ca3a23015f8b89",
+    "expected_exit": 7,
+    "expected_stdout": "74 4 67 69 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "fe7526034f4b4f2a8d3d184845f180edee05dab8c84638900cc571d3d0f77df5",
+        "native_exit": 7,
+        "vm_exit": 7
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "2de547f50fad951ded9ad38597e78e17519061efc7be939c55e9299e926cee33",
+        "native_exit": 7,
+        "vm_exit": 7
+      }
+    ]
+  },
+  {
+    "case": 15,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 15. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 8;\n}\n",
+    "source_sha256": "bdf6a4bbc348fb6a09e40eada221739cf42d95c13d1abb0a757b358cd0fd526d",
+    "expected_exit": 8,
+    "expected_stdout": "28 4 20 22 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "0a660c6fd4ce5330973e6b7509de7f154dd860b32ae6f2138d4d659964b42b63",
+        "native_exit": 8,
+        "vm_exit": 8
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "2b6c66b8782cec3d927fcc2a0f05d9ba809728767f18079e594404efc3cc6321",
+        "native_exit": 8,
+        "vm_exit": 8
+      }
+    ]
+  },
+  {
+    "case": 16,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 16. All arithmetic is within int. */\nint main(void){\n int sum=4;int count=0;\n for(int j=0;j<6;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 9;\n}\n",
+    "source_sha256": "338c055377c1a561763018c1e71aea044ce08613c58eb979c052c03d7237e8db",
+    "expected_exit": 9,
+    "expected_stdout": "42 4 31 33 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "7c284870d811514c3167648e1bb2f160e7c93332626bacf1b259f231c168419b",
+        "native_exit": 9,
+        "vm_exit": 9
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "35603fe2bef6213c4eed38fe2a394cafa2d0dc80791f9f52c7ea136da5a3bc9f",
+        "native_exit": 9,
+        "vm_exit": 9
+      }
+    ]
+  },
+  {
+    "case": 17,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 17. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<12;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 10;\n}\n",
+    "source_sha256": "8607aa150d92116f3d76317f1d2a38b942be7f264faf0a5328de06fd890c2efc",
+    "expected_exit": 10,
+    "expected_stdout": "71 4 63 65 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "175b0410cbe27dd93ef3a0e17c08a374648a74ccff695ab1cbff67336c18f87d",
+        "native_exit": 10,
+        "vm_exit": 10
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "8aa5333f98b0445e9797dc8a11da07e22a3c35d5b12f83cedb174a0030e9f6d8",
+        "native_exit": 10,
+        "vm_exit": 10
+      }
+    ]
+  },
+  {
+    "case": 18,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 18. All arithmetic is within int. */\nint main(void){\n int sum=-1;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 11;\n}\n",
+    "source_sha256": "047e39873296a4eeedc3dde4054ef9015e864a7831496d2ad37d0e647bf59881",
+    "expected_exit": 11,
+    "expected_stdout": "82 4 74 76 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "91b635e945af1e8bb1474b4b9a1317f7602db98acd6ccbc5106360c734a0ef84",
+        "native_exit": 11,
+        "vm_exit": 11
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "9cc0661920e2e85df4f37c9282e1abaed4d7f342e12481815f783a2df25ee33b",
+        "native_exit": 11,
+        "vm_exit": 11
+      }
+    ]
+  },
+  {
+    "case": 19,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 19. All arithmetic is within int. */\nint main(void){\n int sum=-1;int count=0;\n for(int j=0;j<10;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 12;\n}\n",
+    "source_sha256": "975060a7d24a89a698e34c9a15636e20e1fc77f666cdbf4b5dfe5cc121137761",
+    "expected_exit": 12,
+    "expected_stdout": "46 4 37 39 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "6718049f5d7b141f8fe716603e20db6f777fb671b9396af4667d57f1e5749f3c",
+        "native_exit": 12,
+        "vm_exit": 12
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "a8fba8581dbe57e7d6333c622335be4061cca56cbecdca86e169fe70ebc48932",
+        "native_exit": 12,
+        "vm_exit": 12
+      }
+    ]
+  },
+  {
+    "case": 20,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 20. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<9;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 13;\n}\n",
+    "source_sha256": "44d17d664612bdfd4f4926d88455f155e32a3a236eb3266343dba3b6083beb2b",
+    "expected_exit": 13,
+    "expected_stdout": "53 4 43 45 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "a767d2fd13aa7974e2dd5b7e5761781cd3595dc086810686bc091d9d434dc9da",
+        "native_exit": 13,
+        "vm_exit": 13
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "4ba309fdfd0bbb853a0bfba9715fc1d2a9ba3132ea81b800c110dc6979d13aa7",
+        "native_exit": 13,
+        "vm_exit": 13
+      }
+    ]
+  },
+  {
+    "case": 21,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 21. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 14;\n}\n",
+    "source_sha256": "8fd3e3ecf7250d67c919a6d3d5c2ea268cbb2b28113e39c5f427633d8ff081fe",
+    "expected_exit": 14,
+    "expected_stdout": "23 4 15 17 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "bb0dbd1bb993fbd65ccb163feb1fc6674db29e840ea67dee4bcbdbac7f02989d",
+        "native_exit": 14,
+        "vm_exit": 14
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "12d7e8dee2645333cca07570728fa806c7fcca6563db26c9b685798b56a2a3bf",
+        "native_exit": 14,
+        "vm_exit": 14
+      }
+    ]
+  },
+  {
+    "case": 22,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 22. All arithmetic is within int. */\nint main(void){\n int sum=-5;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 15;\n}\n",
+    "source_sha256": "e2bf88d0dae501568c029cc9a34b98f15d8e23d060e088fcc8e9566161c528af",
+    "expected_exit": 15,
+    "expected_stdout": "11 4 5 7 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "976c59a48c05b5bcf0419c354783f3831fab66a194f8dfe584f3bacb87bbf2e8",
+        "native_exit": 15,
+        "vm_exit": 15
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "5bfc8baff4b7ab5cb149090a5ed5b9e21a6d3716cf137299ee9d7961826a447b",
+        "native_exit": 15,
+        "vm_exit": 15
+      }
+    ]
+  },
+  {
+    "case": 23,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 23. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<13;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 16;\n}\n",
+    "source_sha256": "d5254d630e3b0c14e2b1ebeb12c614b52305e14bbdc54c763e1a66802f53d045",
+    "expected_exit": 16,
+    "expected_stdout": "93 4 84 86 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "f2c918172be3dccb2c4eb8b912cd7bf983cfe48b6d7b77ed674cbffe37868f3f",
+        "native_exit": 16,
+        "vm_exit": 16
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "f81db09c6887e4e638a03975a2de1abf8559deede3b1c3368c2e29b0252cc2d5",
+        "native_exit": 16,
+        "vm_exit": 16
+      }
+    ]
+  },
+  {
+    "case": 24,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 24. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<5;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 17;\n}\n",
+    "source_sha256": "3dbad1ca053c60224dcddc2bc179db44af95317ac7b906092280afb8e613febd",
+    "expected_exit": 17,
+    "expected_stdout": "28 4 17 19 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "54032423a4ed8079b325aea944fe43964ce9e040b176423c26a439ce05cba6c1",
+        "native_exit": 17,
+        "vm_exit": 17
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "20f428ac504133267c280b0442c55c8b25ffc8c7d40218ebff35123509541ed8",
+        "native_exit": 17,
+        "vm_exit": 17
+      }
+    ]
+  },
+  {
+    "case": 25,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 25. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 18;\n}\n",
+    "source_sha256": "396b2ce002ca5b5cbf0feb91e67fea76d420189f87167192298a82f8d84a433b",
+    "expected_exit": 18,
+    "expected_stdout": "83 4 77 79 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "642ce4efefd4543bb0a70070802522bb8f070a11d21919ccfadf0c32d5d644bf",
+        "native_exit": 18,
+        "vm_exit": 18
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "cf44aa5288615af1e197160b4a8ae9da95d44384112e935413f0e68013165cf5",
+        "native_exit": 18,
+        "vm_exit": 18
+      }
+    ]
+  },
+  {
+    "case": 26,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 26. All arithmetic is within int. */\nint main(void){\n int sum=2;int count=0;\n for(int j=0;j<9;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 19;\n}\n",
+    "source_sha256": "f089ac275c7f0c2631829d70f2ad39b82337e178d13477de1dd4235842ec6ed6",
+    "expected_exit": 19,
+    "expected_stdout": "47 4 38 40 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "b338865752e303e7f89ea28f8baa1dd10cde01162aa009b0c98fefa1627aaf69",
+        "native_exit": 19,
+        "vm_exit": 19
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "47330abd2aca7eabcffcc21f0a9350f2a1991f741b61ca68d4328908d6db27d8",
+        "native_exit": 19,
+        "vm_exit": 19
+      }
+    ]
+  },
+  {
+    "case": 27,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 27. All arithmetic is within int. */\nint main(void){\n int sum=0;int count=0;\n for(int j=0;j<7;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 20;\n}\n",
+    "source_sha256": "92d2cd523947fd52a1d87b5f835098f7f71a05d813d834a3259d798237cac28b",
+    "expected_exit": 20,
+    "expected_stdout": "47 4 35 37 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "e3bb9585ecd7e9123686aa7e7fde9c369e64a0f905e24c4d2ee00842657be5f8",
+        "native_exit": 20,
+        "vm_exit": 20
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "7df50050e46b7a9bf514eb8cc1e8864939cac8d129cdb1492647940c658ea90b",
+        "native_exit": 20,
+        "vm_exit": 20
+      }
+    ]
+  },
+  {
+    "case": 28,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 28. All arithmetic is within int. */\nint main(void){\n int sum=-7;int count=0;\n for(int j=0;j<16;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 21;\n}\n",
+    "source_sha256": "fb5f2be8bfd8808411ed245d63e8270013a167c48959ee82585bf0a07fc7a55f",
+    "expected_exit": 21,
+    "expected_stdout": "88 4 77 79 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "d9e097e419781983a85426c3f3f54aeb3575340d01d0aa00653ed469edc1b293",
+        "native_exit": 21,
+        "vm_exit": 21
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "cac63e0857bdfd253723223d67052450fc3c128dbd1057d9d12754858128ed55",
+        "native_exit": 21,
+        "vm_exit": 21
+      }
+    ]
+  },
+  {
+    "case": 29,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 29. All arithmetic is within int. */\nint main(void){\n int sum=6;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -7;\n}\n",
+    "source_sha256": "05911d3bf2e398121346b12207adb5283f052e424999300b403984e909a1bc2a",
+    "expected_exit": 4294967289,
+    "expected_stdout": "105 4 93 95 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "cc2cc0f6e4acb655092aa6ec258c0aebecabb10c3eecf73f4a8bab8088353582",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "666fe5ecb100f1fdefbe3d3017da6b2fbf913ac259e0a6d6c6105a51a67b514b",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      }
+    ]
+  },
+  {
+    "case": 30,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 30. All arithmetic is within int. */\nint main(void){\n int sum=-3;int count=0;\n for(int j=0;j<5;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -6;\n}\n",
+    "source_sha256": "c0532c2e404cc964cc041a613ef459c77ca1ab2cba91cd25ed88fd3a0e4e65a7",
+    "expected_exit": 4294967290,
+    "expected_stdout": "14 4 8 10 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "8e6d01b33e6a94bb066ea4d0293fbad81dcadc264324dadab655dc103a9e5c20",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "a313f11dc4d335c3bbfb8c9d7b4f36fb92691c52395be1cd21ca726c1a21a5fa",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      }
+    ]
+  },
+  {
+    "case": 31,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 31. All arithmetic is within int. */\nint main(void){\n int sum=7;int count=0;\n for(int j=0;j<1;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -5;\n}\n",
+    "source_sha256": "2a15d2db7a4f98245018a243141ebe77a475e963a48abb60bd0cdc190266539a",
+    "expected_exit": 4294967291,
+    "expected_stdout": "22 4 16 18 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "080b34cda28314e7f7692e352ca7c7bb02e28fd46e71d1a7b8d3a8d7cea0799f",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "af9a5d776edc678ef5f1732df7deb41e08c66a4fb39a1e68cae86d8643973c78",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      }
+    ]
+  },
+  {
+    "case": 32,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 32. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<11;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -4;\n}\n",
+    "source_sha256": "b624eefdfac86a5c7bb152c43d44cca5041b019d40ca0f931f9d73ef7be82e2c",
+    "expected_exit": 4294967292,
+    "expected_stdout": "62 4 53 55 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "14e7445f8de10ca31c059657fec481c202d4f6b716565777bd4a883bfc823e0b",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "3a2cf492a2b1a9d8eec50d277ef7e419b5260d1b1d4d6a8fa8f24ee601249187",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      }
+    ]
+  },
+  {
+    "case": 33,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 33. All arithmetic is within int. */\nint main(void){\n int sum=6;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -3;\n}\n",
+    "source_sha256": "6ea879403c45b5e5baf86e7e964f5cd4fa48579277126890c012e8b75fd3aeda",
+    "expected_exit": 4294967293,
+    "expected_stdout": "24 4 17 19 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "5c6de683bdb8c37abaeabba9bbf8ab114b50e5128fd1b2d068dc8edb5fdad7c3",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "2bbf0e15874415a7c1d70b23e06472a6cc1328fbee562cd888e346e624e6c5ea",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      }
+    ]
+  },
+  {
+    "case": 34,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 34. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -2;\n}\n",
+    "source_sha256": "0626f831765207b367f8fe18ca7fe75c932f6e882a8bbe29f7bd36d83034b53a",
+    "expected_exit": 4294967294,
+    "expected_stdout": "78 4 72 74 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "0fea654b53ad0c394fdefff1d4c08ca3c0adc1da0bbeb6e6649e4f0896707e17",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "32c6b8fc94233bc97772bb5e948f4751e1536e372172d48c4c74694124cabdfc",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      }
+    ]
+  },
+  {
+    "case": 35,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 35. All arithmetic is within int. */\nint main(void){\n int sum=-2;int count=0;\n for(int j=0;j<16;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -1;\n}\n",
+    "source_sha256": "49798e1ae99a11f5d54dbdf710f364d25088bbcc41c78b9ae4a4d8e27de897e6",
+    "expected_exit": 4294967295,
+    "expected_stdout": "89 4 79 81 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "d6de83c7fb2142087506e8ea07189959543026a19e17c217ab8eb6923a2c4a77",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "619974f9f0810e3e911648fa0af81cf27d0407fcf52af7ea4878e15682a47670",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      }
+    ]
+  },
+  {
+    "case": 36,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 36. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<6;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 0;\n}\n",
+    "source_sha256": "cb9965ac39eb044378486e59f4ddb10957d3dfbd67208d356be2f5e6baadb6a8",
+    "expected_exit": 0,
+    "expected_stdout": "33 4 24 26 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "1cc72093b5f877e351305ab62fbb18a643c09a374cb01f79305d723475142e7b",
+        "native_exit": 0,
+        "vm_exit": 0
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "913a232937207a8523ae85cb148bd04cc066190f6a1a7666729086ed245d86e5",
+        "native_exit": 0,
+        "vm_exit": 0
+      }
+    ]
+  },
+  {
+    "case": 37,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 37. All arithmetic is within int. */\nint main(void){\n int sum=7;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 1;\n}\n",
+    "source_sha256": "2d4367ab92248ddff33d7f377f2f9d3c8d9a1252babbb040e4ea39890225d6d2",
+    "expected_exit": 1,
+    "expected_stdout": "31 4 21 23 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "9640c35bdf0353ae3b17649c6af3680c9ab963d1692c8c12d19b364c97354018",
+        "native_exit": 1,
+        "vm_exit": 1
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "7e9a53d681effbacfc19aab027ec627a04df6330f51e0ba4599ae96f1af757b2",
+        "native_exit": 1,
+        "vm_exit": 1
+      }
+    ]
+  },
+  {
+    "case": 38,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 38. All arithmetic is within int. */\nint main(void){\n int sum=-5;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 2;\n}\n",
+    "source_sha256": "0d954d15e0e9115b21e1e55c7c34eed34d222834a1dbf2180c2be6c99b86709c",
+    "expected_exit": 2,
+    "expected_stdout": "13 4 6 8 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "25a0eebfb26e182656d78d8ad8003209e57082161194e1051c9c32d4a06e6a57",
+        "native_exit": 2,
+        "vm_exit": 2
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "b418203394d7711ce08860369d8c378f466bc87cbe39cdf8d1e12019f9845578",
+        "native_exit": 2,
+        "vm_exit": 2
+      }
+    ]
+  },
+  {
+    "case": 39,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 39. All arithmetic is within int. */\nint main(void){\n int sum=-2;int count=0;\n for(int j=0;j<10;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 3;\n}\n",
+    "source_sha256": "f2a930c2407e1bbb82a5ffbc4077b012b39676c09c3dc57f1e0984c71e964990",
+    "expected_exit": 3,
+    "expected_stdout": "39 4 32 34 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "94c7ea1c1cbadbe2f170260d147304b8b3214fbdedac5aade8a3f479345bd34f",
+        "native_exit": 3,
+        "vm_exit": 3
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "b0fedbafac6fc845634e4e6204fb1ee7c9e88cf65a39a3b8f9a4486f92f50a52",
+        "native_exit": 3,
+        "vm_exit": 3
+      }
+    ]
+  },
+  {
+    "case": 40,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 40. All arithmetic is within int. */\nint main(void){\n int sum=-3;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 4;\n}\n",
+    "source_sha256": "32e54582990468a9948e488ee766037738ce27d0abe35e1e84615f0e8554235c",
+    "expected_exit": 4,
+    "expected_stdout": "92 4 81 83 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "85e1556d960990918ff9d10a392711289e133b06151688fd69aaaef331afa0ba",
+        "native_exit": 4,
+        "vm_exit": 4
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "6964920821e81991a3fc88f9c59984439b99e03e68bab022e1bfc51754ba9ff2",
+        "native_exit": 4,
+        "vm_exit": 4
+      }
+    ]
+  },
+  {
+    "case": 41,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 41. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<16;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 5;\n}\n",
+    "source_sha256": "af5b2f999f529a0fd323d3addf9947d0041dd393ef44c5df451d9596b9e1df5f",
+    "expected_exit": 5,
+    "expected_stdout": "98 4 87 89 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "9126bda1d024a946c4c8f4aca0dafea516d1e909f4f4c694219903d0c77f90c7",
+        "native_exit": 5,
+        "vm_exit": 5
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "41cc371b89d6d8f8bacbbf03295a592c27ce7b3fda4ceb3126921ba7e781bd4e",
+        "native_exit": 5,
+        "vm_exit": 5
+      }
+    ]
+  },
+  {
+    "case": 42,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 42. All arithmetic is within int. */\nint main(void){\n int sum=-7;int count=0;\n for(int j=0;j<1;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 6;\n}\n",
+    "source_sha256": "9f186462093abc08500a61bf5db549f5622316512cbfe2a32e034548e624f081",
+    "expected_exit": 6,
+    "expected_stdout": "14 4 5 7 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "ecc3730f39e09712673908cf4a70bcbbbc6383beb18ab4f2805bc166d0895181",
+        "native_exit": 6,
+        "vm_exit": 6
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "9c9a0651c8012e37b307ba7b9436c1da4b71e497f425ef933413aa47ebc120ab",
+        "native_exit": 6,
+        "vm_exit": 6
+      }
+    ]
+  },
+  {
+    "case": 43,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 43. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 7;\n}\n",
+    "source_sha256": "1390ca226e7060c1292d09bf2b4418b94d29ce2d7d2dd5bdf925bd546de61ca3",
+    "expected_exit": 7,
+    "expected_stdout": "88 4 80 82 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "88ddee16ffd756fc047f2f3ab25e97339cf8c4a6f10f735bdde0356b8ac103a1",
+        "native_exit": 7,
+        "vm_exit": 7
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "fa71ad80437ccee22bcd46271c2ed960900447bb031e77b4d0c3b1ee6d30c77f",
+        "native_exit": 7,
+        "vm_exit": 7
+      }
+    ]
+  },
+  {
+    "case": 44,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 44. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 8;\n}\n",
+    "source_sha256": "0340ea6a4baeeda3146bf02afdcb14283347eb61e53ea02bfa46918b271f919c",
+    "expected_exit": 8,
+    "expected_stdout": "34 4 23 25 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "f20b815929438b6f030fc968414757ad81677086f3c410d1b7d02080c36241a4",
+        "native_exit": 8,
+        "vm_exit": 8
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "c3ae91332068e56ed2b710423993a17ee0da13a9be7a8d9203bee418d6858907",
+        "native_exit": 8,
+        "vm_exit": 8
+      }
+    ]
+  },
+  {
+    "case": 45,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 45. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 9;\n}\n",
+    "source_sha256": "a572d11aef0a66d66ba2f65974a39d19ce227d82f6edb4e2c341036025988c04",
+    "expected_exit": 9,
+    "expected_stdout": "25 4 17 19 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "c3087003a7c70ee68f2e6a27725fcbf8ed85b35be41a3955ea1d6f3d304a29e9",
+        "native_exit": 9,
+        "vm_exit": 9
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "9055bfca83aa103c4930a505d922298b0aa2ca56406b834aaa655fc799d0715f",
+        "native_exit": 9,
+        "vm_exit": 9
+      }
+    ]
+  },
+  {
+    "case": 46,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 46. All arithmetic is within int. */\nint main(void){\n int sum=0;int count=0;\n for(int j=0;j<16;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 10;\n}\n",
+    "source_sha256": "ac5b90f809542c06f70ebc6e9a3cf0c23fe6bd6a60edaa7aa8b4e241c753c661",
+    "expected_exit": 10,
+    "expected_stdout": "91 4 81 83 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "09d8cc0dfc53c8a5ecad6f2cc367b12407f7253fc931da45e4de260b3f328b16",
+        "native_exit": 10,
+        "vm_exit": 10
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "21ce879aa3e7250b878c6bd479723ba91907cac4ca2fe4174fd4fcf29fee6534",
+        "native_exit": 10,
+        "vm_exit": 10
+      }
+    ]
+  },
+  {
+    "case": 47,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 47. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 11;\n}\n",
+    "source_sha256": "175befa18925710450409361d02ae805d17336cbd4def1c97a065756ac6377ee",
+    "expected_exit": 11,
+    "expected_stdout": "76 4 70 72 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "7063a16815b70c742a50657960381823a3c5cdca048998b319fd2b6f5a077abf",
+        "native_exit": 11,
+        "vm_exit": 11
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "1f7fdc7436fc19b807a4181b15126ba6754bf81cce0eb54822f476a347510f01",
+        "native_exit": 11,
+        "vm_exit": 11
+      }
+    ]
+  },
+  {
+    "case": 48,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 48. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 12;\n}\n",
+    "source_sha256": "3dc47dbe1d71d522860b53655ad241de314f49942269f305a274552d5a71e58e",
+    "expected_exit": 12,
+    "expected_stdout": "80 4 73 75 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "980f0a508f8ae0ff744725bf238c14ddaf96715a975b3e705f270a127704da1c",
+        "native_exit": 12,
+        "vm_exit": 12
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "e76dfc24ab7be66fed755ce01f1a087fbe30a31af7403215dc51c62eb1fdf912",
+        "native_exit": 12,
+        "vm_exit": 12
+      }
+    ]
+  },
+  {
+    "case": 49,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 49. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<13;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 13;\n}\n",
+    "source_sha256": "aa3b334142db761689ab05b54a51bbe131d01089fc8401ced8ade479295b6832",
+    "expected_exit": 13,
+    "expected_stdout": "100 4 88 90 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "4496963779e1f1d385c8fe8a9f53a2a37a4884df473aed338eb44c78d4dbc6f3",
+        "native_exit": 13,
+        "vm_exit": 13
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "ce23af64af8920990b0632cca86d6f642436b9daa4d420e886b4d124a2c315fe",
+        "native_exit": 13,
+        "vm_exit": 13
+      }
+    ]
+  },
+  {
+    "case": 50,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 50. All arithmetic is within int. */\nint main(void){\n int sum=6;int count=0;\n for(int j=0;j<9;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 14;\n}\n",
+    "source_sha256": "4b3b86cfce25c18bbd67c74e425a12507696367eaf80c3ff5214d661f401aeaa",
+    "expected_exit": 14,
+    "expected_stdout": "60 4 48 50 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "bafb8f74e38bcfd435555bff06f18aada72c13302038e123cf0689a391e4a0df",
+        "native_exit": 14,
+        "vm_exit": 14
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "ab97739f0503a79ae33890bd01f06b6ce9f2f93fdca1f4fbedab988d110f3ad6",
+        "native_exit": 14,
+        "vm_exit": 14
+      }
+    ]
+  },
+  {
+    "case": 51,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 51. All arithmetic is within int. */\nint main(void){\n int sum=-6;int count=0;\n for(int j=0;j<16;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 15;\n}\n",
+    "source_sha256": "5261685bc1086fb4e1014f9f05498e06fdbe0f605c557b47cc389129da530893",
+    "expected_exit": 15,
+    "expected_stdout": "73 4 66 68 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "d6f25dfac610d1de6b99401108b366b099114a9692fb45a1cb58db65c836580f",
+        "native_exit": 15,
+        "vm_exit": 15
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "d57a3f6bd9feb3b8a2ec15be9641057e0210e810094e9c91931f62cc5e4169a1",
+        "native_exit": 15,
+        "vm_exit": 15
+      }
+    ]
+  },
+  {
+    "case": 52,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 52. All arithmetic is within int. */\nint main(void){\n int sum=-6;int count=0;\n for(int j=0;j<7;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 16;\n}\n",
+    "source_sha256": "5be6257adabb01449bbf25892597635328d39d2d728aaa1e48d31e8a52cd83dc",
+    "expected_exit": 16,
+    "expected_stdout": "38 4 27 29 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "973400d9a2c439814a4e5956a9e42974231f4c8d8cd9caac032604dd37000d48",
+        "native_exit": 16,
+        "vm_exit": 16
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "b751d1a8d3030184caa9e0f32158183ced2b44efa2ffdcdaac055afce80d1489",
+        "native_exit": 16,
+        "vm_exit": 16
+      }
+    ]
+  },
+  {
+    "case": 53,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 53. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 17;\n}\n",
+    "source_sha256": "ecc92619e1756887226af07720cf60bb7c23958e08166e61a4dc24732eda4a93",
+    "expected_exit": 17,
+    "expected_stdout": "100 4 89 91 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "6f4acb3139430ff10e0ce2476c59eb02714435e7d7453f07610054726559d4ac",
+        "native_exit": 17,
+        "vm_exit": 17
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "b07976944e03a43fc568b02050589bdf35233e066483f4688cf1a0106ba677b9",
+        "native_exit": 17,
+        "vm_exit": 17
+      }
+    ]
+  },
+  {
+    "case": 54,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 54. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<7;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 18;\n}\n",
+    "source_sha256": "39e714fcb9d1388a54678fe78d2cd7b50088affdd0e5ddf2641ceadcd3cb03fb",
+    "expected_exit": 18,
+    "expected_stdout": "38 4 30 32 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "629d316349332d817e3e95bc399c7db77b761063d49eecd6cd69897f1085052e",
+        "native_exit": 18,
+        "vm_exit": 18
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "8d24e5862835987b6f7c96cbe572d8504fc8aea89d83f51eba58d8c0d66a019c",
+        "native_exit": 18,
+        "vm_exit": 18
+      }
+    ]
+  },
+  {
+    "case": 55,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 55. All arithmetic is within int. */\nint main(void){\n int sum=2;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 19;\n}\n",
+    "source_sha256": "c8793523804454ca8f66d91b25f4a46aee20084ccd2b5053454035d6c83d1c3c",
+    "expected_exit": 19,
+    "expected_stdout": "97 4 86 88 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "fe956f72c47e0f01231841827acf0b2d16046d92295d3a87cdc522241501efd1",
+        "native_exit": 19,
+        "vm_exit": 19
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "b2078e2578593b12ec36255d164433094fbda5812f7bcefc19fe4f61ad9b981a",
+        "native_exit": 19,
+        "vm_exit": 19
+      }
+    ]
+  },
+  {
+    "case": 56,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 56. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<9;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 20;\n}\n",
+    "source_sha256": "79fe5d6a708ad73726539c12ba2184a498727267cb16d8be258519e8ef0cfa39",
+    "expected_exit": 20,
+    "expected_stdout": "53 4 43 45 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "c61bf11533b0277edbd67aa568ed6dbafce4a68ab2f25715d4ca78ae5866718a",
+        "native_exit": 20,
+        "vm_exit": 20
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "c3ce23419c212e6d57308fc15acd6a8ef0241d7eba0b167f791cac4775795240",
+        "native_exit": 20,
+        "vm_exit": 20
+      }
+    ]
+  },
+  {
+    "case": 57,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 57. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 21;\n}\n",
+    "source_sha256": "6931d00b3fd611e99a3417eaf4b657a53d90d250c4303c2c36c01153f1d2a2b7",
+    "expected_exit": 21,
+    "expected_stdout": "92 4 82 84 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "6296688c34753f823b0cb5084894c48a65c523a5eb23fe0eb2ab598f7f0fa86a",
+        "native_exit": 21,
+        "vm_exit": 21
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "8890a1d225308e42e52746a662b47ec15154669f4498f09ff3888bd93650f20c",
+        "native_exit": 21,
+        "vm_exit": 21
+      }
+    ]
+  },
+  {
+    "case": 58,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 58. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<8;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -7;\n}\n",
+    "source_sha256": "b1c17233b6ebf87ac05a68b0acf81fe68f408b35d93b34121457871a28fb67d4",
+    "expected_exit": 4294967289,
+    "expected_stdout": "48 4 40 42 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "f5f04d81e76b6d8170e07f0bee27277c1b128eca80ac14c87ad2225ed49ea90e",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "cc8398dbb6c42592044044522d9f05e8ab03a4c2e2ff54f9a644387c20a95988",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      }
+    ]
+  },
+  {
+    "case": 59,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 59. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -6;\n}\n",
+    "source_sha256": "1c0628542dabac749749303787ce16df5a843334590878bcef4144375d6a878a",
+    "expected_exit": 4294967290,
+    "expected_stdout": "34 4 23 25 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "278f25e999c64ef022c7bf92666cf6c0c7e02bc234e703aeacec7c1d99ed017b",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "1b3da00728632f543e6645dea5f503f0cf495e04dc78ecebf69365c0e168e76e",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      }
+    ]
+  },
+  {
+    "case": 60,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 60. All arithmetic is within int. */\nint main(void){\n int sum=-6;int count=0;\n for(int j=0;j<13;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -5;\n}\n",
+    "source_sha256": "2a2a1ff22db52f674cf7e46124f55ad4d0dfd37acccef2291e58f1e661a533d0",
+    "expected_exit": 4294967291,
+    "expected_stdout": "87 4 76 78 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "de7d18f6d5a5fb07667f1ec37891ccd4e1af9a90e639652652dda99f25987e79",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "f221572039bd120bbf323cc6b4d9f917927c478bfc29d1770d56321adeebcdf3",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      }
+    ]
+  },
+  {
+    "case": 61,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 61. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<10;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -4;\n}\n",
+    "source_sha256": "45502af4f001ecbd7e3ee77f89acc164de1184ee01565c18555d52fb1c85cb39",
+    "expected_exit": 4294967292,
+    "expected_stdout": "48 4 39 41 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "58d5dc4f0a000796ed0807caa563a9ab16943772702f05655ce14ed5e0851ec5",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "bcf3d5d1a84bf053033545dc6fe3affb3058aae42e5616b574d69f619a4315f0",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      }
+    ]
+  },
+  {
+    "case": 62,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 62. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<16;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -3;\n}\n",
+    "source_sha256": "eca4e0f79787cfba4d304638e24752e973f1f0f9f8b449cfb743d0fcf7569175",
+    "expected_exit": 4294967293,
+    "expected_stdout": "107 4 95 97 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "e11fe943c6b144297148ec94801883aeda9b6e5d4045824ba752f40851d40fde",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "196ff18ec42c1ebd60b9d3d7fe71240ae72688aa4a17a28645bf1f3a89a3cdc9",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      }
+    ]
+  },
+  {
+    "case": 63,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 63. All arithmetic is within int. */\nint main(void){\n int sum=-8;int count=0;\n for(int j=0;j<10;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -2;\n}\n",
+    "source_sha256": "e798dbe958c7563a42d3ae564692b7a1985673d4800db2194797442bd6b60524",
+    "expected_exit": 4294967294,
+    "expected_stdout": "30 4 24 26 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "835b236994c1284ec3d66a134c879553b8a611e462dc95412d654a92875e73fd",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "a235e03636573296fe01bd2036a7a79b37a06056eb74cd3bae849998a29b0381",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      }
+    ]
+  },
+  {
+    "case": 64,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 64. All arithmetic is within int. */\nint main(void){\n int sum=2;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -1;\n}\n",
+    "source_sha256": "8275e7fd33f6d4ae8b14a8c5d856caf69708caea3032cb7206fbc93932f03978",
+    "expected_exit": 4294967295,
+    "expected_stdout": "24 4 15 17 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "4d53267eb41e97f55da2f0a8b7121899802b88fbf50fffa6152df11d9db47578",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "1bc1c8520ecab7600491e84b637bb309e397f1b52e6c17f12fb3162b1de502a0",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      }
+    ]
+  },
+  {
+    "case": 65,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 65. All arithmetic is within int. */\nint main(void){\n int sum=-3;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 0;\n}\n",
+    "source_sha256": "eed7411d87d52958bad032259ad8f7ab8f399b6aa04dd500b944d957093b67fb",
+    "expected_exit": 0,
+    "expected_stdout": "25 4 13 15 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "609fdfcc4660382bd76d8fe86af602ff00ba51b372b74db22e4ff2b307cf1f0b",
+        "native_exit": 0,
+        "vm_exit": 0
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "6c471666531c4397a5de109cc5a532dcc10b69bc5d10e238d77f87481c440131",
+        "native_exit": 0,
+        "vm_exit": 0
+      }
+    ]
+  },
+  {
+    "case": 66,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 66. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<7;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 1;\n}\n",
+    "source_sha256": "83312ea7e8e2b29df2350acc0018e7a6c23ee8f0440e46571311af44417bf80c",
+    "expected_exit": 1,
+    "expected_stdout": "55 4 43 45 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "bec31e82be3b8ef0ca2426b192ab4bf27e7dd5c0b1439876eaf8f9eea57743ce",
+        "native_exit": 1,
+        "vm_exit": 1
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "a147a358ebf15e2df9893f060e1859787b72ca488b60a351a9088b818ed0ecd1",
+        "native_exit": 1,
+        "vm_exit": 1
+      }
+    ]
+  },
+  {
+    "case": 67,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 67. All arithmetic is within int. */\nint main(void){\n int sum=-2;int count=0;\n for(int j=0;j<9;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 2;\n}\n",
+    "source_sha256": "71c1195d72a01fcf0e51c1a1ab0c5851ab9a50d0cd9cff193a2a33081e62234f",
+    "expected_exit": 2,
+    "expected_stdout": "34 4 28 30 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "687a2fddfeaf000720d7167e0ae24749527ff293b8b127ceaf12579f5be62f2b",
+        "native_exit": 2,
+        "vm_exit": 2
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "a52bfcf21cc9a38d0c8eb6b4542ebe9e05e19fcf243ec89c4fa440ecffdc39aa",
+        "native_exit": 2,
+        "vm_exit": 2
+      }
+    ]
+  },
+  {
+    "case": 68,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 68. All arithmetic is within int. */\nint main(void){\n int sum=-7;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 3;\n}\n",
+    "source_sha256": "12e09e5c33d0c3cd2ea870dd6b91dd46ec06a878e6b72c146e6261f3559cb10f",
+    "expected_exit": 3,
+    "expected_stdout": "76 4 68 70 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "62c20fa3dc307c5afe2dd7a3bf7ed3083d0e18d2abe02f1bd573171c4ca0615d",
+        "native_exit": 3,
+        "vm_exit": 3
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "27b5862f2d7732ac50883f117a530afe2cb1f769ddabf430725aa6770b86c0e8",
+        "native_exit": 3,
+        "vm_exit": 3
+      }
+    ]
+  },
+  {
+    "case": 69,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 69. All arithmetic is within int. */\nint main(void){\n int sum=-2;int count=0;\n for(int j=0;j<6;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 4;\n}\n",
+    "source_sha256": "c6d2d40b3c46111b776371ea5678de5443bf0d6e031bd769a4675b3b9e4190e2",
+    "expected_exit": 4,
+    "expected_stdout": "21 4 15 17 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "8f8f4b3f54a6f376c312f291d82fee90955a98355383b8dc58b76b23262dd0ad",
+        "native_exit": 4,
+        "vm_exit": 4
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "673f127c13d67a5a903f88dd5d471bbef1ff0992b5a5cca52583d6f934342462",
+        "native_exit": 4,
+        "vm_exit": 4
+      }
+    ]
+  },
+  {
+    "case": 70,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 70. All arithmetic is within int. */\nint main(void){\n int sum=2;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 5;\n}\n",
+    "source_sha256": "56345b7f873fbe673ad3b93cb1fff5b13ba05ba9536d2e8fa0d3553b6e6f8f3c",
+    "expected_exit": 5,
+    "expected_stdout": "85 4 77 79 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "f81f9e450eeb0089e833c5642e315ef6b65b0de4aa9a0819398505eaa8c5ea58",
+        "native_exit": 5,
+        "vm_exit": 5
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "87fcfd61ffa25e7bad424d5dfedcc1e854526d86e81f504bbb8fd6790efc5277",
+        "native_exit": 5,
+        "vm_exit": 5
+      }
+    ]
+  },
+  {
+    "case": 71,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 71. All arithmetic is within int. */\nint main(void){\n int sum=-5;int count=0;\n for(int j=0;j<6;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 6;\n}\n",
+    "source_sha256": "d92646990469d1ce06560025e73e44db69ac81782be45263da2a35828e7f7315",
+    "expected_exit": 6,
+    "expected_stdout": "21 4 14 16 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "3ab6c318d99e38ee9bb425fcb9ac2307d3c5fe1339dcdd7a7343f2403e141d5b",
+        "native_exit": 6,
+        "vm_exit": 6
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "0805c40638cf879644930e05ca664be2d97f3b589f6d16e9e4db3c8b4ae50469",
+        "native_exit": 6,
+        "vm_exit": 6
+      }
+    ]
+  },
+  {
+    "case": 72,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 72. All arithmetic is within int. */\nint main(void){\n int sum=-8;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 7;\n}\n",
+    "source_sha256": "cf315f6862ceeecff2a91ac159dee376abab843d815d25f488a2c5c13107619a",
+    "expected_exit": 7,
+    "expected_stdout": "91 4 79 81 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "c2da7209e2eced1ffd96f3ee5b675850fb26e87527af9c413ee4b7528bb27553",
+        "native_exit": 7,
+        "vm_exit": 7
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "7f7c4fa0730c56e5d9f6d154127f14f8f36f78a89aff701b1166e3d5acdb059b",
+        "native_exit": 7,
+        "vm_exit": 7
+      }
+    ]
+  },
+  {
+    "case": 73,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 73. All arithmetic is within int. */\nint main(void){\n int sum=-1;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 8;\n}\n",
+    "source_sha256": "feb7354d65a890f03dbd8030a707457a82440310d23be041622a8c5389eb3196",
+    "expected_exit": 8,
+    "expected_stdout": "98 4 86 88 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "5acff944a3bfb930b5f915e8d1c3c81bc0a3950ac326af39fb0481df1936df85",
+        "native_exit": 8,
+        "vm_exit": 8
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "edb520f1964304706473c5236c44eb245183541b31b24a9bdd5fffc6f098adf5",
+        "native_exit": 8,
+        "vm_exit": 8
+      }
+    ]
+  },
+  {
+    "case": 74,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 74. All arithmetic is within int. */\nint main(void){\n int sum=-6;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 9;\n}\n",
+    "source_sha256": "8d556bc29c6c4e7d7f31c5a1a126594ed66846e828befd09e822a0393ca4a49f",
+    "expected_exit": 9,
+    "expected_stdout": "73 4 66 68 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "182f9399825714e8590a06b80ae1341afc6b29e45ca143227feefe9ce9232092",
+        "native_exit": 9,
+        "vm_exit": 9
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "5e5f9fde256f11beb76078f44a4ea4c60d5d40fb93668309aa7cf1d407a2d9d7",
+        "native_exit": 9,
+        "vm_exit": 9
+      }
+    ]
+  },
+  {
+    "case": 75,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 75. All arithmetic is within int. */\nint main(void){\n int sum=-8;int count=0;\n for(int j=0;j<6;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 10;\n}\n",
+    "source_sha256": "077b87e8c0ff419c86c27adb16bb140e763a931f8a246d64b648f0b9b4ecdc28",
+    "expected_exit": 10,
+    "expected_stdout": "24 4 15 17 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "1532ee4ca38fb85508263cdad21b3a6975c4b133cfc08ce1a9e9e47ed1dfc364",
+        "native_exit": 10,
+        "vm_exit": 10
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "ad4707823d71a50765b0d8b917b8cf5b87d77a229c300750cbac6d3eb3fcf37b",
+        "native_exit": 10,
+        "vm_exit": 10
+      }
+    ]
+  },
+  {
+    "case": 76,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 76. All arithmetic is within int. */\nint main(void){\n int sum=6;int count=0;\n for(int j=0;j<12;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 11;\n}\n",
+    "source_sha256": "41e956b68ca27a84aa6999595ca8e4a0ede927bb2c00d866ca780b88c3236607",
+    "expected_exit": 11,
+    "expected_stdout": "82 4 72 74 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "cdf1b473216800134d75ccd41ce322369df46b0da17991af3897f2c79e6b423f",
+        "native_exit": 11,
+        "vm_exit": 11
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "46455427288debacdfd1c90062306154db1eaf2be3437fe533e1ffe3d47f3e9c",
+        "native_exit": 11,
+        "vm_exit": 11
+      }
+    ]
+  },
+  {
+    "case": 77,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 77. All arithmetic is within int. */\nint main(void){\n int sum=-1;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 12;\n}\n",
+    "source_sha256": "5dde0ec6ebb1397ffbcdcd84de2d99fb12d263ee49aafb3b8eb6b3fbb261d7fa",
+    "expected_exit": 12,
+    "expected_stdout": "23 4 13 15 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "966168f2e92255d27173916d5bd4b21742396af531c1b5a5d928bd4b0f979c96",
+        "native_exit": 12,
+        "vm_exit": 12
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "baf2b28f37e130750ad63016c29df3e3f06384f3731b233aab3fdb19c77decd2",
+        "native_exit": 12,
+        "vm_exit": 12
+      }
+    ]
+  },
+  {
+    "case": 78,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 78. All arithmetic is within int. */\nint main(void){\n int sum=1;int count=0;\n for(int j=0;j<13;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 13;\n}\n",
+    "source_sha256": "bb47131f0d804b04650489c4945fd206f72106e7eb4ec53c55e4e7ff59911837",
+    "expected_exit": 13,
+    "expected_stdout": "82 4 74 76 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "502ce67ff6bb8fcf15d8c55a9a7e7f270a1c3c3d1165020f09f8b0739b28bb4a",
+        "native_exit": 13,
+        "vm_exit": 13
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "3ca35d4f0f89350e37c56d2517750d40cffe4dbe5459f295520971b410657df1",
+        "native_exit": 13,
+        "vm_exit": 13
+      }
+    ]
+  },
+  {
+    "case": 79,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 79. All arithmetic is within int. */\nint main(void){\n int sum=-1;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=6;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=6;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 14;\n}\n",
+    "source_sha256": "33c01b135fb9794f54d02818b50edda2eaca46d99ce78f0f149387af06c3e961",
+    "expected_exit": 14,
+    "expected_stdout": "94 4 83 85 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "d97a63580ac5dd0c47f4a8365336e7d79e2fbd430cff7b6d9595c0b8aac11bee",
+        "native_exit": 14,
+        "vm_exit": 14
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "000f8d53da4db4cf6737e1101259bb84fbaf29433a1fc5c28840a8b9c9870199",
+        "native_exit": 14,
+        "vm_exit": 14
+      }
+    ]
+  },
+  {
+    "case": 80,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 80. All arithmetic is within int. */\nint main(void){\n int sum=-8;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 15;\n}\n",
+    "source_sha256": "7f1fb14ed50839df0b1b279953d729cc638e4c0a8622108daaf52c30389e3a9f",
+    "expected_exit": 15,
+    "expected_stdout": "16 4 6 8 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "11aeb0d89f0edb1097847d9f04ba3312637635fddf9962c1af0b1dbad6a4c47c",
+        "native_exit": 15,
+        "vm_exit": 15
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "d4e2dfa7e68e5f1d82fd1e2ad3083f0cfc84e7c1c2b66d5c6ecb393b407299c5",
+        "native_exit": 15,
+        "vm_exit": 15
+      }
+    ]
+  },
+  {
+    "case": 81,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 81. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<7;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 16;\n}\n",
+    "source_sha256": "680944480484f60916287f1b46aa334c540ce2c7627b7f19f8c328c539f3f7f5",
+    "expected_exit": 16,
+    "expected_stdout": "50 4 38 40 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "06f5ddf39f674e486c92812128154a607a50189a1d41799993383c3eb44b9ca3",
+        "native_exit": 16,
+        "vm_exit": 16
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "c31114306a76110ff2752db5ed9daebace16d532d8cbb5399bb41a5181adde74",
+        "native_exit": 16,
+        "vm_exit": 16
+      }
+    ]
+  },
+  {
+    "case": 82,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 82. All arithmetic is within int. */\nint main(void){\n int sum=8;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 17;\n}\n",
+    "source_sha256": "897597e086b72c98bfacddb9c67b31808e78080acf98aa562e21ae23a9d0afbb",
+    "expected_exit": 17,
+    "expected_stdout": "87 4 80 82 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "fe8da2d1e9575d9eb94ae9387bbae2355f94757fa46fa5e693915ee687d6f3c6",
+        "native_exit": 17,
+        "vm_exit": 17
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "090d9e6c47e94b01dfed808bb410ee21a5cf949fd676e9006c8e9f990d006331",
+        "native_exit": 17,
+        "vm_exit": 17
+      }
+    ]
+  },
+  {
+    "case": 83,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 83. All arithmetic is within int. */\nint main(void){\n int sum=-6;int count=0;\n for(int j=0;j<12;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 18;\n}\n",
+    "source_sha256": "7d362ce6f670781667e9e7bc8cccf869a6a2bb974c0f59ec9b462c03f7ab81cd",
+    "expected_exit": 18,
+    "expected_stdout": "78 4 66 68 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "98cbab91945401e91331ba779747aacbe6826e2b10f3add26e7b6675bd236408",
+        "native_exit": 18,
+        "vm_exit": 18
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "d95b3d821438e255e45008d0f62b76a6eda253c90b4f75d04eaeba6f3acfbbdc",
+        "native_exit": 18,
+        "vm_exit": 18
+      }
+    ]
+  },
+  {
+    "case": 84,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 84. All arithmetic is within int. */\nint main(void){\n int sum=-5;int count=0;\n for(int j=0;j<10;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 19;\n}\n",
+    "source_sha256": "4e858489d99f266db69f85775b6ebd1863a5de185e0b4cd68220bb9b1c80c51e",
+    "expected_exit": 19,
+    "expected_stdout": "51 4 39 41 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "5ebbaf6d515c00545a5ab78bbf5fe242873d6c1d04ce3d649bfac2cc0f964e27",
+        "native_exit": 19,
+        "vm_exit": 19
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "d9de16d9d9025e0f3cbdeb743c3b2c6dbe1cfe0c7c88be273cf1fc07a99d3763",
+        "native_exit": 19,
+        "vm_exit": 19
+      }
+    ]
+  },
+  {
+    "case": 85,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 85. All arithmetic is within int. */\nint main(void){\n int sum=3;int count=0;\n for(int j=0;j<11;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 20;\n}\n",
+    "source_sha256": "6824f19f51176e79064a9ffbf32f9f8d1edeb5d9f3210766c3602a830e27a52a",
+    "expected_exit": 20,
+    "expected_stdout": "60 4 52 54 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "76b36f1ba057e2fdc0ae09e9644fc194da08e9fdde09e4b800cd191c1c8ba55b",
+        "native_exit": 20,
+        "vm_exit": 20
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "93694c2631a8d3c115a5fbcba168fcebef5304edc6d915845263e0183e8b9ee9",
+        "native_exit": 20,
+        "vm_exit": 20
+      }
+    ]
+  },
+  {
+    "case": 86,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 86. All arithmetic is within int. */\nint main(void){\n int sum=0;int count=0;\n for(int j=0;j<12;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 21;\n}\n",
+    "source_sha256": "7c77c1c11b782d74df63de40f74c9b88dc9087b8827c2393044e8f4d17004eb8",
+    "expected_exit": 21,
+    "expected_stdout": "64 4 57 59 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "85672a1777091d7d8a1015e6b31de3296a2aa12a0ae3f37a8e604d6c20943641",
+        "native_exit": 21,
+        "vm_exit": 21
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "68109866b2fe8f185064186618b808fa39167d023caf4cbf43e4d50a41ed360e",
+        "native_exit": 21,
+        "vm_exit": 21
+      }
+    ]
+  },
+  {
+    "case": 87,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 87. All arithmetic is within int. */\nint main(void){\n int sum=-7;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -7;\n}\n",
+    "source_sha256": "f8079e6331f7bde1c26c0267bd3d8678edfa02dc2dd721dce6397e2068f875bc",
+    "expected_exit": 4294967289,
+    "expected_stdout": "92 4 80 82 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "fe6e7b58576af79654921542957045fba3e2d2630cb8cfc8bfdf1e2ad47b0e68",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "f48c034980d3c10bdb93e831e485adda9d26b83c2e8f1aca9a3708a3a1a594e6",
+        "native_exit": 4294967289,
+        "vm_exit": 4294967289
+      }
+    ]
+  },
+  {
+    "case": 88,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 88. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<12;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=5;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=5;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -6;\n}\n",
+    "source_sha256": "3f9d1ee1f631e76abe407193cfce9fc6f5d4133b5a61a16aa21904f33666debf",
+    "expected_exit": 4294967290,
+    "expected_stdout": "81 4 71 73 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "fd99775b1de433bde473654404d996c2ba8c4ac8cc8594e1aa27daee2eb2b8fa",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "cd75a0560495788c9ce9a05096274e1a875eac24742f81540e9ed2e8eec69836",
+        "native_exit": 4294967290,
+        "vm_exit": 4294967290
+      }
+    ]
+  },
+  {
+    "case": 89,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 89. All arithmetic is within int. */\nint main(void){\n int sum=-3;int count=0;\n for(int j=0;j<13;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -5;\n}\n",
+    "source_sha256": "d346eab2a7c72b282c7aa1a301d50a94f312211190c34a983afa92b8587892e7",
+    "expected_exit": 4294967291,
+    "expected_stdout": "70 4 64 66 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "1f3e157ce07e2b27c9e3c781bd3e8b5a8540e76f92234b80867faac5b51f5b3c",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "926a175f58800937a8a515ed9cc0ea0fd682c091f5779a241e10b6f90fd7f83c",
+        "native_exit": 4294967291,
+        "vm_exit": 4294967291
+      }
+    ]
+  },
+  {
+    "case": 90,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 90. All arithmetic is within int. */\nint main(void){\n int sum=-2;int count=0;\n for(int j=0;j<4;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -4;\n}\n",
+    "source_sha256": "1550e7888cd6ac67b4d11ac646dd18675a75de19ff76d0b3f2ea65422a378caa",
+    "expected_exit": 4294967292,
+    "expected_stdout": "28 4 16 18 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "e99c2981df907f3a7e2727644a397b1b4d29c69fc15d9577b3b1e0e3a1748911",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "65b5c0f405162b2c26c3f84029e1029b1b4cab50420d06384c72c7c3698712e6",
+        "native_exit": 4294967292,
+        "vm_exit": 4294967292
+      }
+    ]
+  },
+  {
+    "case": 91,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 91. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -3;\n}\n",
+    "source_sha256": "1ba1d0db46a47cef8b67f7e7d89ca15132c9a6a2e4fdfdf8a7b7b3b500fbe1dd",
+    "expected_exit": 4294967293,
+    "expected_stdout": "84 4 77 79 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "4efe851b79a741a88d704287e06f0555b95704de608553d7c657aa7b316ba31e",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "b534931e50e6ae6a6c9bed112dce4b2492f455817b1c5607e49b62deb774bb4b",
+        "native_exit": 4294967293,
+        "vm_exit": 4294967293
+      }
+    ]
+  },
+  {
+    "case": 92,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 92. All arithmetic is within int. */\nint main(void){\n int sum=-8;int count=0;\n for(int j=0;j<16;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -2;\n}\n",
+    "source_sha256": "e71518215bc7ed031d1aa853755d5dfb6aa0740f4dff75ad5252d7224bf89103",
+    "expected_exit": 4294967294,
+    "expected_stdout": "91 4 79 81 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "1c7d0911e17a3249966cdc87f6119abed49684143e1ae98f3cb7d976c0369003",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "448c44e086b5a2165e65e1d6b87df8a0c80d61de7034e92da04bf5fa3c4bbd80",
+        "native_exit": 4294967294,
+        "vm_exit": 4294967294
+      }
+    ]
+  },
+  {
+    "case": 93,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 93. All arithmetic is within int. */\nint main(void){\n int sum=-4;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=7;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=7;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return -1;\n}\n",
+    "source_sha256": "a894547f23a173dd398c260f9d5fb973a5facbdc72872fe227e19cf1e0498f95",
+    "expected_exit": 4294967295,
+    "expected_stdout": "95 4 83 85 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "3221735b99b8df75e4bfeae1e217368087f8e6bdf018f25215866a557d3195b4",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "71d087c1903d11224620400ce77474a4e86ad0d54b50e2bc3bceaa42607cac2a",
+        "native_exit": 4294967295,
+        "vm_exit": 4294967295
+      }
+    ]
+  },
+  {
+    "case": 94,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 94. All arithmetic is within int. */\nint main(void){\n int sum=-1;int count=0;\n for(int j=0;j<15;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 0;\n}\n",
+    "source_sha256": "0c1be615d728d815c11f46d4026d4f03020b418d161081e688238ab6a789cd8f",
+    "expected_exit": 0,
+    "expected_stdout": "86 4 77 79 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "3f8802a7da40cdb1edd06956b4f517c89fdee7afa76f3c4ce53eb62935ccb42a",
+        "native_exit": 0,
+        "vm_exit": 0
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "680132e6d0961390264914ee271c6e3e2acdb2f23e57eee613f1350dac0b2b1f",
+        "native_exit": 0,
+        "vm_exit": 0
+      }
+    ]
+  },
+  {
+    "case": 95,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 95. All arithmetic is within int. */\nint main(void){\n int sum=4;int count=0;\n for(int j=0;j<8;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 1;\n}\n",
+    "source_sha256": "a082fd35bd51a9d4e654e2ac2316694db0de60668a86932a2b503d3a1e2673c7",
+    "expected_exit": 1,
+    "expected_stdout": "50 4 41 43 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "480a0173191cac156cc44686456d4be8f5f0eb1fbc2c19239b80359aa1bd7c00",
+        "native_exit": 1,
+        "vm_exit": 1
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "1c5e8646ed8cdb8688b26f755d2a4963d3b9df53c93fc61262834d6ca8d705ac",
+        "native_exit": 1,
+        "vm_exit": 1
+      }
+    ]
+  },
+  {
+    "case": 96,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 96. All arithmetic is within int. */\nint main(void){\n int sum=5;int count=0;\n for(int j=0;j<2;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=3;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=3;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 2;\n}\n",
+    "source_sha256": "d587ec201b7aeedace6bf54bda8eb3778c381a3a0a80b20fedce2c69b8e2d778",
+    "expected_exit": 2,
+    "expected_stdout": "25 4 17 19 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "299769d3f2f2b575b20ac8abb8d484a6754c1be6ce3d44f3083cd3b2b1dd642a",
+        "native_exit": 2,
+        "vm_exit": 2
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "b0113cac75723584674e119c9a2b9bc61fa3e426ddc79d72bcf82c105f6d92c8",
+        "native_exit": 2,
+        "vm_exit": 2
+      }
+    ]
+  },
+  {
+    "case": 97,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 97. All arithmetic is within int. */\nint main(void){\n int sum=-4;int count=0;\n for(int j=0;j<17;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=4;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=4;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 3;\n}\n",
+    "source_sha256": "2d2697fd4e2284bb678799c73577f250ca6d7ee38f86e7b9a53fa048cc7cdbd8",
+    "expected_exit": 3,
+    "expected_stdout": "83 4 74 76 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "11762763e3959487a44f8c7b32d7c29f16782e6a9b874ab35579936e4e4bf0d9",
+        "native_exit": 3,
+        "vm_exit": 3
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "f547e957b0ca49fc57a7b03ffb158a2dcfeb42333af349b79ed3398f53e50ba0",
+        "native_exit": 3,
+        "vm_exit": 3
+      }
+    ]
+  },
+  {
+    "case": 98,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 98. All arithmetic is within int. */\nint main(void){\n int sum=-7;int count=0;\n for(int j=0;j<14;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=2;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=2;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 4;\n}\n",
+    "source_sha256": "4fa1d67ebdc040aa83bf52a62b97d7320ea9e5a56356bc723ad8593c6b9ba385",
+    "expected_exit": 4,
+    "expected_stdout": "72 4 65 67 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "0b9961e19eefc677d8391af9c48d19bf010a64f09de139b2b8d807e61f5b77e8",
+        "native_exit": 4,
+        "vm_exit": 4
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "ebd0326da7c5c8a1dc4491aa694d547646acd9b84163d2b7222359afb7ec8c88",
+        "native_exit": 4,
+        "vm_exit": 4
+      }
+    ]
+  },
+  {
+    "case": 99,
+    "source": "#include <stdio.h>\n/* Owned compiler control-flow oracle 99. All arithmetic is within int. */\nint main(void){\n int sum=7;int count=0;\n for(int j=0;j<3;j++){\n   if(j==2)continue;\n   switch(j%5){case 0:sum+=1;case 1:sum+=j;break;\n     case 2:{int t=j+1;sum+=t;}break;\n     default:switch(j%2){case 0:sum-=1;break;default:sum+=2;}}\n   if(j>12)break;\n }\n do{count++;if(count==2)continue;sum+=count;}while(count<4);\n int old=sum++;int fresh=++sum;sum-=3;sum*=2;sum/=2;sum%=97;\n int x=0;int y=0;x=y=3;\n for(;;){x--;if(x==0)break;sum+=y;}\n goto enter;\n {int skipped=99;enter:skipped=1;sum+=skipped;goto leave;}\n leave:;\n int k=0;again:k++;if(k<3)goto again;\n printf(\"%d %d %d %d %d %d %d %d\\n\",sum,count,old,fresh,x,y,k,010+0x10+'A');\n printf(\"%s\\n\", \"nul\\0ignored\");\n return 5;\n}\n",
+    "source_sha256": "9d594a6e08856da56492f0d6985a45d08257c9e5331d7849db46ccda6a062565",
+    "expected_exit": 5,
+    "expected_stdout": "23 4 17 19 0 3 3 89\nnul\n",
+    "results": [
+      {
+        "no_opt": false,
+        "native_sha256": "564618a43efc54a3e64ba98b0e412b606cd4498c326491aa7eb731bfae908369",
+        "native_exit": 5,
+        "vm_exit": 5
+      },
+      {
+        "no_opt": true,
+        "native_sha256": "ec2813fa6649057eee4522e8f56c00f75e110b7d98dfee674450816f156d7cce",
+        "native_exit": 5,
+        "vm_exit": 5
+      }
+    ]
+  }
+]
