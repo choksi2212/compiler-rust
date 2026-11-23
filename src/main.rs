@@ -1,9 +1,5 @@
-mod bytecode;
-mod ir;
-mod lexer;
-mod optimize;
-mod parser;
-mod semantic;
+use compiler::context::{CompilationContext, Stage};
+use compiler::{bytecode, ir, lexer, optimize, parser, semantic};
 fn compile() -> Result<(), String> {
     let args: Vec<String> = std::env::args().skip(1).collect();
     if args.is_empty() || args.iter().any(|a| a == "--help" || a == "-h") {
@@ -33,36 +29,48 @@ fn compile() -> Result<(), String> {
     }
     let file = file.ok_or("missing source file")?;
     let source = std::fs::read_to_string(file).map_err(|e| format!("{file}: {e}"))?;
+    let mut context = CompilationContext::default();
+    let source_id = context.add_source(file, source);
+    let source = &context
+        .source(source_id)
+        .map_err(|e| context.render(&e))?
+        .text;
     let flag = |s: &str| args.iter().any(|a| a == s);
     let result = (|| {
-        let tokens = lexer::lex(&source)?;
+        let tokens = context.run_stage(source_id, Stage::Lex, || lexer::lex(source))?;
         if flag("--tokens") {
             eprintln!("TOKENS\n{tokens:#?}");
         }
-        let ast = parser::parse(tokens)?;
+        let ast = context.run_stage(source_id, Stage::Parse, || parser::parse(tokens))?;
         if flag("--ast") {
             eprintln!("AST\n{ast:#?}");
         }
-        semantic::check(&ast)?;
+        context.run_stage(source_id, Stage::Semantic, || semantic::check(&ast))?;
         let ir = ir::lower(&ast);
+        context.run_stage(source_id, Stage::Ir, || compiler::verify::verify(&ir))?;
         if flag("--ir") {
             eprintln!("THREE-ADDRESS IR\n{ir:#?}");
         }
         let optimized = optimize::optimize(&ir);
+        context.run_stage(source_id, Stage::Optimize, || {
+            compiler::verify::verify(&optimized)
+        })?;
         if flag("--optimized-ir") {
             eprintln!("OPTIMIZED IR\n{optimized:#?}");
         }
-        let code = bytecode::generate(if flag("--no-opt") { &ir } else { &optimized })?;
+        let code = context.run_stage(source_id, Stage::Bytecode, || {
+            bytecode::generate(if flag("--no-opt") { &ir } else { &optimized })
+        })?;
         if flag("--bytecode") {
             for (i, op) in code.iter().enumerate() {
                 eprintln!("{i:04} {op:?}");
             }
         }
-        let output = bytecode::run(&code)?;
+        let output = context.run_stage(source_id, Stage::Runtime, || bytecode::run(&code))?;
         print!("{output}");
         Ok(())
     })();
-    result.map_err(|e: String| format!("{file}:{e}"))
+    result.map_err(|e| context.render(&e))
 }
 fn main() {
     if let Err(e) = compile() {
@@ -70,6 +78,3 @@ fn main() {
         std::process::exit(1);
     }
 }
-
-#[cfg(test)]
-mod stress;

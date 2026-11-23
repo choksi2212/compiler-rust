@@ -15,6 +15,7 @@ pub enum Op {
     Halt,
 }
 pub fn generate(ir: &[Ir]) -> Result<Vec<Op>, String> {
+    crate::verify::verify(ir)?;
     let mut labels = HashMap::new();
     let mut out = vec![];
     let mut fixes = vec![];

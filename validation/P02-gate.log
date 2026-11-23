@@ -1,0 +1,154 @@
+Phase gate evidence; phase status is governed by IMPLEMENTATION_PLAN.md.
+Baseline HEAD: 1e667cee161d23c154d602185ab8536d788decc9
+
+COMMAND: cargo fmt --check
+
+EXIT: 0
+
+COMMAND: cargo clippy --all-targets --locked --offline -- -D warnings
+    Checking compiler v0.1.0 (N:\compiler-proj)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.28s
+
+EXIT: 0
+
+COMMAND: cargo test --all-targets --locked --offline
+   Compiling compiler v0.1.0 (N:\compiler-proj)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.47s
+     Running unittests src\lib.rs (target\debug\deps\compiler-d1a7b3ca78285500.exe)
+
+running 36 tests
+test lexer::tests::header ... ok
+test lexer::tests::operators ... ok
+test context::tests::identities_and_errors ... ok
+test bytecode::tests::runtime_errors ... ok
+test optimize::tests::folding ... ok
+test bytecode::tests::loops_scopes_and_optimization ... ok
+test lexer::tests::invalid ... ok
+test stress::unsupported_compound_tokens ... ok
+test bytecode::tests::short_circuit ... ok
+test verify::adversarial::malformed_fragments_do_not_panic ... ok
+test lexer::tests::strings ... ok
+test native_pe::tests::headers_and_bounds ... ok
+test ir::tests::lowers_control_flow ... ok
+test optimize::tests::preserves_errors_and_boundaries ... ok
+test parser::tests::errors ... ok
+test parser::tests::constructs ... ok
+test parser::tests::precedence ... ok
+test semantic::tests::rejects ... ok
+test verify::tests::invalid_programs ... ok
+test stress::decimal_literals_do_not_reinterpret_c_octal ... ok
+test stress::reject_invalid_c ... ok
+test stress::loop_declarations_are_fresh ... ok
+test verify::adversarial::every_operand_and_format_is_checked ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test bytecode::tests::strings_and_while ... ok
+test lexer::tests::positions ... ok
+test stress::control_flow_and_errors ... ok
+test verify::adversarial::valid_branch_and_string_flow ... ok
+test verify::tests::uninitialized_is_a_runtime_error ... ok
+test semantic::tests::valid ... ok
+test verify::tests::demos_before_and_after_optimization ... ok
+test stress::mutations_never_panic ... ok
+test stress::huge_inputs_fail_cleanly ... ok
+test stress::deterministic_random_input ... ok
+test native_pe::tests::windows_executes_generated_machine_code ... ok
+test stress::arithmetic_matrix ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.46s
+
+     Running unittests src\main.rs (target\debug\deps\compiler-99b7a8f08c969833.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\cli.rs (target\debug\deps\cli-84cf93a62d3ca117.exe)
+
+running 2 tests
+test stage_dumps_and_cli_errors ... ok
+test all_demos_with_and_without_optimization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests\pe_foundation.rs (target\debug\deps\pe_foundation-eea157b8a52b02c8.exe)
+
+running 3 tests
+test invalid_sizes_and_address_domains ... ok
+test all_supported_code_sizes_and_padding ... ok
+test executes_padded_images_at_boundaries ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+
+EXIT: 0
+
+COMMAND: cargo test --all-targets --release --locked --offline
+   Compiling compiler v0.1.0 (N:\compiler-proj)
+    Finished `release` profile [optimized] target(s) in 1.14s
+     Running unittests src\lib.rs (target\release\deps\compiler-c93439a71343cf40.exe)
+
+running 36 tests
+test context::tests::identities_and_errors ... ok
+test bytecode::tests::loops_scopes_and_optimization ... ok
+test lexer::tests::operators ... ok
+test parser::tests::precedence ... ok
+test lexer::tests::header ... ok
+test stress::decimal_literals_do_not_reinterpret_c_octal ... ok
+test verify::adversarial::every_operand_and_format_is_checked ... ok
+test bytecode::tests::strings_and_while ... ok
+test lexer::tests::positions ... ok
+test stress::control_flow_and_errors ... ok
+test optimize::tests::folding ... ok
+test parser::tests::constructs ... ok
+test parser::tests::errors ... ok
+test semantic::tests::rejects ... ok
+test ir::tests::lowers_control_flow ... ok
+test semantic::tests::valid ... ok
+test lexer::tests::invalid ... ok
+test stress::loop_declarations_are_fresh ... ok
+test bytecode::tests::short_circuit ... ok
+test stress::shadow_initializer_is_not_outer_value ... ok
+test verify::adversarial::malformed_fragments_do_not_panic ... ok
+test stress::unsupported_compound_tokens ... ok
+test lexer::tests::strings ... ok
+test optimize::tests::preserves_errors_and_boundaries ... ok
+test bytecode::tests::runtime_errors ... ok
+test stress::reject_invalid_c ... ok
+test verify::adversarial::valid_branch_and_string_flow ... ok
+test native_pe::tests::headers_and_bounds ... ok
+test verify::tests::invalid_programs ... ok
+test verify::tests::uninitialized_is_a_runtime_error ... ok
+test verify::tests::demos_before_and_after_optimization ... ok
+test stress::mutations_never_panic ... ok
+test stress::huge_inputs_fail_cleanly ... ok
+test stress::deterministic_random_input ... ok
+test stress::arithmetic_matrix ... ok
+test native_pe::tests::windows_executes_generated_machine_code ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running unittests src\main.rs (target\release\deps\compiler-2a63c9397db0b14f.exe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests\cli.rs (target\release\deps\cli-7085eb84fcdf577f.exe)
+
+running 2 tests
+test stage_dumps_and_cli_errors ... ok
+test all_demos_with_and_without_optimization ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests\pe_foundation.rs (target\release\deps\pe_foundation-204ee29b05b28a99.exe)
+
+running 3 tests
+test invalid_sizes_and_address_domains ... ok
+test all_supported_code_sizes_and_padding ... ok
+test executes_padded_images_at_boundaries ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+
+EXIT: 0

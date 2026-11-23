@@ -1,0 +1,595 @@
+[
+  {
+    "case": "addition[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\addition program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int a=25;int b=17;printf(\"Sum = %d\\n\",a+b);return 0;}",
+    "expected_stdout": "Sum = 42\n",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "Sum = 42\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "addition['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\addition program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int a=25;int b=17;printf(\"Sum = %d\\n\",a+b);return 0;}",
+    "expected_stdout": "Sum = 42\n",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "Sum = 42\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "factorial[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\factorial program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int n=6;int r=1;while(n>1){r=r*n;n=n-1;}printf(\"%d\",r);return 0;}",
+    "expected_stdout": "720",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "720",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "factorial['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\factorial program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int n=6;int r=1;while(n>1){r=r*n;n=n-1;}printf(\"%d\",r);return 0;}",
+    "expected_stdout": "720",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "720",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "pattern[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\pattern program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){for(int r=1;r<=3;r=r+1){for(int c=1;c<=r;c=c+1){printf(\"*\");}printf(\"\\n\");}return 0;}",
+    "expected_stdout": "*\n**\n***\n",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "*\n**\n***\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "pattern['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\pattern program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){for(int r=1;r<=3;r=r+1){for(int c=1;c<=r;c=c+1){printf(\"*\");}printf(\"\\n\");}return 0;}",
+    "expected_stdout": "*\n**\n***\n",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "*\n**\n***\n",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "skipped-divide[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\skipped-divide program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d %d\",0&&(1/0),1||(1/0));return 0;}",
+    "expected_stdout": "0 1",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "0 1",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "skipped-divide['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\skipped-divide program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d %d\",0&&(1/0),1||(1/0));return 0;}",
+    "expected_stdout": "0 1",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "0 1",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "printf-count[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\printf-count program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int n=printf(\"abc\");printf(\"%d\",n);return 0;}",
+    "expected_stdout": "abc3",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "abc3",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "printf-count['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\printf-count program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int n=printf(\"abc\");printf(\"%d\",n);return 0;}",
+    "expected_stdout": "abc3",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "abc3",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "string-length[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\string-length program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%s %d\",\"hello\",strlen(\"hello\"));return 0;}",
+    "expected_stdout": "hello 5",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "hello 5",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "string-length['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\string-length program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%s %d\",\"hello\",strlen(\"hello\"));return 0;}",
+    "expected_stdout": "hello 5",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "hello 5",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "scope-loop[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\scope-loop program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=4;for(int i=0;i<3;i=i+1){int x=i;printf(\"%d\",x);}printf(\"%d\",x);return 0;}",
+    "expected_stdout": "0124",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "0124",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "scope-loop['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\scope-loop program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=4;for(int i=0;i<3;i=i+1){int x=i;printf(\"%d\",x);}printf(\"%d\",x);return 0;}",
+    "expected_stdout": "0124",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "0124",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "precedence[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\precedence program.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d %d\",2+3*4,20/5/2);return 0;}",
+    "expected_stdout": "14 2",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "14 2",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "precedence['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\precedence program.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d %d\",2+3*4,20/5/2);return 0;}",
+    "expected_stdout": "14 2",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "14 2",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "undeclared[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\undeclared.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){x=3;return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "undeclared",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\undeclared.c:1:12: assignment to undeclared variable\n",
+    "passed": true
+  },
+  {
+    "case": "undeclared['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\undeclared.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){x=3;return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "undeclared",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\undeclared.c:1:12: assignment to undeclared variable\n",
+    "passed": true
+  },
+  {
+    "case": "duplicate[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\duplicate.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=1;int x=2;return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "duplicate",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\duplicate.c:1:24: duplicate declaration\n",
+    "passed": true
+  },
+  {
+    "case": "duplicate['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\duplicate.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=1;int x=2;return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "duplicate",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\duplicate.c:1:24: duplicate declaration\n",
+    "passed": true
+  },
+  {
+    "case": "bad-format[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-format.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d\",\"text\");return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "mismatch",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-format.c:1:24: printf argument type mismatch\n",
+    "passed": true
+  },
+  {
+    "case": "bad-format['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-format.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d\",\"text\");return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "mismatch",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-format.c:1:24: printf argument type mismatch\n",
+    "passed": true
+  },
+  {
+    "case": "divide-zero[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\divide-zero.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d\",1/0);return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "division by zero",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\divide-zero.c:division by zero\n",
+    "passed": true
+  },
+  {
+    "case": "divide-zero['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\divide-zero.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d\",1/0);return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "division by zero",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\divide-zero.c:division by zero\n",
+    "passed": true
+  },
+  {
+    "case": "overflow[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\overflow.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d\",2147483647+1);return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "overflow",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\overflow.c:integer overflow\n",
+    "passed": true
+  },
+  {
+    "case": "overflow['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\overflow.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"%d\",2147483647+1);return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "overflow",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\overflow.c:integer overflow\n",
+    "passed": true
+  },
+  {
+    "case": "self-init[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\self-init.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=1;{int x=x;printf(\"%d\",x);}return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "uninitialized",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\self-init.c:read of uninitialized variable\n",
+    "passed": true
+  },
+  {
+    "case": "self-init['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\self-init.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=1;{int x=x;printf(\"%d\",x);}return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "uninitialized",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\self-init.c:read of uninitialized variable\n",
+    "passed": true
+  },
+  {
+    "case": "fresh-loop[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\fresh-loop.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){for(int i=0;i<2;i=i+1){int x;if(i==0){x=9;}else{printf(\"%d\",x);}}return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "uninitialized",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\fresh-loop.c:read of uninitialized variable\n",
+    "passed": true
+  },
+  {
+    "case": "fresh-loop['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\fresh-loop.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){for(int i=0;i<2;i=i+1){int x;if(i==0){x=9;}else{printf(\"%d\",x);}}return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "uninitialized",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\fresh-loop.c:read of uninitialized variable\n",
+    "passed": true
+  },
+  {
+    "case": "bad-escape[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-escape.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"\\q\");return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "escape",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-escape.c:1:19: unsupported string escape\n",
+    "passed": true
+  },
+  {
+    "case": "bad-escape['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-escape.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){printf(\"\\q\");return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "escape",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\bad-escape.c:1:19: unsupported string escape\n",
+    "passed": true
+  },
+  {
+    "case": "missing-semicolon[]",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\missing-semicolon.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=1return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "expected",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\missing-semicolon.c:1:19: expected ;, found \"return\"\n",
+    "passed": true
+  },
+  {
+    "case": "missing-semicolon['--no-opt']",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\missing-semicolon.c",
+      "--no-opt"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": "int main(){int x=1return 0;}",
+    "expected_stdout": null,
+    "expected_error_contains": "expected",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\missing-semicolon.c:1:19: expected ;, found \"return\"\n",
+    "passed": true
+  },
+  {
+    "case": "outside repository with empty PATH",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\standalone demo.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": true,
+    "input_source": "int main(){printf(\"standalone\");return 0;}",
+    "expected_stdout": "standalone",
+    "expected_error_contains": null,
+    "exit": 0,
+    "stdout": "standalone",
+    "stderr": "",
+    "passed": true
+  },
+  {
+    "case": "missing-source",
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\not-present.c"
+    ],
+    "cwd": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga",
+    "empty_path": false,
+    "input_source": null,
+    "expected_stdout": null,
+    "expected_error_contains": "cannot find",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "C:\\Users\\niklaus\\AppData\\Local\\Temp\\P02 release probes axehgoga\\not-present.c: The system cannot find the file specified. (os error 2)\n",
+    "passed": true
+  }
+]

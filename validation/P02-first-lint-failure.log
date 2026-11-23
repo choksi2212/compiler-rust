@@ -1,0 +1,38 @@
+Phase gate evidence; phase status is governed by IMPLEMENTATION_PLAN.md.
+Baseline HEAD: 1e667cee161d23c154d602185ab8536d788decc9
+
+COMMAND: cargo fmt --check
+
+EXIT: 0
+
+COMMAND: cargo clippy --all-targets --locked --offline -- -D warnings
+    Checking compiler v0.1.0 (N:\compiler-proj)
+error: this `if` statement can be collapsed
+  --> src\verify.rs:40:9
+   |
+40 | /         if let Ir::Label(l) = op {
+41 | |             if !labels.insert(*l) {
+42 | |                 return Err(format!(
+43 | |                     "invalid IR at instruction {i}: duplicate label {l}"
+...  |
+46 | |         }
+   | |_________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#collapsible_if
+   = note: `-D clippy::collapsible-if` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::collapsible_if)]`
+help: collapse nested if block
+   |
+40 ~         if let Ir::Label(l) = op
+41 ~             && !labels.insert(*l) {
+42 |                 return Err(format!(
+43 |                     "invalid IR at instruction {i}: duplicate label {l}"
+44 |                 ));
+45 ~             }
+   |
+
+error: could not compile `compiler` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `compiler` (lib test) due to 1 previous error
+
+EXIT: 101

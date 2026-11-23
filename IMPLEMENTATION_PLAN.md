@@ -642,7 +642,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01 is now in progress. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01 has passed its recorded gate; P02 is now in progress. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -684,7 +684,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | --- | --- | --- | --- |
 | P00 | Review, baseline and specification freeze | Plan review | Passed; evidence in section 13.5.1 |
 | P01 | Native foundation audit | 8A audit | Passed; evidence in section 13.6.1 |
-| P02 | Shared compiler library and legacy IR verification | 8B-1 | Planned |
+| P02 | Shared compiler library and legacy IR verification | 8B-1 | Passed; evidence in section 13.7.1 |
 | P03 | Project x64 instruction encoder | 8B-2 | Planned |
 | P04 | Dynamic PE layout, imports and fixups | 8B-3 | Planned |
 | P05 | ABI, stack frames and unwind generation | 8B-4 | Planned |
@@ -899,6 +899,16 @@ Work items:
 **Deliverables:** shared library API, verifier, migration evidence with no capability loss.
 **Gate:** all existing tests pass through shared types; deliberately invalid IR is rejected; neither backend reconstructs symbol identity from unbound source spelling.
 **Boundary:** no new C syntax, full type system, or simulated native backend is introduced here.
+
+#### 13.7.1 P02 completion evidence
+
+Baseline: `1e667ce`. P02 passed after the structural-only library migration first preserved the full existing suite. The binary now imports shared frontend/IR/VM types from `compiler`; stress tests live in that library instead of a duplicate binary compilation. `CompilationContext` records source identities, the currently supported Windows-x64/teaching configuration, and stage-tagged structured diagnostics. Driver error rendering preserves filename/message behavior. Source retrieval and invalid identity errors are tested; general source maps/types remain later work.
+
+Legacy IR contract: integer and string slots are type-stable; Reset declares an integer slot without proving initialization; constants/copies/operators must have valid operand kinds; supported unary/binary operators are enumerated; labels are unique and all targets exist; print formats/argument arity/types agree; a program cannot fall off its last instruction. The verifier is deliberately structural/type checking, not definite-runtime-initialization analysis. Driver verification runs before and after optimization; bytecode generation independently requires verification. Labels and slots remain separate logical namespaces. No new C syntax was added.
+
+Validation command: `python validation/run_gate.py P02`. Formatting and warnings-denied Clippy passed; all-target debug and release suites each passed 41 tests, zero failed/ignored. Invalid-IR tests cover duplicate/missing labels, undefined operands, unsupported operators, invalid types/formats/arity and missing termination; 72 malformed fragments additionally verify non-panicking rejection behavior. A reset-then-read case is accepted by verification and still fails at VM runtime, preserving teaching semantics. Every demo verifies before/after optimization. Independent GCC testing passed 100 generated programs/200 comparisons, seed2212. Additional release-process probes passed all36 cases after the refactor.
+
+Evidence: [full gate log](validation/P02-gate.log), [gate/source hashes](validation/P02-gate.json), [independent comparisons](validation/P02-differential.log), [comparison result](validation/P02-differential.json), [release probes](validation/P02-probes.json) and [reproduction](validation/P02-probes.py). The first warnings-denied lint check failed on a collapsible conditional; its [failed output](validation/P02-first-lint-failure.log) and [incomplete gate](validation/P02-first-lint-failure.json) were preserved. The conditional was corrected and all gates rerun before advancement. No baseline failure remains. Next eligible phase: P03.
 
 ### 13.8 P03 - Own x64 instruction encoder
 
