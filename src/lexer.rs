@@ -41,6 +41,22 @@ pub fn lex(source: &str) -> Result<Vec<Token>, String> {
             }
             continue;
         }
+        if i + 1 < chars.len()
+            && matches!(
+                (c, chars[i + 1]),
+                ('+', '+')
+                    | ('-', '-')
+                    | ('+', '=')
+                    | ('-', '=')
+                    | ('*', '=')
+                    | ('/', '=')
+                    | ('%', '=')
+                    | ('<', '<')
+                    | ('>', '>')
+            )
+        {
+            return Err(format!("{line}:{column}: unsupported compound operator"));
+        }
         let (start, col) = (i, column);
         let kind = if c.is_ascii_alphabetic() || c == '_' {
             while i < chars.len() && (chars[i].is_ascii_alphanumeric() || chars[i] == '_') {
@@ -52,6 +68,9 @@ pub fn lex(source: &str) -> Result<Vec<Token>, String> {
                 i += 1;
             }
             let value: String = chars[start..i].iter().collect();
+            if value.len() > 1 && value.starts_with('0') {
+                return Err(format!("{line}:{col}: nondecimal literals are unsupported"));
+            }
             Kind::Number(value.parse().map_err(|_| {
                 format!("{line}:{col}: integer literal exceeds signed 32-bit range")
             })?)

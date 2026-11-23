@@ -1,6 +1,6 @@
-# C Subset Compiler — Implementation Plan
+# C Subset Compiler â€” Implementation Plan
 
-This document is the single source of truth for the project’s scope and implementation sequence. Implementation must follow this plan. If a change would alter the language subset, compiler architecture, output target, or milestones below, ask the user first and update this document only after approval.
+This document is the single source of truth for the projectâ€™s scope and implementation sequence. Implementation must follow this plan. If a change would alter the language subset, compiler architecture, output target, or milestones below, ask the user first and update this document only after approval.
 
 ## Project objective
 
@@ -12,13 +12,13 @@ This is a compiler for the subset defined here, not a general-purpose C compiler
 
 ```text
 C source
-  → lexer
-  → parser and abstract syntax tree
-  → semantic analysis
-  → three-address intermediate representation
-  → basic optimizations
-  → custom stack-machine bytecode
-  → bytecode virtual machine
+  â†’ lexer
+  â†’ parser and abstract syntax tree
+  â†’ semantic analysis
+  â†’ three-address intermediate representation
+  â†’ basic optimizations
+  â†’ custom stack-machine bytecode
+  â†’ bytecode virtual machine
 ```
 
 - **Compiler implementation language:** Rust.
@@ -53,39 +53,39 @@ The project will include six small `.c` examples using only the supported subset
 5. A conditional program such as checking whether a number is even or odd.
 6. String output and `strlen` on a string literal.
 
-Each example will include its expected output so the compiler’s behavior can be demonstrated and checked consistently.
+Each example will include its expected output so the compilerâ€™s behavior can be demonstrated and checked consistently.
 
 ## Implementation sequence
 
-### Stage 0 — Repository and project skeleton
+### Stage 0 â€” Repository and project skeleton
 
 Establish the Rust crate in the supplied repository, with source modules and an `examples/` directory. Keep this plan as the only project-plan document; concise usage instructions may later go in the README, but scope and sequencing remain governed here.
 
-### Stage 1 — Lexer
+### Stage 1 â€” Lexer
 
 Recognize identifiers, keywords, integer literals, string literals, punctuation, and supported operators. Track line and column positions. Report invalid characters and unterminated strings.
 
-### Stage 2 — Parser and AST
+### Stage 2 â€” Parser and AST
 
 Parse the supported `main` function, declarations, statements, and expressions. Use precedence-aware expression parsing. Report syntax errors with source locations. Add parser demonstrations for each syntax construct before later stages depend on them.
 
-### Stage 3 — Semantic analysis
+### Stage 3 â€” Semantic analysis
 
 Track nested scopes; reject duplicate declarations in a scope, undeclared variable uses, invalid assignments, and invalid `printf` argument/conversion combinations. Validate the supported `main` shape and return statement.
 
-### Stage 4 — Intermediate representation
+### Stage 4 â€” Intermediate representation
 
 Lower the AST to three-address code with explicit temporaries and labels for branches and loops. Provide a readable IR dump for viva explanation.
 
-### Stage 5 — Basic optimization
+### Stage 5 â€” Basic optimization
 
 Implement constant folding and simple constant propagation, then remove unreachable instructions where safely possible. Show both pre- and post-optimization IR. Optimization must preserve behavior.
 
-### Stage 6 — Bytecode generation and virtual machine
+### Stage 6 â€” Bytecode generation and virtual machine
 
 Translate optimized IR into documented stack-machine instructions. Implement integer arithmetic, comparisons, jumps, variables, string constants, formatted output, and `strlen`. Add runtime diagnostics for division by zero and invalid bytecode states.
 
-### Stage 7 — End-to-end examples and documentation
+### Stage 7 â€” End-to-end examples and documentation
 
 Complete all six C examples, expected outputs, CLI help, and a concise explanation of the pipeline and supported C subset. Verify each demo end to end and check representative syntax and semantic errors.
 
@@ -118,3 +118,11 @@ User approved implementation on 2026-11-23, requiring testing after each stage a
 | 7: examples and CLI | Complete | Six demo outputs matched in both optimized and unoptimized runs; CLI stage dumps and failures tested |
 
 Implementation details within the approved subset: integer operations are checked signed 32-bit operations; loop increments use explicit assignment; `for` conditions are required. Bytecode execution has a ten-million-instruction limit, and output is buffered. `printf` returns the emitted byte count. See README for usage and bytecode instruction descriptions; it introduces no separate project plan.
+
+### Aggressive validation and command installation â€” 2026-11-23
+
+The user requested aggressive testing followed by command-line installation. Within the approved compiler pipeline, regressions were added and fixes made for fresh loop-local lifetime, self-initialization under shadowing, reserved names, invalid declaration positions, and unsupported compound/nondecimal tokens. Reset instructions now clear declaration slots at each execution; optimizer knowledge is invalidated for reset and print result writes. Parser resource bounds reject pathological nesting and long expression chains.
+
+Validation: 29 automated tests pass, including 16,150 arithmetic executions across both optimization modes, 10,000 deterministic random input attempts, source mutations, oversized syntax, and all six demos. The optional deterministic GCC differential suite passed 100 generated programs in both modes (200 comparisons). Formatting and Clippy checks pass. This evidence covers the tested cases; it is not proof of correctness for all input programs.
+
+Installed the release executable with `cargo install --path .` and verified the `compiler` command from outside the repository. Installation, examples, and the optional differential suite are documented in README. The compiler still targets the approved bytecode VM. Native `.exe` output for compiled C input requires approval before implementation.

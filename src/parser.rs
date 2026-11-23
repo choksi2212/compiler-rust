@@ -26,7 +26,11 @@ pub enum Stmt {
     Empty,
 }
 pub fn parse(tokens: Vec<Token>) -> Result<Stmt, String> {
-    let mut p = Parser { tokens, i: 0 };
+    let mut p = Parser {
+        tokens,
+        i: 0,
+        depth: 0,
+    };
     p.expect("int")?;
     p.expect("main")?;
     p.expect("(")?;
@@ -37,9 +41,59 @@ pub fn parse(tokens: Vec<Token>) -> Result<Stmt, String> {
     }
     Ok(s)
 }
+fn reserved(s: &str) -> bool {
+    matches!(
+        s,
+        "auto"
+            | "break"
+            | "case"
+            | "char"
+            | "const"
+            | "continue"
+            | "default"
+            | "do"
+            | "double"
+            | "else"
+            | "enum"
+            | "extern"
+            | "float"
+            | "for"
+            | "goto"
+            | "if"
+            | "inline"
+            | "int"
+            | "long"
+            | "register"
+            | "restrict"
+            | "return"
+            | "short"
+            | "signed"
+            | "sizeof"
+            | "static"
+            | "struct"
+            | "switch"
+            | "typedef"
+            | "union"
+            | "unsigned"
+            | "void"
+            | "volatile"
+            | "while"
+            | "_Bool"
+            | "_Complex"
+            | "_Imaginary"
+            | "_Alignas"
+            | "_Alignof"
+            | "_Atomic"
+            | "_Generic"
+            | "_Noreturn"
+            | "_Static_assert"
+            | "_Thread_local"
+    )
+}
 struct Parser {
     tokens: Vec<Token>,
     i: usize,
+    depth: usize,
 }
 impl Parser {
     fn peek(&self) -> &Token {
@@ -90,7 +144,8 @@ impl Parser {
         if self.eat("int") {
             let t = self.take();
             if t.kind != Kind::Word
-                || ["int", "if", "else", "while", "for", "return"].contains(&t.text.as_str())
+                || reserved(&t.text)
+                || ["main", "printf", "strlen"].contains(&t.text.as_str())
             {
                 return self.error("expected variable name");
             }
@@ -114,7 +169,22 @@ impl Parser {
         }
         Ok(Stmt::Call(e))
     }
+    fn controlled(&mut self) -> Result<Stmt, String> {
+        if self.peek().text == "int" {
+            return self.error("a declaration requires a block here");
+        }
+        self.stmt()
+    }
     fn stmt(&mut self) -> Result<Stmt, String> {
+        if self.depth >= 64 {
+            return self.error("syntax nesting limit exceeded");
+        }
+        self.depth += 1;
+        let result = self.stmt_inner();
+        self.depth -= 1;
+        result
+    }
+    fn stmt_inner(&mut self) -> Result<Stmt, String> {
         if self.peek().text == "{" {
             return self.block();
         }
@@ -125,9 +195,9 @@ impl Parser {
             self.expect("(")?;
             let e = self.expr(0)?;
             self.expect(")")?;
-            let a = Box::new(self.stmt()?);
+            let a = Box::new(self.controlled()?);
             let b = if self.eat("else") {
-                Some(Box::new(self.stmt()?))
+                Some(Box::new(self.controlled()?))
             } else {
                 None
             };
@@ -137,7 +207,7 @@ impl Parser {
             self.expect("(")?;
             let e = self.expr(0)?;
             self.expect(")")?;
-            return Ok(Stmt::While(e, Box::new(self.stmt()?)));
+            return Ok(Stmt::While(e, Box::new(self.controlled()?)));
         }
         if self.eat("for") {
             self.expect("(")?;
@@ -155,11 +225,14 @@ impl Parser {
                 self.simple()?
             };
             self.expect(")")?;
+            if matches!(b, Stmt::Decl(..)) {
+                return self.error("declaration is invalid in for update");
+            }
             return Ok(Stmt::For(
                 Box::new(a),
                 e,
                 Box::new(b),
-                Box::new(self.stmt()?),
+                Box::new(self.controlled()?),
             ));
         }
         if self.peek().text == "return" {
@@ -173,6 +246,15 @@ impl Parser {
         Ok(s)
     }
     fn expr(&mut self, min: u8) -> Result<Expr, String> {
+        if self.depth >= 64 {
+            return self.error("syntax nesting limit exceeded");
+        }
+        self.depth += 1;
+        let result = self.expr_inner(min);
+        self.depth -= 1;
+        result
+    }
+    fn expr_inner(&mut self, min: u8) -> Result<Expr, String> {
         let t = self.take();
         let k = match &t.kind {
             Kind::Number(n) => E::Int(*n),
@@ -185,7 +267,7 @@ impl Parser {
             _ if ["-", "!"].contains(&t.text.as_str()) => {
                 E::Unary(t.text.clone(), Box::new(self.expr(7)?))
             }
-            Kind::Word => {
+            Kind::Word if !reserved(&t.text) => {
                 if self.eat("(") {
                     let mut args = vec![];
                     if !self.eat(")") {
@@ -207,6 +289,7 @@ impl Parser {
         self.tail(Expr { token: t, kind: k }, min)
     }
     fn tail(&mut self, mut lhs: Expr, min: u8) -> Result<Expr, String> {
+        let mut operators = 0;
         loop {
             let op = self.peek().text.clone();
             let p = match op.as_str() {
@@ -220,6 +303,10 @@ impl Parser {
             };
             if p < min {
                 break;
+            }
+            operators += 1;
+            if operators > 128 {
+                return self.error("expression size limit exceeded");
             }
             let t = self.take();
             let rhs = self.expr(p + 1)?;

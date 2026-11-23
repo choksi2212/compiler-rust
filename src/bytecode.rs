@@ -3,6 +3,7 @@ use crate::optimize::{binary, unary};
 use std::collections::HashMap;
 #[derive(Debug, Clone)]
 pub enum Op {
+    Reset(usize),
     Push(Value),
     Load(usize),
     Store(usize),
@@ -19,6 +20,7 @@ pub fn generate(ir: &[Ir]) -> Result<Vec<Op>, String> {
     let mut fixes = vec![];
     for i in ir {
         match i {
+            Ir::Reset(d) => out.push(Op::Reset(*d)),
             Ir::Const(d, v) => out.extend([Op::Push(v.clone()), Op::Store(*d)]),
             Ir::Copy(d, a) => out.extend([Op::Load(*a), Op::Store(*d)]),
             Ir::Unary(d, op, a) => out.extend([Op::Load(*a), Op::Unary(op.clone()), Op::Store(*d)]),
@@ -85,6 +87,9 @@ pub fn run(code: &[Op]) -> Result<String, String> {
             .ok_or("bytecode instruction pointer out of bounds")?;
         pc += 1;
         match op {
+            Op::Reset(d) => {
+                vars.remove(d);
+            }
             Op::Push(v) => stack.push(v.clone()),
             Op::Load(a) => stack.push(
                 vars.get(a)

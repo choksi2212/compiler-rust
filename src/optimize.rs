@@ -67,7 +67,11 @@ pub fn optimize(code: &[Ir]) -> Vec<Ir> {
             Ir::Const(d, v) => {
                 known.insert(*d, v.clone());
             }
-            Ir::Copy(d, _) | Ir::Unary(d, ..) | Ir::Binary(d, ..) => {
+            Ir::Reset(d)
+            | Ir::Print(_, _, d)
+            | Ir::Copy(d, _)
+            | Ir::Unary(d, ..)
+            | Ir::Binary(d, ..) => {
                 known.remove(d);
             }
             Ir::Jump(_) | Ir::Zero(..) | Ir::Halt => {

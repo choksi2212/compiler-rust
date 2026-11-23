@@ -7,6 +7,7 @@ pub enum Value {
 }
 #[derive(Debug, Clone)]
 pub enum Ir {
+    Reset(usize),
     Const(usize, Value),
     Copy(usize, usize),
     Unary(usize, String, usize),
@@ -110,6 +111,8 @@ impl Lower {
             }
             Stmt::Decl(t, e) => {
                 let d = self.temp();
+                self.scopes.last_mut().unwrap().insert(t.text.clone(), d);
+                self.code.push(Ir::Reset(d));
                 if let Some(e) = e {
                     let a = self.expr(e);
                     self.code.push(Ir::Copy(d, a));

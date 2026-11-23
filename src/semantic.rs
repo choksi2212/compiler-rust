@@ -38,6 +38,9 @@ impl Checker {
                 }
                 Ok(false)
             }
+            E::Call(n, _) if self.scopes.iter().rev().any(|s| s.contains(n)) => {
+                self.fail(e, "called name is a variable")
+            }
             E::Call(n, args) if n == "strlen" => {
                 if args.len() != 1 || !matches!(&args[0].kind, E::Str(_)) {
                     return self.fail(e, "strlen requires one string literal");
@@ -95,10 +98,10 @@ impl Checker {
                 if self.scopes.last().unwrap().contains(&t.text) {
                     return Err(format!("{}:{}: duplicate declaration", t.line, t.column));
                 }
+                self.scopes.last_mut().unwrap().insert(t.text.clone());
                 if let Some(e) = e {
                     self.integer(e)?;
                 }
-                self.scopes.last_mut().unwrap().insert(t.text.clone());
             }
             Stmt::Assign(t, e) => {
                 if !self.scopes.iter().rev().any(|s| s.contains(&t.text)) {
