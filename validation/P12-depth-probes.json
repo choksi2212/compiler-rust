@@ -1,0 +1,27 @@
+[
+  {
+    "case": "parens",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P12-depth\\parens.c:1:105: expression nesting limit exceeded\n"
+  },
+  {
+    "case": "unary",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P12-depth\\unary.c:1:105: expression nesting limit exceeded\n"
+  },
+  {
+    "case": "cast",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P12-depth\\cast.c:1:356: declarator nesting limit exceeded\n"
+  },
+  {
+    "case": "nested_calls",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P12-depth\\nested_calls.c:1:168: expression nesting limit exceeded\n"
+  },
+  {
+    "case": "tail",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P12-depth\\tail.c:1:299: expression size limit exceeded\n"
+  }
+]

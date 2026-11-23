@@ -597,11 +597,38 @@ pub fn build(ir: &[Ir], options: &RuntimeOptions) -> Result<NativeBuild, String>
     })
 }
 /// Shared owned startup/runtime/PE construction for verified program lowerers.
+pub struct ModuleProgram {
+    pub entry: NativeFunction,
+    pub functions: Vec<(Label, Label, NativeFunction)>,
+    pub data: Vec<DataSection>,
+    /// Section indexes are relative to this program's data list.
+    pub pointers: Vec<crate::pe::PointerFixup>,
+}
 pub fn build_program(
     options: &RuntimeOptions,
     strings: &BTreeMap<usize, String>,
     formats: &BTreeMap<usize, String>,
     lower: impl FnOnce(&mut LabelAllocator, &RuntimeBindings) -> Result<NativeFunction, String>,
+) -> Result<NativeBuild, String> {
+    build_module(options, strings, formats, |labels, bindings, _, _| {
+        Ok(ModuleProgram {
+            entry: lower(labels, bindings)?,
+            functions: vec![],
+            data: vec![],
+            pointers: vec![],
+        })
+    })
+}
+pub fn build_module(
+    options: &RuntimeOptions,
+    strings: &BTreeMap<usize, String>,
+    formats: &BTreeMap<usize, String>,
+    lower: impl FnOnce(
+        &mut LabelAllocator,
+        &RuntimeBindings,
+        Symbol,
+        &mut SymbolAllocator,
+    ) -> Result<ModuleProgram, String>,
 ) -> Result<NativeBuild, String> {
     if !(1..=64 * 1024 * 1024).contains(&options.output_capacity) {
         return Err("native output capacity must be1..64MiB".into());
@@ -654,7 +681,7 @@ pub fn build_program(
         messages.push((status, pool.add(message)?, message.len() as u32));
     }
     let context = pool.allocator.fresh()?;
-    let program = lower(&mut labels, &bindings)?;
+    let program = lower(&mut labels, &bindings, context, &mut pool.allocator)?;
     let formatting = formatter(&mut labels)?;
     let writing = write_all(&mut labels, imports.write)?;
     let root = startup(
@@ -670,10 +697,13 @@ pub fn build_program(
     let mut metadata = vec![];
     for (start, end, function) in [
         (root_start, root_end, root),
-        (program_start, program_end, program),
+        (program_start, program_end, program.entry),
         (format_start, format_end, formatting),
         (write_start, write_end, writing),
-    ] {
+    ]
+    .into_iter()
+    .chain(program.functions)
+    {
         code.push(Instruction::Bind(start));
         code.extend(function.instructions);
         code.push(Instruction::Bind(end));
@@ -698,7 +728,7 @@ pub fn build_program(
         .collect();
     let mut state = vec![0; 32];
     state[16..24].copy_from_slice(&(options.output_capacity as u64).to_le_bytes());
-    let data = vec![
+    let mut data = vec![
         DataSection {
             name: ".rdata".into(),
             virtual_size: pool.bytes.len() as u32,
@@ -714,6 +744,15 @@ pub fn build_program(
             symbols: vec![(context, 0)],
         },
     ];
+    let data_base = data.len();
+    data.extend(program.data);
+    let mut pointers = program.pointers;
+    for pointer in &mut pointers {
+        pointer.section = pointer
+            .section
+            .checked_add(data_base)
+            .ok_or("program data section index overflow")?;
+    }
     let mut os = vec![];
     for (symbol, name) in [
         (imports.allocate, "VirtualAlloc"),
@@ -734,7 +773,7 @@ pub fn build_program(
         code_symbols: vec![],
         data,
         imports: os,
-        pointers: vec![],
+        pointers,
         entry_offset: 0,
         image_base: 0x140000000,
         exception_directory: None,

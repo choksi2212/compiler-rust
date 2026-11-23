@@ -7,6 +7,22 @@ fn bytes(instructions: &[Instruction]) -> Vec<u8> {
 fn reviewed_byte_fixtures() {
     assert_eq!(
         bytes(&[
+            Instruction::LoadWord {
+                dst: Reg::new(9).unwrap(),
+                address: Address::base(Reg::new(12).unwrap(), 2)
+            },
+            Instruction::StoreWord {
+                address: Address::base(Reg::new(13).unwrap(), 0),
+                src: Reg::new(10).unwrap()
+            },
+            Instruction::Trap,
+        ]),
+        vec![
+            0x45, 0x0f, 0xb7, 0x4c, 0x24, 0x02, 0x66, 0x45, 0x89, 0x55, 0x00, 0x0f, 0x0b
+        ]
+    );
+    assert_eq!(
+        bytes(&[
             Instruction::Shift {
                 width: Width::Qword,
                 op: Shift::Left,
@@ -107,6 +123,74 @@ fn reviewed_byte_fixtures() {
             Instruction::Ret
         ]),
         vec![0x41, 0x57, 0x41, 0x5f, 0xc3]
+    );
+}
+
+#[test]
+#[cfg(all(windows, target_arch = "x86_64"))]
+fn word_stores_do_not_clobber_adjacent_bytes() {
+    run(
+        vec![
+            Instruction::MovImm {
+                width: Width::Qword,
+                dst: Reg::RAX,
+                value: 0x1122334455667788,
+            },
+            Instruction::Store {
+                width: Width::Qword,
+                address: Address::base(Reg::RSP, 8),
+                src: Reg::RAX,
+            },
+            Instruction::MovImm {
+                width: Width::Dword,
+                dst: Reg::new(10).unwrap(),
+                value: 0xabcd,
+            },
+            Instruction::StoreWord {
+                address: Address::base(Reg::RSP, 10),
+                src: Reg::new(10).unwrap(),
+            },
+            Instruction::Load {
+                width: Width::Qword,
+                dst: Reg::RAX,
+                address: Address::base(Reg::RSP, 8),
+            },
+            Instruction::MovImm {
+                width: Width::Qword,
+                dst: Reg::new(10).unwrap(),
+                value: 0x11223344abcd7788,
+            },
+            Instruction::Binary {
+                width: Width::Qword,
+                op: Binary::Compare,
+                dst: Reg::RAX,
+                src: Reg::new(10).unwrap(),
+            },
+            Instruction::Set {
+                condition: Condition::Equal,
+                dst: Reg::RAX,
+            },
+        ],
+        1,
+    );
+    run(
+        vec![
+            Instruction::MovImm {
+                width: Width::Qword,
+                dst: Reg::RAX,
+                value: 0x1122334455667788,
+            },
+            Instruction::Store {
+                width: Width::Qword,
+                address: Address::base(Reg::RSP, 8),
+                src: Reg::RAX,
+            },
+            Instruction::LoadWord {
+                dst: Reg::RAX,
+                address: Address::base(Reg::RSP, 10),
+            },
+        ],
+        0x5566,
     );
 }
 

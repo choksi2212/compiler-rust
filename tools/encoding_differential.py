@@ -2,7 +2,7 @@
 from pathlib import Path
 import subprocess,tempfile,json,hashlib,argparse
 parser=argparse.ArgumentParser()
-parser.add_argument("--phase",choices=["P03","P11"],default="P03")
+parser.add_argument("--phase",choices=["P03","P11","P12"],default="P03")
 phase=parser.parse_args().phase
 root=Path(__file__).resolve().parents[1]
 fixtures=root/'target/encoding-fixtures.tsv'

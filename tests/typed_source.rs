@@ -152,7 +152,7 @@ fn compiler_modes_and_incomplete_features_fail_explicitly() {
         ("#include <stdio.h>\nint main(){}", Stage::Lex),
         ("int main(){return 1.0;}", Stage::Parse),
         ("int main(){int a[3];return sizeof(a);}", Stage::Ir),
-        ("int main(){int *p;return 0;}", Stage::Ir),
+        ("int main(){int *p;return *p;}", Stage::Parse),
         ("int main(){printf(\"x\");}", Stage::Parse),
         ("typedef int T;", Stage::Ir),
     ] {

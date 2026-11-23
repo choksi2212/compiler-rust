@@ -3,7 +3,7 @@ use crate::{
     integer::{self, Binary, Unary},
     lexer::{self, Kind, Token},
     typed_ir::SymbolId,
-    types::{self, IntegerKind, IntegerValue, Qualifiers, Type, TypeContext, TypeId},
+    types::{self, IntegerKind, IntegerValue, Linkage, Qualifiers, Type, TypeContext, TypeId},
 };
 use std::collections::{HashMap, HashSet};
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -12,6 +12,7 @@ pub enum DeclarationKind {
     Local,
     Parameter,
     Function,
+    Global,
 }
 #[derive(Debug, Clone)]
 pub struct Declaration {
@@ -19,13 +20,40 @@ pub struct Declaration {
     pub ty: TypeId,
     pub kind: DeclarationKind,
     pub scope: usize,
+    pub storage: Storage,
+    pub linkage: Option<Linkage>,
+    pub initial: Option<Expr>,
+    pub defined: bool,
+    pub tentative: bool,
+    pub adjusted_parameter: bool,
 }
 #[derive(Debug, Clone)]
 pub struct Unit {
     pub types: TypeContext,
     pub declarations: Vec<Declaration>,
-    pub main: Option<Statement>,
+    pub definitions: Vec<Definition>,
     pub main_symbol: Option<SymbolId>,
+}
+#[derive(Debug, Clone)]
+pub struct Definition {
+    pub symbol: SymbolId,
+    pub parameters: Vec<SymbolId>,
+    pub body: Statement,
+}
+impl Unit {
+    pub fn main(&self) -> Option<&Statement> {
+        self.main_symbol.and_then(|id| {
+            self.definitions
+                .iter()
+                .find(|f| f.symbol == id)
+                .map(|f| &f.body)
+        })
+    }
+}
+#[derive(Debug, Clone)]
+struct Parameters {
+    scope: usize,
+    identities: Vec<Option<SymbolId>>,
 }
 #[derive(Debug, Clone)]
 pub struct Expr {
@@ -39,6 +67,28 @@ pub enum Expression {
     Variable(SymbolId),
     String(String),
     Convert(Box<Expr>),
+    Discard(Box<Expr>),
+    Decay(Box<Expr>),
+    Address(SymbolId),
+    VaStart {
+        list: SymbolId,
+        last: SymbolId,
+    },
+    VaArg {
+        list: SymbolId,
+    },
+    VaCopy {
+        destination: SymbolId,
+        source: SymbolId,
+    },
+    VaEnd {
+        list: SymbolId,
+    },
+    Call {
+        symbol: SymbolId,
+        signature: TypeId,
+        arguments: Vec<Expr>,
+    },
     Unary(Unary, Box<Expr>),
     Binary(Binary, Box<Expr>, Box<Expr>),
     Logical(bool, Box<Expr>, Box<Expr>),
@@ -78,6 +128,7 @@ pub enum StatementKind {
     Break,
     Continue,
     Return(Expr),
+    ReturnVoid,
     Switch(Expr, Box<Statement>),
     Case(Option<IntegerValue>, Box<Statement>),
     Label(String, Box<Statement>),
@@ -100,27 +151,29 @@ impl Statement {
     }
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Storage {
+pub enum Storage {
     None,
     Typedef,
     Auto,
     Register,
+    Extern,
+    Static,
 }
 #[derive(Debug)]
 enum Declarator {
     Name(Option<Token>),
     Pointer(Qualifiers, Box<Declarator>),
     Array(Box<Declarator>, Option<u64>),
-    Function(Box<Declarator>, Vec<TypeId>, bool, bool),
+    Function(Box<Declarator>, Vec<TypeId>, bool, bool, Parameters),
 }
 impl Declarator {
     fn apply(
         self,
         types: &mut TypeContext,
         base: TypeId,
-    ) -> Result<(Option<Token>, TypeId), String> {
+    ) -> Result<(Option<Token>, TypeId, Option<Parameters>), String> {
         match self {
-            Self::Name(name) => Ok((name, base)),
+            Self::Name(name) => Ok((name, base, None)),
             Self::Pointer(q, child) => {
                 let p = types.pointer(base)?;
                 let p = types.qualify(p, q)?;
@@ -130,9 +183,10 @@ impl Declarator {
                 let a = types.array(base, n)?;
                 child.apply(types, a)
             }
-            Self::Function(child, params, variadic, prototype) => {
+            Self::Function(child, params, variadic, prototype, parameters) => {
                 let f = types.function(base, params, variadic, prototype)?;
-                child.apply(types, f)
+                let (name, ty, existing) = child.apply(types, f)?;
+                Ok((name, ty, if ty == f { Some(parameters) } else { existing }))
             }
         }
     }
@@ -163,6 +217,10 @@ struct Parser {
     switches: Vec<Switch>,
     labels: HashSet<String>,
     gotos: Vec<Token>,
+    current_result: Option<TypeId>,
+    current_parameters: Vec<SymbolId>,
+    current_variadic: bool,
+    entities: HashMap<String, SymbolId>,
 }
 pub fn parse(source: &str) -> Result<Unit, String> {
     parse_tokens(lexer::lex_typed(source)?)
@@ -198,6 +256,10 @@ pub fn parse_tokens(tokens: Vec<Token>) -> Result<Unit, String> {
         switches: vec![],
         labels: HashSet::new(),
         gotos: vec![],
+        current_result: None,
+        current_parameters: vec![],
+        current_variadic: false,
+        entities: HashMap::new(),
     }
     .unit()
 }
@@ -208,7 +270,12 @@ fn keyword(name: &str) -> bool {
     crate::parser::reserved(name)
         || matches!(
             name,
-            "_Alignof" | "_Atomic" | "_Generic" | "_Static_assert" | "_Thread_local"
+            "_Alignof"
+                | "_Atomic"
+                | "_Generic"
+                | "_Static_assert"
+                | "_Thread_local"
+                | "__builtin_va_list"
         )
 }
 impl Parser {
@@ -253,6 +320,7 @@ impl Parser {
         matches!(
             self.peek().text.as_str(),
             "void"
+                | "__builtin_va_list"
                 | "_Bool"
                 | "char"
                 | "short"
@@ -285,6 +353,12 @@ impl Parser {
         ty: TypeId,
         kind: DeclarationKind,
     ) -> Result<SymbolId, String> {
+        if token.text.starts_with("__builtin_va_") {
+            return Err(error(&token, "reserved variadic compiler identifier"));
+        }
+        if kind == DeclarationKind::Function {
+            return self.linked(token, ty, kind, Storage::None);
+        }
         let scope = self.scopes.last().unwrap();
         if let Some(id) = scope.names.get(&token.text).copied() {
             let old = &self.declarations[id.0];
@@ -318,8 +392,111 @@ impl Parser {
             ty,
             kind,
             scope: scope.id,
+            storage: Storage::None,
+            linkage: None,
+            initial: None,
+            defined: matches!(kind, DeclarationKind::Local | DeclarationKind::Parameter),
+            tentative: false,
+            adjusted_parameter: false,
         });
         Ok(id)
+    }
+    fn linked(
+        &mut self,
+        token: Token,
+        ty: TypeId,
+        kind: DeclarationKind,
+        storage: Storage,
+    ) -> Result<SymbolId, String> {
+        if token.text.starts_with("__builtin_va_") {
+            return Err(error(&token, "reserved variadic compiler identifier"));
+        }
+        let visible = self
+            .lookup(&token.text)
+            .and_then(|id| self.declarations[id.0].linkage);
+        let linkage = if storage == Storage::Static {
+            Linkage::Internal
+        } else if storage == Storage::Extern || kind == DeclarationKind::Function {
+            visible.unwrap_or(Linkage::External)
+        } else {
+            Linkage::External
+        };
+        if let Some(current) = self.scopes.last().unwrap().names.get(&token.text) {
+            let d = &self.declarations[current.0];
+            if d.kind != kind || d.linkage.is_none() {
+                return Err(error(&token, "conflicting declaration in this scope"));
+            }
+        }
+        let id = if let Some(id) = self.entities.get(&token.text).copied() {
+            let d = &self.declarations[id.0];
+            if d.kind != kind || d.linkage != Some(linkage) || !self.types.compatible(d.ty, ty)? {
+                return Err(error(&token, "conflicting type or linkage declaration"));
+            }
+            if kind != DeclarationKind::Function
+                || matches!(
+                    self.types.get(ty)?,
+                    Type::Function {
+                        prototype: true,
+                        ..
+                    }
+                )
+            {
+                self.declarations[id.0].ty = ty;
+            }
+            id
+        } else {
+            if self.declarations.len() >= 65535 {
+                return Err(error(&token, "declaration budget exceeded"));
+            }
+            let id = SymbolId(self.declarations.len());
+            self.entities.insert(token.text.clone(), id);
+            self.declarations.push(Declaration {
+                token: token.clone(),
+                ty,
+                kind,
+                scope: self.scopes.last().unwrap().id,
+                storage,
+                linkage: Some(linkage),
+                initial: None,
+                defined: false,
+                tentative: false,
+                adjusted_parameter: false,
+            });
+            id
+        };
+        self.scopes.last_mut().unwrap().names.insert(token.text, id);
+        Ok(id)
+    }
+    fn static_initial(&self, e: &Expr) -> Result<(), String> {
+        if matches!(self.types.get(e.ty)?, Type::Pointer(_)) {
+            address_constant(self, e)
+        } else {
+            constant(&self.types, e).map(|_| ())
+        }
+    }
+    fn record_initial(
+        &mut self,
+        id: SymbolId,
+        initial: Option<Expr>,
+        definition: bool,
+        tentative: bool,
+    ) -> Result<(), String> {
+        if let Some(e) = &initial {
+            self.static_initial(e)?;
+        }
+        let declaration = &mut self.declarations[id.0];
+        if definition && declaration.defined {
+            return Err(error(
+                &declaration.token,
+                "duplicate initialized definition",
+            ));
+        }
+        if definition {
+            declaration.defined = true;
+            declaration.initial = initial;
+        }
+        declaration.tentative |= tentative;
+        Ok(())
     }
     fn qualifiers(&mut self) -> Qualifiers {
         let mut q = Qualifiers::default();
@@ -373,11 +550,19 @@ impl Parser {
                         ));
                     }
                 }
-                "extern" | "static" => {
-                    return Err(error(
-                        self.peek(),
-                        "static/extern storage is not yet supported in typed mode",
-                    ));
+                "extern" => {
+                    storage += 1;
+                    storage_kind = Storage::Extern;
+                }
+                "static" => {
+                    storage += 1;
+                    storage_kind = Storage::Static;
+                }
+                "__builtin_va_list"
+                    if alias.is_none()
+                        && signed + unsigned + short + long + int + char_ + bool_ + void == 0 =>
+                {
+                    alias = Some(self.types.pointer(self.types.integer(IntegerKind::Char))?);
                 }
                 "signed" => signed += 1,
                 "unsigned" => unsigned += 1,
@@ -517,6 +702,7 @@ impl Parser {
                         || matches!(
                             t.text.as_str(),
                             "void"
+                                | "__builtin_va_list"
                                 | "int"
                                 | "char"
                                 | "short"
@@ -577,7 +763,8 @@ impl Parser {
                 let mut parameters = vec![];
                 let mut variadic = false;
                 let prototype = !self.eat(")");
-                self.push_scope();
+                let parameter_scope = self.push_scope();
+                let mut parameter_identities = vec![];
                 if prototype {
                     if self.peek().text == "void"
                         && self.tokens.get(self.at + 1).is_some_and(|t| t.text == ")")
@@ -597,12 +784,18 @@ impl Parser {
                                 return Err(error(&token, "invalid parameter storage class"));
                             }
                             let d = self.declarator(true, true)?;
-                            let (name, ty) = d
+                            let (name, ty, _) = d
                                 .apply(&mut self.types, base)
                                 .map_err(|e| error(&token, e))?;
-                            if let Some(name) = name {
-                                self.define(name, ty, DeclarationKind::Parameter)?;
+                            let id = if let Some(name) = name {
+                                Some(self.define(name, ty, DeclarationKind::Parameter)?)
+                            } else {
+                                None
+                            };
+                            if let Some(id) = id {
+                                self.declarations[id.0].storage = storage;
                             }
+                            parameter_identities.push(id);
                             parameters.push(ty);
                             if parameters.len() > 1024 {
                                 return Err(error(&token, "parameter budget exceeded"));
@@ -615,7 +808,16 @@ impl Parser {
                     }
                 }
                 self.scopes.pop();
-                direct = Declarator::Function(Box::new(direct), parameters, variadic, prototype);
+                direct = Declarator::Function(
+                    Box::new(direct),
+                    parameters,
+                    variadic,
+                    prototype,
+                    Parameters {
+                        scope: parameter_scope,
+                        identities: parameter_identities,
+                    },
+                );
             } else {
                 break;
             }
@@ -632,7 +834,7 @@ impl Parser {
             return Err(error(&token, "storage class in type name"));
         }
         let declarator = self.declarator(false, true)?;
-        let (name, ty) = declarator
+        let (name, ty, _) = declarator
             .apply(&mut self.types, base)
             .map_err(|e| error(&token, e))?;
         if name.is_some() {
@@ -641,15 +843,16 @@ impl Parser {
         Ok(ty)
     }
     fn unit(mut self) -> Result<Unit, String> {
-        let mut main = None;
+        let mut definitions = vec![];
         let mut main_symbol = None;
+        let mut defined = HashSet::new();
         while self.peek().kind != Kind::End {
             let token = self.peek().clone();
             let (base, storage) = self.specifiers()?;
             let typedef = storage == Storage::Typedef;
             loop {
                 let declarator = self.declarator(true, false)?;
-                let (name, mut ty) = declarator
+                let (name, mut ty, parameters) = declarator
                     .apply(&mut self.types, base)
                     .map_err(|e| error(&token, e))?;
                 let name = name.ok_or_else(|| error(&token, "declaration requires a name"))?;
@@ -659,45 +862,113 @@ impl Parser {
                 } else if function {
                     DeclarationKind::Function
                 } else {
-                    return Err(error(
-                        &name,
-                        "global object storage is not yet supported in typed mode",
-                    ));
+                    DeclarationKind::Global
                 };
                 if self.peek().text == "{" {
-                    if typedef || !function || name.text != "main" || main.is_some() {
+                    if typedef || !function {
                         return Err(error(
                             &name,
-                            "typed phase supports one main definition; general functions follow in the call phase",
+                            "function declarator required for a definition",
                         ));
                     }
+                    let parameters = parameters.ok_or_else(|| {
+                        error(&name, "definition requires its own parameter declarator")
+                    })?;
                     let Type::Function {
                         result,
-                        parameters,
+                        parameters: types,
                         variadic,
                         ..
                     } = self.types.get(ty)?.clone()
                     else {
                         unreachable!()
                     };
-                    if result != self.types.integer(IntegerKind::Int)
-                        || !parameters.is_empty()
-                        || variadic
+                    let mut ids = vec![];
+                    let mut names = HashMap::new();
+                    for (id, ty) in parameters.identities.iter().zip(&types) {
+                        let id = id.ok_or_else(|| {
+                            error(&name, "function definition requires parameter names")
+                        })?;
+                        let declaration = &mut self.declarations[id.0];
+                        if matches!(
+                            self.types.get(self.types.unqualified(declaration.ty)?)?,
+                            Type::Array { .. } | Type::Function { .. }
+                        ) {
+                            declaration.ty = *ty;
+                            declaration.adjusted_parameter = true;
+                        }
+                        names.insert(declaration.token.text.clone(), id);
+                        ids.push(id);
+                    }
+                    if ids.len() != types.len() {
+                        return Err(error(&name, "definition parameter identity mismatch"));
+                    }
+                    if name.text == "main"
+                        && (result != self.types.integer(IntegerKind::Int)
+                            || !types.is_empty()
+                            || variadic)
                     {
                         return Err(error(&name, "typed main requires int main(void)"));
                     }
-                    ty = self.types.function(result, vec![], false, true)?;
-                    let id = self.define(name, ty, kind)?;
-                    main = Some(self.block()?);
-                    main_symbol = Some(id);
+                    ty = self.types.function(result, types, variadic, true)?;
+                    let is_main = name.text == "main";
+                    let id = self.linked(name.clone(), ty, kind, storage)?;
+                    self.declarations[id.0].defined = true;
+                    if !defined.insert(id) {
+                        return Err(error(&name, "duplicate function definition"));
+                    }
+                    if is_main {
+                        main_symbol = Some(id);
+                    }
+                    self.labels.clear();
+                    self.gotos.clear();
+                    self.current_result = Some(result);
+                    self.current_parameters = ids.clone();
+                    self.current_variadic = variadic;
+                    self.scopes.push(Scope {
+                        id: parameters.scope,
+                        names,
+                    });
+                    let body = self.block_existing(parameters.scope)?;
+                    self.scopes.pop();
+                    self.current_result = None;
+                    self.current_parameters.clear();
+                    self.current_variadic = false;
                     for target in &self.gotos {
                         if !self.labels.contains(&target.text) {
                             return Err(error(target, "undefined label"));
                         }
                     }
+                    definitions.push(Definition {
+                        symbol: id,
+                        parameters: ids,
+                        body,
+                    });
                     break;
                 }
-                self.define(name, ty, kind)?;
+                let id = if matches!(kind, DeclarationKind::Function | DeclarationKind::Global) {
+                    self.linked(name.clone(), ty, kind, storage)?
+                } else {
+                    self.define(name.clone(), ty, kind)?
+                };
+                let initial = if self.eat("=") {
+                    if kind != DeclarationKind::Global {
+                        return Err(error(&name, "initializer requires an object declaration"));
+                    }
+                    let e = self.expr(1)?;
+                    Some(self.convert(e, self.types.unqualified(ty)?)?)
+                } else {
+                    None
+                };
+                if kind == DeclarationKind::Global {
+                    let defined = initial.is_some();
+                    self.record_initial(
+                        id,
+                        initial,
+                        defined,
+                        !defined && storage != Storage::Extern,
+                    )?;
+                }
                 if !self.eat(",") {
                     self.expect(";")?;
                     break;
@@ -707,7 +978,7 @@ impl Parser {
         Ok(Unit {
             types: self.types,
             declarations: self.declarations,
-            main,
+            definitions,
             main_symbol,
         })
     }
@@ -718,7 +989,7 @@ impl Parser {
         let mut declarations = vec![];
         loop {
             let d = self.declarator(true, false)?;
-            let (name, ty) = d
+            let (name, ty, _) = d
                 .apply(&mut self.types, base)
                 .map_err(|e| error(&token, e))?;
             let name = name.ok_or_else(|| error(&token, "missing declaration name"))?;
@@ -726,20 +997,31 @@ impl Parser {
                 DeclarationKind::Typedef
             } else if matches!(self.types.get(ty)?, Type::Function { .. }) {
                 DeclarationKind::Function
+            } else if matches!(storage, Storage::Static | Storage::Extern) {
+                DeclarationKind::Global
             } else {
                 DeclarationKind::Local
             };
             if kind == DeclarationKind::Function
-                && matches!(storage, Storage::Auto | Storage::Register)
+                && matches!(storage, Storage::Auto | Storage::Register | Storage::Static)
             {
                 return Err(error(&name, "invalid function storage class"));
             }
             if kind == DeclarationKind::Local {
                 self.types.layout(ty).map_err(|e| error(&name, e))?;
             }
-            let id = self.define(name, ty, kind)?;
+            let id = if kind == DeclarationKind::Function
+                || (kind == DeclarationKind::Global && storage == Storage::Extern)
+            {
+                self.linked(name.clone(), ty, kind, storage)?
+            } else {
+                self.define(name.clone(), ty, kind)?
+            };
+            self.declarations[id.0].storage = storage;
             let initial = if self.eat("=") {
-                if kind != DeclarationKind::Local {
+                if !matches!(kind, DeclarationKind::Local | DeclarationKind::Global)
+                    || storage == Storage::Extern
+                {
                     return Err(error(
                         self.peek(),
                         "only local objects can have initializers here",
@@ -750,7 +1032,9 @@ impl Parser {
             } else {
                 None
             };
-            if kind == DeclarationKind::Local {
+            if kind == DeclarationKind::Global && storage == Storage::Static {
+                self.record_initial(id, initial, true, false)?;
+            } else if kind == DeclarationKind::Local {
                 declarations.push((id, initial));
             }
             if !self.eat(",") {
@@ -764,9 +1048,14 @@ impl Parser {
         })
     }
     fn block(&mut self) -> Result<Statement, String> {
+        let scope = self.push_scope();
+        let result = self.block_existing(scope);
+        self.scopes.pop();
+        result
+    }
+    fn block_existing(&mut self, scope: usize) -> Result<Statement, String> {
         let token = self.peek().clone();
         self.expect("{")?;
-        let scope = self.push_scope();
         let mut items = vec![];
         while !self.eat("}") {
             if self.peek().kind == Kind::End {
@@ -774,7 +1063,6 @@ impl Parser {
             }
             items.push(self.statement()?);
         }
-        self.scopes.pop();
         Ok(Statement {
             token,
             kind: StatementKind::Block { scope, items },
@@ -800,9 +1088,8 @@ impl Parser {
     }
     fn condition(&mut self) -> Result<Expr, String> {
         let e = self.expr(0)?;
-        self.types
-            .integer_kind(e.ty)
-            .map_err(|e2| error(&e.token, e2))?;
+        let e = self.decay(e)?;
+        self.scalar(e.ty).map_err(|e2| error(&e.token, e2))?;
         Ok(e)
     }
     fn statement_inner(&mut self) -> Result<Statement, String> {
@@ -865,7 +1152,8 @@ impl Parser {
                 let e = if self.peek().text == ";" {
                     None
                 } else {
-                    Some(self.expr(0)?)
+                    let e = self.expr(0)?;
+                    Some(self.decay(e)?)
                 };
                 self.expect(";")?;
                 Statement {
@@ -882,7 +1170,8 @@ impl Parser {
             let update = if self.peek().text == ")" {
                 None
             } else {
-                Some(self.expr(0)?)
+                let e = self.expr(0)?;
+                Some(self.decay(e)?)
             };
             self.expect(")")?;
             self.loops += 1;
@@ -899,10 +1188,23 @@ impl Parser {
                 body,
             }
         } else if self.eat("return") {
-            let e = self.expr(0)?;
-            let e = self.convert(e, self.types.integer(IntegerKind::Int))?;
-            self.expect(";")?;
-            StatementKind::Return(e)
+            let result = self
+                .current_result
+                .ok_or_else(|| error(&token, "return outside a function"))?;
+            if self.eat(";") {
+                if result != self.types.void() {
+                    return Err(error(&token, "nonvoid return requires a value"));
+                }
+                StatementKind::ReturnVoid
+            } else {
+                if result == self.types.void() {
+                    return Err(error(&token, "void function cannot return an expression"));
+                }
+                let e = self.expr(0)?;
+                let e = self.convert(e, self.types.unqualified(result)?)?;
+                self.expect(";")?;
+                StatementKind::Return(e)
+            }
         } else if self.eat("break") {
             if self.breaks == 0 {
                 return Err(error(&token, "break outside loop/switch"));
@@ -970,19 +1272,106 @@ impl Parser {
             StatementKind::Goto(name.text)
         } else {
             let e = self.expr(0)?;
+            let e = self.decay(e)?;
             self.expect(";")?;
             StatementKind::Expression(e)
         };
         Ok(Statement { token, kind })
     }
-    fn convert(&self, e: Expr, ty: TypeId) -> Result<Expr, String> {
-        self.types
-            .integer_kind(e.ty)
-            .map_err(|e2| error(&e.token, e2))?;
-        self.types
-            .integer_kind(ty)
-            .map_err(|e2| error(&e.token, e2))?;
+    fn scalar(&self, ty: TypeId) -> Result<(), String> {
+        if matches!(
+            self.types.get(self.types.unqualified(ty)?)?,
+            Type::Integer(_) | Type::Pointer(_)
+        ) {
+            Ok(())
+        } else {
+            Err("scalar operand required".into())
+        }
+    }
+    fn decay(&mut self, e: Expr) -> Result<Expr, String> {
+        let base = match self.types.get(e.ty)? {
+            Type::Array { element, .. } => Some(*element),
+            Type::Function { .. } => Some(e.ty),
+            _ => None,
+        };
+        if let Some(base) = base {
+            let ty = self.types.pointer(base)?;
+            Ok(Expr {
+                token: e.token.clone(),
+                ty,
+                kind: Expression::Decay(Box::new(e)),
+            })
+        } else {
+            Ok(e)
+        }
+    }
+    fn convert(&mut self, e: Expr, ty: TypeId) -> Result<Expr, String> {
+        self.convert_core(e, ty, false)
+    }
+    fn cast(&mut self, e: Expr, ty: TypeId) -> Result<Expr, String> {
+        self.convert_core(e, ty, true)
+    }
+    fn convert_core(&mut self, e: Expr, ty: TypeId, explicit: bool) -> Result<Expr, String> {
+        let e = self.decay(e)?;
         let ty = self.types.unqualified(ty)?;
+        if ty == self.types.void() {
+            if !explicit {
+                return Err(error(
+                    &e.token,
+                    "implicit conversion to void is not permitted",
+                ));
+            }
+            return Ok(Expr {
+                token: e.token.clone(),
+                ty,
+                kind: Expression::Discard(Box::new(e)),
+            });
+        }
+        self.scalar(e.ty).map_err(|e2| error(&e.token, e2))?;
+        self.scalar(ty).map_err(|e2| error(&e.token, e2))?;
+        match (self.types.get(e.ty)?, self.types.get(ty)?) {
+            (Type::Integer(_), Type::Integer(_)) => (),
+            (Type::Pointer(source), Type::Pointer(target)) => {
+                let (source, target) = (*source, *target);
+                let s = self.types.unqualified(source)?;
+                let t = self.types.unqualified(target)?;
+                let sf = matches!(self.types.get(s)?, Type::Function { .. });
+                let tf = matches!(self.types.get(t)?, Type::Function { .. });
+                if explicit {
+                    if sf != tf {
+                        return Err(error(
+                            &e.token,
+                            "function/object pointer casts are outside the delivered subset",
+                        ));
+                    }
+                } else {
+                    let sq = self.types.qualifiers(source)?;
+                    let tq = self.types.qualifiers(target)?;
+                    if (sq.constant && !tq.constant)
+                        || (sq.volatile && !tq.volatile)
+                        || (sq.restrict && !tq.restrict)
+                    {
+                        return Err(error(&e.token, "pointer conversion discards qualifiers"));
+                    }
+                    if !(self.types.compatible(s, t)?
+                        || s == self.types.void() && !tf
+                        || t == self.types.void() && !sf)
+                    {
+                        return Err(error(&e.token, "incompatible pointer conversion"));
+                    }
+                }
+            }
+            (Type::Integer(_), Type::Pointer(_)) => {
+                if !constant(&self.types, &e).is_ok_and(|v| v.bits == 0) {
+                    return Err(error(
+                        &e.token,
+                        "only integer constant zero converts to a pointer in this phase",
+                    ));
+                }
+            }
+            (Type::Pointer(_), Type::Integer(kind)) if explicit || *kind == IntegerKind::Bool => (),
+            _ => return Err(error(&e.token, "incompatible scalar conversion")),
+        }
         if e.ty == ty {
             Ok(e)
         } else {
@@ -993,30 +1382,116 @@ impl Parser {
             })
         }
     }
-    fn lvalue(&self, e: &Expr) -> Result<SymbolId, String> {
+    fn modifiable(&self, e: &Expr) -> Result<SymbolId, String> {
         let Expression::Variable(id) = e.kind else {
-            return Err(error(&e.token, "modifiable integer variable required"));
+            return Err(error(&e.token, "modifiable scalar variable required"));
         };
         let d = &self.declarations[id.0];
-        if d.kind != DeclarationKind::Local || self.types.qualifiers(d.ty)?.constant {
-            return Err(error(&e.token, "modifiable integer variable required"));
+        if !matches!(
+            d.kind,
+            DeclarationKind::Local | DeclarationKind::Parameter | DeclarationKind::Global
+        ) || self.types.qualifiers(d.ty)?.constant
+        {
+            return Err(error(&e.token, "modifiable scalar variable required"));
         }
-        self.types
-            .integer_kind(d.ty)
-            .map_err(|e2| error(&e.token, e2))?;
+        self.scalar(d.ty).map_err(|e2| error(&e.token, e2))?;
         Ok(id)
     }
-    fn binary(&self, token: Token, op: Binary, a: Expr, b: Expr) -> Result<Expr, String> {
-        let (a, b) = if op.shift() {
+    fn lvalue(&self, e: &Expr) -> Result<SymbolId, String> {
+        let id = self.modifiable(e)?;
+        self.types.integer_kind(e.ty).map_err(|_| {
+            error(
+                &e.token,
+                "pointer update operations wait for the memory phase",
+            )
+        })?;
+        Ok(id)
+    }
+    fn common(&mut self, a: Expr, b: Expr) -> Result<(Expr, Expr, TypeId), String> {
+        let a = self.decay(a)?;
+        let b = self.decay(b)?;
+        let ap = if let Type::Pointer(p) = self.types.get(a.ty)? {
+            Some(*p)
+        } else {
+            None
+        };
+        let bp = if let Type::Pointer(p) = self.types.get(b.ty)? {
+            Some(*p)
+        } else {
+            None
+        };
+        let ty = match (ap, bp) {
+            (Some(ap), Some(bp)) => {
+                let au = self.types.unqualified(ap)?;
+                let bu = self.types.unqualified(bp)?;
+                let base = if self.types.compatible(au, bu)?
+                    || (au == self.types.void()
+                        && !matches!(self.types.get(bu)?, Type::Function { .. }))
+                {
+                    au
+                } else if bu == self.types.void()
+                    && !matches!(self.types.get(au)?, Type::Function { .. })
+                {
+                    bu
+                } else {
+                    return Err(error(&a.token, "incompatible pointer operands"));
+                };
+                let aq = self.types.qualifiers(ap)?;
+                let bq = self.types.qualifiers(bp)?;
+                let base = self.types.qualify(
+                    base,
+                    Qualifiers {
+                        constant: aq.constant || bq.constant,
+                        volatile: aq.volatile || bq.volatile,
+                        restrict: aq.restrict || bq.restrict,
+                    },
+                )?;
+                self.types.pointer(base)?
+            }
+            (Some(_), None) => a.ty,
+            (None, Some(_)) => b.ty,
+            (None, None) if a.ty == self.types.void() && b.ty == self.types.void() => {
+                self.types.void()
+            }
+            _ => self
+                .types
+                .common_integer(a.ty, b.ty)
+                .map_err(|e| error(&a.token, e))?,
+        };
+        if ty == self.types.void() {
+            return Ok((a, b, ty));
+        }
+        Ok((self.convert(a, ty)?, self.convert(b, ty)?, ty))
+    }
+    fn binary(&mut self, token: Token, op: Binary, a: Expr, b: Expr) -> Result<Expr, String> {
+        let a = self.decay(a)?;
+        let b = self.decay(b)?;
+        let pointer = matches!(self.types.get(a.ty)?, Type::Pointer(_))
+            || matches!(self.types.get(b.ty)?, Type::Pointer(_));
+        if !pointer {
+            self.types
+                .integer_kind(a.ty)
+                .map_err(|e| error(&token, e))?;
+            self.types
+                .integer_kind(b.ty)
+                .map_err(|e| error(&token, e))?;
+        }
+        let (a, b) = if pointer {
+            if !matches!(op, Binary::Equal | Binary::NotEqual) {
+                return Err(error(
+                    &token,
+                    "pointer arithmetic/ordering waits for the memory phase",
+                ));
+            }
+            let (a, b, _) = self.common(a, b)?;
+            (a, b)
+        } else if op.shift() {
             let at = self.types.promoted(a.ty)?;
             let bt = self.types.promoted(b.ty)?;
             (self.convert(a, at)?, self.convert(b, bt)?)
         } else {
-            let ty = self
-                .types
-                .common_integer(a.ty, b.ty)
-                .map_err(|e| error(&token, e))?;
-            (self.convert(a, ty)?, self.convert(b, ty)?)
+            let (a, b, _) = self.common(a, b)?;
+            (a, b)
         };
         let ty = if op.comparison() {
             self.types.integer(IntegerKind::Int)
@@ -1028,6 +1503,92 @@ impl Parser {
             ty,
             kind: Expression::Binary(op, Box::new(a), Box::new(b)),
         })
+    }
+    fn va_list_type(&mut self) -> Result<TypeId, String> {
+        self.types.pointer(self.types.integer(IntegerKind::Char))
+    }
+    fn va_object(&mut self, e: &Expr, write: bool) -> Result<SymbolId, String> {
+        let Expression::Variable(symbol) = e.kind else {
+            return Err(error(&e.token, "va_list must be an object identifier"));
+        };
+        if write {
+            self.modifiable(e)?;
+        }
+        if e.ty != self.va_list_type()? {
+            return Err(error(&e.token, "__builtin_va_list object required"));
+        }
+        Ok(symbol)
+    }
+    fn va_expression(&mut self, token: Token) -> Result<Expr, String> {
+        self.expect("(")?;
+        let first = self.expr(1)?;
+        let (ty, kind) = match token.text.as_str() {
+            "__builtin_va_start" => {
+                let list = self.va_object(&first, true)?;
+                self.expect(",")?;
+                let last = self.expr(1)?;
+                let Expression::Variable(last) = last.kind else {
+                    return Err(error(
+                        &token,
+                        "va_start requires the last named parameter identifier",
+                    ));
+                };
+                if !self.current_variadic || self.current_parameters.last() != Some(&last) {
+                    return Err(error(
+                        &token,
+                        "va_start is outside its variadic function or names the wrong last parameter",
+                    ));
+                }
+                let declaration = &self.declarations[last.0];
+                let last_type = self.types.unqualified(declaration.ty)?;
+                if declaration.storage == Storage::Register
+                    || declaration.adjusted_parameter
+                    || (!matches!(self.types.get(last_type)?, Type::Pointer(_))
+                        && self.types.promoted(last_type)? != last_type)
+                {
+                    return Err(error(
+                        &token,
+                        "va_start last parameter is incompatible with default argument promotion",
+                    ));
+                }
+                (self.types.void(), Expression::VaStart { list, last })
+            }
+            "__builtin_va_arg" => {
+                let list = self.va_object(&first, true)?;
+                self.expect(",")?;
+                let ty = self.type_name()?;
+                let ty = self.types.unqualified(ty)?;
+                self.scalar(ty).map_err(|e| error(&token, e))?;
+                if !matches!(self.types.get(ty)?, Type::Pointer(_))
+                    && self.types.promoted(ty)? != ty
+                {
+                    return Err(error(
+                        &token,
+                        "va_arg requires a default-promoted scalar type",
+                    ));
+                }
+                (ty, Expression::VaArg { list })
+            }
+            "__builtin_va_copy" => {
+                let destination = self.va_object(&first, true)?;
+                self.expect(",")?;
+                let second = self.expr(1)?;
+                let source = self.va_object(&second, false)?;
+                (
+                    self.types.void(),
+                    Expression::VaCopy {
+                        destination,
+                        source,
+                    },
+                )
+            }
+            _ => {
+                let list = self.va_object(&first, true)?;
+                (self.types.void(), Expression::VaEnd { list })
+            }
+        };
+        self.expect(")")?;
+        Ok(Expr { token, ty, kind })
     }
     fn expr(&mut self, min: u8) -> Result<Expr, String> {
         if self.depth >= 64 {
@@ -1044,8 +1605,13 @@ impl Parser {
         result
     }
     fn expr_inner(&mut self, min: u8) -> Result<Expr, String> {
+        let lhs = self.prefix()?;
+        let lhs = self.postfix(lhs)?;
+        self.infix(lhs, min)
+    }
+    fn prefix(&mut self) -> Result<Expr, String> {
         let token = self.take();
-        let mut lhs = match &token.kind {
+        let lhs = match &token.kind {
             Kind::Number(n) => {
                 let value = IntegerValue::new(
                     &self.types,
@@ -1122,16 +1688,42 @@ impl Parser {
                     let ty = self.type_name()?;
                     self.expect(")")?;
                     let rhs = self.expr(13)?;
-                    let converted = self.convert(rhs, ty)?;
-                    Expr {
-                        token: token.clone(),
-                        ty: self.types.unqualified(ty)?,
-                        kind: Expression::Convert(Box::new(converted)),
+                    let converted = self.cast(rhs, ty)?;
+                    if ty == self.types.void() {
+                        converted
+                    } else {
+                        Expr {
+                            token: token.clone(),
+                            ty: self.types.unqualified(ty)?,
+                            kind: Expression::Convert(Box::new(converted)),
+                        }
                     }
                 } else {
                     let inner = self.expr(0)?;
                     self.expect(")")?;
                     inner
+                }
+            }
+            _ if token.text == "&" => {
+                let e = self.expr(13)?;
+                let Expression::Variable(symbol) = e.kind else {
+                    return Err(error(
+                        &token,
+                        "address requires an object identifier in this phase",
+                    ));
+                };
+                let declaration = &self.declarations[symbol.0];
+                if declaration.kind != DeclarationKind::Global {
+                    return Err(error(
+                        &token,
+                        "automatic/function addresses wait for the memory phase",
+                    ));
+                }
+                let ty = self.types.pointer(declaration.ty)?;
+                Expr {
+                    token: token.clone(),
+                    ty,
+                    kind: Expression::Address(symbol),
                 }
             }
             _ if ["+", "-", "!", "~"].contains(&token.text.as_str()) => {
@@ -1142,7 +1734,13 @@ impl Parser {
                     "!" => Unary::Not,
                     _ => Unary::Complement,
                 };
-                let promoted = self.types.promoted(e.ty).map_err(|e| error(&token, e))?;
+                let e = self.decay(e)?;
+                let promoted = if op == Unary::Not {
+                    self.scalar(e.ty).map_err(|e2| error(&token, e2))?;
+                    e.ty
+                } else {
+                    self.types.promoted(e.ty).map_err(|e2| error(&token, e2))?
+                };
                 let e = self.convert(e, promoted)?;
                 let ty = if op == Unary::Not {
                     self.types.integer(IntegerKind::Int)
@@ -1169,6 +1767,16 @@ impl Parser {
                     },
                 }
             }
+            _ if matches!(
+                token.text.as_str(),
+                "__builtin_va_start"
+                    | "__builtin_va_arg"
+                    | "__builtin_va_copy"
+                    | "__builtin_va_end"
+            ) =>
+            {
+                self.va_expression(token.clone())?
+            }
             Kind::Word if !keyword(&token.text) => {
                 let id = self
                     .lookup(&token.text)
@@ -1185,6 +1793,9 @@ impl Parser {
             }
             _ => return Err(error(&token, "expected expression")),
         };
+        Ok(lhs)
+    }
+    fn postfix(&mut self, mut lhs: Expr) -> Result<Expr, String> {
         if self.peek().text == "++" || self.peek().text == "--" {
             let op = self.take();
             let symbol = self.lvalue(&lhs)?;
@@ -1199,12 +1810,74 @@ impl Parser {
                 },
             };
         }
-        if self.peek().text == "(" {
-            return Err(error(
-                self.peek(),
-                "function calls are not yet supported in typed mode",
-            ));
+        if self.eat("(") {
+            let Expression::Variable(symbol) = lhs.kind else {
+                return Err(error(
+                    &lhs.token,
+                    "indirect function calls are not yet supported",
+                ));
+            };
+            if self.declarations[symbol.0].kind != DeclarationKind::Function {
+                return Err(error(&lhs.token, "called identifier is not a function"));
+            }
+            let signature = self.declarations[symbol.0].ty;
+            let Type::Function {
+                result,
+                parameters,
+                variadic,
+                prototype,
+            } = self.types.get(signature)?.clone()
+            else {
+                return Err(error(&lhs.token, "called expression has no function type"));
+            };
+            if !prototype {
+                return Err(error(
+                    &lhs.token,
+                    "calls require a prototype in the current typed subset",
+                ));
+            }
+            let mut arguments = vec![];
+            if !self.eat(")") {
+                loop {
+                    arguments.push(self.expr(1)?);
+                    if self.eat(")") {
+                        break;
+                    }
+                    self.expect(",")?;
+                }
+            }
+            if arguments.len() < parameters.len()
+                || (!variadic && arguments.len() != parameters.len())
+            {
+                return Err(error(&lhs.token, "function argument count mismatch"));
+            }
+            let mut converted = vec![];
+            for (index, argument) in arguments.into_iter().enumerate() {
+                let argument = self.decay(argument)?;
+                let ty = if let Some(ty) = parameters.get(index) {
+                    *ty
+                } else {
+                    if matches!(self.types.get(argument.ty)?, Type::Pointer(_)) {
+                        argument.ty
+                    } else {
+                        self.types.promoted(argument.ty)?
+                    }
+                };
+                converted.push(self.convert(argument, ty)?);
+            }
+            lhs = Expr {
+                token: lhs.token,
+                ty: self.types.unqualified(result)?,
+                kind: Expression::Call {
+                    symbol,
+                    signature,
+                    arguments: converted,
+                },
+            };
         }
+        Ok(lhs)
+    }
+    fn infix(&mut self, mut lhs: Expr, min: u8) -> Result<Expr, String> {
         let mut tail = 0;
         loop {
             let op = self.peek().text.clone();
@@ -1238,22 +1911,16 @@ impl Parser {
             }
             let t = self.take();
             if op == "?" {
-                self.types.integer_kind(lhs.ty).map_err(|e| error(&t, e))?;
+                lhs = self.decay(lhs)?;
+                self.scalar(lhs.ty).map_err(|e| error(&t, e))?;
                 let a = self.expr(0)?;
                 self.expect(":")?;
                 let b = self.expr(2)?;
-                let ty = self
-                    .types
-                    .common_integer(a.ty, b.ty)
-                    .map_err(|e| error(&t, e))?;
+                let (a, b, ty) = self.common(a, b)?;
                 lhs = Expr {
                     token: t,
                     ty,
-                    kind: Expression::Conditional(
-                        Box::new(lhs),
-                        Box::new(self.convert(a, ty)?),
-                        Box::new(self.convert(b, ty)?),
-                    ),
+                    kind: Expression::Conditional(Box::new(lhs), Box::new(a), Box::new(b)),
                 };
                 continue;
             }
@@ -1263,7 +1930,7 @@ impl Parser {
                 precedence + 1
             })?;
             if assignment {
-                let symbol = self.lvalue(&lhs)?;
+                let symbol = self.modifiable(&lhs)?;
                 let target = self.types.unqualified(self.declarations[symbol.0].ty)?;
                 let rhs = if op == "=" {
                     rhs
@@ -1282,12 +1949,8 @@ impl Parser {
                     kind: Expression::Assign(symbol, Box::new(self.convert(rhs, target)?)),
                 };
             } else if op == "," {
-                self.types.integer_kind(rhs.ty).map_err(|_| {
-                    error(
-                        &t,
-                        "comma result with array/function/pointer type is not yet supported",
-                    )
-                })?;
+                lhs = self.decay(lhs)?;
+                let rhs = self.decay(rhs)?;
                 let ty = rhs.ty;
                 lhs = Expr {
                     token: t,
@@ -1295,8 +1958,10 @@ impl Parser {
                     kind: Expression::Comma(Box::new(lhs), Box::new(rhs)),
                 };
             } else if op == "&&" || op == "||" {
-                self.types.integer_kind(lhs.ty).map_err(|e| error(&t, e))?;
-                self.types.integer_kind(rhs.ty).map_err(|e| error(&t, e))?;
+                lhs = self.decay(lhs)?;
+                let rhs = self.decay(rhs)?;
+                self.scalar(lhs.ty).map_err(|e| error(&t, e))?;
+                self.scalar(rhs.ty).map_err(|e| error(&t, e))?;
                 lhs = Expr {
                     token: t,
                     ty: self.types.integer(IntegerKind::Int),
@@ -1334,6 +1999,31 @@ fn binary_operator(op: &str) -> Option<Binary> {
         ">=" => Binary::GreaterEqual,
         _ => return None,
     })
+}
+fn address_constant(parser: &Parser, e: &Expr) -> Result<(), String> {
+    match &e.kind {
+        Expression::Address(symbol)
+            if parser.declarations[symbol.0].kind == DeclarationKind::Global =>
+        {
+            Ok(())
+        }
+        Expression::Decay(inner) if matches!(inner.kind, Expression::String(_)) => Ok(()),
+        Expression::Convert(inner) => address_constant(parser, inner),
+        Expression::Conditional(condition, a, b) => {
+            let condition = constant(&parser.types, condition)?;
+            address_constant(parser, if condition.bits != 0 { a } else { b })
+        }
+        _ => {
+            if constant(&parser.types, e).is_ok_and(|v| v.bits == 0) {
+                Ok(())
+            } else {
+                Err(error(
+                    &e.token,
+                    "static pointer initializer requires a null or static object address",
+                ))
+            }
+        }
+    }
 }
 pub fn constant(types: &TypeContext, e: &Expr) -> Result<IntegerValue, String> {
     let value = match &e.kind {

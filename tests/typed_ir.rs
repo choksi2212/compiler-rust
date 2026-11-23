@@ -8,9 +8,14 @@ fn fixture() -> Module {
     let int = types.integer(Int);
     let signature = types.function(int, vec![], false, true).unwrap();
     Module {
+        externs: vec![],
+        data: vec![],
+        entry: None,
         types,
         globals: vec![],
         functions: vec![Function {
+            name: "fixture".into(),
+            linkage: compiler::types::Linkage::Internal,
             id: FunctionId(0),
             symbol: SymbolId(0),
             signature,
@@ -303,4 +308,70 @@ fn switch_cases_and_cross_word_dataflow_are_checked() {
         cases[0].0 = u64::MAX;
     }
     assert!(verify(&bad).is_err());
+}
+
+#[test]
+fn function_storage_literal_and_variadic_ir_rejects_broken_contracts() {
+    let source = "int g=2;int *p=&g;const char *text=\"ok\";int sum(int n,...){__builtin_va_list ap;__builtin_va_start(ap,n);int x=__builtin_va_arg(ap,int);__builtin_va_end(ap);return x+g;}int main(){return sum(1,9);}";
+    let unit = compiler::typed_front::parse(source).unwrap();
+    let module = compiler::typed_lower::lower(&unit).unwrap();
+    verify(&module).unwrap();
+    let mut bad = module.clone();
+    bad.functions.remove(0);
+    assert!(verify(&bad).is_err());
+    let mut bad = module.clone();
+    bad.globals[0].symbol = bad.functions[0].symbol;
+    assert!(verify(&bad).is_err());
+    let mut bad = module.clone();
+    bad.data[0].bytes.pop();
+    assert!(verify(&bad).is_err());
+    let mut bad = module.clone();
+    bad.entry = Some(FunctionId(99999));
+    assert!(verify(&bad).is_err());
+    let mut bad = module.clone();
+    bad.functions[0].parameters.clear();
+    assert!(verify(&bad).is_err());
+    let mut checked = 0;
+    for (fi, f) in module.functions.iter().enumerate() {
+        for (bi, b) in f.blocks.iter().enumerate() {
+            for (ii, instruction) in b.instructions.iter().enumerate() {
+                let replacement = match instruction {
+                    Instruction::DirectCall {
+                        dst,
+                        signature,
+                        arguments,
+                        ..
+                    } => Some(Instruction::DirectCall {
+                        dst: *dst,
+                        symbol: SymbolId(99999),
+                        signature: *signature,
+                        arguments: arguments.clone(),
+                    }),
+                    Instruction::ReadGlobal { dst, .. } => Some(Instruction::ReadGlobal {
+                        dst: *dst,
+                        symbol: SymbolId(99999),
+                    }),
+                    Instruction::VaStart { list, .. } => Some(Instruction::VaStart {
+                        list: *list,
+                        last: LocalId(99999),
+                    }),
+                    Instruction::VaArg { dst, .. } => Some(Instruction::VaArg {
+                        dst: *dst,
+                        list: Variable::Local(LocalId(99999)),
+                    }),
+                    Instruction::VaEnd { .. } => Some(Instruction::VaEnd {
+                        list: Variable::Global(SymbolId(99999)),
+                    }),
+                    _ => None,
+                };
+                if let Some(replacement) = replacement {
+                    let mut bad = module.clone();
+                    bad.functions[fi].blocks[bi].instructions[ii] = replacement;
+                    assert!(verify(&bad).is_err(), "{instruction:?}");
+                    checked += 1;
+                }
+            }
+        }
+    }
+    assert!(checked >= 5);
 }

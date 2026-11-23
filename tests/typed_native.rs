@@ -103,9 +103,14 @@ fn program(kind: IntegerKind, op: Binary, a: u64, b: u64) -> Module {
     };
     let signature = types.function(result, vec![], false, true).unwrap();
     Module {
+        externs: vec![],
+        data: vec![],
+        entry: None,
         types,
         globals: vec![],
         functions: vec![Function {
+            name: "fixture".into(),
+            linkage: compiler::types::Linkage::Internal,
             id: FunctionId(0),
             symbol: SymbolId(0),
             signature,
@@ -459,4 +464,39 @@ fn twelve_integer_parameters_cross_register_and_stack_boundaries() {
         - 1
         + 7) as u64;
     assert_eq!(result, expected);
+}
+
+#[test]
+fn independently_compiled_rust_caller_supplies_real_variadic_homes() {
+    let source = "unsigned long long sum(int count,...){__builtin_va_list p;__builtin_va_start(p,count);unsigned long long sum=0;for(int i=0;i<count;i++)sum+=__builtin_va_arg(p,unsigned long long);__builtin_va_end(p);return sum;}";
+    let unit =
+        compiler::typed_front::parse(&format!("{source} int main(void){{return 0;}}")).unwrap();
+    let mut module = compiler::typed_lower::lower(&unit).unwrap();
+    module.functions.truncate(1);
+    module.entry = None;
+    let native = Native::new(&module, false);
+    // SAFETY: verified scalar Windows-x64 variadic callee reads precisely count
+    // u64 slots. A Rust-compiled caller supplies all register/stack positions.
+    unsafe {
+        let call: unsafe extern "system" fn(
+            i32,
+            u64,
+            u64,
+            u64,
+            u64,
+            u64,
+            u64,
+            u64,
+            u64,
+            u64,
+            u64,
+            u64,
+        ) -> u64 = std::mem::transmute(native.address);
+        for count in 0..=11 {
+            assert_eq!(
+                call(count, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21),
+                (count * count) as u64
+            );
+        }
+    }
 }

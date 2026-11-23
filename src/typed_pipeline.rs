@@ -42,12 +42,7 @@ impl CompilationContext {
             self.run_stage(source, Stage::Optimize, || crate::typed_opt::optimize(&ir))?;
         let selected = if options.optimize { &optimized_ir } else { &ir };
         let built = self.run_stage(source, Stage::Native, || {
-            crate::native_runtime::build_program(
-                &options.runtime,
-                &Default::default(),
-                &Default::default(),
-                |labels, _| crate::typed_native::lower(selected, labels, true),
-            )
+            crate::typed_image::build(selected, &options.runtime)
         })?;
         Ok(Compilation {
             frontend,

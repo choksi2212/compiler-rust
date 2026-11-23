@@ -22,10 +22,14 @@ fn fold_blocks(module: &mut Module) -> Result<(), String> {
             let mut known: HashMap<ValueId, IntegerValue> = HashMap::new();
             for instruction in &mut block.instructions {
                 let folded = match instruction {
-                    Instruction::Constant { dst, bits } => Some(IntegerValue {
-                        ty: function.values[dst.0],
-                        bits: *bits,
-                    }),
+                    Instruction::Constant { dst, bits }
+                        if types.integer_kind(function.values[dst.0]).is_ok() =>
+                    {
+                        Some(IntegerValue {
+                            ty: function.values[dst.0],
+                            bits: *bits,
+                        })
+                    }
                     Instruction::Convert { dst, src } => known
                         .get(src)
                         .and_then(|value| value.cast(types, function.values[dst.0]).ok()),

@@ -1,6 +1,11 @@
 //! Canonical Windows x64 LLP64 C types. No Rust-host layout assumptions.
 use std::collections::HashMap;
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Linkage {
+    External,
+    Internal,
+}
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub struct TypeId(pub usize);
 

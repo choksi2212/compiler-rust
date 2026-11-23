@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "installed_compiler": "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+  "compiler_sha256": "2f4c9e0970b55baf99d8f476cffd1c23b5096b8f345420ad147982e85f4c2143",
+  "records": [
+    {
+      "mode": "typed",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P12 compiler 84r6c_ed\\source.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P12 compiler 84r6c_ed\\program.exe",
+        "--overwrite",
+        "--std=c11"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "120 5\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "938ce07e286a5e26df11cebf0ed9014e1e38522a2154cdfd0c8e5471f9b0254b"
+    },
+    {
+      "mode": "teaching",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P12 compiler 84r6c_ed\\source.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P12 compiler 84r6c_ed\\program.exe",
+        "--overwrite"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "Sum = 20\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "1e6a8331b0fffb8acdb087b7ecc21d8a29b0e2c34c05654067e72f56f11f4248"
+    }
+  ]
+}

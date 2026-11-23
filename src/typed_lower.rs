@@ -6,11 +6,39 @@ use crate::{
         self, Block, BlockId, Function, FunctionId, Instruction as I, Local, LocalId, Module,
         SymbolId, Terminator, ValueId,
     },
-    types::{IntegerKind, TypeId},
+    types::TypeId,
 };
 use std::collections::HashMap;
 fn key(s: &Statement) -> usize {
     s as *const Statement as usize
+}
+#[derive(Default)]
+struct LiteralPool {
+    data: Vec<typed_ir::Data>,
+    cache: HashMap<Vec<u8>, typed_ir::DataId>,
+}
+impl LiteralPool {
+    fn add(&mut self, ty: TypeId, text: &str) -> typed_ir::DataId {
+        let mut bytes = text.as_bytes().to_vec();
+        bytes.push(0);
+        if let Some(id) = self.cache.get(&bytes) {
+            return *id;
+        }
+        let id = typed_ir::DataId(self.data.len());
+        self.cache.insert(bytes.clone(), id);
+        self.data.push(typed_ir::Data { id, ty, bytes });
+        id
+    }
+}
+fn scalar(unit: &Unit, ty: TypeId) -> Result<(), String> {
+    if matches!(
+        unit.types.get(unit.types.unqualified(ty)?)?,
+        crate::types::Type::Integer(_) | crate::types::Type::Pointer(_)
+    ) {
+        Ok(())
+    } else {
+        Err("non-scalar execution waits for the memory phase".into())
+    }
 }
 struct Pending {
     instructions: Vec<I>,
@@ -18,6 +46,7 @@ struct Pending {
 }
 struct Lower<'a> {
     unit: &'a Unit,
+    literals: &'a mut LiteralPool,
     locals: Vec<Local>,
     identities: HashMap<SymbolId, LocalId>,
     scope_locals: HashMap<usize, Vec<LocalId>>,
@@ -76,7 +105,7 @@ impl Lower<'_> {
         Ok(())
     }
     fn value(&mut self, ty: TypeId) -> Result<ValueId, String> {
-        self.unit.types.integer_kind(ty)?;
+        scalar(self.unit, ty)?;
         if self.values.len() >= 65535 {
             return Err("typed value budget exceeded".into());
         }
@@ -100,31 +129,219 @@ impl Lower<'_> {
             .copied()
             .ok_or_else(|| "function/typedef value execution is not yet supported".into())
     }
-    fn expr(&mut self, e: &Expr) -> Result<ValueId, String> {
+    fn variable(&self, symbol: SymbolId) -> Result<typed_ir::Variable, String> {
+        if self.unit.declarations[symbol.0].kind == DeclarationKind::Global {
+            Ok(typed_ir::Variable::Global(symbol))
+        } else {
+            self.local(symbol).map(typed_ir::Variable::Local)
+        }
+    }
+    fn read_variable(&mut self, symbol: SymbolId, ty: TypeId) -> Result<ValueId, String> {
+        let dst = self.value(ty)?;
+        if self.unit.declarations[symbol.0].kind == DeclarationKind::Global {
+            self.emit(I::ReadGlobal { dst, symbol })?;
+        } else {
+            let local = self.local(symbol)?;
+            self.emit(I::ReadLocal { dst, local })?;
+        }
+        Ok(dst)
+    }
+    fn write_variable(&mut self, symbol: SymbolId, src: ValueId) -> Result<(), String> {
+        if self.unit.declarations[symbol.0].kind == DeclarationKind::Global {
+            self.emit(I::WriteGlobal { symbol, src })
+        } else {
+            let local = self.local(symbol)?;
+            self.emit(I::WriteLocal { local, src })
+        }
+    }
+    fn call(
+        &mut self,
+        symbol: SymbolId,
+        signature: TypeId,
+        arguments: &[Expr],
+        result: TypeId,
+    ) -> Result<Option<ValueId>, String> {
+        let declaration = &self.unit.declarations[symbol.0];
+        if declaration.token.text == "printf"
+            && declaration.linkage == Some(crate::types::Linkage::External)
+            && !self.unit.definitions.iter().any(|d| d.symbol == symbol)
+        {
+            crate::typed_runtime::service(
+                &self.unit.types,
+                "printf",
+                signature,
+                crate::types::Linkage::External,
+            )?;
+            fn literal(e: &Expr) -> Option<&str> {
+                match &e.kind {
+                    Expression::String(s) => Some(s),
+                    Expression::Convert(e) | Expression::Decay(e) => literal(e),
+                    _ => None,
+                }
+            }
+            let format = arguments
+                .first()
+                .and_then(literal)
+                .ok_or("owned printf currently requires a literal format")?;
+            let bytes = format.as_bytes();
+            let mut cursor = 0;
+            let mut argument = 1;
+            while cursor < bytes.len() && bytes[cursor] != 0 {
+                if bytes[cursor] == b'%' {
+                    cursor += 1;
+                    let spec = *bytes.get(cursor).ok_or("unterminated printf conversion")?;
+                    let value = arguments
+                        .get(argument)
+                        .ok_or("missing printf conversion argument")?;
+                    let ty = self.unit.types.unqualified(value.ty)?;
+                    let valid = match spec {
+                        b'd' => ty == self.unit.types.integer(crate::types::IntegerKind::Int),
+                        b's' => {
+                            if let crate::types::Type::Pointer(base) = self.unit.types.get(ty)? {
+                                self.unit.types.unqualified(*base)?
+                                    == self.unit.types.integer(crate::types::IntegerKind::Char)
+                            } else {
+                                false
+                            }
+                        }
+                        _ => return Err("owned printf currently supports only %d and %s".into()),
+                    };
+                    if !valid {
+                        return Err("printf conversion argument type mismatch".into());
+                    }
+                    argument += 1;
+                }
+                cursor += 1;
+            }
+        }
+        let mut values = vec![];
+        for argument in arguments {
+            values.push(self.value_expr(argument)?);
+        }
+        let dst = if result == self.unit.types.void() {
+            None
+        } else {
+            Some(self.value(result)?)
+        };
+        self.emit(I::DirectCall {
+            dst,
+            symbol,
+            signature,
+            arguments: values,
+        })?;
+        Ok(dst)
+    }
+    fn expr(&mut self, e: &Expr) -> Result<Option<ValueId>, String> {
         match &e.kind {
-            Expression::Integer(value) => self.constant(e.ty, value.bits),
-            Expression::Variable(symbol) => {
-                let local = self.local(*symbol)?;
+            Expression::VaStart { list, last } => {
+                let list = self.variable(*list)?;
+                let last = self.local(*last)?;
+                self.emit(I::VaStart { list, last })?;
+                Ok(None)
+            }
+            Expression::VaCopy {
+                destination,
+                source,
+            } => {
+                let destination = self.variable(*destination)?;
+                let source = self.variable(*source)?;
+                self.emit(I::VaCopy {
+                    destination,
+                    source,
+                })?;
+                Ok(None)
+            }
+            Expression::VaEnd { list } => {
+                let list = self.variable(*list)?;
+                self.emit(I::VaEnd { list })?;
+                Ok(None)
+            }
+            Expression::Discard(a) => {
+                self.expr(a)?;
+                Ok(None)
+            }
+            Expression::Call {
+                symbol,
+                signature,
+                arguments,
+            } if e.ty == self.unit.types.void() => self.call(*symbol, *signature, arguments, e.ty),
+            Expression::Conditional(condition, a, b) if e.ty == self.unit.types.void() => {
+                let condition = self.value_expr(condition)?;
+                let yes = self.block()?;
+                let no = self.block()?;
+                let merge = self.block()?;
+                self.finish(Terminator::Branch { condition, yes, no })?;
+                for (block, arm) in [(yes, a), (no, b)] {
+                    self.current = Some(block);
+                    self.expr(arm)?;
+                    self.finish(Terminator::Jump(merge))?;
+                }
+                self.current = Some(merge);
+                Ok(None)
+            }
+            Expression::Comma(a, b) => {
+                self.expr(a)?;
+                self.expr(b)
+            }
+            _ => self.value_expr(e).map(Some),
+        }
+    }
+    fn value_expr(&mut self, e: &Expr) -> Result<ValueId, String> {
+        match &e.kind {
+            Expression::Call {
+                symbol,
+                signature,
+                arguments,
+            } => self
+                .call(*symbol, *signature, arguments, e.ty)?
+                .ok_or_else(|| "void expression has no value".into()),
+            Expression::Discard(_) => Err("void expression has no value".into()),
+            Expression::VaArg { list } => {
+                let list = self.variable(*list)?;
                 let dst = self.value(e.ty)?;
-                self.emit(I::ReadLocal { dst, local })?;
+                self.emit(I::VaArg { dst, list })?;
                 Ok(dst)
             }
+            Expression::VaStart { .. } | Expression::VaCopy { .. } | Expression::VaEnd { .. } => {
+                Err("void variadic operation has no value".into())
+            }
+            Expression::Address(symbol) => {
+                let dst = self.value(e.ty)?;
+                self.emit(I::GlobalAddress {
+                    dst,
+                    symbol: *symbol,
+                })?;
+                Ok(dst)
+            }
+            Expression::Decay(inner) => {
+                let Expression::String(text) = &inner.kind else {
+                    return Err(
+                        "array/function address execution waits for the memory phase".into(),
+                    );
+                };
+                let data = self.literals.add(inner.ty, text);
+                let dst = self.value(e.ty)?;
+                self.emit(I::DataAddress { dst, data })?;
+                Ok(dst)
+            }
+            Expression::Integer(value) => self.constant(e.ty, value.bits),
+            Expression::Variable(symbol) => self.read_variable(*symbol, e.ty),
             Expression::String(_) => {
                 Err("string object execution is not yet supported in typed mode".into())
             }
             Expression::Convert(a) => {
-                let src = self.expr(a)?;
+                let src = self.value_expr(a)?;
                 self.convert(src, e.ty)
             }
             Expression::Unary(op, a) => {
-                let src = self.expr(a)?;
+                let src = self.value_expr(a)?;
                 let dst = self.value(e.ty)?;
                 self.emit(I::Unary { dst, op: *op, src })?;
                 Ok(dst)
             }
             Expression::Binary(op, a, b) => {
-                let lhs = self.expr(a)?;
-                let rhs = self.expr(b)?;
+                let lhs = self.value_expr(a)?;
+                let rhs = self.value_expr(b)?;
                 let dst = self.value(e.ty)?;
                 self.emit(I::Binary {
                     dst,
@@ -135,9 +352,8 @@ impl Lower<'_> {
                 Ok(dst)
             }
             Expression::Assign(symbol, rhs) => {
-                let src = self.expr(rhs)?;
-                let local = self.local(*symbol)?;
-                self.emit(I::WriteLocal { local, src })?;
+                let src = self.value_expr(rhs)?;
+                self.write_variable(*symbol, src)?;
                 Ok(src)
             }
             Expression::Update {
@@ -145,9 +361,7 @@ impl Lower<'_> {
                 increment,
                 postfix,
             } => {
-                let local = self.local(*symbol)?;
-                let old = self.value(e.ty)?;
-                self.emit(I::ReadLocal { dst: old, local })?;
+                let old = self.read_variable(*symbol, e.ty)?;
                 let promoted = self.unit.types.promoted(e.ty)?;
                 let lhs = self.convert(old, promoted)?;
                 let rhs = self.constant(promoted, 1)?;
@@ -163,15 +377,15 @@ impl Lower<'_> {
                     rhs,
                 })?;
                 let result = self.convert(result, e.ty)?;
-                self.emit(I::WriteLocal { local, src: result })?;
+                self.write_variable(*symbol, result)?;
                 Ok(if *postfix { old } else { result })
             }
             Expression::Comma(a, b) => {
                 self.expr(a)?;
-                self.expr(b)
+                self.value_expr(b)
             }
             Expression::Logical(and, a, b) => {
-                let condition = self.expr(a)?;
+                let condition = self.value_expr(a)?;
                 let yes = self.block()?;
                 let no = self.block()?;
                 let merge = self.block()?;
@@ -179,7 +393,7 @@ impl Lower<'_> {
                 self.finish(Terminator::Branch { condition, yes, no })?;
                 let (evaluate, short) = if *and { (yes, no) } else { (no, yes) };
                 self.current = Some(evaluate);
-                let value = self.expr(b)?;
+                let value = self.value_expr(b)?;
                 let not = self.value(e.ty)?;
                 self.emit(I::Unary {
                     dst: not,
@@ -202,7 +416,7 @@ impl Lower<'_> {
                 Ok(dst)
             }
             Expression::Conditional(condition, a, b) => {
-                let condition = self.expr(condition)?;
+                let condition = self.value_expr(condition)?;
                 let yes = self.block()?;
                 let no = self.block()?;
                 let merge = self.block()?;
@@ -210,7 +424,7 @@ impl Lower<'_> {
                 self.finish(Terminator::Branch { condition, yes, no })?;
                 for (block, expression) in [(yes, a), (no, b)] {
                     self.current = Some(block);
-                    let src = self.expr(expression)?;
+                    let src = self.value_expr(expression)?;
                     self.emit(I::Convert { dst, src })?;
                     self.finish(Terminator::Jump(merge))?;
                 }
@@ -276,7 +490,7 @@ impl Lower<'_> {
                     let local = self.local(*symbol)?;
                     self.emit(I::ResetLocal(local))?;
                     if let Some(initial) = initial {
-                        let src = self.expr(initial)?;
+                        let src = self.value_expr(initial)?;
                         self.emit(I::InitializeLocal { local, src })?;
                     }
                 }
@@ -289,7 +503,7 @@ impl Lower<'_> {
                 self.path.pop();
             }
             StatementKind::If(condition, a, b) => {
-                let condition = self.expr(condition)?;
+                let condition = self.value_expr(condition)?;
                 let yes = self.block()?;
                 let no = self.block()?;
                 let merge = self.block()?;
@@ -309,7 +523,7 @@ impl Lower<'_> {
                 let yes = self.block()?;
                 let end = self.block()?;
                 self.activate(start)?;
-                let condition = self.expr(condition)?;
+                let condition = self.value_expr(condition)?;
                 self.finish(Terminator::Branch {
                     condition,
                     yes,
@@ -332,7 +546,7 @@ impl Lower<'_> {
                 self.controls.pop();
                 self.fallthrough(check)?;
                 self.current = Some(check);
-                let condition = self.expr(condition)?;
+                let condition = self.value_expr(condition)?;
                 self.finish(Terminator::Branch {
                     condition,
                     yes: start,
@@ -355,7 +569,7 @@ impl Lower<'_> {
                 let end = self.block()?;
                 self.activate(start)?;
                 if let Some(condition) = condition {
-                    let condition = self.expr(condition)?;
+                    let condition = self.value_expr(condition)?;
                     self.finish(Terminator::Branch {
                         condition,
                         yes,
@@ -390,8 +604,9 @@ impl Lower<'_> {
                     .ok_or("invalid typed continue context")?;
                 self.finish(Terminator::Jump(target))?;
             }
+            StatementKind::ReturnVoid => self.finish(Terminator::Return(None))?,
             StatementKind::Return(e) => {
-                let value = self.expr(e)?;
+                let value = self.value_expr(e)?;
                 self.finish(Terminator::Return(Some(value)))?;
             }
             StatementKind::Label(_, child) | StatementKind::Case(_, child) => {
@@ -406,7 +621,7 @@ impl Lower<'_> {
                 self.finish(Terminator::Jump(self.targets[&target]))?;
             }
             StatementKind::Switch(condition, body) => {
-                let value = self.expr(condition)?;
+                let value = self.value_expr(condition)?;
                 let end = self.block()?;
                 let mut collected = vec![];
                 collect_cases(body, &mut collected);
@@ -451,14 +666,75 @@ fn collect_cases<'a>(s: &'a Statement, cases: &mut Vec<&'a Statement>) {
 }
 pub fn lower(unit: &Unit) -> Result<Module, String> {
     let main = unit
-        .main
-        .as_ref()
-        .ok_or("native compilation requires a main definition")?;
-    let symbol = unit
         .main_symbol
-        .ok_or("main declaration identity is missing")?;
+        .ok_or("native compilation requires a main definition")?;
+    let mut literals = LiteralPool::default();
+    let mut functions = vec![];
+    for definition in &unit.definitions {
+        functions.push(lower_function(
+            unit,
+            definition,
+            &mut literals,
+            FunctionId(functions.len()),
+            definition.symbol == main,
+        )?);
+    }
+    let defined: std::collections::HashSet<_> = unit.definitions.iter().map(|f| f.symbol).collect();
+    let externs = unit
+        .declarations
+        .iter()
+        .enumerate()
+        .filter(|(i, d)| d.kind == DeclarationKind::Function && !defined.contains(&SymbolId(*i)))
+        .map(|(i, d)| typed_ir::External {
+            linkage: d.linkage.unwrap_or(crate::types::Linkage::External),
+            symbol: SymbolId(i),
+            name: d.token.text.clone(),
+            signature: d.ty,
+        })
+        .collect();
+    let entry = functions.iter().find(|f| f.symbol == main).map(|f| f.id);
+    let globals = unit
+        .declarations
+        .iter()
+        .enumerate()
+        .filter(|(_, d)| d.kind == DeclarationKind::Global)
+        .map(|(i, d)| {
+            let initial = if let Some(e) = &d.initial {
+                global_initializer(unit, &mut literals, e, d.ty)?
+            } else {
+                typed_ir::GlobalInitializer::Zero
+            };
+            Ok(typed_ir::Global {
+                symbol: SymbolId(i),
+                name: d.token.text.clone(),
+                ty: d.ty,
+                linkage: d.linkage.unwrap_or(crate::types::Linkage::Internal),
+                defined: d.defined || d.tentative,
+                initial,
+            })
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    let module = Module {
+        types: unit.types.clone(),
+        globals,
+        data: literals.data,
+        externs,
+        entry,
+        functions,
+    };
+    typed_ir::verify(&module)?;
+    Ok(module)
+}
+fn lower_function(
+    unit: &Unit,
+    definition: &crate::typed_front::Definition,
+    literals: &mut LiteralPool,
+    id: FunctionId,
+    is_main: bool,
+) -> Result<Function, String> {
     let mut l = Lower {
         unit,
+        literals,
         locals: vec![],
         identities: HashMap::new(),
         scope_locals: HashMap::new(),
@@ -471,58 +747,136 @@ pub fn lower(unit: &Unit) -> Result<Module, String> {
         path: vec![],
         controls: vec![],
     };
-    for (i, declaration) in unit.declarations.iter().enumerate() {
-        if declaration.kind == DeclarationKind::Local {
-            unit.types.integer_kind(declaration.ty).map_err(|_| {
-                format!(
-                    "{}:{}: noninteger local execution is not yet supported in typed mode",
-                    declaration.token.line, declaration.token.column
-                )
-            })?;
-            let id = LocalId(l.locals.len());
-            l.identities.insert(SymbolId(i), id);
-            l.scope_locals
-                .entry(declaration.scope)
-                .or_default()
-                .push(id);
-            l.locals.push(Local {
-                symbol: SymbolId(i),
-                ty: declaration.ty,
-            });
-        }
-    }
-    let entry = l.block()?;
-    l.current = Some(entry);
-    l.collect(main, &mut vec![])?;
-    l.stmt(main)?;
-    if l.current.is_some() {
-        let value = l.constant(unit.types.integer(IntegerKind::Int), 0)?;
-        l.finish(Terminator::Return(Some(value)))?;
-    }
-    let mut blocks = vec![];
-    for (i, pending) in l.blocks.into_iter().enumerate() {
-        blocks.push(Block {
-            id: BlockId(i),
-            instructions: pending.instructions,
-            end: pending
-                .end
-                .ok_or_else(|| format!("compiler invariant: unterminated typed block {i}"))?,
+    let mut symbols = definition.parameters.clone();
+    collect_locals(&definition.body, &mut symbols);
+    for symbol in symbols {
+        let declaration = &unit.declarations[symbol.0];
+        scalar(unit, declaration.ty).map_err(|e| {
+            format!(
+                "{}:{}: {e}",
+                declaration.token.line, declaration.token.column
+            )
+        })?;
+        let local = LocalId(l.locals.len());
+        l.identities.insert(symbol, local);
+        l.scope_locals
+            .entry(declaration.scope)
+            .or_default()
+            .push(local);
+        l.locals.push(Local {
+            symbol,
+            ty: declaration.ty,
         });
     }
-    let module = Module {
-        types: unit.types.clone(),
-        globals: vec![],
-        functions: vec![Function {
-            id: FunctionId(0),
-            symbol,
-            signature: unit.declarations[symbol.0].ty,
-            parameters: vec![],
-            locals: l.locals,
-            values: l.values,
-            entry,
-            blocks,
-        }],
+    let parameters = definition
+        .parameters
+        .iter()
+        .map(|id| l.identities[id])
+        .collect();
+    let entry = l.block()?;
+    l.current = Some(entry);
+    l.collect(&definition.body, &mut vec![])?;
+    l.stmt(&definition.body)?;
+    let signature = unit.declarations[definition.symbol.0].ty;
+    let crate::types::Type::Function { result, .. } = unit.types.get(signature)? else {
+        return Err("function definition lacks a signature".into());
     };
-    typed_ir::verify(&module)?;
-    Ok(module)
+    if l.current.is_some() {
+        if *result == unit.types.void() {
+            l.finish(Terminator::Return(None))?;
+        } else if is_main {
+            let zero = l.constant(*result, 0)?;
+            l.finish(Terminator::Return(Some(zero)))?;
+        } else {
+            // C11 permits falling off a nonvoid function when its value is not used.
+            // No result is invented; using that call's value has undefined behavior.
+            l.finish(Terminator::Fallthrough)?;
+        }
+    }
+    let blocks = l
+        .blocks
+        .into_iter()
+        .enumerate()
+        .map(|(i, b)| {
+            Ok(Block {
+                id: BlockId(i),
+                instructions: b.instructions,
+                end: b
+                    .end
+                    .ok_or("compiler invariant: unterminated function block")?,
+            })
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    Ok(Function {
+        name: unit.declarations[definition.symbol.0].token.text.clone(),
+        linkage: unit.declarations[definition.symbol.0]
+            .linkage
+            .unwrap_or(crate::types::Linkage::External),
+        id,
+        symbol: definition.symbol,
+        signature,
+        parameters,
+        locals: l.locals,
+        values: l.values,
+        entry,
+        blocks,
+    })
+}
+fn collect_locals(statement: &Statement, symbols: &mut Vec<SymbolId>) {
+    if let StatementKind::Declarations(declarations) = &statement.kind {
+        symbols.extend(declarations.iter().map(|d| d.0));
+    }
+    for child in statement.children() {
+        collect_locals(child, symbols);
+    }
+}
+
+fn global_initializer(
+    unit: &Unit,
+    literals: &mut LiteralPool,
+    e: &Expr,
+    storage: TypeId,
+) -> Result<typed_ir::GlobalInitializer, String> {
+    use typed_ir::GlobalInitializer as G;
+    if unit.types.integer_kind(storage).is_ok() {
+        return Ok(G::Integer(
+            crate::typed_front::constant(&unit.types, e)?
+                .cast(&unit.types, unit.types.unqualified(storage)?)?
+                .bits,
+        ));
+    }
+    match &e.kind {
+        Expression::Address(symbol) => Ok(G::Address {
+            symbol: *symbol,
+            addend: 0,
+        }),
+        Expression::Decay(inner) => {
+            if let Expression::String(text) = &inner.kind {
+                Ok(G::DataAddress {
+                    data: literals.add(inner.ty, text),
+                    addend: 0,
+                })
+            } else {
+                Err("static function/array addresses wait for the memory phase".into())
+            }
+        }
+        Expression::Convert(inner) => global_initializer(unit, literals, inner, storage),
+        Expression::Conditional(condition, a, b) => global_initializer(
+            unit,
+            literals,
+            if crate::typed_front::constant(&unit.types, condition)?.bits != 0 {
+                a
+            } else {
+                b
+            },
+            storage,
+        ),
+        _ => {
+            if crate::typed_front::constant(&unit.types, e).is_ok_and(|v| v.bits == 0) {
+                Ok(G::Zero)
+            } else {
+                Err("unsupported static pointer initializer".into())
+            }
+        }
+    }
 }

@@ -80,7 +80,7 @@ fn scoped_typedef_lookups_are_not_spelling_based() {
 #[test]
 fn casts_promotions_common_types_and_sizeof_are_explicit() {
     let unit=typed_front::parse("int main(void){unsigned int u=1;long s=-1;unsigned long r=u+s;return (int)(sizeof(long)+sizeof(long long)+sizeof(int (*)[3])+_Alignof(short));}").unwrap();
-    let body = unit.main.as_ref().unwrap();
+    let body = unit.main().unwrap();
     let StatementKind::Block { items, .. } = &body.kind else {
         panic!()
     };
@@ -94,7 +94,7 @@ fn casts_promotions_common_types_and_sizeof_are_explicit() {
     };
     assert_eq!(typed_front::constant(&unit.types, expr).unwrap().bits, 22);
     let unit = typed_front::parse("int main(){int x=1;return (int)sizeof(x++);}").unwrap();
-    let StatementKind::Block { items, .. } = &unit.main.as_ref().unwrap().kind else {
+    let StatementKind::Block { items, .. } = &unit.main().unwrap().kind else {
         panic!()
     };
     let StatementKind::Return(e) = &items[1].kind else {
@@ -106,7 +106,7 @@ fn casts_promotions_common_types_and_sizeof_are_explicit() {
         "int main(){int x=1;(int)x=3;}",
         "int main(){int x=1;((int)x)++;}",
         "int main(){return sizeof(auto int);}",
-        "int main(){return sizeof((0,\"abc\"));}",
+        "int main(){return sizeof(*(int*)0);}",
     ] {
         assert!(typed_front::parse(source).is_err(), "{source}");
     }
@@ -175,20 +175,22 @@ fn invalid_declarations_and_control_contexts_fail_cleanly() {
 
 #[test]
 fn typed_frontend_mutations_and_random_tokens_do_not_panic() {
-    use compiler::{typed_ir, typed_lower, typed_native, typed_opt, x64::LabelAllocator};
+    use compiler::{native_runtime::RuntimeOptions, typed_image, typed_ir, typed_lower, typed_opt};
     let seeds = [
+        "int g=2;int f(int n,...){__builtin_va_list p;__builtin_va_start(p,n);int x=__builtin_va_arg(p,int);__builtin_va_end(p);return x+g;}int main(){return f(1,3);}",
+        "int printf(const char*,...);int main(){return printf(\"%d\",3);}",
         "typedef unsigned long long U;int main(void){U x=0xffffffffffffffffULL;for(int i=0;i<5;i++){x>>=1;}return (int)x;}",
         "typedef int A[3];int main(){int i=0;do{switch(i++){case 1:continue;default:break;}if(i>4)goto out;}while(i<8);out:return sizeof(A);}",
     ];
     let pipeline = |source: &str| -> Result<(), String> {
         let unit = typed_front::parse(source)?;
-        if unit.main.is_none() {
+        if unit.main().is_none() {
             return Ok(());
         }
         let ir = typed_lower::lower(&unit)?;
         typed_ir::verify(&ir)?;
         let optimized = typed_opt::optimize(&ir)?;
-        typed_native::lower(&optimized, &mut LabelAllocator::default(), true).map(|_| ())
+        typed_image::build(&optimized, &RuntimeOptions::default()).map(|_| ())
     };
     for seed in seeds {
         for at in 0..seed.len() {

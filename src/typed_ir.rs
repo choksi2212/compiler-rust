@@ -7,20 +7,54 @@ use std::collections::{HashMap, HashSet, VecDeque};
 macro_rules! identity {
     ($($name:ident),*) => {$(#[derive(Debug,Clone,Copy,PartialEq,Eq,Hash,PartialOrd,Ord)] pub struct $name(pub usize);)*};
 }
-identity!(FunctionId, BlockId, ValueId, LocalId, SymbolId);
+identity!(FunctionId, BlockId, ValueId, LocalId, SymbolId, DataId);
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Variable {
+    Local(LocalId),
+    Global(SymbolId),
+}
 #[derive(Debug, Clone)]
 pub struct Module {
     pub types: TypeContext,
     pub functions: Vec<Function>,
     pub globals: Vec<Global>,
+    pub externs: Vec<External>,
+    pub data: Vec<Data>,
+    pub entry: Option<FunctionId>,
+}
+#[derive(Debug, Clone)]
+pub struct External {
+    pub linkage: crate::types::Linkage,
+    pub symbol: SymbolId,
+    pub name: String,
+    pub signature: TypeId,
+}
+#[derive(Debug, Clone)]
+pub struct Data {
+    pub id: DataId,
+    pub ty: TypeId,
+    pub bytes: Vec<u8>,
 }
 #[derive(Debug, Clone)]
 pub struct Global {
     pub symbol: SymbolId,
+    pub name: String,
     pub ty: TypeId,
+    pub linkage: crate::types::Linkage,
+    pub defined: bool,
+    pub initial: GlobalInitializer,
+}
+#[derive(Debug, Clone)]
+pub enum GlobalInitializer {
+    Zero,
+    Integer(u64),
+    Address { symbol: SymbolId, addend: i64 },
+    DataAddress { data: DataId, addend: i64 },
 }
 #[derive(Debug, Clone)]
 pub struct Function {
+    pub name: String,
+    pub linkage: crate::types::Linkage,
     pub id: FunctionId,
     pub symbol: SymbolId,
     pub signature: TypeId,
@@ -97,6 +131,43 @@ pub enum Instruction {
         signature: TypeId,
         arguments: Vec<ValueId>,
     },
+    DirectCall {
+        dst: Option<ValueId>,
+        symbol: SymbolId,
+        signature: TypeId,
+        arguments: Vec<ValueId>,
+    },
+    DataAddress {
+        dst: ValueId,
+        data: DataId,
+    },
+    ReadGlobal {
+        dst: ValueId,
+        symbol: SymbolId,
+    },
+    WriteGlobal {
+        symbol: SymbolId,
+        src: ValueId,
+    },
+    GlobalAddress {
+        dst: ValueId,
+        symbol: SymbolId,
+    },
+    VaStart {
+        list: Variable,
+        last: LocalId,
+    },
+    VaArg {
+        dst: ValueId,
+        list: Variable,
+    },
+    VaCopy {
+        destination: Variable,
+        source: Variable,
+    },
+    VaEnd {
+        list: Variable,
+    },
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Terminator {
@@ -112,6 +183,8 @@ pub enum Terminator {
         default: BlockId,
     },
     Return(Option<ValueId>),
+    Unreachable,
+    Fallthrough,
 }
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct Effects {
@@ -130,8 +203,16 @@ impl Instruction {
             | Self::ReadLocal { dst, .. }
             | Self::AddressLocal { dst, .. }
             | Self::Load { dst, .. } => Some(*dst),
-            Self::Call { dst, .. } => *dst,
-            Self::WriteLocal { .. }
+            Self::Call { dst, .. } | Self::DirectCall { dst, .. } => *dst,
+            Self::DataAddress { dst, .. }
+            | Self::ReadGlobal { dst, .. }
+            | Self::GlobalAddress { dst, .. }
+            | Self::VaArg { dst, .. } => Some(*dst),
+            Self::VaStart { .. }
+            | Self::VaCopy { .. }
+            | Self::VaEnd { .. }
+            | Self::WriteGlobal { .. }
+            | Self::WriteLocal { .. }
             | Self::InitializeLocal { .. }
             | Self::Store { .. }
             | Self::ResetLocal(_) => None,
@@ -142,12 +223,14 @@ impl Instruction {
             Self::Convert { src, .. }
             | Self::Unary { src, .. }
             | Self::WriteLocal { src, .. }
-            | Self::InitializeLocal { src, .. } => {
+            | Self::InitializeLocal { src, .. }
+            | Self::WriteGlobal { src, .. } => {
                 vec![*src]
             }
             Self::Binary { lhs, rhs, .. } => vec![*lhs, *rhs],
             Self::Load { address, .. } => vec![*address],
             Self::Store { address, src, .. } => vec![*address, *src],
+            Self::DirectCall { arguments, .. } => arguments.clone(),
             Self::Call {
                 callee, arguments, ..
             } => std::iter::once(*callee)
@@ -156,11 +239,38 @@ impl Instruction {
             Self::Constant { .. }
             | Self::ReadLocal { .. }
             | Self::AddressLocal { .. }
-            | Self::ResetLocal(_) => vec![],
+            | Self::ResetLocal(_)
+            | Self::DataAddress { .. }
+            | Self::ReadGlobal { .. }
+            | Self::GlobalAddress { .. }
+            | Self::VaStart { .. }
+            | Self::VaArg { .. }
+            | Self::VaCopy { .. }
+            | Self::VaEnd { .. } => vec![],
         }
     }
     pub fn effects(&self, function: &Function, types: &TypeContext) -> Result<Effects, String> {
         Ok(match self {
+            Self::VaStart { .. }
+            | Self::VaArg { .. }
+            | Self::VaCopy { .. }
+            | Self::VaEnd { .. } => Effects {
+                read: true,
+                write: true,
+                observable: true,
+                may_trap: true,
+            },
+            Self::ReadGlobal { .. } => Effects {
+                read: true,
+                observable: true,
+                may_trap: true,
+                ..Default::default()
+            },
+            Self::WriteGlobal { .. } => Effects {
+                write: true,
+                observable: true,
+                ..Default::default()
+            },
             Self::ReadLocal { local, .. } => Effects {
                 read: true,
                 observable: types.qualifiers(function.local(*local)?.ty)?.volatile,
@@ -188,7 +298,7 @@ impl Instruction {
                 may_trap: true,
                 ..Default::default()
             },
-            Self::Call { .. } => Effects {
+            Self::Call { .. } | Self::DirectCall { .. } => Effects {
                 read: true,
                 write: true,
                 observable: true,
@@ -198,9 +308,11 @@ impl Instruction {
                 may_trap: true,
                 ..Default::default()
             },
-            Self::Constant { .. } | Self::Convert { .. } | Self::AddressLocal { .. } => {
-                Effects::default()
-            }
+            Self::Constant { .. }
+            | Self::Convert { .. }
+            | Self::AddressLocal { .. }
+            | Self::DataAddress { .. }
+            | Self::GlobalAddress { .. } => Effects::default(),
         })
     }
 }
@@ -212,7 +324,7 @@ impl Terminator {
             Self::Switch { cases, default, .. } => std::iter::once(*default)
                 .chain(cases.iter().map(|c| c.1))
                 .collect(),
-            Self::Return(_) => vec![],
+            Self::Return(_) | Self::Unreachable | Self::Fallthrough => vec![],
         }
     }
     pub fn operands(&self) -> Vec<ValueId> {
@@ -299,6 +411,65 @@ pub fn verify(module: &Module) -> Result<(), String> {
         require(symbols.insert(global.symbol), "duplicate symbol identity")?;
         types.layout(global.ty)?;
     }
+    for external in &module.externs {
+        require(
+            symbols.insert(external.symbol),
+            "duplicate external symbol identity",
+        )?;
+        require(
+            matches!(types.get(external.signature)?, Type::Function { .. }),
+            "external signature type required",
+        )?;
+    }
+    let mut data_ids = HashSet::new();
+    for data in &module.data {
+        require(data_ids.insert(data.id), "duplicate data identity")?;
+        require(
+            types.layout(data.ty)?.size == data.bytes.len() as u64,
+            "data layout/byte count mismatch",
+        )?;
+        require(
+            matches!(types.get(data.ty)?, Type::Array { .. }),
+            "literal data must be an array",
+        )?;
+    }
+    if let Some(entry) = module.entry {
+        require(
+            module.functions.iter().any(|f| f.id == entry),
+            "undefined module entry function",
+        )?;
+    }
+    for global in &module.globals {
+        let ty = types.unqualified(global.ty)?;
+        match &global.initial {
+            GlobalInitializer::Zero => scalar(types, ty)?,
+            GlobalInitializer::Integer(bits) => IntegerValue { ty, bits: *bits }.validate(types)?,
+            GlobalInitializer::Address { symbol, addend } => {
+                pointer_target(types, ty)?;
+                let target = module
+                    .globals
+                    .iter()
+                    .find(|g| g.symbol == *symbol)
+                    .ok_or("undefined initializer symbol")?;
+                require(
+                    *addend >= 0 && (*addend as u64) <= types.layout(target.ty)?.size,
+                    "initializer address addend outside scalar object",
+                )?;
+            }
+            GlobalInitializer::DataAddress { data, addend } => {
+                pointer_target(types, ty)?;
+                let data = module
+                    .data
+                    .iter()
+                    .find(|d| d.id == *data)
+                    .ok_or("undefined initializer data")?;
+                require(
+                    *addend >= 0 && (*addend as u64) <= data.bytes.len() as u64,
+                    "initializer data addend outside object",
+                )?;
+            }
+        }
+    }
     for function in &module.functions {
         require(functions.insert(function.id), "duplicate function identity")?;
         require(symbols.insert(function.symbol), "duplicate symbol identity")?;
@@ -306,12 +477,13 @@ pub fn verify(module: &Module) -> Result<(), String> {
             require(symbols.insert(local.symbol), "duplicate symbol identity")?;
             types.layout(local.ty)?;
         }
-        verify_function(types, function)
+        verify_function(module, function)
             .map_err(|e| format!("typed function {}: {e}", function.id.0))?;
     }
     Ok(())
 }
-fn verify_function(types: &TypeContext, f: &Function) -> Result<(), String> {
+fn verify_function(module: &Module, f: &Function) -> Result<(), String> {
+    let types = &module.types;
     require(
         !f.blocks.is_empty()
             && f.blocks.len() <= 4096
@@ -364,7 +536,7 @@ fn verify_function(types: &TypeContext, f: &Function) -> Result<(), String> {
             require(blocks.contains_key(&target), "undefined branch target")?;
         }
         for instruction in &block.instructions {
-            check_instruction(types, f, instruction)
+            check_instruction(module, f, instruction)
                 .map_err(|e| format!("block {}: {e}", block.id.0))?;
         }
         match &block.end {
@@ -392,26 +564,41 @@ fn verify_function(types: &TypeContext, f: &Function) -> Result<(), String> {
                     "nonvoid function return has no value",
                 )?,
             },
-            Terminator::Jump(_) => (),
+            Terminator::Fallthrough => require(
+                types.unqualified(*result)? != types.void() && module.entry != Some(f.id),
+                "invalid nonvoid fallthrough terminator",
+            )?,
+            Terminator::Jump(_) | Terminator::Unreachable => (),
         }
     }
     definite_values(f, &blocks)
 }
-fn check_instruction(t: &TypeContext, f: &Function, i: &Instruction) -> Result<(), String> {
+fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(), String> {
+    let t = &module.types;
     let int = t.integer(IntegerKind::Int);
     match i {
-        Instruction::Constant { dst, bits } => IntegerValue {
-            ty: f.value(*dst)?,
-            bits: *bits,
+        Instruction::Constant { dst, bits } => {
+            let ty = f.value(*dst)?;
+            if matches!(t.get(ty)?, Type::Pointer(_)) {
+                require(
+                    *bits == 0,
+                    "non-null pointer constant requires a relocation/address operation",
+                )
+            } else {
+                IntegerValue { ty, bits: *bits }.validate(t)
+            }
         }
-        .validate(t),
         Instruction::Convert { dst, src } => {
-            integer(t, f.value(*src)?)?;
-            integer(t, f.value(*dst)?)
+            scalar(t, f.value(*src)?)?;
+            scalar(t, f.value(*dst)?)
         }
         Instruction::Unary { dst, op, src } => {
             let source = f.value(*src)?;
-            integer(t, source)?;
+            if *op == Unary::Not {
+                scalar(t, source)?;
+            } else {
+                integer(t, source)?;
+            }
             require(
                 *op == Unary::Not || t.promoted(source)? == source,
                 "unary operand lacks explicit promotion",
@@ -423,16 +610,28 @@ fn check_instruction(t: &TypeContext, f: &Function, i: &Instruction) -> Result<(
         }
         Instruction::Binary { dst, op, lhs, rhs } => {
             let (a, b) = (f.value(*lhs)?, f.value(*rhs)?);
-            integer(t, a)?;
-            integer(t, b)?;
-            require(
-                t.promoted(a)? == a && t.promoted(b)? == b,
-                "binary operand lacks explicit promotion",
-            )?;
-            require(
-                op.shift() || a == b,
-                "binary operands lack common conversion",
-            )?;
+            let pointers =
+                matches!(t.get(a)?, Type::Pointer(_)) || matches!(t.get(b)?, Type::Pointer(_));
+            if pointers {
+                require(
+                    matches!(
+                        op,
+                        crate::integer::Binary::Equal | crate::integer::Binary::NotEqual
+                    ) && a == b,
+                    "pointer binary operation requires compatible equality operands",
+                )?;
+            } else {
+                integer(t, a)?;
+                integer(t, b)?;
+                require(
+                    t.promoted(a)? == a && t.promoted(b)? == b,
+                    "binary operand lacks explicit promotion",
+                )?;
+                require(
+                    op.shift() || a == b,
+                    "binary operands lack common conversion",
+                )?;
+            }
             require(
                 f.value(*dst)? == if op.comparison() { int } else { a },
                 "binary result type mismatch",
@@ -490,6 +689,109 @@ fn check_instruction(t: &TypeContext, f: &Function, i: &Instruction) -> Result<(
             *volatile,
             true,
         ),
+        Instruction::VaStart { list, last } => {
+            let Type::Function { variadic, .. } = t.get(f.signature)? else {
+                return Err("variadic operation lacks function type".into());
+            };
+            require(
+                *variadic && f.parameters.last() == Some(last),
+                "va_start names an invalid last parameter",
+            )?;
+            check_va_object(module, f, *list, true)
+        }
+        Instruction::VaArg { dst, list } => {
+            check_va_object(module, f, *list, true)?;
+            let ty = f.value(*dst)?;
+            scalar(t, ty)?;
+            require(
+                matches!(t.get(ty)?, Type::Pointer(_)) || t.promoted(ty)? == ty,
+                "va_arg result lacks default promotion",
+            )
+        }
+        Instruction::VaCopy {
+            destination,
+            source,
+        } => {
+            check_va_object(module, f, *destination, true)?;
+            check_va_object(module, f, *source, false)
+        }
+        Instruction::VaEnd { list } => check_va_object(module, f, *list, true),
+        Instruction::ReadGlobal { dst, symbol } => {
+            let global = module
+                .globals
+                .iter()
+                .find(|g| g.symbol == *symbol)
+                .ok_or("undefined global symbol")?;
+            require(
+                f.value(*dst)? == t.unqualified(global.ty)?,
+                "global read type mismatch",
+            )
+        }
+        Instruction::WriteGlobal { symbol, src } => {
+            let global = module
+                .globals
+                .iter()
+                .find(|g| g.symbol == *symbol)
+                .ok_or("undefined global symbol")?;
+            require(
+                !t.qualifiers(global.ty)?.constant,
+                "modification of const global",
+            )?;
+            require(
+                f.value(*src)? == t.unqualified(global.ty)?,
+                "global store requires explicit conversion",
+            )
+        }
+        Instruction::GlobalAddress { dst, symbol } => {
+            let global = module
+                .globals
+                .iter()
+                .find(|g| g.symbol == *symbol)
+                .ok_or("undefined global address symbol")?;
+            require(
+                pointer_target(t, f.value(*dst)?)? == global.ty,
+                "global address type mismatch",
+            )
+        }
+        Instruction::DataAddress { dst, data } => {
+            let record = module
+                .data
+                .iter()
+                .find(|d| d.id == *data)
+                .ok_or("undefined data identity")?;
+            let Type::Array { element, .. } = t.get(record.ty)? else {
+                return Err("literal data requires array type".into());
+            };
+            require(
+                pointer_target(t, f.value(*dst)?)? == *element,
+                "literal address type mismatch",
+            )
+        }
+        Instruction::DirectCall {
+            dst,
+            symbol,
+            signature,
+            arguments,
+        } => {
+            let resolved = module
+                .functions
+                .iter()
+                .find(|f| f.symbol == *symbol)
+                .map(|f| f.signature)
+                .or_else(|| {
+                    module
+                        .externs
+                        .iter()
+                        .find(|f| f.symbol == *symbol)
+                        .map(|f| f.signature)
+                })
+                .ok_or("undefined function symbol")?;
+            require(
+                t.compatible(resolved, *signature)?,
+                "direct call signature mismatch",
+            )?;
+            check_arguments(t, f, *dst, *signature, arguments)
+        }
         Instruction::Call {
             dst,
             callee,
@@ -500,45 +802,83 @@ fn check_instruction(t: &TypeContext, f: &Function, i: &Instruction) -> Result<(
                 pointer_target(t, f.value(*callee)?)? == *signature,
                 "callee signature mismatch",
             )?;
-            let Type::Function {
-                result,
-                parameters,
-                variadic,
-                prototype,
-            } = t.get(*signature)?
-            else {
-                return Err("call signature required".into());
-            };
-            require(*prototype, "call requires a resolved promoted prototype")?;
-            require(
-                arguments.len() >= parameters.len()
-                    && (*variadic || arguments.len() == parameters.len()),
-                "call argument count mismatch",
-            )?;
-            for (argument, parameter) in arguments.iter().zip(parameters) {
-                require(
-                    f.value(*argument)? == *parameter,
-                    "call argument requires explicit conversion",
-                )?;
-            }
-            for argument in &arguments[parameters.len()..] {
-                let ty = f.value(*argument)?;
-                require(
-                    matches!(t.get(ty)?, Type::Pointer(_)) || t.promoted(ty)? == ty,
-                    "variadic argument lacks default promotion",
-                )?;
-            }
-            match dst {
-                Some(dst) => require(
-                    f.value(*dst)? == t.unqualified(*result)?,
-                    "call result type mismatch",
-                ),
-                None => require(
-                    *result == t.void(),
-                    "nonvoid call must record its returned value",
-                ),
-            }
+            check_arguments(t, f, *dst, *signature, arguments)
         }
+    }
+}
+
+fn check_va_object(
+    module: &Module,
+    f: &Function,
+    variable: Variable,
+    write: bool,
+) -> Result<(), String> {
+    let t = &module.types;
+    let ty = match variable {
+        Variable::Local(id) => f.local(id)?.ty,
+        Variable::Global(id) => {
+            module
+                .globals
+                .iter()
+                .find(|g| g.symbol == id)
+                .ok_or("undefined va_list global")?
+                .ty
+        }
+    };
+    require(
+        !write || !t.qualifiers(ty)?.constant,
+        "variadic cursor is const-qualified",
+    )?;
+    require(
+        pointer_target(t, ty)? == t.integer(IntegerKind::Char),
+        "variadic cursor requires the target va_list pointer representation",
+    )
+}
+fn check_arguments(
+    t: &TypeContext,
+    f: &Function,
+    destination: Option<ValueId>,
+    signature_id: TypeId,
+    arguments: &[ValueId],
+) -> Result<(), String> {
+    let signature = &signature_id;
+    let dst = &destination;
+    let Type::Function {
+        result,
+        parameters,
+        variadic,
+        prototype,
+    } = t.get(*signature)?
+    else {
+        return Err("call signature required".into());
+    };
+    require(*prototype, "call requires a resolved promoted prototype")?;
+    require(
+        arguments.len() >= parameters.len() && (*variadic || arguments.len() == parameters.len()),
+        "call argument count mismatch",
+    )?;
+    for (argument, parameter) in arguments.iter().zip(parameters) {
+        require(
+            f.value(*argument)? == *parameter,
+            "call argument requires explicit conversion",
+        )?;
+    }
+    for argument in &arguments[parameters.len()..] {
+        let ty = f.value(*argument)?;
+        require(
+            matches!(t.get(ty)?, Type::Pointer(_)) || t.promoted(ty)? == ty,
+            "variadic argument lacks default promotion",
+        )?;
+    }
+    match dst {
+        Some(dst) => require(
+            f.value(*dst)? == t.unqualified(*result)?,
+            "call result type mismatch",
+        ),
+        None => require(
+            *result == t.void(),
+            "nonvoid call must record its returned value",
+        ),
     }
 }
 

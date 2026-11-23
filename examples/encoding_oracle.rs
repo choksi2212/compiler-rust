@@ -18,6 +18,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         "al", "cl", "dl", "bl", "spl", "bpl", "sil", "dil", "r8b", "r9b", "r10b", "r11b", "r12b",
         "r13b", "r14b", "r15b",
     ];
+    let word = [
+        "ax", "cx", "dx", "bx", "sp", "bp", "si", "di", "r8w", "r9w", "r10w", "r11w", "r12w",
+        "r13w", "r14w", "r15w",
+    ];
     let mut count = 0;
     let mut emit = |instruction, asm: String| -> Result<(), Box<dyn std::error::Error>> {
         let f = encode(&[instruction])?;
@@ -227,6 +231,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         for (base, base_name) in q.iter().enumerate() {
             let address = Address::base(Reg::new(base as u8)?, 0);
             emit(
+                Instruction::LoadWord { dst: reg, address },
+                format!("movzwl (%{}),%{}", base_name, d[r]),
+            )?;
+            emit(
+                Instruction::StoreWord { address, src: reg },
+                format!("movw %{},(%{})", word[r], base_name),
+            )?;
+            emit(
                 Instruction::LoadByte { dst: reg, address },
                 format!("movzbl (%{}),%{}", base_name, d[r]),
             )?;
@@ -240,6 +252,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     emit(Instruction::SignExtend(Width::Qword), "cqto".into())?;
     emit(Instruction::Ret, "ret".into())?;
     emit(Instruction::Nop, "nop".into())?;
+    emit(Instruction::Trap, "ud2".into())?;
     println!("Encoded {count} oracle fixtures");
     Ok(())
 }

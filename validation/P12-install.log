@@ -1,0 +1,4 @@
+  Installing compiler v0.2.0 (N:\compiler-proj)
+    Finished `release` profile [optimized] target(s) in 0.05s
+   Replacing C:\Users\niklaus\.cargo\bin\compiler.exe
+    Replaced package `compiler v0.2.0 (N:\compiler-proj)` with `compiler v0.2.0 (N:\compiler-proj)` (executable `compiler.exe`)

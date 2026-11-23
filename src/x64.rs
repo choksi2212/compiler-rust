@@ -160,6 +160,14 @@ pub enum Instruction {
         dst: Reg,
         address: Address,
     },
+    LoadWord {
+        dst: Reg,
+        address: Address,
+    },
+    StoreWord {
+        address: Address,
+        src: Reg,
+    },
     StoreByte {
         address: Address,
         src: Reg,
@@ -221,6 +229,7 @@ pub enum Instruction {
     },
     Ret,
     Nop,
+    Trap,
 }
 #[derive(Debug, Clone)]
 pub struct Listing {
@@ -376,6 +385,13 @@ pub fn encode(instructions: &[Instruction]) -> Result<MachineFragment, String> {
             }
             Instruction::LoadByte { dst, address } => {
                 memory(&mut bytes, Width::Dword, &[0x0f, 0xb6], dst, address, false)?
+            }
+            Instruction::LoadWord { dst, address } => {
+                memory(&mut bytes, Width::Dword, &[0x0f, 0xb7], dst, address, false)?
+            }
+            Instruction::StoreWord { address, src } => {
+                bytes.push(0x66);
+                memory(&mut bytes, Width::Dword, &[0x89], src, address, false)?;
             }
             Instruction::StoreByte { address, src } => memory(
                 &mut bytes,
@@ -541,6 +557,7 @@ pub fn encode(instructions: &[Instruction]) -> Result<MachineFragment, String> {
             }
             Instruction::Ret => bytes.push(0xc3),
             Instruction::Nop => bytes.push(0x90),
+            Instruction::Trap => bytes.extend([0x0f, 0x0b]),
         }
         listing.push(Listing {
             offset: start,

@@ -1,0 +1,2002 @@
+[
+  {
+    "case": 0,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 0. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted();int v=variadic(0);\n int r=recurse(0);int e=even(0);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "96370a14b3a391ebf74820e2869a6bbc3fed4ae85da4d3e51c2a345261c87836",
+    "expected_exit": 28,
+    "expected_stdout": "0 0 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "5f6466ac277be49766078af8bc90a47366290963f17708d3a413c8081b337f19",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 28,
+        "sha256": "486206075cdfd9d6aee5b420e383da2c2a925feae1ea91fe2e6a428b251d377f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 28,
+        "sha256": "25c4d363940dc4a477df03a1b2974fb75fd156b30f661c8d8de989206ba8ff69"
+      }
+    ]
+  },
+  {
+    "case": 1,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 1. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-13LL);int v=variadic(0,1,-1);\n int r=recurse(1);int e=even(1);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "0627114e639a0a0e5e3a8749217395e0a3ee47abd151bac5173bbde44c28b1cc",
+    "expected_exit": 16,
+    "expected_stdout": "-13 -2 1 0 4 6 5 3 ok\n",
+    "reference_sha256": "2b482b501da528a4cfdec2f0ec89daa4cdff424be418d2b5b7f624381d942864",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 16,
+        "sha256": "ef71645e3a3f44939d1632691af6bc4a3db1e7db1d258410dd18310a068c07cd"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 16,
+        "sha256": "cf14b5986d8826777cfe6f55cd0b44bb2327be2e3d3f25973473225f4e996abb"
+      }
+    ]
+  },
+  {
+    "case": 2,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 2. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(-12LL,-11LL);int v=variadic(0,1,2,-2,5);\n int r=recurse(2);int e=even(2);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "28f65d717a8728a198a11762b6ae5996345b846daeccd580e6b3296f9fc6e48b",
+    "expected_exit": 2,
+    "expected_stdout": "-34 6 2 1 5 7 5 3 ok\n",
+    "reference_sha256": "834dc78fdc4493ec87885b7f911549313599f535d2c18ace17a95f9b4c4c8eb4",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2,
+        "sha256": "f165e946c1d2fbc8de5c55f1c0d6a04a1d2292f01c8b13328afd35c93dede9d4"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2,
+        "sha256": "680b39ce30c3463ad9e873a1916e77c55bb41c2487ef2e209c831bea6c772f42"
+      }
+    ]
+  },
+  {
+    "case": 3,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 3. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-11LL,-10LL,-9LL);int v=variadic(0,1,2,3,-3,4,11);\n int r=recurse(3);int e=even(3);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "4101baabfd75383e1338764de3bc10645029dbbb6129f788f0898039e5c54b00",
+    "expected_exit": 4294967293,
+    "expected_stdout": "-58 24 6 0 6 8 5 3 ok\n",
+    "reference_sha256": "29bbfb780039a00ed0307835ec4176b4d0cf0491176fd1f985b536631be055ec",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967293,
+        "sha256": "f145d9a9c82e31710ae6ee74aefe0bbf99411d68190cc461da2ab5403dcf2cdb"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967293,
+        "sha256": "dad2a8eed83fd5780a3519a395d9b9d400b1b4d2a270df1069d1125c65f7e2a3"
+      }
+    ]
+  },
+  {
+    "case": 4,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 4. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(-10LL,-9LL,-8LL,-7LL);int v=variadic(0,1,2,3,4,-4,3,10,17);\n int r=recurse(4);int e=even(4);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "05a02b91121c698944f084751421300cc7f8fedf68fa4421d5ee75cc00f9f452",
+    "expected_exit": 4,
+    "expected_stdout": "-80 52 24 1 7 9 5 3 ok\n",
+    "reference_sha256": "4ee2cb44b32d74d50fed30cb1c3aa735e68b52dce92b28524870d1c77f6071c0",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4,
+        "sha256": "49cb50926af4558e8e3b535e9b36cdae8c29895f5f2a0bf428617ce7f11d44a5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4,
+        "sha256": "f5c831e755c64c80ff875ae5621ea270bf50db58a4eca479d156b5d3323280ee"
+      }
+    ]
+  },
+  {
+    "case": 5,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 5. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-9LL,-8LL,-7LL,-6LL,-5LL);int v=variadic(0,1,2,3,4,5,-5,2,9,16,23);\n int r=recurse(5);int e=even(5);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "cdf478a2f3a175c37210780d582c257568989e9805387fb53c3a7f450cf32d25",
+    "expected_exit": 29,
+    "expected_stdout": "-95 90 120 0 8 10 5 3 ok\n",
+    "reference_sha256": "3b2fb8aa2d78100db2deb1164d27196400a8e01a2bcb95aa01c5b0691c9cf116",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 29,
+        "sha256": "eb7dd71d373602193b0b010f7507981b8aeeade419db837445ef863be440bf3f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 29,
+        "sha256": "fb162a1463f73752a52f9ceb3bb44317f3cec50422ece3b76343fe24c7d47771"
+      }
+    ]
+  },
+  {
+    "case": 6,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 6. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(-8LL,-7LL,-6LL,-5LL,-4LL,-3LL);int v=variadic(0,-6,1,8,15,22,29);\n int r=recurse(6);int e=even(6);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "1c38d499df5f2fac45fe5dc6ea6b4b2ae00967f6a8d289c2a133b7d7c3cde64e",
+    "expected_exit": 75,
+    "expected_stdout": "-98 138 720 1 9 11 5 3 ok\n",
+    "reference_sha256": "7f9675706093fe260a13b45cbb06872daa07e8df30089fff04a086dfa7f49934",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 75,
+        "sha256": "f72f91cd89e94753b0febb7d75572993f9492adcfd9dcab87a038bf1c8087150"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 75,
+        "sha256": "67a5144da94cc09489d2ff59f11c7cff3ac09d917a3da8629c90890787e7e748"
+      }
+    ]
+  },
+  {
+    "case": 7,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 7. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(-7LL,-6LL,-5LL,-4LL,-3LL,-2LL,-1LL);int v=variadic(0,1,-7,0,7,14,21,28,35);\n int r=recurse(0);int e=even(7);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "c1b0c255b8f8ef25b2ba3d5878d467e83733234d687ce52fc1121b1f0ba4413c",
+    "expected_exit": 144,
+    "expected_stdout": "-84 196 1 0 3 5 5 3 ok\n",
+    "reference_sha256": "b4245e940acb1d160ce705399cbe96499c1abfb8de3c1846fdb90fdc12188e0e",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 144,
+        "sha256": "764096fb716bfdeaf43989375e424b251da8b64ca8077287d89edcb558db45b4"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 144,
+        "sha256": "c164a01dfda3d99cb121c371cd36c611d3cdf7da90508e8c0d5259122e0cc92d"
+      }
+    ]
+  },
+  {
+    "case": 8,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 8. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-6LL,-5LL,-4LL,-3LL,-2LL,-1LL,0LL,1LL);int v=variadic(0,1,2,-8,-1,6,13,20,27,34,41);\n int r=recurse(1);int e=even(8);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "e37edd9c2b2ccc9ea551ba8882ed18ded61b9c1d4f9eeef1ff4e9d1136b9b7a2",
+    "expected_exit": 248,
+    "expected_stdout": "-48 264 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "3db9fe02f96ee4fa13ca190f766fdaff0078c9374c68b1bb89e8d6777e23cedb",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 248,
+        "sha256": "aeb5b7a7cd5fdc4d9f5ddbcad4fdd344716fc1cb59033422f7234e2d12c6ccb8"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 248,
+        "sha256": "d09dcac70fae272c31e1de82de9c5271c91e53702fd500bf274b557d101d9672"
+      }
+    ]
+  },
+  {
+    "case": 9,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 9. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<9;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<9;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(-5LL,-4LL,-3LL,-2LL,-1LL,0LL,1LL,2LL,3LL);int v=variadic(0,1,2,3,-9,-2,5,12,19,26,33,40,47);\n int r=recurse(2);int e=even(9);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "a6a16485f58b2db09b76838168eb0493021e5131e99e5e144342c2fed62c9817",
+    "expected_exit": 388,
+    "expected_stdout": "15 342 2 0 5 7 5 3 ok\n",
+    "reference_sha256": "8db2abd22410065c0e094d695cfdab38768592889fcf69fe6d75ef395413cbb2",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 388,
+        "sha256": "c77b54ae2c17c2f08f7ba1477897f17c006737916e4991a6a7d32949fff92982"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 388,
+        "sha256": "cf2aefc0fb9d240ae6ef5688a69212a008a00f6ac48a03d7fa045bc3794d717b"
+      }
+    ]
+  },
+  {
+    "case": 10,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 10. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<10;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<10;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-4LL,-3LL,-2LL,-1LL,0LL,1LL,2LL,3LL,4LL,5LL);int v=variadic(0,1,2,3,4,-10,-3,4,11,18,25,32,39,46,53);\n int r=recurse(3);int e=even(10);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "c4c2ba85f38e0ee0b50e4848f1c6aefaae4be284f665a3d7657950db0b036192",
+    "expected_exit": 572,
+    "expected_stdout": "110 430 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "cd2c7e5f2e3e3a08b7cbf023f1265409bfc6945b63dccdb0d7a3cad9fb5035be",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 572,
+        "sha256": "b74d0a69c6914634059df63bd752659aa1dc3b3af2fecd04d4fdef6249c90988"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 572,
+        "sha256": "c4a731c49793ab0ac161d96ec7d2606e03dc96ba207e870a0083a771dc0d0433"
+      }
+    ]
+  },
+  {
+    "case": 11,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 11. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<11;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<11;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(-3LL,-2LL,-1LL,0LL,1LL,2LL,3LL,4LL,5LL,6LL,7LL);int v=variadic(0,1,2,3,4,5,-11,-4,3,10,17,24,31,38,45,52,59);\n int r=recurse(4);int e=even(11);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "ec988bb124ba092c1ac2a38f8c55025639cbaabd8075eda2216547bc309f0426",
+    "expected_exit": 803,
+    "expected_stdout": "242 528 24 0 7 9 5 3 ok\n",
+    "reference_sha256": "5574150f1fddd78bc579cf2134b0bf6ba6df264381531dd48d67b866474b40bd",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 803,
+        "sha256": "7a8ac4844f39650e284344042cc2f278080d4841ec830d4c492d8c8cce918df2"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 803,
+        "sha256": "f9280b5cc5264b6ed971e690b60355afbfdb2cf7a60629158999ee822c83e79d"
+      }
+    ]
+  },
+  {
+    "case": 12,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 12. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10,long long p11){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL+p11*12LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<12;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<12;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-2LL,-1LL,0LL,1LL,2LL,3LL,4LL,5LL,6LL,7LL,8LL,9LL);int v=variadic(0,-12,-5,2,9,16,23,30,37,44,51,58,65);\n int r=recurse(5);int e=even(12);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "17243bf72f311ae57b88db82ef6a447b2d0f9eee6b4e20b786e6f147cbd54e52",
+    "expected_exit": 1087,
+    "expected_stdout": "416 636 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "3f086205b6ee4a3e6320d676f4342cdb8173da09767e1466180ebf92b3bfb037",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1087,
+        "sha256": "f8ed23bf166097d127d1bad2edaa3037c0923bc86b9bd99ff9ddca35550b6945"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1087,
+        "sha256": "67e092c5a36d29ff99a26b2a68fc006e88150fa3c0146021a517910cd432b54a"
+      }
+    ]
+  },
+  {
+    "case": 13,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 13. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted();int v=variadic(0,1);\n int r=recurse(6);int e=even(13);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "a3cb5aeed1e9f64174ce2b50f74c706a53a6d65449fdd5b4fdb407d523a48e28",
+    "expected_exit": 31,
+    "expected_stdout": "0 0 720 0 9 11 5 3 ok\n",
+    "reference_sha256": "aea65adc544431d54e28eba55f987c96220edb35dd1bb5ef0d38c02eb3a3f9a1",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 31,
+        "sha256": "16b02447a2301fe4c9c8e6bbda9a4a6dc811e7002dbbc1944f06be6827aa9f91"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 31,
+        "sha256": "904866e20319ac65b019113f58d177f20a47e910eb3dc3463dbedb6f92107830"
+      }
+    ]
+  },
+  {
+    "case": 14,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 14. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(0LL);int v=variadic(0,1,2,-14);\n int r=recurse(0);int e=even(14);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "11d22d98d92425032dfc9a8805678243e1c2b4bcd96fab749db90f6eb065d2b3",
+    "expected_exit": 2,
+    "expected_stdout": "0 -28 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "d27907c0c9606a2292ee1aa84fe2e8108c7db79b9d746ba1802cca9e4fde95cc",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2,
+        "sha256": "2f0239c9d485b8907d738ffe45d9ffbb8be42592385171830f44391fd2b0546c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2,
+        "sha256": "17f8868f5aaeba97d20226dbeded6f7147ca94ea4148ed8b01dca2f6078b7bc4"
+      }
+    ]
+  },
+  {
+    "case": 15,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 15. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(1LL,2LL);int v=variadic(0,1,2,3,-15,-8);\n int r=recurse(1);int e=even(0);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "68c99074ab0fb0c752ab6595b56bf78587454b162ca02c31d8aa63cc805ec928",
+    "expected_exit": 4294967285,
+    "expected_stdout": "5 -46 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "00e49918a4e412a6013a25f740fb46bf34253bf16aed9affb52e68d1773809a8",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967285,
+        "sha256": "38453b11f73600371deed9da598aa8dbd68b0c6497117155d1defa6a57720bbe"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967285,
+        "sha256": "aa83fe159b1104e4b489c3fc05325b57db7f55c0a4d94cb88001f4e4264be751"
+      }
+    ]
+  },
+  {
+    "case": 16,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 16. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(2LL,3LL,4LL);int v=variadic(0,1,2,3,4,-16,-9,-2);\n int r=recurse(2);int e=even(1);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "77c93702670fb0dfc890bfd7f285efd25b5503ce2d81e684266182508fb730d5",
+    "expected_exit": 4294967293,
+    "expected_stdout": "20 -54 2 0 5 7 5 3 ok\n",
+    "reference_sha256": "18f778b9620039c871ee46a1b0a71b53f2fe90928a9f58d00911a7df570ab6c3",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967293,
+        "sha256": "585df2a337a745137f99661c58d1e436d930787c7d98cf84304d827f9dd5c94f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967293,
+        "sha256": "cb036606a617341421121abbb74412dcf5b4871925ff8da28f3e6d036a0fdc41"
+      }
+    ]
+  },
+  {
+    "case": 17,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 17. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(3LL,4LL,5LL,6LL);int v=variadic(0,1,2,3,4,5,-17,-10,-3,4);\n int r=recurse(3);int e=even(2);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "fc43c78bbc9eb77fa805ebe30db2f25a1edc75cbf5bf4b5cc4719f4d20e528b9",
+    "expected_exit": 29,
+    "expected_stdout": "50 -52 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "b443d4c59d48359f4dd43350e0dbf2df0a5569681f0490e5b4b67babc73ccc3e",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 29,
+        "sha256": "4f7405b7b15d73c018830feac3b7314ebb6380881596c225dea9632b173d176c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 29,
+        "sha256": "6fd3a6521f678370ca59d608aaee2e50ef12f67f5dfb1d97124234c253a1c2f5"
+      }
+    ]
+  },
+  {
+    "case": 18,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 18. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(4LL,5LL,6LL,7LL,8LL);int v=variadic(0,-18,-11,-4,3,10);\n int r=recurse(4);int e=even(3);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "fec595b38d30d4e2ac984ea149a810510aae7293368e8199ac3e70b5ba17b968",
+    "expected_exit": 93,
+    "expected_stdout": "100 -40 24 0 7 9 5 3 ok\n",
+    "reference_sha256": "8177fb7be447fd485109d8e3f417092b5591de1847e0285a5e73edc328685454",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 93,
+        "sha256": "3ba0cae3071590015c3d02032688a053178411c9bcc61217ee3cb63f40b31f96"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 93,
+        "sha256": "2add598d220c439fa0af824b38317ce1817a8b8bae42b68c57b91d0bf74faaf7"
+      }
+    ]
+  },
+  {
+    "case": 19,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 19. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(5LL,6LL,7LL,8LL,9LL,10LL);int v=variadic(0,1,-19,-12,-5,2,9,16);\n int r=recurse(5);int e=even(4);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "f4b71f21723ce8531385484e5d39d374127e5cb994686fff42e23093610209c2",
+    "expected_exit": 192,
+    "expected_stdout": "175 -18 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "f7c9a3d03af9fe794089aba5a098f27488105bb01d625a2c87a230af36a096d1",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 192,
+        "sha256": "55e26b698707969413fbccd271ac75b5f1bd498b508c0060340f1bbd8275b293"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 192,
+        "sha256": "d0758a643eff0d53f355fdd955f17dfd9f6573de117b1195467fea5280ceebc2"
+      }
+    ]
+  },
+  {
+    "case": 20,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 20. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(6LL,7LL,8LL,9LL,10LL,11LL,12LL);int v=variadic(0,1,2,-20,-13,-6,1,8,15,22);\n int r=recurse(6);int e=even(5);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "fb53e9a5a18ed92555159dfb117833add5bc105314ada28620664e98b17c57d7",
+    "expected_exit": 328,
+    "expected_stdout": "280 14 720 0 9 11 5 3 ok\n",
+    "reference_sha256": "4687957a72b8181b99e33677def49003c48ad26e9ad2e7f867cfc1cff5683902",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 328,
+        "sha256": "9803898d8934fcdc3c65ef918556ca04a5dd943b66e9523d068a09f13aba9d70"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 328,
+        "sha256": "f2361a06e207005b34f03865dece52edaa1319ff9a404eece84a04d94ae373bf"
+      }
+    ]
+  },
+  {
+    "case": 21,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 21. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(7LL,8LL,9LL,10LL,11LL,12LL,13LL,14LL);int v=variadic(0,1,2,3,-21,-14,-7,0,7,14,21,28);\n int r=recurse(0);int e=even(6);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "9df60c4187b53977f44074a84893cce526cdc07bb5dbca84266a4f6c4e9f329e",
+    "expected_exit": 507,
+    "expected_stdout": "420 56 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "69b9b9134ef00473c2d8301ea1984a7f135b3dfc0fa115846e0b9c0cdef436b8",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 507,
+        "sha256": "308487691623232a1e1a5ba1eacda66ea8d3c3d747cbd6f5c60eda542e61b390"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 507,
+        "sha256": "53f9131329867c1a9bf6f32af35cc48e5b95e7ceb7dd421765485d8070721184"
+      }
+    ]
+  },
+  {
+    "case": 22,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 22. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<9;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<9;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(8LL,9LL,10LL,11LL,12LL,13LL,14LL,-14LL,-13LL);int v=variadic(0,1,2,3,4,-22,-15,-8,-1,6,13,20,27,34);\n int r=recurse(1);int e=even(7);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "50fcb624038d0a1d5cdbe332f8d809f2ad6e9edc9caaa893b319828653110e2c",
+    "expected_exit": 247,
+    "expected_stdout": "107 108 1 0 4 6 5 3 ok\n",
+    "reference_sha256": "b8f84a2567026cd8aa3e50f45a5a954d75779dd88e6281a4eca016ae3254c0f4",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 247,
+        "sha256": "e34c2f10840c568cd664043bfeb6eee914d7c780813649a79c2000ea6a422888"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 247,
+        "sha256": "8c16b587f2411a1307976552f8da2aa58df98b3aff66648bd8ca71cbea0fd4e1"
+      }
+    ]
+  },
+  {
+    "case": 23,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 23. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<10;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<10;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(9LL,10LL,11LL,12LL,13LL,14LL,-14LL,-13LL,-12LL,-11LL);int v=variadic(0,1,2,3,4,5,-23,-16,-9,-2,5,12,19,26,33,40);\n int r=recurse(2);int e=even(8);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "4828db4e967ca3edfb28586c908734b94a183af123845fcfdfc5723637f1f3c5",
+    "expected_exit": 42,
+    "expected_stdout": "-161 170 2 1 5 7 5 3 ok\n",
+    "reference_sha256": "20bd29cf171ba8ea0f2b4fe3c5ec2161279274d714973f29c4c83fd79b548850",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "sha256": "8e5f105a70d595a0bbf7bd472a0adb980969fea8e253a54309b03c6cc97a00f8"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "sha256": "f8f07b423242fb57e798d1fa182ceed12678176b568a0f89d7ee4607933acb9d"
+      }
+    ]
+  },
+  {
+    "case": 24,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 24. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<11;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<11;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(10LL,11LL,12LL,13LL,14LL,-14LL,-13LL,-12LL,-11LL,-10LL,-9LL);int v=variadic(0,-24,-17,-10,-3,4,11,18,25,32,39,46);\n int r=recurse(3);int e=even(9);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "9def17686e5cf07fcc81d9174672bb4c9cd403bae480233a3da83bce877f6db3",
+    "expected_exit": 4294967192,
+    "expected_stdout": "-379 242 6 0 6 8 5 3 ok\n",
+    "reference_sha256": "418cb0ba2b8a6339d6027c34dfca96dfc828e1e9d1704fd0c6fa4e4ba1cde1db",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967192,
+        "sha256": "f5c93caaf26813f6b2957fd728aff4b6014c717dd37245a41bc9e23c3f61dad1"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967192,
+        "sha256": "2953c039319b97501082e0162a3648b8b017827d3b71c0196afed8615a0574e3"
+      }
+    ]
+  },
+  {
+    "case": 25,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 25. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10,long long p11){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL+p11*12LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<12;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<12;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(11LL,12LL,13LL,14LL,-14LL,-13LL,-12LL,-11LL,-10LL,-9LL,-8LL,-7LL);int v=variadic(0,1,-25,-18,-11,-4,3,10,17,24,31,38,45,52);\n int r=recurse(4);int e=even(10);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "798f538c0d5fea2f87b1b5b7bc87ad2abe1f5b4ed75017f3781b58477b68dfec",
+    "expected_exit": 4294967112,
+    "expected_stdout": "-542 324 24 1 7 9 5 3 ok\n",
+    "reference_sha256": "19e13ca090762435f34f5670693b877a862105b4c8e6e7d9e4b89325a0f3c8a5",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967112,
+        "sha256": "8710942993c4b37fb33f69241bceccccd51af96c34af0016872154e895651788"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967112,
+        "sha256": "1451f6ac7d38e10758c66a54d59f3f4f5a75018785c01c4ff9e645f06c500bd3"
+      }
+    ]
+  },
+  {
+    "case": 26,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 26. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted();int v=variadic(0,1,2);\n int r=recurse(5);int e=even(11);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "585628616c3f3ff68eb528180da87a4d36fefcc780840b361f82eaf6f8ee1bff",
+    "expected_exit": 31,
+    "expected_stdout": "0 0 120 0 8 10 5 3 ok\n",
+    "reference_sha256": "cdcfa39090c9aab878736f4395db8e17b44f32aa858caa7dd260f610e0efeb40",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 31,
+        "sha256": "65b70710a509d486b65df6f4e310aa5f7410e67994313b6a215e400cd844d740"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 31,
+        "sha256": "2c205c74470de977f3b320ac2169341ea8f6bc0bae16e6a07267654f44e07765"
+      }
+    ]
+  },
+  {
+    "case": 27,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 27. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(13LL);int v=variadic(0,1,2,3,-27);\n int r=recurse(6);int e=even(12);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "1252c2ba63f13309f2dbae26715d09e2f88e1c62152297926d18b26c6c2f2a88",
+    "expected_exit": 4294967289,
+    "expected_stdout": "13 -54 720 1 9 11 5 3 ok\n",
+    "reference_sha256": "c4f964112caba2216213c10a4eb64bf9baea2d476f59294e57ec283d5306e549",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967289,
+        "sha256": "1a42fe59fb84ca04f156e0022ac0ddaed2381dff692ba30a8775299f2bb66623"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967289,
+        "sha256": "2854a4af35522176b7c3e326d4e5bbcf1a7c04040cdb0838a64127d0f3e225b4"
+      }
+    ]
+  },
+  {
+    "case": 28,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 28. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(14LL,-14LL);int v=variadic(0,1,2,3,4,-28,-21);\n int r=recurse(0);int e=even(13);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "3498e533d17e3502630eb38ef5f8e78ed3f431fe577620c4df16ad23bffc252f",
+    "expected_exit": 4294967216,
+    "expected_stdout": "-14 -98 1 0 3 5 5 3 ok\n",
+    "reference_sha256": "b6bc7e2076d74b8a36ead8d2291b6dde5440c9e2fa139f49b683dcd24089d51a",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967216,
+        "sha256": "3359728631507c5b14cb4cda172ed1cc87ceea2e1962d485bb71e05ef4efec8f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967216,
+        "sha256": "b77d92a6fffa2119a820ee93906dd8b4e2cb329c937b1744c2354bb8dcafdb93"
+      }
+    ]
+  },
+  {
+    "case": 29,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 29. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-14LL,-13LL,-12LL);int v=variadic(0,1,2,3,4,5,-29,-22,-15);\n int r=recurse(1);int e=even(14);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "92884ede55dd9f1b80e2cba86b6950d2cb4b3a43a59968bddff6a13e467ea4c7",
+    "expected_exit": 4294967121,
+    "expected_stdout": "-76 -132 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "a821fb1f4dc327f799b438dd814944a414250ea5867a0abf08e9d5dd525f0b25",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967121,
+        "sha256": "57e0707250727c2847d6aeb2798f5c3df0ba94be4019c8ab62d97614bebc8f2d"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967121,
+        "sha256": "880729d909c5d58d56b7362b2900fe465ced5b56faa192fe089f6eb3c74f7b7d"
+      }
+    ]
+  },
+  {
+    "case": 30,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 30. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(-13LL,-12LL,-11LL,-10LL);int v=variadic(0,-30,-23,-16,-9);\n int r=recurse(2);int e=even(0);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "53a2ec501cded6cd3c53696f664e4b968adee43882dc47b9ba255e6a0c08ca62",
+    "expected_exit": 4294967064,
+    "expected_stdout": "-110 -156 2 1 5 7 5 3 ok\n",
+    "reference_sha256": "0d1e4f8676f302fdee3e0c6c6b069e843da0002353b24ad20708421bd2d64896",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967064,
+        "sha256": "d7bc52d30c01ffc2f2007c0bcb2f432fd268093d7c3fed87ebe2627634f10ede"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967064,
+        "sha256": "acaafefa0c594f73cc528777839eb884d15ffff0898cff35f1671cd3d3363de7"
+      }
+    ]
+  },
+  {
+    "case": 31,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 31. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-12LL,-11LL,-10LL,-9LL,-8LL);int v=variadic(0,1,-31,-24,-17,-10,-3);\n int r=recurse(3);int e=even(1);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "735e6e300968393d7e61d33e072877cf286fef334999a009ae0060c0620f20fd",
+    "expected_exit": 4294967020,
+    "expected_stdout": "-140 -170 6 0 6 8 5 3 ok\n",
+    "reference_sha256": "24db1ff502d477445e9b2d5c6dbdab4e726c17a14b6d9f02e30ac233a5472065",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967020,
+        "sha256": "4a1eb3fd3ebfa8d12d07e5fd86d8e7845fd912176a3d803f773b31f69e69f660"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967020,
+        "sha256": "8fc9f3f41fb0b49a85f17fa1e50b578b5a4ba943b345f7df7c9a507dd9da93da"
+      }
+    ]
+  },
+  {
+    "case": 32,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 32. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(-11LL,-10LL,-9LL,-8LL,-7LL,-6LL);int v=variadic(0,1,2,-32,-25,-18,-11,-4,3);\n int r=recurse(4);int e=even(2);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "8d135c8f8935d91aca10625b42a07d8e611f0469e8f28bd68f4cf4771b31784c",
+    "expected_exit": 4294966996,
+    "expected_stdout": "-161 -174 24 1 7 9 5 3 ok\n",
+    "reference_sha256": "b18dd5d8893308574b3c6b7820f7b63b25ba3b32b5967b6712d04267b6c98934",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966996,
+        "sha256": "de39dd3e936f3722b2923134cf6e55d62222153108685462908376fbbcd1f13e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966996,
+        "sha256": "994c3829176298222ad006fbca813946426a2343194485cafa3d6890795824ed"
+      }
+    ]
+  },
+  {
+    "case": 33,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 33. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-10LL,-9LL,-8LL,-7LL,-6LL,-5LL,-4LL);int v=variadic(0,1,2,3,-33,-26,-19,-12,-5,2,9);\n int r=recurse(5);int e=even(3);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "65925903f96c7bc9da2293ee7660a45bb015072c3d020783240bb681e6eb0229",
+    "expected_exit": 4294966997,
+    "expected_stdout": "-168 -168 120 0 8 10 5 3 ok\n",
+    "reference_sha256": "bfbe0704eb27eb599132833dbe3e17ec26ab4c3c415e0e24ebe42eacaa47cb67",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966997,
+        "sha256": "c482454f7f22812fdbd28d752c98583ed3fa4dca05fa6fede6ca68d0b7139676"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966997,
+        "sha256": "545084c2af61b688a873114afa74ca4f90810162216558158c0f71c78eb04d04"
+      }
+    ]
+  },
+  {
+    "case": 34,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 34. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(-9LL,-8LL,-7LL,-6LL,-5LL,-4LL,-3LL,-2LL);int v=variadic(0,1,2,3,4,-34,-27,-20,-13,-6,1,8,15);\n int r=recurse(6);int e=even(4);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "17b40445dad7f44c808854ede7c4fdcdc87cd381eb1b5a82ce64f822089b832d",
+    "expected_exit": 4294967025,
+    "expected_stdout": "-156 -152 720 1 9 11 5 3 ok\n",
+    "reference_sha256": "7e2742303d3bbd0cc60e5f7e7438ba3ee30d0fb4b33ed6a66a907a734793bfbb",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967025,
+        "sha256": "8deb8f9ba232e57d58a65eb76489bb72fa9e9227bef7dd413018ef0c650fa90f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967025,
+        "sha256": "6af4baa888b3ac7961be54d16c68f2ed1cbf5081d1124919839617873da82279"
+      }
+    ]
+  },
+  {
+    "case": 35,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 35. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<9;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<9;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(-8LL,-7LL,-6LL,-5LL,-4LL,-3LL,-2LL,-1LL,0LL);int v=variadic(0,1,2,3,4,5,-35,-28,-21,-14,-7,0,7,14,21);\n int r=recurse(0);int e=even(5);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "790aa49b74d54927dd73b7d2491d3c08568d60c092879c229261b296de1e7ec1",
+    "expected_exit": 4294967084,
+    "expected_stdout": "-120 -126 1 0 3 5 5 3 ok\n",
+    "reference_sha256": "fc2997421fa098dd68b5ce2e3e14d1af65880a86fb066ae29223e7681681fda9",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967084,
+        "sha256": "b902c5fdafbfa7b12407580b6d19f382e79c4a237fe27feb7c43e1ad6bffcb85"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967084,
+        "sha256": "647c3059df49a4eb67ac1e544eab35f5fce87c8283fa7f5a90cf95264e4858e2"
+      }
+    ]
+  },
+  {
+    "case": 36,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 36. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<10;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<10;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-7LL,-6LL,-5LL,-4LL,-3LL,-2LL,-1LL,0LL,1LL,2LL);int v=variadic(0,-36,-29,-22,-15,-8,-1,6,13,20,27);\n int r=recurse(1);int e=even(6);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "38af56a9388dd2d09e059a754e01d1eee715145c715489621e035b99c55fcbf2",
+    "expected_exit": 4294967183,
+    "expected_stdout": "-55 -90 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "ca1db8fee8b6945c48ba6615c4f6a102c119148eb51873081401db08b4155c96",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967183,
+        "sha256": "9764338bd07e05147516385d8dfe36339fb5eb0184b8bc48f4db1f0511338f7c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967183,
+        "sha256": "503216116f25a9972bbc641d66c820feed9cc9dd114c43c267e8ac966837b8a2"
+      }
+    ]
+  },
+  {
+    "case": 37,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 37. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<11;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<11;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(-6LL,-5LL,-4LL,-3LL,-2LL,-1LL,0LL,1LL,2LL,3LL,4LL);int v=variadic(0,1,-37,-30,-23,-16,-9,-2,5,12,19,26,33);\n int r=recurse(2);int e=even(7);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "d20e0c6ecd89d57a22fccc4fa3fb8512a5f9b3e407db2adadbdcb84f222a1d4b",
+    "expected_exit": 31,
+    "expected_stdout": "44 -44 2 0 5 7 5 3 ok\n",
+    "reference_sha256": "071bf8354e61b9a9209ea36675c03663d2b3439e38492ae1bfa8bebfa19230c2",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 31,
+        "sha256": "8aaa198969461ca0d156716d27455c74318c72e2910ce014d9a3dcbfc5c7df85"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 31,
+        "sha256": "5ba7c385a33b9bb8280250cc1a083facdbe48e40e8dd2a0db4be99492cf80d5d"
+      }
+    ]
+  },
+  {
+    "case": 38,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 38. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10,long long p11){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL+p11*12LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<12;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<12;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-5LL,-4LL,-3LL,-2LL,-1LL,0LL,1LL,2LL,3LL,4LL,5LL,6LL);int v=variadic(0,1,2,-38,-31,-24,-17,-10,-3,4,11,18,25,32,39);\n int r=recurse(3);int e=even(8);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "25cfc88c415cf2ed774ea1dccfc5ef6d84d01f8980598167b13f11af08d4a650",
+    "expected_exit": 225,
+    "expected_stdout": "182 12 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "15fafd5dd09bde468a755f3c94ed82cd327c916b24c4785ee850f1eea41d4a86",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 225,
+        "sha256": "fcf85f9c223d5a00b03659716322972267b7341e283816802501d98d93960309"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 225,
+        "sha256": "412f0bcb3ed4ebd6cca32d0ab661cee0f56f65ac8776b3c2f45a4d15de2b10ed"
+      }
+    ]
+  },
+  {
+    "case": 39,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 39. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted();int v=variadic(0,1,2,3);\n int r=recurse(4);int e=even(9);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "2fbea46d4ebf76c6fc4b61d40245190713081d397f06230344071e8b2cb1b3d1",
+    "expected_exit": 29,
+    "expected_stdout": "0 0 24 0 7 9 5 3 ok\n",
+    "reference_sha256": "4656e38898df11919c4bec1e9c1b638298c3f85884fd34a236fb7c118f2d8e6d",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 29,
+        "sha256": "8c4763ca7a49dc922b58f028251914fb08cc5dc685576530aec3299f1ae3b49e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 29,
+        "sha256": "6ffb46b66f8007d4fac18d139e937a616fbf0c728e0d219336363f315b185acd"
+      }
+    ]
+  },
+  {
+    "case": 40,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 40. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-3LL);int v=variadic(0,1,2,3,4,-40);\n int r=recurse(5);int e=even(10);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "234e27b34c0cd0450febbebcb77bcdec143cb0abbb55d1e74966e0f900ed6863",
+    "expected_exit": 4294967247,
+    "expected_stdout": "-3 -80 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "79b68168fb6373745a8f48c65ec2801a98ae663a3a7029c44f368d347cb5963a",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967247,
+        "sha256": "7b4fb7150305e9ed03a025f7eea654f0ec5f24c21e7f5f158f99e974cfeb1f19"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967247,
+        "sha256": "8434bab52d5d1a0d832ea756357e2c0760bc39811ff9a2056fdc761484c65b43"
+      }
+    ]
+  },
+  {
+    "case": 41,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 41. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(-2LL,-1LL);int v=variadic(0,1,2,3,4,5,-41,-34);\n int r=recurse(6);int e=even(11);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "acac87f8d8e8c64ed3d0622dbdcdd36f3d16c7a8415154bfbc3209f60d7bcee9",
+    "expected_exit": 4294967177,
+    "expected_stdout": "-4 -150 720 0 9 11 5 3 ok\n",
+    "reference_sha256": "1afc145af28e4d5a790f5e2ea0fca581c9f215a40f61de0eebe2d98bc475039d",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967177,
+        "sha256": "d5e73411b160a551fa94039f7439f8023de835c80c82fbbabe92e87dbeea566c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967177,
+        "sha256": "767d6daff6f6cd6c36fdf8468d02b878af5042f052a4962988ac86418b375dc3"
+      }
+    ]
+  },
+  {
+    "case": 42,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 42. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(-1LL,0LL,1LL);int v=variadic(0,-42,-35,-28);\n int r=recurse(0);int e=even(12);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "db7801c6bb52fa3a0265ac4e8988d71a08017242be4426a4f9e48627d13422b5",
+    "expected_exit": 4294967119,
+    "expected_stdout": "2 -210 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "bcb80b557f71d9ed10b06204cd0e3c8f3584947e089660a747f2df90a674e9d6",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967119,
+        "sha256": "29884c7b5f8dd50c6856a08a2aa0bc68fca929a515c76438d0067f2fa55d5552"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967119,
+        "sha256": "876c33d2caa9ab124211fb591bd9dfde7a4d3ae22c759aaaa44c3679793165e7"
+      }
+    ]
+  },
+  {
+    "case": 43,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 43. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(0LL,1LL,2LL,3LL);int v=variadic(0,1,-43,-36,-29,-22);\n int r=recurse(1);int e=even(13);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "edfe5e579a2a18534bf296def1bd662d4c4d3385324b3058713058c9258f0486",
+    "expected_exit": 4294967088,
+    "expected_stdout": "20 -260 1 0 4 6 5 3 ok\n",
+    "reference_sha256": "91f161f8f49c491ae1b5870f36b99c2baf4fb77dcdb3d7c43bbf8620a77e8245",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967088,
+        "sha256": "c24081cb08ac763ab737e8a9cd9bf686ff350fe1207cabb9ee5e3b5092af8c76"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967088,
+        "sha256": "f679a7f2e3917fe166b1888fd72796c5bd0caca9a25ae219d4385148b713904c"
+      }
+    ]
+  },
+  {
+    "case": 44,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 44. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(1LL,2LL,3LL,4LL,5LL);int v=variadic(0,1,2,-44,-37,-30,-23,-16);\n int r=recurse(2);int e=even(14);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "c9d8d34f73d55f9fd693e74b8d8671e0bba27715b981e74776acf96122cc4fe2",
+    "expected_exit": 4294967083,
+    "expected_stdout": "55 -300 2 1 5 7 5 3 ok\n",
+    "reference_sha256": "5d115f87a0c940aac69eac090ec60f663e914f229efb912619f614ad06c742ae",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967083,
+        "sha256": "a91089eb0ff9bfb486d021ac4110da8175b0a9158b153f3a910915d21c0fc8ff"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967083,
+        "sha256": "69083620ed82c1c593ac899d319b17bde2b9ebde53ea4a849c9c6e025070284a"
+      }
+    ]
+  },
+  {
+    "case": 45,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 45. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(2LL,3LL,4LL,5LL,6LL,7LL);int v=variadic(0,1,2,3,-45,-38,-31,-24,-17,-10);\n int r=recurse(3);int e=even(0);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "3a13f1328a38850aedfaff1ae237ccd033c3018a898aaf1c7208e3eb69c74fef",
+    "expected_exit": 4294967111,
+    "expected_stdout": "112 -330 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "6589721b688e53d2f01747d68665c174a81d04f86ba5426177e55588c0f6a0da",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967111,
+        "sha256": "21264f2afa042fdbdcfcbfb580135e761f98cf251c372191aee46c643c2d491f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967111,
+        "sha256": "c6f7f91ada670b9d96fdf8bc76a7ad64a96fd82af03c31f2530ccb2ccc6e87a3"
+      }
+    ]
+  },
+  {
+    "case": 46,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 46. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(3LL,4LL,5LL,6LL,7LL,8LL,9LL);int v=variadic(0,1,2,3,4,-46,-39,-32,-25,-18,-11,-4);\n int r=recurse(4);int e=even(1);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "eea8cb7d5fe6037f952ff08fa7f604e3289a91af9b996af33283802f7e581086",
+    "expected_exit": 4294967176,
+    "expected_stdout": "196 -350 24 0 7 9 5 3 ok\n",
+    "reference_sha256": "08709ebb24241a456b74c5bd2c4a72472deaf953cf41c10fd4dd24f2a072b7f2",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967176,
+        "sha256": "329ce2d014ee602810dbcb53375a7b1011e1f24e333c76e76fea016ee68cd33b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967176,
+        "sha256": "a3500df94e1a7d4e9622aad05d20425d134c5fdd5c4c34f9f2ec4f499f728a2f"
+      }
+    ]
+  },
+  {
+    "case": 47,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 47. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(4LL,5LL,6LL,7LL,8LL,9LL,10LL,11LL);int v=variadic(0,1,2,3,4,5,-47,-40,-33,-26,-19,-12,-5,2);\n int r=recurse(5);int e=even(2);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "1e7736ebc7ba22697d40649268368b6c1b2839adc723fb08800869a6ba0de292",
+    "expected_exit": 4294967284,
+    "expected_stdout": "312 -360 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "16c51c115c900f169e92c1213c54965668c73d0df94e503955d4ec1a23ea7f96",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967284,
+        "sha256": "e050eaa3baa64fd62cc228a9659cc4a09036ec3d57bf169cf91c2183f111f71f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967284,
+        "sha256": "106407c3853abc67193f847e92953d6a3ee4d4145ed0fa02f58139ca7597c6e5"
+      }
+    ]
+  },
+  {
+    "case": 48,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 48. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<9;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<9;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(5LL,6LL,7LL,8LL,9LL,10LL,11LL,12LL,13LL);int v=variadic(0,-48,-41,-34,-27,-20,-13,-6,1,8);\n int r=recurse(6);int e=even(3);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "ca6116acbba558baf58c00f521520e4e389f8f7365e44656dc90c0263ff76b47",
+    "expected_exit": 141,
+    "expected_stdout": "465 -360 720 0 9 11 5 3 ok\n",
+    "reference_sha256": "d4d0a743c72ae273b7524a04f313e7016e16b3d2c7fda201d6ba654191adf971",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 141,
+        "sha256": "f16be634b5ea3d5235d8d86ad1824fa211abfb563ec72fe1990d4cf2347ef822"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 141,
+        "sha256": "730337f20f39c4d9b431a9daf91704bc725732bd2249e6a6c2e9d249bd9a5e50"
+      }
+    ]
+  },
+  {
+    "case": 49,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 49. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<10;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<10;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(6LL,7LL,8LL,9LL,10LL,11LL,12LL,13LL,14LL,-14LL);int v=variadic(0,1,-49,-42,-35,-28,-21,-14,-7,0,7,14);\n int r=recurse(0);int e=even(4);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "f51d726379958dee7952fdebdbc89a85018aa95e60a07110b36a3c6491a9adcb",
+    "expected_exit": 53,
+    "expected_stdout": "370 -350 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "7178561403a4764e1f7f62a106d29075c94bf83fa1be61d166ae865f36e6546b",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 53,
+        "sha256": "df3880233dc21792b9429ba8b485cdb2ae75b411c04c01a3f62ab6649e304bb7"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 53,
+        "sha256": "a670d46f1f329c52156d4f2f9cf652edeaa7cc743b8f8c19d3fa57d4fc001d92"
+      }
+    ]
+  },
+  {
+    "case": 50,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 50. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<11;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<11;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(7LL,8LL,9LL,10LL,11LL,12LL,13LL,14LL,-14LL,-13LL,-12LL);int v=variadic(0,1,2,-50,-43,-36,-29,-22,-15,-8,-1,6,13,20);\n int r=recurse(1);int e=even(5);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "3418ab6648f79b384d17697ecdd94e98f22e8d241c00987d37d0c1ee8c4b4c01",
+    "expected_exit": 4294967030,
+    "expected_stdout": "32 -330 1 0 4 6 5 3 ok\n",
+    "reference_sha256": "ac27ea7fa30d17099141996fa370629dbe3e69e82bea7da43fdda3a731877973",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967030,
+        "sha256": "999d86fc9b586135e46fd2ba6a6789862b723ebbc0b3291c3eb074aa4058d787"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967030,
+        "sha256": "a6fec233a90062b7c783901505ed776b98a2721db9f3ec7e47c83ec9f93e57bf"
+      }
+    ]
+  },
+  {
+    "case": 51,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 51. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10,long long p11){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL+p11*12LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<12;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<12;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(8LL,9LL,10LL,11LL,12LL,13LL,14LL,-14LL,-13LL,-12LL,-11LL,-10LL);int v=variadic(0,1,2,3,-51,-44,-37,-30,-23,-16,-9,-2,5,12,19,26);\n int r=recurse(2);int e=even(6);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "c10aa5ca15b1822d912c1aba9db73379cf0576383692ebe5f0f018e48c74e371",
+    "expected_exit": 4294966776,
+    "expected_stdout": "-254 -300 2 1 5 7 5 3 ok\n",
+    "reference_sha256": "cbf49ba1290c40831c5613db7ba69489d3478116401d6e766c36466dcfbefe62",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966776,
+        "sha256": "c54a680394d429c504950f7261d4698184f010ddb40b7bf6352dc1fd1d57a353"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966776,
+        "sha256": "b888ef4ed00d84e79fb95ecc14237df42cc167cfc51ac3f23f06ea615af2fcf7"
+      }
+    ]
+  },
+  {
+    "case": 52,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 52. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted();int v=variadic(0,1,2,3,4);\n int r=recurse(3);int e=even(7);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "59e606fa6f8afb733a19a564f06cdece0792dc5bca9a3cffe23b56acab57f8d4",
+    "expected_exit": 28,
+    "expected_stdout": "0 0 6 0 6 8 5 3 ok\n",
+    "reference_sha256": "f4db8ba3eb296639c2d79212603d8cf2a1a5c6a1a6689c355ce292a553cf921c",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 28,
+        "sha256": "d055b9ca29e1be9389aad9445f6b9a86aa8ea97907125bd929c4d7a0a57f1498"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 28,
+        "sha256": "292bd71fff46a56061bc48630290357d42d4290816dc3eb657a4c55108f3589d"
+      }
+    ]
+  },
+  {
+    "case": 53,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 53. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(10LL);int v=variadic(0,1,2,3,4,5,-53);\n int r=recurse(4);int e=even(8);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "de8c3e2479756de61fec25d41cc760d68868129cf04666f2262379dbb18d05cc",
+    "expected_exit": 4294967233,
+    "expected_stdout": "10 -106 24 1 7 9 5 3 ok\n",
+    "reference_sha256": "6df2fbd36ecf0a934c1b1b1d356cb7d8e98f9c5a7296fe928cb0d7fd550da3e4",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967233,
+        "sha256": "07c95f20b87970289106e17ad96080112203ddef9c3694799d6d9d01e3ea090f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967233,
+        "sha256": "29b31547d2ab1da30ee8e40a8d37804ebc563bd0937f56277b9af6e04369e8a5"
+      }
+    ]
+  },
+  {
+    "case": 54,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 54. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(11LL,12LL);int v=variadic(0,-54,-47);\n int r=recurse(5);int e=even(9);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "14cca7723be549d101fb9a567317a6be3bd91351750979d4226c657622dfb272",
+    "expected_exit": 4294967164,
+    "expected_stdout": "35 -202 120 0 8 10 5 3 ok\n",
+    "reference_sha256": "6912e01d4c61e17cb230b2a6bff7875f65dcebfc8835c0ce772c41e2c7cc16eb",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967164,
+        "sha256": "748203c856c4d7aa8c449dd7d45a425ddd8d0361c0d8ce08c4ea2462bb4c54bb"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967164,
+        "sha256": "7320f9f5c9979288d3a1f41bca0fbe0cc2205d92b7d77126405eb266cb3c381e"
+      }
+    ]
+  },
+  {
+    "case": 55,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 55. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(12LL,13LL,14LL);int v=variadic(0,1,-55,-48,-41);\n int r=recurse(6);int e=even(10);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "f1fafba946869e0f747d4ddf2c909d2421199de98fd8e81c9dfe2b8e5cee6b16",
+    "expected_exit": 4294967123,
+    "expected_stdout": "80 -288 720 1 9 11 5 3 ok\n",
+    "reference_sha256": "4861d91d0edb37b3f13f3ef9e514039ea2a0849ccd4f110d47141d84a624c0b0",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967123,
+        "sha256": "dc5a613ccae84ad239a6ca5f0d25b7816db5f44f7a59a48ada0cfdb35196d373"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967123,
+        "sha256": "825baf5beb2c93465db931a54ba76548622015fee474141778e1252f4e3a6cf6"
+      }
+    ]
+  },
+  {
+    "case": 56,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 56. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(13LL,14LL,-14LL,-13LL);int v=variadic(0,1,2,-56,-49,-42,-35);\n int r=recurse(0);int e=even(11);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "e23db3eaf9be9225d2ef6e8110e3eeb0a836158ee21ebe414e27b7ddc86f1f77",
+    "expected_exit": 4294966912,
+    "expected_stdout": "-53 -364 1 0 3 5 5 3 ok\n",
+    "reference_sha256": "cf2e9795cc01c45b213c585627cf1171278b33b1d671fe56294649a1d98eabf1",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966912,
+        "sha256": "9cb74dd34087000e8944f7167f4a7a54928ce150fb2163ab6004604b8e53afbe"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966912,
+        "sha256": "a73f5f1e316e31817d57693afd79a73150131b9aed18ad19d3d75b73e84fcbba"
+      }
+    ]
+  },
+  {
+    "case": 57,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 57. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(14LL,-14LL,-13LL,-12LL,-11LL);int v=variadic(0,1,2,3,-57,-50,-43,-36,-29);\n int r=recurse(1);int e=even(12);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "5702c959f924beec1ee08861281b7d130d40da56154e4772f6bfce8ef73e875b",
+    "expected_exit": 4294966744,
+    "expected_stdout": "-156 -430 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "951a49bc7186a077d25a551fa2eea901fb9cfb12cc548b46410289044551988f",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966744,
+        "sha256": "df581c5b9ac6bb23fd3b73ce0f2a92492ef7b341262d235c9bc8a852d3a4195d"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966744,
+        "sha256": "1618df051c55f6b949bceffaa26618287f597e727dac379fe8aa5d838762ce6f"
+      }
+    ]
+  },
+  {
+    "case": 58,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 58. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(-14LL,-13LL,-12LL,-11LL,-10LL,-9LL);int v=variadic(0,1,2,3,4,-58,-51,-44,-37,-30,-23);\n int r=recurse(2);int e=even(13);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "e2b3004fef3ad555b123716279fe31fde6f829f28b40dc0ac371949890923732",
+    "expected_exit": 4294966620,
+    "expected_stdout": "-224 -486 2 0 5 7 5 3 ok\n",
+    "reference_sha256": "a755ac2d344a356a31acf233b8662600e18d5bbecf06f4be957e06daa837c3d7",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966620,
+        "sha256": "0d6a785dbc241008743b64f7c835f5eba857ab0d77f448a1ef11ca9ee129d3b7"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966620,
+        "sha256": "b2fb9363711af8b806d69912d1f3ced2630b81649531eedc56be29fd7b9f8e19"
+      }
+    ]
+  },
+  {
+    "case": 59,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 59. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-13LL,-12LL,-11LL,-10LL,-9LL,-8LL,-7LL);int v=variadic(0,1,2,3,4,5,-59,-52,-45,-38,-31,-24,-17);\n int r=recurse(3);int e=even(14);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "67c79f30c0f32d7a3be7666fc0cfdb0a3b60510697061c01052aecf112f3f3c3",
+    "expected_exit": 4294966546,
+    "expected_stdout": "-252 -532 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "85ab143ed356a06ae7890a2d29b1f9c6474aa39ff911f75b2f103afe15055ab5",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966546,
+        "sha256": "3479573e72b138024b0165e41877ef62350d9bfba1fcd8d936fffc3dcb4e5cf5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966546,
+        "sha256": "1fcf7da5915236d495a8c9433fb2ba0d494073fcd6e2fa901c89979b99128748"
+      }
+    ]
+  },
+  {
+    "case": 60,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 60. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(-12LL,-11LL,-10LL,-9LL,-8LL,-7LL,-6LL,-5LL);int v=variadic(0,-60,-53,-46,-39,-32,-25,-18,-11);\n int r=recurse(4);int e=even(0);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "b46dc7b0ef757caed616bd5907fdb53310be24b49e2676d0181b782bec8034e9",
+    "expected_exit": 4294966499,
+    "expected_stdout": "-264 -568 24 1 7 9 5 3 ok\n",
+    "reference_sha256": "94802f13ba4cdc73e5ea7eb6419370c07461ec6c7a7f665d804e2e3c846dc6fc",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966499,
+        "sha256": "b48360188fdcc0ccc04a861ec9bc0951a8455e286edee6b84eda588da5484443"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966499,
+        "sha256": "7318c8bf082a42c1adeb7f222caaf78eefd26e9c727e1e2fa7e920346931bbac"
+      }
+    ]
+  },
+  {
+    "case": 61,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 61. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<9;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<9;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-11LL,-10LL,-9LL,-8LL,-7LL,-6LL,-5LL,-4LL,-3LL);int v=variadic(0,1,-61,-54,-47,-40,-33,-26,-19,-12,-5);\n int r=recurse(5);int e=even(1);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "32354de3e9dd28f8ffa409b425cf0ed97c381c6b5764ca23188b5f8cd6b2801a",
+    "expected_exit": 4294966484,
+    "expected_stdout": "-255 -594 120 0 8 10 5 3 ok\n",
+    "reference_sha256": "cfaf3a35f0f3b25502126e0c3864f73f19d1aa83395642e76a22984db933d549",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966484,
+        "sha256": "69fbba4629ed3b3e8444c9bfbfde8f88630a7c58876cf8f8bcc2322b13be464c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966484,
+        "sha256": "6a7a7fcf53b5cd5592a781a923d0ddb840b834eaeb1b0cdd0c41b157c2f097b5"
+      }
+    ]
+  },
+  {
+    "case": 62,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 62. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<10;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<10;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(-10LL,-9LL,-8LL,-7LL,-6LL,-5LL,-4LL,-3LL,-2LL,-1LL);int v=variadic(0,1,2,-62,-55,-48,-41,-34,-27,-20,-13,-6,1);\n int r=recurse(6);int e=even(2);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "26c9e1e232f1c6c468283e77b616d7495b1dd796a89f61781f9e799031cc6fcb",
+    "expected_exit": 4294966503,
+    "expected_stdout": "-220 -610 720 1 9 11 5 3 ok\n",
+    "reference_sha256": "0a7ce182bbb33480d5345decd422da9b14a34a53f10a0c0d31f0f08dc8b14635",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966503,
+        "sha256": "d2ca4e68f57fe25eca3ca5595f5795886d249e6679362f58d950c87f648e0451"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966503,
+        "sha256": "f5a772268e663a5272f593b7b97101adaed953ae0af48cab2b9639281388d4ca"
+      }
+    ]
+  },
+  {
+    "case": 63,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 63. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<11;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<11;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(-9LL,-8LL,-7LL,-6LL,-5LL,-4LL,-3LL,-2LL,-1LL,0LL,1LL);int v=variadic(0,1,2,3,-63,-56,-49,-42,-35,-28,-21,-14,-7,0,7);\n int r=recurse(0);int e=even(3);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "21c2d7e04faf57d10591443a5d3378b4608af092b638f422e281412b5da2e544",
+    "expected_exit": 4294966560,
+    "expected_stdout": "-154 -616 1 0 3 5 5 3 ok\n",
+    "reference_sha256": "3d2254366667db7997e1d18c7e8f01ff5eb98f761ff255f53ac63f2294985d02",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966560,
+        "sha256": "7a22115a76e3de267ad785dee590848295e44088fbc5f4107d7d7cf11f82dee6"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966560,
+        "sha256": "767955401dd635c1d3894cb4464a7326b43ba2fabd4fd9f4fc6b06a27ee3cc57"
+      }
+    ]
+  },
+  {
+    "case": 64,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 64. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10,long long p11){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL+p11*12LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<12;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<12;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-8LL,-7LL,-6LL,-5LL,-4LL,-3LL,-2LL,-1LL,0LL,1LL,2LL,3LL);int v=variadic(0,1,2,3,4,-64,-57,-50,-43,-36,-29,-22,-15,-8,-1,6,13);\n int r=recurse(1);int e=even(4);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "25bdf41f9aade620eda32df4b056ca3b766a59435db5374199947ed8988694fd",
+    "expected_exit": 4294966665,
+    "expected_stdout": "-52 -612 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "0695602cc65c8fc9451c95438c2f779770b08609f9653eff3bc02b67dc284f77",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966665,
+        "sha256": "6c541da523b31a9f463a815bea7c4d86b6dce77adc1f88bc389381f9fb006762"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966665,
+        "sha256": "d204a4a6800bd3e7f65343ab77aaca3d38870a15127aa98f3f36466ebaaae5f8"
+      }
+    ]
+  },
+  {
+    "case": 65,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 65. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted();int v=variadic(0,1,2,3,4,5);\n int r=recurse(2);int e=even(5);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "039915c8a0e47d2ac05b402a6ab8e9436e2893a50e3cf75f95855ebd678e0f5d",
+    "expected_exit": 28,
+    "expected_stdout": "0 0 2 0 5 7 5 3 ok\n",
+    "reference_sha256": "58315a75b462ecb99b433d15a88818f94adbc31ba54d0e9878472a971dafc403",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 28,
+        "sha256": "9274bb862ec7175fd51b5b98b26d0e08fae7d653b003190496ef47c30d12131e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 28,
+        "sha256": "56591c3569ca405225672a28da08bac7d929067f5c87ef4e862ece8d3544ff39"
+      }
+    ]
+  },
+  {
+    "case": 66,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 66. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-6LL);int v=variadic(0,-66);\n int r=recurse(3);int e=even(6);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "bec911cf0798683d13c51ea5a74d0e4e9af1d8212d800b70a90b877fd02e5ddd",
+    "expected_exit": 4294967190,
+    "expected_stdout": "-6 -132 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "332fea973f464c41adaacf4cb3b3b9750c0e4464f3bdd23bc4cd3c8dda918532",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967190,
+        "sha256": "6dcf75e9d4746ad136884396885dcbb205f32ad4077d298d377f9f3ed9245b02"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967190,
+        "sha256": "eb1bb6ee0cfe53e325a726832f20bfe25c47e41c2d7d1b8700ff89837ec71174"
+      }
+    ]
+  },
+  {
+    "case": 67,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 67. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(-5LL,-4LL);int v=variadic(0,1,-67,-60);\n int r=recurse(4);int e=even(7);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "0828aa789c75c2e9d929ea4ff7b5834231d35905646d75891a1b4274c0c9af57",
+    "expected_exit": 4294967063,
+    "expected_stdout": "-13 -254 24 0 7 9 5 3 ok\n",
+    "reference_sha256": "54594239b0c4682dc789251ea884d512e74c965adfb7c9677508291ec2ab595b",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967063,
+        "sha256": "fbea32dcdf3fe8515f102429cda968effe3492f213f0d3ce2a48f0f6a31036b8"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967063,
+        "sha256": "1e7d2d50f64ed71d32025f0f3d7ebbfc84ee69f313fdc72b62ed46e26ceecb85"
+      }
+    ]
+  },
+  {
+    "case": 68,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 68. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-4LL,-3LL,-2LL);int v=variadic(0,1,2,-68,-61,-54);\n int r=recurse(5);int e=even(8);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "d93ddfa7741e433570f4f397b60f88f2bace6affae22d125da1a80175201ba50",
+    "expected_exit": 4294966950,
+    "expected_stdout": "-16 -366 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "94735e66b5525e40610636a045fd1185c2c4dc88e0765642c4201bc4c0399409",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966950,
+        "sha256": "1fc95e3d998a67352086cd37816e3644004a169e5638706383504cfac23d59cb"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966950,
+        "sha256": "5729cb94f9f3d5447e2390f1b8cead3e0e484bb68ba5790b4f51000c4e6c5a35"
+      }
+    ]
+  },
+  {
+    "case": 69,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 69. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(-3LL,-2LL,-1LL,0LL);int v=variadic(0,1,2,3,-69,-62,-55,-48);\n int r=recurse(6);int e=even(9);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "4cdae5d3bcfc666243800c48cbfb8e676cf252843d858a86dbbb2e01a1fbca15",
+    "expected_exit": 4294966854,
+    "expected_stdout": "-10 -468 720 0 9 11 5 3 ok\n",
+    "reference_sha256": "17a880863a12f9e07e6f611afa02c3dc8e7fe8e4bf7cd670376dc99f431c823c",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966854,
+        "sha256": "acc8e4e354e1ae12fbca6561e99352853120515038c1632f09a882252241c40e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966854,
+        "sha256": "0eec54d9945ad77b61255aee3dc83b4b7f0b1127b445c6cf80d99b0aa2931b10"
+      }
+    ]
+  },
+  {
+    "case": 70,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 70. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(-2LL,-1LL,0LL,1LL,2LL);int v=variadic(0,1,2,3,4,-70,-63,-56,-49,-42);\n int r=recurse(0);int e=even(10);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "af9820179fda7bad2d6585956bcd6428f1eeb8e575c81af427d76912227672a7",
+    "expected_exit": 4294966778,
+    "expected_stdout": "10 -560 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "c91424d5743c061e6a58c4c4c06aeac2f233de7607f23109913acadb7c00c06e",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966778,
+        "sha256": "be3de053b43fcc9b92da94ba43e1db2f40250daaf3b92e425aa4c5f54d248270"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966778,
+        "sha256": "5e133e5da1bf9a3a4e21d51c0cc816ea717bf9fe3210077db4355cd54b487d23"
+      }
+    ]
+  },
+  {
+    "case": 71,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 71. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-1LL,0LL,1LL,2LL,3LL,4LL);int v=variadic(0,1,2,3,4,5,-71,-64,-57,-50,-43,-36);\n int r=recurse(1);int e=even(11);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "d86ad9b7f765ddf9a4b9ed68cdcaa7f7b2db012689c8ac7753f60ccffb8c5efc",
+    "expected_exit": 4294966735,
+    "expected_stdout": "49 -642 1 0 4 6 5 3 ok\n",
+    "reference_sha256": "9cf57f42886694723fb79c2fd1c3e8fd501b7a789af2a86888de19b824d260c2",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966735,
+        "sha256": "afabbb924d588cbdef6b307be4ee793e2e7f65b453fdedec2624df422d230901"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966735,
+        "sha256": "26ca9565e38f3cf7543829ba603e484011f27baa916b62004f9a1be8d9fadcb0"
+      }
+    ]
+  },
+  {
+    "case": 72,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 72. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(0LL,1LL,2LL,3LL,4LL,5LL,6LL);int v=variadic(0,-72,-65,-58,-51,-44,-37,-30);\n int r=recurse(2);int e=even(12);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "16faafbb39afe90b80d47822796dbd7ce6f064d3a4de4346a4422df4a51128ea",
+    "expected_exit": 4294966727,
+    "expected_stdout": "112 -714 2 1 5 7 5 3 ok\n",
+    "reference_sha256": "4491ac13cc6f2df97a4787562f684e969181631c5be7a9dfd7f46c9bfe796916",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966727,
+        "sha256": "350c9b99a3ea0e41707e1fe91f91cd3c88c0c7ecd19827f43185f9c8005c8759"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966727,
+        "sha256": "8ea8eac7a4b9ec084012bbddc14adc881975aaf443da4487848d03aac79b3618"
+      }
+    ]
+  },
+  {
+    "case": 73,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 73. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(1LL,2LL,3LL,4LL,5LL,6LL,7LL,8LL);int v=variadic(0,1,-73,-66,-59,-52,-45,-38,-31,-24);\n int r=recurse(3);int e=even(13);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "0bc9653f0e777ca59ee8fd67b0ecb4e45cb4968bec761ab5862101a25e122a87",
+    "expected_exit": 4294966757,
+    "expected_stdout": "204 -776 6 0 6 8 5 3 ok\n",
+    "reference_sha256": "c194fed979128d2de0f0497411d5e97df3f91e08a83c10e1c0e8f15bedd636b2",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966757,
+        "sha256": "c81f9f0956ccc80ad6bd2d26c00da02b21481094f6de1a6b7136060c83436544"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966757,
+        "sha256": "ed848c5acb8cf79e8c0a746ee2cad3a47d5e76b690df0a241889bcc5f5b18c86"
+      }
+    ]
+  },
+  {
+    "case": 74,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 74. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<9;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<9;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(2LL,3LL,4LL,5LL,6LL,7LL,8LL,9LL,10LL);int v=variadic(0,1,2,-74,-67,-60,-53,-46,-39,-32,-25,-18);\n int r=recurse(4);int e=even(14);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "062172b1cbf55542e406eb489c062397975f85bfff33923d5e358257c8d4833e",
+    "expected_exit": 4294966832,
+    "expected_stdout": "330 -828 24 1 7 9 5 3 ok\n",
+    "reference_sha256": "fab02d8ecb2edfa73c1b2abf58c4ba6af4099163f5c32c363a67f362514b0cdf",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966832,
+        "sha256": "851c7958c402a984b27b76f28640a6e3cfe55007999fb143e74bf8c35a389cbe"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966832,
+        "sha256": "430933b9e985be9ba24593877e0aa1e488479fc56a8d83de147ac81cf027aa27"
+      }
+    ]
+  },
+  {
+    "case": 75,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 75. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<10;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<10;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(3LL,4LL,5LL,6LL,7LL,8LL,9LL,10LL,11LL,12LL);int v=variadic(0,1,2,3,-75,-68,-61,-54,-47,-40,-33,-26,-19,-12);\n int r=recurse(5);int e=even(0);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "aad103c9a9bd51c87572ac001f7304a1b0ade23621242836d62d7b8faca70c91",
+    "expected_exit": 4294966957,
+    "expected_stdout": "495 -870 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "51ff773a4e6cdeba9c2ee9c31c4049f3ed54f6cadb58b2987e3ceb9fa5934568",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966957,
+        "sha256": "e96c732715c9c6b5267b6d946d681e0675be155736cc3384e80add3fe6e3a923"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966957,
+        "sha256": "7ab03bb587e2c3ee5b44f94bfca445631b437e7aa0e0bf861f76433f9189b93e"
+      }
+    ]
+  },
+  {
+    "case": 76,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 76. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<11;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<11;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(4LL,5LL,6LL,7LL,8LL,9LL,10LL,11LL,12LL,13LL,14LL);int v=variadic(0,1,2,3,4,-76,-69,-62,-55,-48,-41,-34,-27,-20,-13,-6);\n int r=recurse(6);int e=even(1);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "2bf32c79e04e146c4290afb7ff7b1dc4992cc2df60c55a6118349c3ed314923a",
+    "expected_exit": 4294967134,
+    "expected_stdout": "704 -902 720 0 9 11 5 3 ok\n",
+    "reference_sha256": "c976b647751a088a79d2bee3b0c40969a3b0b068428eeabe5d68df2e36ab23bf",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967134,
+        "sha256": "69e37944366c4984de12ddeb1d279276da918f55e0f8691c934d3c44ec9d438f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967134,
+        "sha256": "1693ec4c9e3132a8c9855dd62e51aa644336bb7988728a922d05f794342d65c3"
+      }
+    ]
+  },
+  {
+    "case": 77,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 77. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10,long long p11){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL+p11*12LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<12;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<12;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(5LL,6LL,7LL,8LL,9LL,10LL,11LL,12LL,13LL,14LL,-14LL,-13LL);int v=variadic(0,1,2,3,4,5,-77,-70,-63,-56,-49,-42,-35,-28,-21,-14,-7,0);\n int r=recurse(0);int e=even(2);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "cbcfa4507a4bc333f23a55f978460d356caf97e1a1ae7e49c0fbb669e5e6b1cd",
+    "expected_exit": 4294966700,
+    "expected_stdout": "295 -924 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "f658fbc50ee9b5ce769d74f694b88feb3fd5a19b4f732518ffa09c346722e7be",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966700,
+        "sha256": "eb327b70eeb91a9169772b93b65c013b70b68d2c7e7b25a03d180a2e82bec6a5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966700,
+        "sha256": "0ab88e145dfd0e12e416dfb9af0a3bfc5d4018cbed6d62d538063a43be5e0915"
+      }
+    ]
+  },
+  {
+    "case": 78,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 78. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted();int v=variadic(0);\n int r=recurse(1);int e=even(3);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "dc5084a10bde1ad98106d48acf9e528f2688df7bb364b5f08b87a593b94560d8",
+    "expected_exit": 28,
+    "expected_stdout": "0 0 1 0 4 6 5 3 ok\n",
+    "reference_sha256": "c6c7aae2487c881b784520ea8b46c2e930a341de09689a9c8c0c9528ced0448d",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 28,
+        "sha256": "f5e5e91e8acaa2b51520b7334c1481e054a4037c664b46a1888b146ba4992d8e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 28,
+        "sha256": "85d44c006e5943b93159c2d38cf552290faf2e4b6903d65b653fa7f14c1c81bc"
+      }
+    ]
+  },
+  {
+    "case": 79,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 79. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(7LL);int v=variadic(0,1,-79);\n int r=recurse(2);int e=even(4);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "66f1a950a72079f0745ad25e85a1dc21c8ac8bbd75d5497eccf71f6060c35924",
+    "expected_exit": 4294967176,
+    "expected_stdout": "7 -158 2 1 5 7 5 3 ok\n",
+    "reference_sha256": "ee655f411a43b9a9f108287d23077c3fabdf46df7770324899a2f36499f258c7",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967176,
+        "sha256": "4e2d84725a58ef6e62c92a1a41a3004208ed2ebd6fd90b860f747b7c30c35ca8"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967176,
+        "sha256": "81ade67f76e2a89e11be80b2a46597d160aa62782c16b53ecaba0d452ffd885f"
+      }
+    ]
+  },
+  {
+    "case": 80,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 80. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(8LL,9LL);int v=variadic(0,1,2,-80,-73);\n int r=recurse(3);int e=even(5);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "a89ef45399e995211f90bbf909f83f6449e7a423ab3455d8cc5f2500f712eb13",
+    "expected_exit": 4294967048,
+    "expected_stdout": "26 -306 6 0 6 8 5 3 ok\n",
+    "reference_sha256": "769378c8ddede4c6197d7d7e3d4f299666be52645b7e5a8cfc31675b03d53e8a",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967048,
+        "sha256": "2fc884caeed258a59400d78af82c471c8fd1e3b0f56690db09e5b60a35d8bd72"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967048,
+        "sha256": "767d8601b75d13794b0b5290c121552e8a6404c8ca087cdd7b305c12d4f83161"
+      }
+    ]
+  },
+  {
+    "case": 81,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 81. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(9LL,10LL,11LL);int v=variadic(0,1,2,3,-81,-74,-67);\n int r=recurse(4);int e=even(6);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "7a24314b1d320a0e912aff085cfc40e2d94b3725aa8708f4cce5dcebd006c575",
+    "expected_exit": 4294966947,
+    "expected_stdout": "62 -444 24 1 7 9 5 3 ok\n",
+    "reference_sha256": "08f812ffd1d8dbfc3b0ec9b06b0ae44f7fd58c9657ce53c2cd6d0ec14a09e777",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966947,
+        "sha256": "68c1f801c8c217fc957141185605aa69ec0604086c5599cbfdff35a59945c61c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966947,
+        "sha256": "05eb455c050110ab6586396ed4ac24968b087a1c721d69b2a998574fd6e4fa6b"
+      }
+    ]
+  },
+  {
+    "case": 82,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 82. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(10LL,11LL,12LL,13LL);int v=variadic(0,1,2,3,4,-82,-75,-68,-61);\n int r=recurse(5);int e=even(7);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "7f40a2d4ad61d7146bdd0ae5dca3e38c7b3eee94931601da82308079836df4bc",
+    "expected_exit": 4294966880,
+    "expected_stdout": "120 -572 120 0 8 10 5 3 ok\n",
+    "reference_sha256": "f3e996639b9b245afe1b5cb2a167815315ebab3e184e16c0999e5c4894f20788",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966880,
+        "sha256": "8689d73c9297e5966d3320edebc48a69fb898c51016be03f84a1c41aa2c01bd7"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966880,
+        "sha256": "127af9f2fcbab17ec3fa715cf5e9cd7d85a0b709a08b66c2d5faf92a29cec44a"
+      }
+    ]
+  },
+  {
+    "case": 83,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 83. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(11LL,12LL,13LL,14LL,-14LL);int v=variadic(0,1,2,3,4,5,-83,-76,-69,-62,-55);\n int r=recurse(6);int e=even(8);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "59131527871e4cfa4a64e306115c83a73bc8ced15694b496ae7e6c070e287c6a",
+    "expected_exit": 4294966701,
+    "expected_stdout": "60 -690 720 1 9 11 5 3 ok\n",
+    "reference_sha256": "b3de7bd607ec91f27bb3279fc9f7027eb4c158467abc88a9dcabb84a1713415d",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966701,
+        "sha256": "de4f04246286a2c8d77efc26456e35a06204c372e8bef5c366a68e3b1c0b1a28"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966701,
+        "sha256": "6de7c0aca72efca1bb311d32c8b6106762b73c9d9118166f306996a26c0d383f"
+      }
+    ]
+  },
+  {
+    "case": 84,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 84. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(12LL,13LL,14LL,-14LL,-13LL,-12LL);int v=variadic(0,-84,-77,-70,-63,-56,-49);\n int r=recurse(0);int e=even(9);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "f9d56ef40f8cf503d2e0085c4d7462d77fd4cb530a0c7bf2aa2b523e0d145da0",
+    "expected_exit": 4294966419,
+    "expected_stdout": "-113 -798 1 0 3 5 5 3 ok\n",
+    "reference_sha256": "da32e63de8c854605131e4bbefcfaa5a2809c0b3a180ea54d0dfcd7396313148",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966419,
+        "sha256": "67dc6129d954efb285af98c945c96841be6267d0a26b8d9859573db492073335"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966419,
+        "sha256": "735dc6e31c1e250ad4265557519bfe7e4f730f346df1183629424b85b370103f"
+      }
+    ]
+  },
+  {
+    "case": 85,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 85. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(13LL,14LL,-14LL,-13LL,-12LL,-11LL,-10LL);int v=variadic(0,1,-85,-78,-71,-64,-57,-50,-43);\n int r=recurse(1);int e=even(10);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "2d9a82221d397e523ac874a4a8017df09fd8fab35cee210e0bf06f0e2b6fb640",
+    "expected_exit": 4294966185,
+    "expected_stdout": "-249 -896 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "1a6511ce8ba5073e1d022a2789d92c736aa45a6cf8d34b21408e5fe66620dcf6",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966185,
+        "sha256": "be22f92aeea1c73b74c814cc6b14e3396009b65959adc7606daa30a37586c395"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966185,
+        "sha256": "83085e8a6ecf0e14bad103505b67e0e23373b1b4c05156d7ed671dc502245582"
+      }
+    ]
+  },
+  {
+    "case": 86,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 86. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(14LL,-14LL,-13LL,-12LL,-11LL,-10LL,-9LL,-8LL);int v=variadic(0,1,2,-86,-79,-72,-65,-58,-51,-44,-37);\n int r=recurse(2);int e=even(11);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "3c02b170bed8e004ab6ac8d65e66e229cf93dcafa2a34083f4f0f7928aa7fa88",
+    "expected_exit": 4294966003,
+    "expected_stdout": "-343 -984 2 0 5 7 5 3 ok\n",
+    "reference_sha256": "c9dd6c00ca877e2e8b5abebd3223a27368af261d1469d41e7261d9c613b20962",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966003,
+        "sha256": "a955f33169b4d3b6b69287f6421c08448af984113ffb484efd331c71c611855a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966003,
+        "sha256": "ae9ddecf864ef16b4ac5226a2e4c7a7fe75a92e5c84ae989b93d5c08d4269b35"
+      }
+    ]
+  },
+  {
+    "case": 87,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 87. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<9;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<9;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-14LL,-13LL,-12LL,-11LL,-10LL,-9LL,-8LL,-7LL,-6LL);int v=variadic(0,1,2,3,-87,-80,-73,-66,-59,-52,-45,-38,-31);\n int r=recurse(3);int e=even(12);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "5e434fa64d7586f40ba7b516cc8a78ae735b831b8d4498294ac029993bb8c6fc",
+    "expected_exit": 4294965879,
+    "expected_stdout": "-390 -1062 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "e6c52dd96b3dd65570a10e03a2e89e71e3b8b05eef7a5731d1a60bbf2287d007",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294965879,
+        "sha256": "9b4da80096b90fa13f387d75a4c3abdd834c652eae9b3de78d2d9b8558588c04"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294965879,
+        "sha256": "287ec6ec3bd276a44f40355d8d25eb0af47ad4f83046fd52ea55e341fc4f5417"
+      }
+    ]
+  },
+  {
+    "case": 88,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 88. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<10;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<10;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(-13LL,-12LL,-11LL,-10LL,-9LL,-8LL,-7LL,-6LL,-5LL,-4LL);int v=variadic(0,1,2,3,4,-88,-81,-74,-67,-60,-53,-46,-39,-32,-25);\n int r=recurse(4);int e=even(13);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "f585db4bf216d0173aa85f9bf49a878138d493ecbdc745b2b92b16f850ede89a",
+    "expected_exit": 4294965817,
+    "expected_stdout": "-385 -1130 24 0 7 9 5 3 ok\n",
+    "reference_sha256": "d05437676fe0a24e044288621b891ab99ed4957a79df48c3ea2b8a45a7b82b37",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294965817,
+        "sha256": "004fb997e53db9a783fecdab2eda8a4afec491c2958f35e7763147b5e34b662a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294965817,
+        "sha256": "e3b94e827cef702c3e4c4cdfd6d57d20d553665426bf5691051c2576a5d13d9d"
+      }
+    ]
+  },
+  {
+    "case": 89,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 89. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<11;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<11;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-12LL,-11LL,-10LL,-9LL,-8LL,-7LL,-6LL,-5LL,-4LL,-3LL,-2LL);int v=variadic(0,1,2,3,4,5,-89,-82,-75,-68,-61,-54,-47,-40,-33,-26,-19);\n int r=recurse(5);int e=even(14);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "086258cbfecf7524da496f04dd4eb69935057796e378d66ea807cb4890910368",
+    "expected_exit": 4294965794,
+    "expected_stdout": "-352 -1188 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "a516a11232e5dfe4e690cf6efcb1c0fd936841f351cfb9aec725fa6e0cf31f83",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294965794,
+        "sha256": "41c03294a040297869bb1c46e240378f51e14c518463bdce5052f8ad4166790a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294965794,
+        "sha256": "a5e5b3061be5348ec1afceafd874383b4c48d8d7cb9dc65f34e3dafad626b907"
+      }
+    ]
+  },
+  {
+    "case": 90,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 90. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7,long long p8,long long p9,long long p10,long long p11){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL+p8*9LL+p9*10LL+p10*11LL+p11*12LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<12;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<12;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(-11LL,-10LL,-9LL,-8LL,-7LL,-6LL,-5LL,-4LL,-3LL,-2LL,-1LL,0LL);int v=variadic(0,-90,-83,-76,-69,-62,-55,-48,-41,-34,-27,-20,-13);\n int r=recurse(6);int e=even(0);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "17d2dd2e05338a775492122bd2407d97b8a2376e8d7a664e2871adef5a7a9501",
+    "expected_exit": 4294965812,
+    "expected_stdout": "-286 -1236 720 1 9 11 5 3 ok\n",
+    "reference_sha256": "3b50f091d6269459fda2630c7307038c8551648207c0b5b28a0046e252723936",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294965812,
+        "sha256": "ee027aafc47b7612fef7fc152bce06ab29f53368a8b7cb20cff86ee00c96208c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294965812,
+        "sha256": "d77b9d284285e3f8faee33e1f1a01c164f43022c275d076c3b899919af522843"
+      }
+    ]
+  },
+  {
+    "case": 91,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 91. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(void){return 0;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<0;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<0;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted();int v=variadic(0,1);\n int r=recurse(0);int e=even(1);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "74709c6505101a402bf1fbc29f23f33e69868f3dacec6ca2843e273945ba58f3",
+    "expected_exit": 28,
+    "expected_stdout": "0 0 1 0 3 5 5 3 ok\n",
+    "reference_sha256": "ec1123a9f3af1feba51783cc3da5f74bc1efd451662d75e7a9fe10be91131942",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 28,
+        "sha256": "7c297e70581c2f4680299dbc43fb34931742e65b4d927853729c78034c391c43"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 28,
+        "sha256": "bc91a133ef764c8425bb187c51f0c503310968816ecbca276cd709ac0cebef94"
+      }
+    ]
+  },
+  {
+    "case": 92,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 92. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0){return p0*1LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<1;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<1;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-9LL);int v=variadic(0,1,2,-92);\n int r=recurse(1);int e=even(2);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "ff5f2b9bbe29ba622de35e69057c033c9fb76e6e264190bbce71662ead0f320c",
+    "expected_exit": 4294967135,
+    "expected_stdout": "-9 -184 1 1 4 6 5 3 ok\n",
+    "reference_sha256": "54eacb531326be06990c3c8bb4adfb71a20e69076ded281c023e7f02cca97a58",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294967135,
+        "sha256": "97dac4488d5e6dd8344e9da88eb380012fb9b9e48f3d484f3239f6732a6802de"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294967135,
+        "sha256": "a25972f385c7b1119cc41d83db7a65b16426cd4570214c6177e517f68cc0071d"
+      }
+    ]
+  },
+  {
+    "case": 93,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 93. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1){return p0*1LL+p1*2LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<2;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<2;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(2);int b=persistent(2);\n long long w=weighted(-8LL,-7LL);int v=variadic(0,1,2,3,-93,-86);\n int r=recurse(2);int e=even(3);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "ff04628eadec799e0ef80626e71fa8f732dee2b5ca8c294303245712c0562475",
+    "expected_exit": 4294966949,
+    "expected_stdout": "-22 -358 2 0 5 7 5 3 ok\n",
+    "reference_sha256": "0b80e3670f1c8864b980d14566bd54f283fc9bc9c562d4323c7786b3be6094b3",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966949,
+        "sha256": "4c039c3ff025bb05ed4c8cb92ad6df76ae8ce25614144ca2d15e73a6be12b05d"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966949,
+        "sha256": "a213b24c6c2e5d0d02d9cd588480171b65965014c75c0456491c326fd801576f"
+      }
+    ]
+  },
+  {
+    "case": 94,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 94. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2){return p0*1LL+p1*2LL+p2*3LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f4);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<3;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<3;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(3);int b=persistent(2);\n long long w=weighted(-7LL,-6LL,-5LL);int v=variadic(0,1,2,3,4,-94,-87,-80);\n int r=recurse(3);int e=even(4);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "e3e031f600534bee42dff9743bd99d59311960de555e455600e7f3e4cc09ae3e",
+    "expected_exit": 4294966773,
+    "expected_stdout": "-34 -522 6 1 6 8 5 3 ok\n",
+    "reference_sha256": "2d1b5826b62b683299d0620a8e21991373c76a68a16f062540a00f5b6b49b0c4",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966773,
+        "sha256": "45cca71ee3274197f0eef5de1ddd41c2dcbe77f1e418057505e03e4a6fed9076"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966773,
+        "sha256": "5b3d6068fd22493e221c527eeb65012964a56a7ef64db5f07b784f10dfcba614"
+      }
+    ]
+  },
+  {
+    "case": 95,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 95. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3){return p0*1LL+p1*2LL+p2*3LL+p3*4LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,int f4,int f5,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f5);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<4;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<4;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(4);int b=persistent(2);\n long long w=weighted(-6LL,-5LL,-4LL,-3LL);int v=variadic(0,1,2,3,4,5,-95,-88,-81,-74);\n int r=recurse(4);int e=even(5);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "b619dd9be402c61a1eb180a79b4ccac765c91f2a0b1c96cb30aabd1cb44cd65e",
+    "expected_exit": 4294966614,
+    "expected_stdout": "-40 -676 24 0 7 9 5 3 ok\n",
+    "reference_sha256": "21e357db0a8ae2b609b42b1eb42e5837d0b0c84b9e8ccb93d920c8f25c2594b5",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966614,
+        "sha256": "097749cda4f585791bcf243b9cee613a7721c39e4e450973bcbbafc2197c2d0c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966614,
+        "sha256": "ead3a373ba1a0bb9267c5e25fee6060ef6a7269b42ce9a0aebe2ec00708e6f21"
+      }
+    ]
+  },
+  {
+    "case": 96,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 96. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f0);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<5;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<5;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(5);int b=persistent(2);\n long long w=weighted(-5LL,-4LL,-3LL,-2LL,-1LL);int v=variadic(0,-96,-89,-82,-75,-68);\n int r=recurse(5);int e=even(6);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "7a23ab1f2ab39884d4527ff5e5e525f031849485d73d27e6ff18ea0305a20160",
+    "expected_exit": 4294966477,
+    "expected_stdout": "-35 -820 120 1 8 10 5 3 ok\n",
+    "reference_sha256": "e8faec7d04f89d9d0a4a3e1cac2b42e5c340605262b52ddabfcfcb15161de3b2",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966477,
+        "sha256": "bf4072bbef482d2fa579b9d8ea18c615327e968e2e08b401d7b618836173d15f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966477,
+        "sha256": "4d30bff1984a92bc17b36566ff263606916806539b758b889d6774842e3645d7"
+      }
+    ]
+  },
+  {
+    "case": 97,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 97. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f1);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<6;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<6;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(6);int b=persistent(2);\n long long w=weighted(-4LL,-3LL,-2LL,-1LL,0LL,1LL);int v=variadic(0,1,-97,-90,-83,-76,-69,-62);\n int r=recurse(6);int e=even(7);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "862931bf459f764f50c1af78130557c71032b27a84d507afe205a8ad4fe6103c",
+    "expected_exit": 4294966364,
+    "expected_stdout": "-14 -954 720 0 9 11 5 3 ok\n",
+    "reference_sha256": "7ad1c525f73cc59afab737b005519a93568c0dc7bd2e690c5e17dc9eeb3cd51b",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966364,
+        "sha256": "07311ad4ce6990fbacf898e9afe5ed64ac25f857c9d6765b126e0f1578d9e7a0"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966364,
+        "sha256": "576c73335c114e7b9d7ab0155d8158adc99f51ab1c5f9545657dd0ca751599e3"
+      }
+    ]
+  },
+  {
+    "case": 98,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 98. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f2);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<7;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<7;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(0);int b=persistent(2);\n long long w=weighted(-3LL,-2LL,-1LL,0LL,1LL,2LL,3LL);int v=variadic(0,1,2,-98,-91,-84,-77,-70,-63,-56);\n int r=recurse(0);int e=even(8);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "c3c367fc3903fa6d02de33a0df999c7ae6df889493647d1e7d8c92f7f1a58ad6",
+    "expected_exit": 4294966279,
+    "expected_stdout": "28 -1078 1 1 3 5 5 3 ok\n",
+    "reference_sha256": "d2a156f0f32d8103daec6499931b231deb667e60e9ebbbd0dac3bf0c816e2d47",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966279,
+        "sha256": "9010693858a58f2b55c563caab247b2dc2286ec9e8affb73323aeebc74b92383"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966279,
+        "sha256": "300fe13a14764267b09e67233e6afa51f1c7acccff95aa760af0d4e542909eb0"
+      }
+    ]
+  },
+  {
+    "case": 99,
+    "source": "/* P12 defined-behavior ABI/storage/runtime differential 99. */\nint printf(const char*,...);\nunsigned long long strlen(const char*);\nstatic unsigned short guard=65530;\nunsigned char byte=250;\nint zero;\nstatic int persistent(int x){static int n=3;n+=x;return n;}\nlong long weighted(long long p0,long long p1,long long p2,long long p3,long long p4,long long p5,long long p6,long long p7){return p0*1LL+p1*2LL+p2*3LL+p3*4LL+p4*5LL+p5*6LL+p6*7LL+p7*8LL;}\nint recurse(int n){if(n<2)return 1;return n*recurse(n-1);}\nint odd(int);int even(int n){if(n==0)return 1;return odd(n-1);}\nint odd(int n){if(n==0)return 0;return even(n-1);}\nint variadic(int f0,int f1,int f2,int f3,...){\n __builtin_va_list ap;__builtin_va_list copy;\n __builtin_va_start(ap,f3);__builtin_va_copy(copy,ap);\n int sum=0;for(int i=0;i<8;i++)sum+=__builtin_va_arg(ap,int);\n int again=0;for(int i=0;i<8;i++)again+=__builtin_va_arg(copy,int);\n __builtin_va_end(copy);__builtin_va_end(ap);return sum+again;\n}\nvoid update(void){byte+=9;guard+=11;zero+=4;}\nint main(void){\n update();int a=persistent(1);int b=persistent(2);\n long long w=weighted(-2LL,-1LL,0LL,1LL,2LL,3LL,4LL,5LL);int v=variadic(0,1,2,3,-99,-92,-85,-78,-71,-64,-57,-50);\n int r=recurse(1);int e=even(9);\n int n=printf(\"%d %d %d %d %d %d %d %d %s\\n\",(int)w,v,r,e,a,b,(int)guard,(int)byte,\"ok\");\n return n+zero+(int)strlen(\"hello\")+v+(int)w;\n}\n",
+    "source_sha256": "909cd5444f876fe5280b8654745db5e7fc93837909afe0b614b8e810c5e8adeb",
+    "expected_exit": 4294966233,
+    "expected_stdout": "96 -1192 1 0 4 6 5 3 ok\n",
+    "reference_sha256": "60fab45d8f832dcdd659083090cae7f124a99228ea861089fdfcaf6f93cb7eae",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4294966233,
+        "sha256": "1c4280d56bd496d5f10e059a86f9333779377594a234ffbee11543ff89de4c4e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4294966233,
+        "sha256": "156d63e83b497b7dcd2d4a777c6f3317459ab8a3b31cfd10f7edbb011dae1238"
+      }
+    ]
+  }
+]

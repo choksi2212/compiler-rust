@@ -12,6 +12,13 @@ use crate::{
 };
 use std::collections::HashMap;
 const W: Width = Width::Qword;
+fn scalar_kind(types: &TypeContext, ty: TypeId) -> Result<IntegerKind, String> {
+    match types.get(types.unqualified(ty)?)? {
+        Type::Integer(kind) => Ok(*kind),
+        Type::Pointer(_) => Ok(IntegerKind::UnsignedLongLong),
+        _ => Err("scalar native type required".into()),
+    }
+}
 fn reg(n: u8) -> Reg {
     Reg::new(n).unwrap()
 }
@@ -55,6 +62,13 @@ fn store(offset: u32, src: Reg) -> M {
         src,
     }
 }
+#[derive(Debug)]
+pub struct ModuleBindings {
+    pub functions: HashMap<typed_ir::SymbolId, Label>,
+    pub literals: HashMap<typed_ir::DataId, x64::Symbol>,
+    pub context: x64::Symbol,
+    pub globals: HashMap<typed_ir::SymbolId, (x64::Symbol, TypeId)>,
+}
 struct Lower<'a> {
     types: &'a TypeContext,
     function: &'a Function,
@@ -68,6 +82,8 @@ struct Lower<'a> {
     bad_shift: Label,
     exit: Label,
     runtime: bool,
+    bindings: Option<&'a ModuleBindings>,
+    propagate: Label,
 }
 impl Lower<'_> {
     fn value(&self, id: ValueId) -> TypeId {
@@ -91,7 +107,7 @@ impl Lower<'_> {
         ]);
     }
     fn normalize(&mut self, ty: TypeId, r: Reg) -> Result<(), String> {
-        let kind = self.types.integer_kind(ty)?;
+        let kind = scalar_kind(self.types, ty)?;
         if kind == IntegerKind::Bool {
             self.code.extend([
                 test(r),
@@ -132,7 +148,7 @@ impl Lower<'_> {
         Ok(())
     }
     fn check_signed_range(&mut self, ty: TypeId) -> Result<(), String> {
-        let kind = self.types.integer_kind(ty)?;
+        let kind = scalar_kind(self.types, ty)?;
         if kind.signed() && kind.bits() < 64 {
             self.code.push(M::Mov {
                 width: W,
@@ -151,7 +167,7 @@ impl Lower<'_> {
     }
     fn operation(&mut self, dst: ValueId, op: B, a: ValueId, b: ValueId) -> Result<(), String> {
         let ty = self.value(a);
-        let kind = self.types.integer_kind(ty)?;
+        let kind = scalar_kind(self.types, ty)?;
         self.read(a, Reg::RAX);
         self.read(b, reg(10));
         match op {
@@ -325,8 +341,253 @@ impl Lower<'_> {
         self.write(dst, Reg::RAX);
         Ok(())
     }
+    fn global(&self, symbol: typed_ir::SymbolId) -> Result<(x64::Symbol, TypeId), String> {
+        self.bindings
+            .and_then(|b| b.globals.get(&symbol))
+            .copied()
+            .ok_or_else(|| format!("unresolved global symbol {}", symbol.0))
+    }
+    fn read_global(&mut self, dst: ValueId, symbol: typed_ir::SymbolId) -> Result<(), String> {
+        self.load_global(symbol)?;
+        self.write(dst, Reg::RAX);
+        Ok(())
+    }
+    fn load_global(&mut self, symbol: typed_ir::SymbolId) -> Result<(), String> {
+        let (symbol, ty) = self.global(symbol)?;
+        let size = self.types.layout(ty)?.size;
+        self.code.push(M::LeaSymbol {
+            dst: reg(10),
+            symbol,
+        });
+        let address = Address::base(reg(10), 0);
+        self.code.push(match size {
+            1 => M::LoadByte {
+                dst: Reg::RAX,
+                address,
+            },
+            2 => M::LoadWord {
+                dst: Reg::RAX,
+                address,
+            },
+            4 => M::Load {
+                width: Width::Dword,
+                dst: Reg::RAX,
+                address,
+            },
+            8 => M::Load {
+                width: W,
+                dst: Reg::RAX,
+                address,
+            },
+            _ => return Err("unsupported scalar global width".into()),
+        });
+        self.normalize(ty, Reg::RAX)?;
+        Ok(())
+    }
+    fn write_global(&mut self, symbol: typed_ir::SymbolId, src: ValueId) -> Result<(), String> {
+        self.read(src, Reg::RAX);
+        self.store_global(symbol)
+    }
+    fn store_global(&mut self, symbol: typed_ir::SymbolId) -> Result<(), String> {
+        let (symbol, ty) = self.global(symbol)?;
+        let size = self.types.layout(ty)?.size;
+        self.code.push(M::LeaSymbol {
+            dst: reg(10),
+            symbol,
+        });
+        let address = Address::base(reg(10), 0);
+        self.code.push(match size {
+            1 => M::StoreByte {
+                address,
+                src: Reg::RAX,
+            },
+            2 => M::StoreWord {
+                address,
+                src: Reg::RAX,
+            },
+            4 => M::Store {
+                width: Width::Dword,
+                address,
+                src: Reg::RAX,
+            },
+            8 => M::Store {
+                width: W,
+                address,
+                src: Reg::RAX,
+            },
+            _ => return Err("unsupported scalar global width".into()),
+        });
+        Ok(())
+    }
+    fn read_cursor(&mut self, variable: typed_ir::Variable) -> Result<(), String> {
+        match variable {
+            typed_ir::Variable::Local(local) => {
+                self.code.extend([
+                    M::LoadByte {
+                        dst: reg(11),
+                        address: Address::base(Reg::RSP, self.frame.flag_offsets()[local.0] as i32),
+                    },
+                    test(reg(11)),
+                    branch(Condition::Equal, self.uninitialized),
+                    load(Reg::RAX, self.frame.local_offsets()[local.0]),
+                ]);
+            }
+            typed_ir::Variable::Global(symbol) => self.load_global(symbol)?,
+        }
+        self.code
+            .extend([test(Reg::RAX), branch(Condition::Equal, self.uninitialized)]);
+        Ok(())
+    }
+    fn write_cursor(&mut self, variable: typed_ir::Variable) -> Result<(), String> {
+        match variable {
+            typed_ir::Variable::Local(local) => {
+                self.code
+                    .push(store(self.frame.local_offsets()[local.0], Reg::RAX));
+                self.flag(local, true);
+            }
+            typed_ir::Variable::Global(symbol) => self.store_global(symbol)?,
+        }
+        Ok(())
+    }
+    fn call(
+        &mut self,
+        dst: Option<ValueId>,
+        arguments: &[ValueId],
+        direct: Option<Label>,
+        callee: Option<ValueId>,
+    ) -> Result<(), String> {
+        for (index, argument) in arguments.iter().enumerate() {
+            self.read(*argument, Reg::RAX);
+            match scalar_argument(index)? {
+                ArgumentLocation::Register(target) => self.code.push(M::Mov {
+                    width: W,
+                    dst: target,
+                    src: Reg::RAX,
+                }),
+                ArgumentLocation::Stack(offset) => self.code.push(store(offset, Reg::RAX)),
+            }
+        }
+        if let Some(label) = direct {
+            self.code.push(M::Call(label));
+        } else {
+            self.read(callee.ok_or("missing indirect callee")?, Reg::RAX);
+            self.code.push(M::CallReg(Reg::RAX));
+        }
+        if self.bindings.is_some() || self.runtime {
+            self.code.extend([
+                M::Load {
+                    width: Width::Dword,
+                    dst: reg(11),
+                    address: Address::base(reg(3), 24),
+                },
+                test(reg(11)),
+                branch(Condition::NotEqual, self.propagate),
+            ]);
+        }
+        if let Some(dst) = dst {
+            self.normalize(self.value(dst), Reg::RAX)?;
+            self.write(dst, Reg::RAX);
+        }
+        Ok(())
+    }
     fn instruction(&mut self, i: &I) -> Result<(), String> {
         match i {
+            I::VaStart { list, .. } => {
+                let offset = self
+                    .frame
+                    .incoming_home_offset(self.function.parameters.len())?;
+                self.code.push(M::Lea {
+                    dst: Reg::RAX,
+                    address: Address::base(Reg::RSP, offset as i32),
+                });
+                self.write_cursor(*list)?;
+            }
+            I::VaCopy {
+                destination,
+                source,
+            } => {
+                self.read_cursor(*source)?;
+                self.write_cursor(*destination)?;
+            }
+            I::VaEnd { list } => {
+                self.code.push(immediate(Reg::RAX, 0));
+                self.write_cursor(*list)?;
+                if let typed_ir::Variable::Local(local) = list {
+                    self.flag(*local, false);
+                }
+            }
+            I::VaArg { dst, list } => {
+                self.read_cursor(*list)?;
+                self.code.extend([
+                    M::Mov {
+                        width: W,
+                        dst: reg(10),
+                        src: Reg::RAX,
+                    },
+                    M::Load {
+                        width: W,
+                        dst: Reg::RAX,
+                        address: Address::base(reg(10), 0),
+                    },
+                ]);
+                self.normalize(self.value(*dst), Reg::RAX)?;
+                self.write(*dst, Reg::RAX);
+                self.code.extend([
+                    M::Immediate {
+                        width: W,
+                        op: Immediate::Add,
+                        reg: reg(10),
+                        value: 8,
+                    },
+                    M::Mov {
+                        width: W,
+                        dst: Reg::RAX,
+                        src: reg(10),
+                    },
+                ]);
+                self.write_cursor(*list)?;
+            }
+            I::ReadGlobal { dst, symbol } => self.read_global(*dst, *symbol)?,
+            I::WriteGlobal { symbol, src } => self.write_global(*symbol, *src)?,
+            I::GlobalAddress { dst, symbol } => {
+                let (symbol, _) = self.global(*symbol)?;
+                self.code.push(M::LeaSymbol {
+                    dst: Reg::RAX,
+                    symbol,
+                });
+                self.write(*dst, Reg::RAX);
+            }
+            I::DirectCall {
+                dst,
+                symbol,
+                arguments,
+                ..
+            } => {
+                let label = self
+                    .bindings
+                    .and_then(|b| b.functions.get(symbol))
+                    .copied()
+                    .ok_or_else(|| format!("unresolved direct function symbol {}", symbol.0))?;
+                self.call(*dst, arguments, Some(label), None)?;
+            }
+            I::Call {
+                dst,
+                callee,
+                arguments,
+                ..
+            } => self.call(*dst, arguments, None, Some(*callee))?,
+            I::DataAddress { dst, data } => {
+                let symbol = self
+                    .bindings
+                    .and_then(|b| b.literals.get(data))
+                    .copied()
+                    .ok_or("literal linking requires module data bindings")?;
+                self.code.push(M::LeaSymbol {
+                    dst: Reg::RAX,
+                    symbol,
+                });
+                self.write(*dst, Reg::RAX);
+            }
             I::Constant { dst, bits } => {
                 self.code.push(immediate(Reg::RAX, *bits));
                 self.normalize(self.value(*dst), Reg::RAX)?;
@@ -363,7 +624,7 @@ impl Lower<'_> {
                             width: W,
                             reg: Reg::RAX,
                         });
-                        if self.types.integer_kind(self.value(*src))?.signed() {
+                        if scalar_kind(self.types, self.value(*src))?.signed() {
                             self.code.push(branch(Condition::Overflow, self.overflow));
                         }
                     }
@@ -394,7 +655,7 @@ impl Lower<'_> {
                 ]);
                 self.write(*dst, Reg::RAX);
             }
-            I::AddressLocal { .. } | I::Load { .. } | I::Store { .. } | I::Call { .. } => {
+            I::AddressLocal { .. } | I::Load { .. } | I::Store { .. } => {
                 return Err(
                     "typed memory/call execution is not delivered by the integer type phase".into(),
                 );
@@ -444,9 +705,10 @@ impl Lower<'_> {
                 }
                 self.code.push(M::Jump(self.exit));
             }
-            Terminator::Return(None) => {
-                return Err("integer native body requires an integer result".into());
+            Terminator::Return(None) | Terminator::Fallthrough => {
+                self.code.push(M::Jump(self.exit))
             }
+            Terminator::Unreachable => self.code.push(M::Trap),
         }
         Ok(())
     }
@@ -463,12 +725,54 @@ pub fn lower(
     if !module.globals.is_empty() || module.functions.len() != 1 {
         return Err("typed integer phase requires one function and no global storage".into());
     }
-    let f = &module.functions[0];
+    build_body(module, &module.functions[0], labels, runtime, None)
+}
+pub fn lower_function(
+    module: &Module,
+    id: typed_ir::FunctionId,
+    labels: &mut LabelAllocator,
+    bindings: &ModuleBindings,
+) -> Result<NativeFunction, String> {
+    typed_ir::verify(module)?;
+    let function = module
+        .functions
+        .iter()
+        .find(|f| f.id == id)
+        .ok_or("undefined function identity")?;
+    build_body(module, function, labels, false, Some(bindings))
+}
+pub fn lower_functions(
+    module: &Module,
+    labels: &mut LabelAllocator,
+    bindings: &ModuleBindings,
+) -> Result<Vec<(typed_ir::FunctionId, NativeFunction)>, String> {
+    typed_ir::verify(module)?;
+    module
+        .functions
+        .iter()
+        .map(|function| {
+            build_body(module, function, labels, false, Some(bindings))
+                .map(|body| (function.id, body))
+        })
+        .collect()
+}
+fn build_body(
+    module: &Module,
+    f: &Function,
+    labels: &mut LabelAllocator,
+    runtime: bool,
+    bindings: Option<&ModuleBindings>,
+) -> Result<NativeFunction, String> {
     let types = &module.types;
-    let Type::Function { result, .. } = types.get(f.signature)? else {
+    let Type::Function {
+        result, variadic, ..
+    } = types.get(f.signature)?
+    else {
         return Err("missing function type".into());
     };
-    types.integer_kind(*result)?;
+    if *result != types.void() {
+        scalar_kind(types, *result)?;
+    }
     if runtime && (!f.parameters.is_empty() || *result != types.integer(IntegerKind::Int)) {
         return Err("runtime main requires int main(void)".into());
     }
@@ -478,20 +782,35 @@ pub fn lower(
         .map(|l| l.ty)
         .chain(f.values.iter().copied())
     {
-        types.integer_kind(ty)?;
+        scalar_kind(types, ty)?;
     }
+    let max_arguments = f
+        .blocks
+        .iter()
+        .flat_map(|b| &b.instructions)
+        .filter_map(|i| match i {
+            I::Call { arguments, .. } | I::DirectCall { arguments, .. } => Some(arguments.len()),
+            _ => None,
+        })
+        .max();
     let frame = FramePlan::new(&FrameRequest {
+        has_calls: max_arguments.is_some(),
+        max_call_arguments: max_arguments.unwrap_or(0),
         locals: vec![(8, 8); f.locals.len()],
         temporaries: f.values.len(),
         initialization_flags: f.locals.len(),
-        saved: if runtime { vec![reg(3)] } else { vec![] },
-        ..Default::default()
+        saved: if runtime || bindings.is_some() {
+            vec![reg(3)]
+        } else {
+            vec![]
+        },
     })?;
     let prologue = frame.prologue(labels.fresh()?)?;
     let mut targets = HashMap::new();
     for block in &f.blocks {
         targets.insert(block.id, labels.fresh()?);
     }
+    let propagate = labels.fresh()?;
     let mut l = Lower {
         types,
         function: f,
@@ -505,12 +824,29 @@ pub fn lower(
         labels,
         targets,
         runtime,
+        bindings,
+        propagate,
     };
+    if *variadic {
+        for index in 0..4 {
+            let ArgumentLocation::Register(source) = scalar_argument(index)? else {
+                unreachable!()
+            };
+            l.code
+                .push(store(l.frame.incoming_home_offset(index)?, source));
+        }
+    }
     if runtime {
         l.code.push(M::Mov {
             width: W,
             dst: reg(3),
             src: Reg::RCX,
+        });
+    }
+    if let Some(bindings) = bindings {
+        l.code.push(M::LeaSymbol {
+            dst: reg(3),
+            symbol: bindings.context,
         });
     }
     for local in 0..f.locals.len() {
@@ -546,12 +882,37 @@ pub fn lower(
         (l.uninitialized, 3),
         (l.bad_shift, 8),
     ] {
-        l.code
-            .extend([M::Bind(label), immediate(Reg::RAX, status), M::Jump(l.exit)]);
+        l.code.extend([M::Bind(label), immediate(Reg::RAX, status)]);
+        if bindings.is_some() {
+            l.code.extend([
+                M::Store {
+                    width: Width::Dword,
+                    address: Address::base(reg(3), 24),
+                    src: Reg::RAX,
+                },
+                immediate(Reg::RAX, 0),
+            ]);
+        }
+        l.code.push(M::Jump(l.exit));
+    }
+    if bindings.is_some() || runtime {
+        l.code.push(M::Bind(l.propagate));
+        if runtime {
+            l.code.push(M::Load {
+                width: Width::Dword,
+                dst: Reg::RAX,
+                address: Address::base(reg(3), 24),
+            });
+        } else {
+            l.code.push(immediate(Reg::RAX, 0));
+        }
+        l.code.push(M::Jump(l.exit));
     }
     l.code.push(M::Bind(l.exit));
     l.code.extend(l.frame.epilogue());
-    x64::encode(&l.code)?;
+    if bindings.is_none() {
+        x64::encode(&l.code)?;
+    }
     Ok(NativeFunction {
         instructions: l.code,
         unwind: prologue.unwind,

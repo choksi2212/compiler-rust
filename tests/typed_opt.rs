@@ -9,9 +9,14 @@ fn program(kind: IntegerKind, op: Binary, a: u64, b: u64) -> Module {
     let ty = types.integer(kind);
     let signature = types.function(ty, vec![], false, true).unwrap();
     Module {
+        externs: vec![],
+        data: vec![],
+        entry: None,
         types,
         globals: vec![],
         functions: vec![Function {
+            name: "fixture".into(),
+            linkage: compiler::types::Linkage::Internal,
             id: FunctionId(0),
             symbol: SymbolId(0),
             signature,

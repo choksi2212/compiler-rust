@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.7, continuous phase execution; P01-P11 passed
+**Revision:** 3.9, continuous phase execution; P01-P12 passed, P13 eligible
 **Date:** 2026-11-24 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -642,7 +642,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P11 have passed their recorded gates; P12 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P12 have passed their recorded gates; P13 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -694,7 +694,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P09 | Native CLI and usable distribution | 8C | Passed: output safety, CLI and packaging |
 | P10 | Conventional syntax and control flow | 9 | Passed; evidence in section 13.15.2 |
 | P11 | General type system and typed IR | 10, type portion | Passed; evidence in section 13.16.2 |
-| P12 | Functions, calls, globals and variadics | 10, function/storage portion | Planned |
+| P12 | Functions, calls, globals and variadics | 10, function/storage portion | Passed |
 | P13 | Pointers, arrays, memory and strings | 11 | Planned |
 | P14 | Aggregates and advanced declaration forms | 12, aggregate portion | Planned |
 | P15 | Floating types and numerical semantics | 12, floating portion | Planned |
@@ -1315,6 +1315,32 @@ Work items:
 **Gate:** multi-function native programs and delivered variadic behavior pass; a function return never exits the process except through main/startup completion.
 **Boundary:** multiple source-file linking remains P17; floating/aggregate calling cases wait for their types.
 
+#### 13.17.1 P12 implementation contract before coding
+
+Extend the typed path only; preserve the checked teaching frontend/VM. Parse multiple integer/pointer/void function definitions and prototypes, retain parameter declaration identities/scopes, and use a shared ordinary-identifier/linkage table. Parameters share the function body's outer scope, so redeclaring a parameter there is rejected while nested shadowing is permitted. Resolve recursive/mutually recursive direct calls through stable symbols, validate prototype arity/types, insert fixed-argument conversions and variadic default promotions. Nonprototype calls and unfinished indirect function-pointer execution remain explicit diagnostics; function-pointer declaration/signature records remain usable. Function return goes to the caller; only startup exits the process. Falling off a nonvoid function preserves no promised result (C11 permits an unused call result); it must not skip body side effects or fabricate a value. Main still receives its required implicit zero return. Main remains int main(void) until P18's argv/environment work.
+
+Add static-duration scalar global/static-local storage, static/extern linkage, compatible redeclarations, tentative definitions, zero initialization and target constant initialization. Automatic locals remain per call; static locals initialize once from valid constant initializers. Diagnose conflicting linkage/types, duplicate initialized definitions and unresolved used externals. Support literal addresses/null pointers and addresses of scalar globals where required for relocatable constant initializers and delivered pointer signatures. General dereference/indexing/array execution and pointer arithmetic remain P13. Actual scalar data use target8/16/32/64-bit widths and alignments, with owned byte/word/dword/qword loads/stores; no eight-byte overread of a narrow global.
+
+Expand typed IR with module external/data records, direct calls, global reads/writes/addresses, literal addresses and variadic operations. Verify signatures, symbols, result/effect types, storage mutability and operand definitions. Codegen uses the same Windows ABI/frame planner for caller and callee: RCX/RDX/R8/R9, stack arguments/shadow space/alignment, integer normalization, saved registers and probed frames. Bind every module function to an actual label and emit each function's own unwind record; cross-function calls are resolved only after combining the module. Extend the common owned-runtime/image builder to accept module functions/data/fixups without duplicating startup/linker logic.
+
+Keep runtime fault status in the owned context, separate from user-function returns. Each call propagates a recorded fault; a valid return1/2/etc is a normal C value. The main adapter returns status separately and startup handles the completed main result. String literals become immutable module byte-array data with explicit NUL terminators and relocatable symbols, not host-string execution. Implement only delivered pointer-value operations; unsupported memory behavior cannot disappear through a fallback.
+
+Bind existing owned printf/strlen services through declared, signature-checked external symbols. A local variable or project definition with the same spelling cannot be bypassed. Until P19, printf remains the explicitly limited %d/%s, literal-format service with checked argument count/type and owned buffered output; typed caller integer promotions are real. Required conversion arguments must exist; any extra evaluated arguments are ignored as C specifies. These services call project-owned native helpers, never an imported CRT. Ordinary user functions can print and return through the same ABI.
+
+Implement real Windows variadic homing/cursors: the callee saves all four incoming GP positions to their caller-provided home slots, then va_start locates the first unnamed position and va_arg loads/normalizes an actual8-byte argument slot and advances the cursor. Deliver compiler primitives __builtin_va_list, __builtin_va_start(ap,last), __builtin_va_arg(ap,type), __builtin_va_copy and __builtin_va_end; future owned stdarg.h macros use them in P16. Validate variadic context, last named declaration identity, modifiable list objects and supported promoted requested types. va_copy makes an independent cursor; va_end invalidates its cursor in checked execution. Float/aggregate variadic classification waits for its type phase; no fabricated argument arrays stand in for ABI stack/register values.
+
+Tests must execute recursion/mutual recursion, nested calls, all argument counts0..12, signed/unsigned widths, typed/void returns, prototypes/errors, global/static lifetime and initialization/relocation, shadowed runtime names, real variadic register/stack boundaries, va_copy/end and fault propagation. Run debug/release full gates and independent defined-behavior GCC comparisons, plus metadata/import inspection. P13 cannot start until this whole P12 contract passes; parsing signatures or passing only integer direct calls is insufficient.
+
+#### 13.17.2 P12 completion evidence (2026-11-24)
+
+Baseline: `9c58231`. The typed frontend/IR/native image path now emits real multiple C functions, prototypes, recursive/direct calls, scalar integer/pointer/void ABI values, scalar static-duration storage, relocatable literal/global addresses and Windows register-home/stack varargs. Owned signature-checked external printf/strlen bridges share the existing formatter/startup/PE builder. User definitions retain normal symbol identity; no external compiler, CRT, assembler or linker is called by production compilation. General object dereference, arrays and indirect source calls remain P13.
+
+`python validation/run_gate.py P12` passed formatting, warnings-denied Clippy and all-target debug/release suites: **148 tests per mode, zero failures/ignored**. [Gate log](validation/P12-gate.log), [results/source hashes](validation/P12-gate.json). A first full gate found an actual debug CLI stack overflow after expression parsing grew; the failed [gate log](validation/P12-gate-stack-failure.log) is retained. Splitting prefix/postfix/infix parsing reduced recursive frame size; the original subprocess regression and five additional extreme-depth subprocess [probes](validation/P12-depth-probes.json) now reject cleanly. No failure was waived.
+
+[Independent GCC comparison](validation/P12-functions-oracle.json): 100 defined-behavior Windows LLP64 programs, 200 native O0/O1 comparisons, matching output and full Windows32 exit status; recursion/mutual recursion, arguments0..12, fixed vararg boundaries1..6, independent copied cursors, globals/static locals and actual output counts. [Cases](validation/P12-functions-oracle-cases.json) and [commands](validation/P12-functions-oracle-commands.json) retain source/image hashes. A separately Rust-compiled native caller supplies positions0..11 to the emitted variadic callee, preventing mutual caller/callee mistakes from being the sole ABI evidence. [Encoder oracle](validation/P12-encoding-oracle.json): 16533 fixtures /16757 decoded instructions agree with GNU as/objdump, including actual word loads/stores and UD2.
+
+Native tests also cover narrow adjacent globals, const/volatile effects, tentative definitions/linkage conflicts, local statics, actual DIR64 entries, per-function unwind ranges, runtime-fault propagation distinct from C returns, malformed IR identities and vararg operations, runtime prototype/format errors, shadowed names, UTF-8/NUL and extra evaluated printf arguments. The [installed qualification](validation/P12-installed-qualification.json) proves the installed compiler equals the gated release and builds typed/teaching executables outside the repository with empty PATH; source is removed before execution. [Install log](validation/P12-install.log). P13 may now begin; these finite checks are evidence of this delivered contract, not a claim that every C program is supported or mathematically bug-free.
+
 ### 13.18 P13 - Objects, pointers, arrays and mutable strings
 
 **Purpose:** implement the C object model and usable memory operations.
@@ -1730,7 +1756,7 @@ This is a review checklist, not a request to approve six separate actions indivi
 
 ### 15.6 Immediate next action during continuous execution
 
-The user authorized continuous phase execution after P00. P01-P11 have now passed their recorded gates. Proceed to P12's functions, calls, global storage and variadic contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
+The user authorized continuous phase execution after P00. P01-P12 have now passed their recorded gates. Proceed to P13's objects, pointers, arrays and mutable strings contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
 
 ## 16. References and preserved history
 

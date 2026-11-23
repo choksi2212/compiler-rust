@@ -144,6 +144,16 @@ impl FramePlan {
             .and_then(|v| v.checked_add(at))
             .ok_or("incoming argument offset overflow".into())
     }
+    /// Address of a positional argument's home relative to the completed frame.
+    /// Positions0..3 name the caller's shadow space; later positions are stack args.
+    pub fn incoming_home_offset(&self, index: usize) -> Result<u32, String> {
+        let position = u32::try_from(index).map_err(|_| "argument position overflow")?;
+        self.allocation
+            .checked_add(self.saved.len() as u32 * 8)
+            .and_then(|v| v.checked_add(8))
+            .and_then(|v| position.checked_mul(8).and_then(|at| v.checked_add(at)))
+            .ok_or("incoming argument home overflow".into())
+    }
     pub fn prologue(&self, probe_label: Label) -> Result<Prologue, String> {
         let mut instructions = vec![];
         for r in &self.saved {
