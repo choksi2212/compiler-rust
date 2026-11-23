@@ -15,6 +15,7 @@ pub mod verify;
 pub mod x64;
 
 pub mod abi;
+pub mod files;
 pub mod native_integer;
 pub mod native_runtime;
 pub mod pipeline;

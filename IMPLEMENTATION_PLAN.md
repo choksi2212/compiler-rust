@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.2, continuous phase execution; P01-P07 passed, P08 in progress
+**Revision:** 3.3, continuous phase execution; P01-P09 passed
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -691,7 +691,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P06 | Native subset arithmetic and control flow | 8B-5/6 | Passed; evidence in section 13.11.2 |
 | P07 | Native subset runtime and startup | 8B-7/8 | Passed; evidence in section 13.12.2 |
 | P08 | Complete C-subset-to-native integration | 8B-9 | Passed; evidence in section 13.13.2 |
-| P09 | Native CLI and usable distribution | 8C | Planned |
+| P09 | Native CLI and usable distribution | 8C | Passed: output safety, CLI and packaging |
 | P10 | Conventional syntax and control flow | 9 | Planned |
 | P11 | General type system and typed IR | 10, type portion | Planned |
 | P12 | Functions, calls, globals and variadics | 10, function/storage portion | Planned |
@@ -1177,6 +1177,26 @@ Work items:
 **Deliverables:** usable native CLI, tested Windows package and accurate instructions.
 **Gate:** a user can compile a supported file and run the resulting `.exe` independently. All prior gates pass.
 **Release claim:** native compiler for the documented C subset; never full C yet.
+
+#### 13.14.1 P09 implementation contract before coding
+
+Version0.2.0 identifies the first native-subset CLI. Parse OsString arguments without losing file paths; preserve source-only VM execution and existing dump flags. Native generation requires `-o PATH`, does not run the output, rejects `--bytecode`/`--run-vm` conflicts, supports `--emit=machine`, `--overwrite`, `--version` and truthful `--print-capabilities`. Invalid usage exits2; source/build/IO errors exit1; help/version/capabilities and successful compilation exit0. A `--` terminator may delimit a source whose filename begins with a dash.
+
+Source loading accepts regular disk files, resolves the source path once and reads at most the shared16MiB budget plus a detection byte. Output preparation precedes compilation. Existing/new destination paths are resolved through their actual parent; Windows reserved device names, alternate data streams, trailing dot/space aliases, invalid filenames and directories are rejected. Compare protected canonical paths and actual Windows volume/128-bit file IDs (FileIdInfo; fail closed when unavailable) so hard-link aliases to the source or running compiler cannot be replaced, even with --overwrite. The publisher accepts a protected input list for future includes/objects.
+
+Publication first validates the PE, writes/syncs a unique create-new temporary file beside the destination, rechecks protected identities and destination policy, then uses the OS atomic move primitive with no replacement unless --overwrite was explicitly selected. Failure removes only its own temporary artifact and preserves any previous output. No existing destination is opened for truncation. These protections cover ordinary path/alias/race handling; this is not a formal adversarial-filesystem security proof.
+
+Tests cover default/explicit VM behavior, all six native builds, stage/machine dumps, exit codes, unsupported flags, Unicode/spaced/dash paths, source/compiler and hard-link alias protection, directories/invalid names, missing/read-only targets, failed compilation preserving an old output, no partial files, existing-output policy, installation and clean-environment execution. Packaging contains the tested compiler plus accurate usage; official release publication is not requested. The running compiler remains a Rust bootstrap executable; generated programs use only the owned runtime and documented OS imports.
+
+#### 13.14.2 P09 completion evidence (2026-11-23)
+
+P09 passed its defined gate. `validation/P09-gate.json` and `.log` record formatting, strict all-target Clippy, debug/release all-target tests: **90 passed per mode, zero failed/ignored**. Source hashes match the tested files. The initial permission-restoration lint failure is preserved in `validation/P09-first-lint-failure.log`; the fixture now restores its original permission object instead of calling set_readonly(false).
+
+Native CLI tests build all six demos with/without optimization, assert compilation does not run them, and execute real output images with empty PATH. They check stage/machine dumps, usage/IO exit codes, Unicode/spaced/dash paths, bounded/invalid source files, existing/read-only/missing/directory/reserved/ADS paths, protected source/compiler aliases including hard links, failed-build preservation, cleanup and destination changes between preparation/publication. File identity uses Windows FileIdInfo's 128-bit identifier plus volume serial; unavailable identity queries fail closed. This is ordinary filesystem safety, not a hostile concurrent-filesystem proof. Implementation references: [FileIdInfo](https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_id_info), [information classes](https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ne-minwinbase-file_info_by_handle_class), [MoveFileExW](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexw).
+
+`cargo install --path . --locked --offline --force` installed version0.2.0. `tools/package_windows.py` verified the installed binary equals the gated release, assembled `target/compiler-0.2.0-windows-x64.zip`, checked ZIP integrity, and recorded39 successful distribution commands and binary/archive hashes in `validation/P09-distribution.json`. Both installed/packaged compilers built all six demos outside the repository with empty PATH; after deleting each temporary source the executable ran with expected output. GNU objdump independently verified every generated image imports only kernel32.dll. The bootstrap compiler's existing Rust/MSVC build imports VCRUNTIME140.dll and UCRT/API-set services; README and package START-HERE explicitly declare this prerequisite. No Microsoft DLL is redistributed, no production dependency was added, no official release was published, and a clean-machine/all-Windows-version certification is not claimed.
+
+Full C11 remains unimplemented. P10 is eligible only because the P09 gate and distribution checks passed.
 
 ### 13.15 P10 - Conventional syntax and control-flow expansion
 

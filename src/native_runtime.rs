@@ -562,6 +562,17 @@ fn startup(
 /// Build a native image from verified legacy IR and the owned teaching runtime.
 /// This API intentionally does not load source files or publish executables.
 pub fn image(ir: &[Ir], options: &RuntimeOptions) -> Result<Image, String> {
+    Ok(build(ir, options)?.image)
+}
+
+#[derive(Debug)]
+pub struct NativeBuild {
+    pub image: Image,
+    /// Encoder instruction offsets with final linked image bytes.
+    pub machine_dump: String,
+}
+
+pub fn build(ir: &[Ir], options: &RuntimeOptions) -> Result<NativeBuild, String> {
     crate::verify::verify(ir)?;
     if !(1..=64 * 1024 * 1024).contains(&options.output_capacity) {
         return Err("native output capacity must be1..64MiB".into());
@@ -692,6 +703,7 @@ pub fn image(ir: &[Ir], options: &RuntimeOptions) -> Result<Image, String> {
             name: name.into(),
         });
     }
+    let listing = text.listing.clone();
     let spec = ImageSpec {
         text,
         code_symbols: vec![],
@@ -703,5 +715,33 @@ pub fn image(ir: &[Ir], options: &RuntimeOptions) -> Result<Image, String> {
         exception_directory: None,
     };
     let spec = with_unwind(&spec, &functions)?;
-    pe::build(&spec)
+    let image = pe::build(&spec)?;
+    let section = image
+        .sections
+        .iter()
+        .find(|s| s.name == ".text")
+        .ok_or("missing text section")?;
+    let mut machine_dump =
+        String::from("MACHINE CODE (linked .text RVA, bytes, encoder instruction)\n");
+    use std::fmt::Write;
+    for row in listing {
+        let start = section.raw_offset as usize + row.offset;
+        let bytes = &image.bytes[start..start + row.length];
+        let hex = bytes
+            .iter()
+            .map(|b| format!("{b:02x}"))
+            .collect::<Vec<_>>()
+            .join(" ");
+        writeln!(
+            machine_dump,
+            "{:08x} {hex:<32} {:?}",
+            section.rva as usize + row.offset,
+            row.instruction
+        )
+        .map_err(|e| e.to_string())?;
+    }
+    Ok(NativeBuild {
+        image,
+        machine_dump,
+    })
 }

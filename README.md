@@ -4,12 +4,14 @@ A dependency-free educational compiler for the C subset defined in [IMPLEMENTATI
 
 ```powershell
 cargo build
-cargo run -- examples/pattern.c
+cargo run -- examples/pattern.c -o pattern.exe
+.\pattern.exe
+cargo run -- examples/pattern.c --run-vm
 cargo run -- examples/addition.c --tokens --ast --ir --optimized-ir --bytecode
 cargo test
 ```
 
-The compiler performs lexical analysis, parsing, semantic checks, three-address code generation, optimization, and stack bytecode generation. Its virtual machine executes the resulting bytecode. Stage dumps go to stderr and program output goes to stdout. Use `--no-opt` to execute without optimization.
+The compiler performs lexical analysis, parsing, semantic checks, three-address code generation and optimization. With `-o`, its owned x64 encoder, Windows ABI lowering, linker, PE writer and runtime produce a standalone Windows x64 executable. Without `-o`, its stack bytecode generator and VM execute the program immediately. Stage dumps go to stderr. Use `--no-opt` to disable IR optimization.
 
 Six examples and their expected output are in `examples/`: addition, loop, factorial, pattern, conditional, and strings.
 
@@ -37,11 +39,18 @@ The compiler never invokes another C compiler. Tests check each compiler stage, 
 On this computer, `compiler.exe` is installed in `C:\Users\niklaus\.cargo\bin`, which is already on PATH. Open PowerShell in the folder containing your C file and run:
 
 ```powershell
-compiler program.c
-compiler program.c --ir --optimized-ir --bytecode
+compiler program.c -o program.exe
+.\program.exe
+compiler program.c --run-vm --ir --optimized-ir --bytecode
+compiler program.c -o program.exe --overwrite --emit=machine
+compiler --print-capabilities
 ```
 
-This compiles and executes the supported C program immediately. It does not write a native executable or support GCC's `-o` option. Native executable generation would require a separate approved change to the output target.
+With `-o`, compilation writes the executable and does not run it. Run `.\program.exe` separately. Native executables contain the owned runtime and import only the documented Windows OS services; they do not need the compiler, Rust, GCC, the C source or a project DLL at execution time. The compiler itself remains a Rust bootstrap executable.
+
+An existing destination requires `--overwrite`. Input files and the running compiler are protected, including hard-link aliases. Output is validated, written to a unique temporary file beside the destination and published using a Windows move operation; a failed compile preserves the previous file. The parent directory must exist. Use `--` before an input name starting with a dash. Source files must be UTF-8 and at most 16MiB; the token budget is one million.
+
+`--tokens`, `--ast`, `--ir`, and `--optimized-ir` work in both modes. `--emit=machine` prints linked native instruction bytes and requires `-o`; `--bytecode` and `--run-vm` conflict with native output. Exit codes are 0 for success, 1 for compilation/IO/runtime failure, and 2 for invalid command usage. Generated programs use runtime status codes 1–7 for checked arithmetic, initialization, output/memory/IO errors.
 
 To install from this repository on another Windows machine with Rust installed:
 
@@ -52,7 +61,7 @@ cargo install --path .
 compiler examples/addition.c
 ```
 
-Ensure Cargo's `bin` directory is on PATH. Alternatively, `cargo build --release` produces `target\release\compiler.exe`; copy it to a folder on PATH or invoke it by its full path. The compiled compiler executable does not need Rust or GCC installed to run supported C programs.
+Ensure Cargo's `bin` directory is on PATH. Alternatively, `cargo build --release` produces `target\release\compiler.exe`; copy it to a folder on PATH or invoke it by its full path. The Rust/MSVC bootstrap compiler does not need Rust or GCC at execution time, but its inspected imports require the Visual C++ x64 runtime (`VCRUNTIME140.dll`) and Windows Universal CRT/API-set services. The package declares this prerequisite and does not redistribute Microsoft DLLs. Generated C executables have no VCRUNTIME/UCRT dependency. Empty-PATH checks on this host are not a clean-machine or all-Windows-version certification.
 
 ## Aggressive validation
 
@@ -69,4 +78,6 @@ It requires Python and GCC and compares 100 generated, defined-behavior C progra
 
 ## Native backend development status
 
-The implementation plan now includes a project-owned native toolchain roadmap. The PE32+ executable foundation is implemented and tested by launching real Windows x64 machine code with several exit statuses. It calls the Windows process-exit service and uses no external assembler or linker. This foundation is not connected to the C frontend yet: `compiler file.c` still uses the VM, and native `-o` support remains pending. Full C11 and standard library support remain future work.
+Version 0.2.0 compiles the documented teaching C subset to real Windows x64 PE32+ executables. Generated programs use owned checked integer arithmetic, short-circuit control flow, pooled UTF-8 literals, `%d`/`%s` formatting, `strlen`, buffered output, Windows stack frames, unwind metadata and ASLR relocations. Native output is limited to 16MiB by default; unlike the VM, native loops have no instruction quota. Production compilation does not invoke an external C compiler, assembler, linker or C runtime. Full C11 and the full standard library are future phases; current capability and evidence are tracked in the canonical plan.
+
+Run the phase gate with `python validation/run_gate.py P09`. Optional independent encoder/native-source comparisons use GNU tools only as development oracles. Evidence is in `validation/`. The portable Windows package is assembled from the tested release binary under `target/P09-package/`; no official release upload is performed automatically.

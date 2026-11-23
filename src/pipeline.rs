@@ -21,6 +21,7 @@ pub struct NativeCompilation {
     pub ir: Vec<crate::ir::Ir>,
     pub optimized_ir: Vec<crate::ir::Ir>,
     pub image: crate::pe::Image,
+    pub machine_dump: String,
 }
 impl CompilationContext {
     pub fn compile_native(
@@ -40,8 +41,8 @@ impl CompilationContext {
         self.run_stage(source, Stage::Optimize, || {
             crate::verify::verify(&optimized_ir)
         })?;
-        let image = self.run_stage(source, Stage::Native, || {
-            crate::native_runtime::image(
+        let built = self.run_stage(source, Stage::Native, || {
+            crate::native_runtime::build(
                 if options.optimize { &optimized_ir } else { &ir },
                 &options.runtime,
             )
@@ -52,7 +53,8 @@ impl CompilationContext {
             ast,
             ir,
             optimized_ir,
-            image,
+            image: built.image,
+            machine_dump: built.machine_dump,
         })
     }
 }
