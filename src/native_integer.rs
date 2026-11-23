@@ -17,7 +17,16 @@ pub struct NativeFunction {
     pub unwind: Vec<u8>,
     pub frame: FramePlan,
 }
+/// Explicit bindings to owned runtime code and readonly image data.
+#[derive(Debug, Clone)]
+pub struct RuntimeBindings {
+    pub formatter: Label,
+    pub constants: BTreeMap<usize, Symbol>,
+    pub formats: BTreeMap<usize, Symbol>,
+}
+pub const RUNTIME_STATUS_OFFSET: i32 = 24;
 struct Lower<'a> {
+    string_slots: BTreeSet<usize>,
     code: Vec<Instruction>,
     homes: BTreeMap<usize, (u32, u32)>,
     labels: &'a mut LabelAllocator,
@@ -59,7 +68,11 @@ impl Lower<'_> {
                 label: self.uninitialized,
             },
             Instruction::Load {
-                width: Width::Dword,
+                width: if self.string_slots.contains(&slot) {
+                    Width::Qword
+                } else {
+                    Width::Dword
+                },
                 dst,
                 address: Address::base(Reg::RSP, offset as i32),
             },
@@ -67,7 +80,11 @@ impl Lower<'_> {
     }
     fn store(&mut self, slot: usize) {
         self.code.push(Instruction::Store {
-            width: Width::Dword,
+            width: if self.string_slots.contains(&slot) {
+                Width::Qword
+            } else {
+                Width::Dword
+            },
             address: Address::base(Reg::RSP, self.homes[&slot].0 as i32),
             src: Reg::RAX,
         });
@@ -81,22 +98,61 @@ impl Lower<'_> {
     }
 }
 pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFunction, String> {
+    lower(ir, labels, None)
+}
+pub fn lower_with_runtime(
+    ir: &[Ir],
+    labels: &mut LabelAllocator,
+    runtime: &RuntimeBindings,
+) -> Result<NativeFunction, String> {
+    lower(ir, labels, Some(runtime))
+}
+fn lower(
+    ir: &[Ir],
+    labels: &mut LabelAllocator,
+    runtime: Option<&RuntimeBindings>,
+) -> Result<NativeFunction, String> {
     crate::verify::verify(ir)?;
     let mut slots = BTreeSet::new();
     let mut targets = BTreeMap::new();
-    for op in ir {
+    let mut string_slots = BTreeSet::new();
+    let mut max_arguments = 0;
+    for (index, op) in ir.iter().enumerate() {
         match op {
-            Ir::Const(_, Value::Str(_)) | Ir::Print(..) => {
-                return Err("integer native phase does not support string/print IR yet".into());
+            Ir::Const(d, Value::Str(text)) => {
+                let bindings =
+                    runtime.ok_or("integer native phase does not support string/print IR yet")?;
+                if text.contains('\0') {
+                    return Err("embedded NUL is not supported by this native literal mode".into());
+                }
+                if !bindings.constants.contains_key(&index) {
+                    return Err("missing runtime literal binding".into());
+                }
+                slots.insert(*d);
+                string_slots.insert(*d);
             }
-            Ir::Unary(_, op, _) if op == "strlen" => {
-                return Err("integer native phase does not support strlen yet".into());
+            Ir::Print(_, arguments, d) => {
+                let bindings =
+                    runtime.ok_or("integer native phase does not support string/print IR yet")?;
+                if !bindings.formats.contains_key(&index) {
+                    return Err("missing runtime format binding".into());
+                }
+                max_arguments = max_arguments.max(arguments.len());
+                slots.insert(*d);
             }
-            Ir::Reset(d)
-            | Ir::Const(d, _)
-            | Ir::Copy(d, _)
-            | Ir::Unary(d, ..)
-            | Ir::Binary(d, ..) => {
+            Ir::Copy(d, a) => {
+                slots.insert(*d);
+                if string_slots.contains(a) {
+                    string_slots.insert(*d);
+                }
+            }
+            Ir::Unary(d, op, _) => {
+                if op == "strlen" && runtime.is_none() {
+                    return Err("integer native phase does not support strlen yet".into());
+                }
+                slots.insert(*d);
+            }
+            Ir::Reset(d) | Ir::Const(d, _) | Ir::Binary(d, ..) => {
                 slots.insert(*d);
             }
             Ir::Label(l) => {
@@ -108,10 +164,27 @@ pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFun
     if slots.len() > 65535 {
         return Err("integer native slot budget exceeded".into());
     }
+    let argument_bytes = u32::try_from(
+        max_arguments
+            .checked_mul(8)
+            .ok_or("print argument size overflow")?,
+    )
+    .map_err(|_| "print argument array too large")?;
     let frame = FramePlan::new(&FrameRequest {
+        has_calls: runtime.is_some(),
+        max_call_arguments: if runtime.is_some() { 4 } else { 0 },
+        locals: if argument_bytes > 0 {
+            vec![(argument_bytes, 8)]
+        } else {
+            vec![]
+        },
+        saved: if runtime.is_some() {
+            vec![Reg::new(3)?]
+        } else {
+            vec![]
+        },
         temporaries: slots.len(),
         initialization_flags: slots.len(),
-        ..FrameRequest::default()
     })?;
     let prologue = frame.prologue(labels.fresh()?)?;
     let homes = slots
@@ -131,7 +204,13 @@ pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFun
     let overflow = labels.fresh()?;
     let uninitialized = labels.fresh()?;
     let exit = labels.fresh()?;
+    let runtime_error = if runtime.is_some() {
+        Some(labels.fresh()?)
+    } else {
+        None
+    };
     let mut l = Lower {
+        string_slots,
         code: prologue.instructions,
         homes,
         labels,
@@ -140,6 +219,13 @@ pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFun
         uninitialized,
         exit,
     };
+    if runtime.is_some() {
+        l.code.push(Instruction::Mov {
+            width: Width::Qword,
+            dst: Reg::new(3)?,
+            src: Reg::RCX,
+        });
+    }
     let scratch = Reg::new(11)?;
     l.code.push(Instruction::MovImm {
         width: Width::Dword,
@@ -153,7 +239,7 @@ pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFun
         });
     }
     let right = Reg::new(10)?;
-    for op in ir {
+    for (instruction_index, op) in ir.iter().enumerate() {
         match op {
             Ir::Reset(d) => l.flag(*d, 0),
             Ir::Const(d, Value::Int(n)) => {
@@ -162,6 +248,112 @@ pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFun
                     dst: Reg::RAX,
                     value: ((*n) as u32) as u64,
                 });
+                l.store(*d);
+            }
+            Ir::Const(d, Value::Str(_)) => {
+                let symbol = runtime.ok_or("missing native runtime")?.constants[&instruction_index];
+                l.code.push(Instruction::LeaSymbol {
+                    dst: Reg::RAX,
+                    symbol,
+                });
+                l.store(*d);
+            }
+            Ir::Print(_, arguments, d) => {
+                let bindings = runtime.ok_or("missing native runtime")?;
+                for (index, arg) in arguments.iter().enumerate() {
+                    l.load(*arg, Reg::RAX);
+                    l.code.push(Instruction::Store {
+                        width: Width::Qword,
+                        address: Address::base(
+                            Reg::RSP,
+                            frame.local_offsets()[0] as i32 + index as i32 * 8,
+                        ),
+                        src: Reg::RAX,
+                    });
+                }
+                l.code.extend([
+                    Instruction::Mov {
+                        width: Width::Qword,
+                        dst: Reg::RCX,
+                        src: Reg::new(3)?,
+                    },
+                    Instruction::LeaSymbol {
+                        dst: Reg::RDX,
+                        symbol: bindings.formats[&instruction_index],
+                    },
+                ]);
+                if arguments.is_empty() {
+                    l.code.push(Instruction::MovImm {
+                        width: Width::Qword,
+                        dst: Reg::new(8)?,
+                        value: 0,
+                    });
+                } else {
+                    l.code.push(Instruction::Lea {
+                        dst: Reg::new(8)?,
+                        address: Address::base(Reg::RSP, frame.local_offsets()[0] as i32),
+                    });
+                }
+                l.code.extend([
+                    Instruction::MovImm {
+                        width: Width::Dword,
+                        dst: Reg::new(9)?,
+                        value: arguments.len() as u64,
+                    },
+                    Instruction::Call(bindings.formatter),
+                    Instruction::Binary {
+                        width: Width::Dword,
+                        op: Binary::Test,
+                        dst: Reg::RAX,
+                        src: Reg::RAX,
+                    },
+                    Instruction::Branch {
+                        condition: Condition::Sign,
+                        label: runtime_error.ok_or("missing runtime error label")?,
+                    },
+                ]);
+                l.store(*d);
+            }
+            Ir::Unary(d, op, a) if op == "strlen" => {
+                l.load(*a, right);
+                let again = l.labels.fresh()?;
+                let done = l.labels.fresh()?;
+                l.code.extend([
+                    Instruction::MovImm {
+                        width: Width::Dword,
+                        dst: Reg::RAX,
+                        value: 0,
+                    },
+                    Instruction::Bind(again),
+                    Instruction::LoadByte {
+                        dst: scratch,
+                        address: Address::base(right, 0),
+                    },
+                    Instruction::Binary {
+                        width: Width::Dword,
+                        op: Binary::Test,
+                        dst: scratch,
+                        src: scratch,
+                    },
+                    Instruction::Branch {
+                        condition: Condition::Equal,
+                        label: done,
+                    },
+                    Instruction::Immediate {
+                        width: Width::Dword,
+                        op: Immediate::Add,
+                        reg: Reg::RAX,
+                        value: 1,
+                    },
+                    Instruction::Immediate {
+                        width: Width::Qword,
+                        op: Immediate::Add,
+                        reg: right,
+                        value: 1,
+                    },
+                    Instruction::Jump(again),
+                    Instruction::Bind(done),
+                ]);
                 l.store(*d);
             }
             Ir::Copy(d, a) => {
@@ -316,7 +508,6 @@ pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFun
                 },
                 Instruction::Jump(l.exit),
             ]),
-            _ => return Err("unsupported native integer operation".into()),
         }
     }
     for (label, status) in [
@@ -334,9 +525,22 @@ pub fn lower_integer(ir: &[Ir], labels: &mut LabelAllocator) -> Result<NativeFun
             Instruction::Jump(l.exit),
         ]);
     }
+    if let Some(error) = runtime_error {
+        l.code.extend([
+            Instruction::Bind(error),
+            Instruction::Load {
+                width: Width::Dword,
+                dst: Reg::RAX,
+                address: Address::base(Reg::new(3)?, RUNTIME_STATUS_OFFSET),
+            },
+            Instruction::Jump(l.exit),
+        ]);
+    }
     l.code.push(Instruction::Bind(l.exit));
     l.code.extend(frame.epilogue());
-    encode(&l.code)?;
+    if runtime.is_none() {
+        encode(&l.code)?;
+    }
     Ok(NativeFunction {
         instructions: l.code,
         unwind: prologue.unwind,

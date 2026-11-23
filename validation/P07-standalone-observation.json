@@ -1,0 +1,13 @@
+{
+  "artifact": "target/P07-runtime-audit.exe",
+  "sha256": "c0d3c6efc053b4daa29da6e82e605f50c2d7df52c4376eb545df7f4fba4a53ff",
+  "exit": 0,
+  "stdout": "-2147483648 2147483647 Hello\t世界 12\ncount=39\n",
+  "stderr": "",
+  "expected_stdout": "-2147483648 2147483647 Hello\t世界 12\ncount=39\n",
+  "cwd": "fresh temporary directory",
+  "path_environment": "",
+  "direct_import_dlls": [
+    "kernel32.dll"
+  ]
+}

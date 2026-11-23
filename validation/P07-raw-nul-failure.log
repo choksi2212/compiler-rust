@@ -1,0 +1,3 @@
+COMMAND: cargo test --test native_runtime raw_nul_source --locked --offline
+FAILED: raw NUL inside source string was accepted by lexer (0 passed,1 failed).
+A native C-string runtime must not silently reinterpret an accepted raw source NUL differently from the VM's Rust-string behavior. This source-encoding edge is explicitly rejected at lexical input; escaped C NUL support belongs to later literal/strict-language work. A regression preserves the rejection.

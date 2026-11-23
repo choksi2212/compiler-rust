@@ -518,3 +518,17 @@ impl LabelAllocator {
         Ok(Label(id))
     }
 }
+#[derive(Debug, Default)]
+pub struct SymbolAllocator {
+    next: usize,
+}
+impl SymbolAllocator {
+    pub fn fresh(&mut self) -> Result<Symbol, String> {
+        let id = self.next;
+        self.next = self
+            .next
+            .checked_add(1)
+            .ok_or("native symbol space exhausted")?;
+        Ok(Symbol(id))
+    }
+}

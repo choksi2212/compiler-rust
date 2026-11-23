@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.2, continuous phase execution; P01-P05 passed, P06 in progress
+**Revision:** 3.2, continuous phase execution; P01-P06 passed, P07 in progress
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -75,7 +75,7 @@ No fabricated speed, coverage, security, or conformance claims are permitted. Pa
 
 ## 2. Current implementation and evidence
 
-This section records the inspected repository at commit `da66051`; later stages below are planned unless marked otherwise. Prior validation was recorded in earlier implementation turns. P00 has now reproduced the baseline at commit `47c881d11ff332eb7d11b071b36be6956906861b`; its new evidence and limitations are recorded in section 13.5.1.
+This inventory preserves the inspected baseline at commit `da66051`; newer verified capabilities are recorded by their passed phase evidence in section13. Do not read historical baseline gaps as overriding completed phase records. Later unpassed phases remain planned/in progress. Prior validation was recorded in earlier implementation turns. P00 has now reproduced the baseline at commit `47c881d11ff332eb7d11b071b36be6956906861b`; its new evidence and limitations are recorded in section 13.5.1.
 
 | Component | File | Verified baseline | Gap to native/full C |
 | --- | --- | --- | --- |
@@ -689,7 +689,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P04 | Dynamic PE layout, imports and fixups | 8B-3 | Passed; evidence in section 13.9.2 |
 | P05 | ABI, stack frames and unwind generation | 8B-4 | Passed; evidence in section 13.10.2 |
 | P06 | Native subset arithmetic and control flow | 8B-5/6 | Passed; evidence in section 13.11.2 |
-| P07 | Native subset runtime and startup | 8B-7/8 | Planned |
+| P07 | Native subset runtime and startup | 8B-7/8 | Passed; evidence in section 13.12.2 |
 | P08 | Complete C-subset-to-native integration | 8B-9 | Planned |
 | P09 | Native CLI and usable distribution | 8C | Planned |
 | P10 | Conventional syntax and control flow | 9 | Planned |
@@ -1095,6 +1095,28 @@ Work items:
 **Deliverables:** native subset runtime, startup, diagnostics, documented OS import set.
 **Gate:** helpers execute correct algorithms; imports contain OS primitives rather than CRT substitutes; no placeholder library results exist.
 **Boundary:** this is not yet full stdio, general variadic C support, or a hosted C library.
+
+#### 13.12.1 P07 implementation contract before coding
+
+Extend the same P06 lowering engine through explicit runtime bindings; retain its integer-only entrypoint and regression corpus. Runtime-enabled program functions receive a context pointer in RCX, preserve it in a saved register, support string pointer homes, actual literal strlen loops, and calls to an owned formatter. Context fields are buffer pointer at0, length at8, capacity at16, runtime status at24. Stack argument arrays for printf are built from checked slot reads. Format/literal bytes are project-generated readonly image data, never precomputed program output.
+
+The formatter implements `%d`/`%s` and literal bytes using CPU loops. Signed minimum formatting uses a valid unsigned-magnitude algorithm, not overflowing signed negation semantics. It returns the actual appended byte count and checks capacity/format arity. Startup allocates a buffer using VirtualAlloc, calls the compiled program, flushes only successful execution through an owned WriteAll helper, releases the buffer and exits. Main errors discard buffered stdout and emit a real stderr message. Windows primitives imported: VirtualAlloc/VirtualFree, GetStdHandle, WriteFile, ExitProcess; no CRT routines.
+
+Default output capacity is16MiB; internal options may select1..64MiB for resource-boundary testing. The cap is an explicit teaching runtime limit, not hosted stdio behavior. Source strings containing raw NUL are diagnosed lexically; escaped NUL semantics belong to the later literal/strict-language work. The literal pool has a32MiB compile-time budget. Existing status0/1/2/3 remain success/division/overflow/uninitialized; P07 adds4 output-capacity,5 invalid-runtime-format,6 memory-service failure,7 IO failure. Runtime helpers perform real checks and never substitute constant success. Complete hosted IO/allocation semantics remain their later phases.
+
+The OS write helper bounds each WriteFile request to4096 bytes and advances by the actual returned count, handling partial and zero-progress writes and invalid handles. This avoids requesting an entire large output buffer atomically from a smaller nonblocking pipe quota. Tests must execute generated PE programs for integer/string/count/buffering/error behavior and real OS IO failures. A real nonblocking named-pipe test should exercise partial writes when supported; no fake OS result may count as evidence of that actual platform path. Every generated function receives P05 unwind metadata. This phase exposes an IR-to-image runtime build API; P08 owns the supported C-source API and P09 owns the CLI.
+
+#### 13.12.2 P07 completion evidence
+
+Baseline: `b613063`. `src/native_runtime.rs` emits the owned formatter, bounded-chunk WriteAll helper and startup/cleanup/error paths. The same P06 lowering engine supports runtime bindings, checked argument arrays, real literal strlen loops and pointer-width string slots; the integer-only API still explicitly rejects output/string operations. Combined function encoding resolves real inter-function labels, and P05 supplies unwind metadata for all four generated functions. Production uses only owned code plus Kernel32 VirtualAlloc/VirtualFree/GetStdHandle/WriteFile/ExitProcess.
+
+Native process tests cover signed-min/max/zero/negative formatting, a265-value integer-format matrix, UTF-8 bytes and strlen, actual printf return counts, empty strings, exact/full output-capacity boundaries,200000-byte output,12 format arguments, copied/reassigned string slots, invalid actual formatter input/arity, and discarding buffered stdout for integer errors. Real VirtualAlloc failure and invalid-handle IO paths are exercised through deliberately invalid OS inputs in generated fixtures, not fake API results. This proves the error paths, not all possible out-of-memory situations.
+
+Real Windows nonblocking named pipes exercise positive partial total transfer followed by backpressure and a prefilled message pipe's zero-progress path. Returned counts/data prefixes and stderr/status are asserted; no fake write result is injected. Bounded requests are4096 bytes. This does not claim that this machine returned a positive short count for one oversized WriteFile call: that initial assumption failed and the real observations are preserved in [pipe investigation](validation/P07-first-pipe-fixture-failure.log).
+
+`python validation/run_gate.py P07` passed formatting, warnings-denied Clippy and all-target debug/release tests: 80 passed each, zero failed/ignored. [Gate output](validation/P07-gate.log), [results/source hashes](validation/P07-gate.json). A standalone audit executable also ran from a fresh directory with PATH empty and produced the independently expected UTF-8 output/count: [observed result and binary SHA256](validation/P07-standalone-observation.json). Independent [import/unwind inspection](validation/P07-import-unwind-inspection.log) confirms only the five documented direct Kernel32 imports and four function records. Reproduce `target/P07-runtime-audit.exe` with the integer/string/count native-runtime test.
+
+Resolved failures remain recorded: [premature per-function linking](validation/P07-first-link-failure.log), [raw source NUL acceptance](validation/P07-raw-nul-failure.log), [warnings-denied lint](validation/P07-first-lint-failure.log). Raw NUL source strings are now diagnosed by the shared lexer; no valid documented demo was removed. The Unicode inspector initially failed only when printing to Python's cp1252 console after assertions; the reporter was rerun with ASCII-safe console JSON and the UTF-8 evidence file/executable output remained exact. No unresolved required P07 check remains. No source-file API or public `-o` is claimed yet. Next eligible phase: P08.
 
 ### 13.13 P08 - End-to-end native C subset qualification
 

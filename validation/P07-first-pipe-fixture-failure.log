@@ -1,0 +1,5 @@
+COMMAND: cargo test --test runtime_io --locked --offline -- --nocapture
+FAILED: nonblocking byte pipe reported zero buffered bytes after child exit, where a partial transfer was expected.
+Investigating pipe-handle lifetime: retain the original parent server handle and pass an owned duplicate to child stdout so closing child output cannot discard the instance before inspection. This is a real OS test fixture, not a mocked write result.
+
+Final investigation: retaining the server handle alone did not change the result. Actual parent WriteFile calls wrote1/1024/4096 bytes when requested, but returned TRUE with0 bytes for4097/8192/65536/524288 requests against this4096-byte nonblocking pipe. The writer now makes bounded4096-byte requests. Real byte-pipe tests verify positive total progress then backpressure; a prefilled message pipe verifies zero progress without adding data. GetNamedPipeInfo originally failed on the write-only server lacking read-attribute access; querying the read-capable client fixed that fixture. No production API result was mocked.

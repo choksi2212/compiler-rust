@@ -1,0 +1,3 @@
+COMMAND: cargo test --test native_runtime --locked --offline -- --nocapture
+FAILED: 1 passed, 4 failed. Runtime image construction returned "undefined machine label".
+Cause: runtime-enabled program/startup functions were encoded individually before their cross-function Call labels were present. Final image encoding owns inter-function label resolution. Keep integer-only standalone validation; defer runtime-linked function encoding until all actual function bodies are combined. No placeholder label definitions are introduced.

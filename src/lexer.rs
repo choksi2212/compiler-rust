@@ -78,6 +78,11 @@ pub fn lex(source: &str) -> Result<Vec<Token>, String> {
             i += 1;
             let mut value = String::new();
             while i < chars.len() && chars[i] != '"' {
+                if chars[i] == '\0' {
+                    return Err(format!(
+                        "{line}:{col}: raw NUL is unsupported in source strings"
+                    ));
+                }
                 if chars[i] == '\n' || chars[i] == '\r' {
                     return Err(format!("{line}:{col}: unterminated string"));
                 }
