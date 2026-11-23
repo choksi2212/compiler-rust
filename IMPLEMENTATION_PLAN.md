@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.1, strict evidence gates; P00 passed, P01 not started
+**Revision:** 3.2, continuous phase execution; P01 in progress
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -642,7 +642,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate; P01-P24 remain unstarted except for historically identified foundation work. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01 is now in progress. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -676,14 +676,14 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 5. State conclusions at the scope actually demonstrated. A test count or a successful build does not prove arbitrary-program correctness, full C conformance, absence of defects, or future phases. Identify gaps and distinguish prior evidence from new runs.
 6. Independent expectations are required where shared implementation could hide common bugs. Native behavior requires executing actual generated machine code; byte snapshots alone do not establish it. Differential oracles must only compare defined behavior and remain outside the production toolchain.
 7. Resource-heavy checks need bounded child execution and cleanup; a timeout is evidence to investigate, never a pass. Do not silently bypass a missing tool, unavailable native platform, or environmental failure.
-8. Record the phase result and first eligible next phase here. An eligible phase is not automatically started in a phase-specific user request. For the current request, stop after P00 and report its evidence.
+8. Record the phase result and first eligible next phase here. An eligible phase is not automatically started in a phase-specific user request. The earlier P00-specific stopping instruction was superseded by the user's authorization to continue through subsequent phases. Advance automatically only after recording a passing gate; architecture/dependency/target/scope changes still require approval.
 
 ### 13.3 Phase map and current status
 
 | Phase | Bounded deliverable | Historical alias | Current status |
 | --- | --- | --- | --- |
 | P00 | Review, baseline and specification freeze | Plan review | Passed; evidence in section 13.5.1 |
-| P01 | Native foundation audit | 8A audit | Existing foundation; expanded gate not passed |
+| P01 | Native foundation audit | 8A audit | Passed; evidence in section 13.6.1 |
 | P02 | Shared compiler library and legacy IR verification | 8B-1 | Planned |
 | P03 | Project x64 instruction encoder | 8B-2 | Planned |
 | P04 | Dynamic PE layout, imports and fixups | 8B-3 | Planned |
@@ -852,6 +852,32 @@ Work items:
 **Deliverables:** audited foundation, structural regression fixtures, explicit fixed-base/one-import/one-page constraints.
 **Gate:** structural and actual process checks pass; no unexplained field values or range truncation remain; expanded layout requirements are recorded.
 **Boundary:** this phase does not make C input compile natively and does not add `-o`.
+
+#### 13.6.1 P01 completion evidence
+
+Baseline: `4d26c53`. P01 passed its constrained foundation audit; this is not a general native backend. New `Rva`, `FileOffset`, and `Va` types distinguish address domains; `FoundationLayout` validates code size before layout. The existing serializer uses its checked constrained layout. No source-language capability changed.
+
+Field inventory for this foundation (other reserved/default fields are zero):
+
+| Field group | Chosen values and purpose |
+| --- | --- |
+| DOS/signature | MZ, e_lfanew 128, PE signature; Windows-only image, no DOS execution claim |
+| COFF | AMD64, two sections, optional header 240 bytes; no symbols/timestamp; executable/large-address/relocations-stripped flags |
+| Optional core | PE32+, text RVA 4096, fixed base 0x140000000; aligned code size and 512 initialized data bytes |
+| Alignment/sizes | File 512, section 4096, headers 512, image 12288; checked one-page code limit |
+| Versions/subsystem | OS/subsystem major 6, minor 0; console subsystem |
+| Runtime image policy | NX flag; no ASLR/relocation claim, default checksum zero |
+| Stack/heap | Reserve 1 MiB, commit 4096 each; unused loader fields zero |
+| Directories | 16 slots; import RVA 8192/size40 and IAT RVA8272/size16 only |
+| Text | Read/execute initialized code at file512, actual virtual size, rounded raw size |
+| Imports | Read/write initialized data at next raw block, virtual256/raw512 |
+| Import records | One Kernel32 descriptor and null descriptor; 64-bit lookup/IAT entries, zero terminators, hint0 and ExitProcess name |
+
+Future interface contract (not implemented by P01): dynamic sections carry alignment/permissions and byte/zero-fill sizes; symbol IDs identify code/data/import targets; fixups distinguish relative32, RVA32 and VA64 references. P04 will own dynamic layout/import resolution/base relocation and range checks. P05 will provide function bounds plus frame actions for shared unwind records. The fixed foundation cannot certify either facility.
+
+Independent integration checks decode bytes without importing layout constants. All 4096 supported payload lengths are checked, including exact payload copy and raw padding; invalid sizes 0/4097/usize::MAX and address overflow are rejected. Actual native payloads of 15/511/512/513/4095/4096 bytes exit with status37, including spaced paths and bounded waits. Existing native tests retain statuses0/37/255.
+
+Validation: `python validation/run_gate.py P01` passed formatting, warnings-denied Clippy, and all-target debug/release tests: 34 passed per mode, zero failed/ignored. Exact commands, outputs and source hashes: [P01 log](validation/P01-gate.log), [P01 manifest/results](validation/P01-gate.json). An initial new test failed to compile because its numeric loop type was ambiguous (E0689); it was corrected with an explicit usize range before any gate passed. There is no remaining P01 failure. Existing VM/stress/CLI regressions passed unchanged. Next eligible phase: P02.
 
 ### 13.7 P02 - Shared compilation library and legacy IR verifier
 
@@ -1498,7 +1524,7 @@ This is a review checklist, not a request to approve six separate actions indivi
 
 ### 15.6 Immediate next action after document review
 
-P00 has passed with the evidence in section 13.5.1. P01 is eligible but unstarted; the current P00-specific request stops here. When implementation continues, begin P01's native foundation audit, not a downstream phase. Follow P02-P08 in order to qualify actual native compilation before P09 delivers the user-facing `-o` workflow. Do not jump directly into broad language expansion or native CLI work. The first user-visible native milestone is the current six demos compiling into standalone `.exe` files through the entirely project-owned path. P10-P24 subsequently expand language/runtime coverage without claiming unfinished capabilities. Historical package aliases may explain past commits but cannot override this phase sequence.
+P00 has passed with the evidence in section 13.5.1. Continuous phase execution is now authorized. Begin P01's native foundation audit and proceed only through recorded passing gates, not by skipping downstream prerequisites. Follow P02-P08 in order to qualify actual native compilation before P09 delivers the user-facing `-o` workflow. Do not jump directly into broad language expansion or native CLI work. The first user-visible native milestone is the current six demos compiling into standalone `.exe` files through the entirely project-owned path. P10-P24 subsequently expand language/runtime coverage without claiming unfinished capabilities. Historical package aliases may explain past commits but cannot override this phase sequence.
 
 ## 16. References and preserved history
 

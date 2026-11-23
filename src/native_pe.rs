@@ -1,5 +1,48 @@
 //! Project-owned PE32+ executable writer. No external assembler or linker.
 //! Foundation stage: a single code section and a Kernel32 ExitProcess import.
+/// Relative address in a loaded image; deliberately distinct from file offsets.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Rva(pub u32);
+/// Byte offset in the serialized image.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct FileOffset(pub u32);
+/// Full address including the image base.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Va(pub u64);
+impl Rva {
+    pub fn at_base(self, base: Va) -> Result<Va, String> {
+        base.0
+            .checked_add(self.0 as u64)
+            .map(Va)
+            .ok_or("image address overflow".into())
+    }
+}
+/// The constrained foundation layout, not the future general PE layout engine.
+#[derive(Debug, Clone, Copy)]
+pub struct FoundationLayout {
+    pub code_start: FileOffset,
+    pub import_start: FileOffset,
+    pub code_rva: Rva,
+    pub import_rva: Rva,
+    pub code_raw_size: u32,
+    pub file_size: u32,
+}
+impl FoundationLayout {
+    pub fn for_code_size(size: usize) -> Result<Self, String> {
+        if !(1..=4096).contains(&size) {
+            return Err("native code must contain 1..4096 bytes".into());
+        }
+        let raw = (u32::try_from(size).map_err(|_| "code size overflow")? + 511) & !511;
+        Ok(Self {
+            code_start: FileOffset(512),
+            import_start: FileOffset(512 + raw),
+            code_rva: Rva(4096),
+            import_rva: Rva(8192),
+            code_raw_size: raw,
+            file_size: 1024 + raw,
+        })
+    }
+}
 pub const TEXT_RVA: u32 = 0x1000;
 pub const EXIT_IAT_RVA: u32 = 0x2050;
 fn u16at(b: &mut [u8], at: usize, v: u16) {
@@ -15,12 +58,10 @@ fn u64at(b: &mut [u8], at: usize, v: u64) {
 /// The entrypoint may call ExitProcess indirectly through EXIT_IAT_RVA.
 /// This foundation supports at most one page of code and has no relocations.
 pub fn image(text: &[u8]) -> Result<Vec<u8>, String> {
-    if text.is_empty() || text.len() > 0x1000 {
-        return Err("native code must contain 1..4096 bytes".into());
-    }
-    let raw_size = (text.len() + 511) & !511;
-    let data_offset = 0x200 + raw_size;
-    let mut b = vec![0u8; data_offset + 0x200];
+    let layout = FoundationLayout::for_code_size(text.len())?;
+    let raw_size = layout.code_raw_size as usize;
+    let data_offset = layout.import_start.0 as usize;
+    let mut b = vec![0u8; layout.file_size as usize];
     b[..2].copy_from_slice(b"MZ");
     u32at(&mut b, 0x3c, 0x80);
     b[0x80..0x84].copy_from_slice(b"PE\0\0");

@@ -1,0 +1,69 @@
+{
+  "phase": "P01",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "Cargo.lock": "c862465f533aff4f4487a5d1e4f45c2e52d50bc5ab9e141010bc055376101695",
+    "Cargo.toml": "4b7a7b9976c5e135930270fca851c9e955e21ce6b3e0325a80ee77c9ee536724",
+    "src\\bytecode.rs": "8918498f2e2af171779d9b4929ec77cad49e1609113651b84bce085af24b4363",
+    "src\\ir.rs": "cfc90a81ce4ee2b4c13fc9702dadd613336f185443cf5b504c4786decea16b5c",
+    "src\\lexer.rs": "358d7f74a908618c8439804f41b8f98de3bcc1a9cf37827f47bcf20f8796dd5d",
+    "src\\lib.rs": "ca8a2df81660f795a4dfac8ec34f6b130736e9a43f0eaf14cecc774f5ca058bc",
+    "src\\main.rs": "c11354db233faa67558691c214a6d0769a802aaf24dd71c3649c0e4507a7e24d",
+    "src\\native_pe.rs": "23828486146176f4d6f955406cb5533703b98ce6ea27e390c2d3597289e5a461",
+    "src\\optimize.rs": "f992813646eecae9209bf4d78c33d83cc8af0aa63843bb8d3259643143079ae7",
+    "src\\parser.rs": "12bf797885d0ee50ad195f7ccd417a2e74856120a55c092da4c01397f94c1749",
+    "src\\semantic.rs": "520b608ab468c04593ead95d09332f7f4776ee6b1664832e99baaef20243265e",
+    "src\\stress.rs": "4413321ad6047258880da2d0c958c472a4d10a05ea3f91dc6dc5e4d605693ccb",
+    "tests\\cli.rs": "391d278ee19b1baa63118bc832047a339f5bf0d2ab16bae656e8e664d8fd43d9",
+    "tests\\pe_foundation.rs": "ea5f52ba9239bcaa5d084b355114c2bb7a2066b673e46b2d1fd0bae9c8244d92"
+  },
+  "required_commands_executed": true,
+  "commands_passed": true
+}
