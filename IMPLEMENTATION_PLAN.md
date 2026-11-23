@@ -126,3 +126,36 @@ The user requested aggressive testing followed by command-line installation. Wit
 Validation: 29 automated tests pass, including 16,150 arithmetic executions across both optimization modes, 10,000 deterministic random input attempts, source mutations, oversized syntax, and all six demos. The optional deterministic GCC differential suite passed 100 generated programs in both modes (200 comparisons). Formatting and Clippy checks pass. This evidence covers the tested cases; it is not proof of correctness for all input programs.
 
 Installed the release executable with `cargo install --path .` and verified the `compiler` command from outside the repository. Installation, examples, and the optional differential suite are documented in README. The compiler still targets the approved bytecode VM. Native `.exe` output for compiled C input requires approval before implementation.
+
+
+## Native compiler expansion — user-directed architecture
+
+The user rejected external compiler/linker dependence and directed us to build the complete toolchain ourselves. This section supersedes the earlier VM-only output target for future deliveries. The existing VM remains a tested reference backend during migration. The scope is broader C support through a project-owned native backend, not a claim of current C conformance.
+
+### Target and ownership
+
+Proposed language target: hosted C11 on Windows x64. Language version is a working target for specification, not a certification. We own parsing, semantic analysis, preprocessing, intermediate code, optimization, machine instruction encoding, symbol resolution, PE executable writing, and the C library/runtime implementation. No GCC, Clang, external assembler, linker, third-party C compiler, or bytecode interpreter may generate or execute the native output. Rust's normal build toolchain builds our compiler itself. Generated programs may use Windows OS services such as process exit, file IO, and virtual memory; implementing Windows is outside this compiler project.
+
+Full acceptance of valid C11 programs also requires the standard library and correct target-specific semantics. Nonstandard compiler extensions, other platforms, and programs requiring unrelated third-party libraries cannot be covered by a promise of accepting any source code.
+
+### Ordered native milestones and test gates
+
+- **8A: PE executable foundation.** Implement PE32+ headers, section placement, imports, and entrypoint bytes in Rust. Emit and launch genuine x64 executables that invoke the Windows ExitProcess API. Validate headers, section bounds, import resolution, and process exit statuses. No frontend/native CLI integration is claimed at this stage.
+- **8B: machine code backend.** Encode the current IR directly into x64 instruction bytes, including locals, arithmetic, comparisons, jumps, checked errors, and correct Windows calling convention. Build a project-owned native runtime for integer/string output and length using OS IO services. Compare actual native execution against both VM modes for the complete current demo set; no precomputed output or VM embedding.
+- **8C: native CLI and distribution.** Implement `compiler program.c -o program.exe`, output-path protection, useful build diagnostics, and standalone execution checks. Preserve stage inspection. Test failure cleanup, paths containing spaces, runtime errors, and execution from another directory without compiler availability.
+- **9: conventional syntax and control flow.** Comments, character literals, integer bases/suffixes, increment/decrement, compound assignments, flexible returns, break/continue, do/while and switch. Define each new operation before code and test precedence, evaluation count, and control flow.
+- **10: functions and types.** Function declarations/definitions, parameters, calls, recursion, stack frames, integer types, conversions, globals and storage duration. Test C-defined evaluation rules and ABI behavior.
+- **11: memory.** Arrays, pointers, address/dereference, mutable strings, sizeof, object lifetime, allocation and deallocation. Own the runtime implementation; use Windows memory services underneath it. Establish layout and lifetime rules before coding.
+- **12: aggregates and floating point.** Structs, unions, enums, qualifiers, typedefs, bitfields, floating types, alignment and target layout.
+- **13: preprocessing and translation units.** Macros, conditional inclusion, headers, source locations across includes, internal/external linkage, object format and project-owned linking.
+- **14: hosted C11 conformance work.** Build and test the standard library, remaining C11 features, and a conformance matrix. Document unsupported cases explicitly until independently tested. Language and runtime coverage must be measured rather than inferred from example count.
+
+Each milestone must pass focused tests and all earlier regressions before the next. Detailed grammar, ABI, library and diagnostic rules must be added here before the corresponding implementation. Routine implementation decisions within these milestones are authorized. Changes to architecture, dependencies or agreed target still require asking the user first. Implementation status must distinguish foundation work from working end-to-end C compilation.
+
+### Immediate acceptance gate
+
+Complete and test 8A before starting 8B. Completion of 8A does not mean the C compiler can yet emit arbitrary native programs. Native CLI is delivered only after the entire existing subset has a tested native backend.
+
+### Native foundation validation
+
+8A implemented in `src/native_pe.rs`: project-owned PE32+ headers, aligned executable and import sections, a Kernel32 import table, and native entrypoint payload packaging. Windows process tests executed generated machine code with exit statuses 0, 37 and 255, including paths containing spaces. Empty/oversized payloads and section bounds are tested. The foundation currently permits at most 4096 code bytes, uses a fixed image base without base relocations, and imports only ExitProcess. These are foundation constraints to replace as the native backend grows, not claims of general executable support. No native C CLI option is implemented yet. 8B and subsequent milestones remain outstanding.

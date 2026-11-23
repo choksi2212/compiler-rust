@@ -66,3 +66,7 @@ python tools/differential.py
 ```
 
 It requires Python and GCC and compares 100 generated, defined-behavior C programs with optimized and unoptimized execution. GCC is only a test oracle. Leading-zero nondecimal literals and unsupported compound operators are rejected. Reserved C keywords and the built-in names `main`, `printf`, and `strlen` cannot be declared as local variables.
+
+## Native backend development status
+
+The implementation plan now includes a project-owned native toolchain roadmap. The PE32+ executable foundation is implemented and tested by launching real Windows x64 machine code with several exit statuses. It calls the Windows process-exit service and uses no external assembler or linker. This foundation is not connected to the C frontend yet: `compiler file.c` still uses the VM, and native `-o` support remains pending. Full C11 and standard library support remain future work.
