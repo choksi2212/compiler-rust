@@ -3,6 +3,9 @@ use std::collections::HashMap;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Reg(u8);
 impl Reg {
+    pub fn number(self) -> u8 {
+        self.0
+    }
     pub fn new(n: u8) -> Result<Self, String> {
         if n < 16 {
             Ok(Self(n))

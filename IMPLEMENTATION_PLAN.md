@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.2, continuous phase execution; P01-P03 passed, P04 in progress
+**Revision:** 3.2, continuous phase execution; P01-P04 passed, P05 in progress
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -687,7 +687,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P02 | Shared compiler library and legacy IR verification | 8B-1 | Passed; evidence in section 13.7.1 |
 | P03 | Project x64 instruction encoder | 8B-2 | Passed; evidence in section 13.8.2 |
 | P04 | Dynamic PE layout, imports and fixups | 8B-3 | Passed; evidence in section 13.9.2 |
-| P05 | ABI, stack frames and unwind generation | 8B-4 | Planned |
+| P05 | ABI, stack frames and unwind generation | 8B-4 | Passed; evidence in section 13.10.2 |
 | P06 | Native subset arithmetic and control flow | 8B-5/6 | Planned |
 | P07 | Native subset runtime and startup | 8B-7/8 | Planned |
 | P08 | Complete C-subset-to-native integration | 8B-9 | Planned |
@@ -1015,6 +1015,28 @@ Work items:
 **Deliverables:** ABI helper, frame builder, unwind emitter, stack-probe behavior and fixtures.
 **Gate:** actual native calls preserve state and deliver arguments/results correctly; metadata agrees with executed frame operations.
 **Boundary:** passing exit-only code is insufficient evidence for this phase.
+
+#### 13.10.1 P05 implementation contract before coding
+
+The first shared ABI classifier covers delivered integer/pointer scalars: positional argument registers RCX/RDX/R8/R9, subsequent stack arguments beginning32 bytes above caller RSP, scalar return in RAX. Classification for floating and aggregate types remains explicitly unsupported until their phases. Incoming stack offsets account for return address, saved pushes and frame allocation. Register preservation covers the Windows nonvolatile integer set; floating saves remain later work.
+
+A frame request specifies outgoing call argument capacity, aligned locals, eight-byte temporary homes, byte initialization flags and explicitly saved nonvolatile registers. The frame planner computes one checked layout, keeps body/call-site RSP16-aligned, reserves shadow space for calls, and emits push/sub and add/pop/ret sequences. Unwind version1 records encode the same pushes/allocation with correct code offsets and small/large allocation forms; no frame-pointer or handler/chained record is advertised initially. Prologue size and unwind-slot counts must fit their fields.
+
+For allocations beyond4096 bytes, emit owned inline page probes through scratch RAX/R10/R11 before the final RSP adjustment. A compact loop touches each intervening page and the final extent; incoming argument registers are preserved. This is compiler-owned runtime behavior, not a call to system CRT chkstk. Resource limits and scratch clobbers are explicit. Probe labels must come from the caller's label allocator.
+
+P05 tests must exercise scalar arguments0-12, callee-saved preservation, nested calls, large probed frames, independent unwind decoding and Windows' actual unwind functions against real generated frames. Test-only Rust/Windows-API harnesses may allocate native executable memory and inspect copied execution contexts; CPU execution and the OS unwinder are the actual engines, never a simulated unwinder. P04 image exception-directory placement is reused for serialized metadata inspection; no source-level function feature is claimed before P12.
+
+#### 13.10.2 P05 completion evidence
+
+Baseline: `8447451`. `src/abi.rs` implements scalar argument locations, checked stack layout with read-only plan accessors, outgoing shadow/stack arguments, aligned locals/temporaries/initialization flags, saved integer nonvolatiles, matching prologues/epilogues and version1 unwind records. Allocations over4096 use an owned compact page-probe loop; the initial frame cap is1MiB. Small and both large unwind allocation encodings are supported. Floating/aggregate ABI and handler/chained unwind forms remain unsupported as specified.
+
+The owned unwind validator checks headers, slot/padding lengths, operation forms, ordering and save/allocation fields. Function records reject invalid/overlapping ranges. `with_unwind` transactionally lays out .xdata/.pdata, fills real image-relative records and connects the PE exception directory without external linking; supplied records are checked against text/prologue bounds. This links metadata generation to the same frame plan used by actual instructions.
+
+Tests cover 468 frame-layout/prologue combinations, allocation encoding boundaries through1MiB, invalid requests, incoming argument offsets and metadata errors. Real generated code receives0-12 scalar arguments and preserves tested saved state. Windows RtlCaptureContext/RtlLookupFunctionEntry/RtlVirtualUnwind restore the expected caller RIP/RSP/RBX through actual generated frames for local sizes8/8240/65536/600000; these are not synthetic stack simulations. The test harness uses Rust/Windows APIs only to allocate executable test memory and ask the actual OS unwinder to inspect live frames. Native code and unwind records are ours. Metadata corruption tests include10000 deterministic random buffers, seed2212.
+
+A standalone generated PE imports RtlLookupFunctionEntry and successfully finds its own serialized .pdata record. Independent objdump inspection decodes the same .pdata/.xdata and allocation40 prologue: [inspection log](validation/P05-unwind-inspection.log), [artifact identity](validation/P05-artifact.json). Reproduce the artifact with `cargo test --test abi_image windows_finds_serialized_function_unwind_table` at ignored `target/P05-unwind-audit.exe`.
+
+`python validation/run_gate.py P05` passed formatting, warnings-denied Clippy and all-target debug/release tests: 62 passed per mode, zero failed/ignored. [Gate log](validation/P05-gate.log), [results and source hashes](validation/P05-gate.json). No unresolved P05 failure. Source-level C functions are still future P12 work. Next eligible phase: P06.
 
 ### 13.11 P06 - Native lowering of subset operations and control flow
 
