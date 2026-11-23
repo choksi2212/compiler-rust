@@ -1,0 +1,6 @@
+COMMAND: python tools/encoding_differential.py
+Encoded 14740 oracle fixtures
+
+{"fixtures_sha256": "a05691357c0b976a40f956dc3e9e7a461508145cd74e143a6327a45a0b111853", "generator_sha256": "9b71560937e35c1c5efb19572267673f787dfde6b14fa08f11cb742bacc915ec", "fixtures": 14740, "own_bytes": 70269, "reference_bytes": 70263, "decoded_instructions": 14964, "all_decoded_operations_match": true, "valid_alternate_encodings": [{"instruction": "add $0x12345678,%eax", "own": "81c078563412", "reference": "0578563412"}, {"instruction": "sub $0x12345678,%eax", "own": "81e878563412", "reference": "2d78563412"}, {"instruction": "cmp $0x12345678,%eax", "own": "81f878563412", "reference": "3d78563412"}, {"instruction": "add $0x12345678,%rax", "own": "4881c078563412", "reference": "480578563412"}, {"instruction": "sub $0x12345678,%rax", "own": "4881e878563412", "reference": "482d78563412"}, {"instruction": "cmp $0x12345678,%rax", "own": "4881f878563412", "reference": "483d78563412"}], "oracle": "GNU as, objcopy and objdump; development only"}
+
+EXIT: 0

@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.2, continuous phase execution; P01 in progress
+**Revision:** 3.2, continuous phase execution; P01/P02 passed, P03 in progress
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -685,7 +685,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P00 | Review, baseline and specification freeze | Plan review | Passed; evidence in section 13.5.1 |
 | P01 | Native foundation audit | 8A audit | Passed; evidence in section 13.6.1 |
 | P02 | Shared compiler library and legacy IR verification | 8B-1 | Passed; evidence in section 13.7.1 |
-| P03 | Project x64 instruction encoder | 8B-2 | Planned |
+| P03 | Project x64 instruction encoder | 8B-2 | Passed; evidence in section 13.8.2 |
 | P04 | Dynamic PE layout, imports and fixups | 8B-3 | Planned |
 | P05 | ABI, stack frames and unwind generation | 8B-4 | Planned |
 | P06 | Native subset arithmetic and control flow | 8B-5/6 | Planned |
@@ -930,6 +930,28 @@ Work items:
 **Deliverables:** encoder module, machine-fragment contract, reviewed encoding corpus.
 **Gate:** required instruction families pass byte and real-execution tests; impossible operands/fixups fail explicitly.
 **Boundary:** no broad optimizer, register allocator or full C source integration yet; scratch-register allocation remains conservative.
+
+#### 13.8.1 P03 implementation contract before coding
+
+The initial encoder accepts typed register IDs0-15, explicit 32/64-bit widths and base/index/scale/displacement memory operands. RSP cannot be an index; R12 can. Displacement is signed32, with valid disp8 shortening and required zero displacement for base RBP/R13. Byte loads zero-extend; low-byte stores and condition results require the appropriate REX form. Unsupported operands return errors before any executable publication.
+
+Instruction inventory: immediate/register moves, memory loads/stores, LEA, byte load/store, add/sub/and/or/xor/compare/test, signed multiply, negation, CDQ/CQO, signed division, condition-to-normalized-integer, immediate add/sub/compare, push/pop, direct/indirect calls, labels, conditional/unconditional branches, RIP-relative import calls and symbol-address LEA, return and NOP. This covers bootstrap/native subset needs without claiming the whole x64 ISA.
+
+`MachineFragment` owns encoded bytes, instruction-offset/debug records and unresolved symbolic RIP references. Local labels resolve during encoding; duplicate/missing labels are errors. External symbol fixups resolve only with an explicit code RVA/symbol map and checked signed32 displacement. P04 will supply dynamic symbol addresses; P03 native tests use the already tested fixed foundation as a harness. Encoder tests do not certify ABI/frame/unwind behavior reserved for P05.
+
+Encoding review reference: [Intel SDM manuals](https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html), Volume2 instruction encodings and chapter2 operand-format tables. Independent byte fixtures and real-execution tests are both required. The dump derives offsets and instruction descriptions from the exact encoded instruction list.
+
+#### 13.8.2 P03 completion evidence
+
+Baseline: `16d2860`. `src/x64.rs` implements the specified typed encoder, addressing, local labels, external fixups and exact-instruction listings. No external assembler/disassembler is used by production encoding. Unsupported registers, 32-bit immediate overflow, RSP index, duplicate/missing labels, invalid external boundaries and rel32 overflow have explicit errors. Byte loads/stores and boolean results handle low-byte REX encodings.
+
+`tests/x64_encoder.rs` includes independently reviewed byte fixtures, rel32 limits, malformed fixups and native execution. The four native batches execute 49 generated processes per build mode, covering arithmetic, signed division/remainder, all 14 delivered branch conditions, overflow flags, high/low byte registers, stack/base/index memory, qword values above32bits, direct/indirect calls, RIP-relative symbol addresses and balanced push/pop. These are encoding/CPU tests, not a claim of P05 ABI/unwind compliance.
+
+`python validation/run_gate.py P03` passed formatting, warnings-denied Clippy, and all-target debug/release tests: 47 passed in each mode, zero failed/ignored. See [gate log](validation/P03-gate.log) and [source hashes/results](validation/P03-gate.json).
+
+The independent development-only oracle generated 14740 instruction fixtures spanning every register, 32/64-bit forms, addressing/displacement boundaries, SIB scales, byte forms and condition results. GNU as/objcopy/objdump independently decoded 14964 instructions matching our operations/operands. Six encodings differ in bytes because the assembler chooses the valid shorter accumulator-immediate form; the retained operands/operations match, and both byte forms are recorded. All cases remain in the comparison. This is not a claim that every x64 encoding is supported. See [oracle result and alternatives](validation/P03-encoding-oracle.json), [command output](validation/P03-encoding-oracle.log), [initial overstrict-byte-oracle failure](validation/P03-first-oracle-failure.log), and `tools/encoding_differential.py` / `examples/encoding_oracle.rs` for reproduction. The generator/fixture hashes are recorded.
+
+Two warnings-denied checks initially rejected range-loop style in the fixture generator; [first](validation/P03-first-lint-failure.log) and [second](validation/P03-second-lint-failure.log) failures were retained, loops corrected, and full gates rerun. No unresolved P03 failure remains. Next eligible phase: P04.
 
 ### 13.9 P04 - Dynamic executable layout, imports and fixups
 

@@ -1,0 +1,27 @@
+Phase gate evidence; phase status is governed by IMPLEMENTATION_PLAN.md.
+Baseline HEAD: 16d2860e5ac09891c702af2e2b6be4e490327158
+
+COMMAND: cargo fmt --check
+
+EXIT: 0
+
+COMMAND: cargo clippy --all-targets --locked --offline -- -D warnings
+    Checking compiler v0.1.0 (N:\compiler-proj)
+error: the loop variable `index` is used to index `q`
+   --> examples\encoding_oracle.rs:138:22
+    |
+138 |         for index in 0..16 {
+    |                      ^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#needless_range_loop
+    = note: `-D clippy::needless-range-loop` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_range_loop)]`
+help: consider using an iterator and enumerate()
+    |
+138 -         for index in 0..16 {
+138 +         for (index, <item>) in q.iter().enumerate() {
+    |
+
+error: could not compile `compiler` (example "encoding_oracle") due to 1 previous error
+
+EXIT: 101

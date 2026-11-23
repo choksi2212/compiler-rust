@@ -1,0 +1,6 @@
+COMMAND: python tools/encoding_differential.py (initial strict byte comparison)
+Generated 14612 fixtures.
+FAILED at byte385: addl $0x12345678,%eax
+Own bytes: 81 c0 78 56 34 12
+GNU as bytes start: 05 78 56 34 12
+Classification under investigation: alternate accumulator-immediate encoding; not silently waived.

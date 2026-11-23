@@ -1,0 +1,77 @@
+{
+  "phase": "P03",
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--all-targets",
+        "--release",
+        "--locked",
+        "--offline"
+      ],
+      "exit": 0,
+      "ignored_tests": 0,
+      "passed": true
+    }
+  ],
+  "source_sha256": {
+    "Cargo.lock": "c862465f533aff4f4487a5d1e4f45c2e52d50bc5ab9e141010bc055376101695",
+    "Cargo.toml": "4b7a7b9976c5e135930270fca851c9e955e21ce6b3e0325a80ee77c9ee536724",
+    "src\\bytecode.rs": "c2e6284cd4ee997ba6bd5709dfbaa4b9c0c713fc82b8bf1c479d667f206f267e",
+    "src\\context.rs": "76c834a2529a90db2830388ceb238b065d7849023a0abdcb85ff9af7e9a9a85d",
+    "src\\ir.rs": "cfc90a81ce4ee2b4c13fc9702dadd613336f185443cf5b504c4786decea16b5c",
+    "src\\lexer.rs": "358d7f74a908618c8439804f41b8f98de3bcc1a9cf37827f47bcf20f8796dd5d",
+    "src\\lib.rs": "fce6ee9404bcd06199e209643bcdb8c4c39aa10412a006057305a6e37aa89dbb",
+    "src\\main.rs": "14f0a0d7afae3d043fbe76f8bbe45e12bc5853ca8784af0fe3bbf088caee6ba3",
+    "src\\native_pe.rs": "23828486146176f4d6f955406cb5533703b98ce6ea27e390c2d3597289e5a461",
+    "src\\optimize.rs": "f992813646eecae9209bf4d78c33d83cc8af0aa63843bb8d3259643143079ae7",
+    "src\\parser.rs": "12bf797885d0ee50ad195f7ccd417a2e74856120a55c092da4c01397f94c1749",
+    "src\\semantic.rs": "520b608ab468c04593ead95d09332f7f4776ee6b1664832e99baaef20243265e",
+    "src\\stress.rs": "4413321ad6047258880da2d0c958c472a4d10a05ea3f91dc6dc5e4d605693ccb",
+    "src\\verify.rs": "041d8c75f46d3db3d8c3688b8874dd472f91a95f61c126891de1410adf02b484",
+    "src\\x64.rs": "88221e0454c385e1049758ab9275d5e456b7210c6be4876060bd4156cf994e7e",
+    "tests\\cli.rs": "391d278ee19b1baa63118bc832047a339f5bf0d2ab16bae656e8e664d8fd43d9",
+    "tests\\pe_foundation.rs": "ea5f52ba9239bcaa5d084b355114c2bb7a2066b673e46b2d1fd0bae9c8244d92",
+    "tests\\x64_encoder.rs": "716e0d2d3435342635f933d49670884aa975500f1882a94aa2b043f4fcef3895"
+  },
+  "required_commands_executed": true,
+  "commands_passed": true
+}
