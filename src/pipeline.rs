@@ -30,6 +30,13 @@ impl CompilationContext {
         options: &NativeCompileOptions,
     ) -> Result<NativeCompilation, Diagnostic> {
         let input = self.source(source)?;
+        if self.semantics != crate::context::Semantics::Teaching {
+            return Err(Diagnostic {
+                source,
+                stage: Stage::Input,
+                message: "teaching pipeline requires teaching semantics".into(),
+            });
+        }
         let tokens = self.run_stage(source, Stage::Lex, || crate::lexer::lex(&input.text))?;
         let ast = self.run_stage(source, Stage::Parse, || {
             crate::parser::parse(tokens.clone())

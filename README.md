@@ -19,6 +19,21 @@ The current subset supports one `int main()` or `int main(void)`, integer locals
 
 It accepts a leading `#include <stdio.h>` directive; this is not a preprocessor. `printf` and `strlen` remain built-ins. Strings are UTF-8 literals; escaped NUL terminates C string operations, and `strlen` counts bytes before that terminator. General pointers, mutable strings, arrays, input functions, other headers and user-defined functions are future phases. Integer operations use checked signed32 arithmetic. Uninitialized reads report a runtime error; jumping into a new scope clears its locals' initialization state rather than reusing a previous lifetime's values.
 
+For the partial typed C11 path, use an explicit mode:
+
+```powershell
+compiler examples/typed_integers.c --std=c11 -O0 -o typed.exe
+.\typed.exe
+$LASTEXITCODE  # 0 means all checks in this example passed
+compiler examples/typed_integers.c --std=c11 -fsyntax-only --ast
+```
+
+This path implements Windows LLP64 integers: signed plain char8, short16, int/long32 and long long64, plus their unsigned variants and `_Bool`. It supports typed literals/suffixes, casts, promotions, arithmetic/bitwise/shift operations, typedefs, qualifiers, target `sizeof`/`_Alignof`, integer locals and the documented control flow. Unsigned arithmetic wraps at its type width. Signed overflow, invalid shifts and uninitialized reads are checked extensions; the `--std=c11` flag selects evolving language rules and does **not** claim conformance.
+
+Typed output currently uses main's process result: general calls, printf/strlen calls, global storage, pointer/array execution, floating types and preprocessing are future phases. Pointer/array/function declaration records and layout queries are implemented; accepting a type declaration for `-fsyntax-only` does not imply its runtime operations are supported. Keep using the default teaching path for the original printf demos. Typed mode requires `-o` or `-fsyntax-only` and rejects VM flags. `-fsyntax-only` allows token/AST dumps and rejects output/IR-dump combinations. The native publisher's overwrite/input-protection rules apply to both paths.
+
+Current resource limits include source16MiB, one million tokens, syntax recursion64,128 operators across a complete expression, type derivation128 and4096 typed basic blocks. These are partial-compiler limits and remain part of the later conformance audit. Signed narrowing uses the declared low-bit two's-complement policy and signed right shifts are arithmetic.
+
 Bytecode instruction reference:
 
 | Instruction | Behavior |
@@ -32,7 +47,7 @@ Bytecode instruction reference:
 | Print | Pop arguments, format output, push byte count |
 | Halt / Return | Finish with zero / computed integer process result |
 
-Runtime errors include division by zero, integer overflow, uninitialized reads, invalid stack operations, and invalid instruction targets. Execution is limited to ten million VM instructions to bound accidental infinite loops. Program output is buffered until execution succeeds.
+Runtime errors include division by zero, integer overflow, uninitialized reads, invalid stack operations, and invalid instruction targets. VM execution is limited to ten million instructions to bound accidental infinite loops. Program output is buffered until execution succeeds.
 
 The compiler never invokes another C compiler. Tests check each compiler stage, errors, short-circuit logic, scope behavior, and all demo outputs with and without optimization.
 
@@ -82,4 +97,4 @@ It requires Python and GCC and compares 100 generated, defined-behavior C progra
 
 Version 0.2.0 compiles the documented teaching C subset to real Windows x64 PE32+ executables. Generated programs use owned checked integer arithmetic, short-circuit control flow, pooled UTF-8 literals, `%d`/`%s` formatting, `strlen`, buffered output, Windows stack frames, unwind metadata and ASLR relocations. Native output is limited to 16MiB by default; unlike the VM, native loops have no instruction quota. Production compilation does not invoke an external C compiler, assembler, linker or C runtime. Full C11 and the full standard library are future phases; current capability and evidence are tracked in the canonical plan.
 
-P09 distribution evidence covers its frozen subset release; P10 adds the documented control flow. Run the current phase gate with `python validation/run_gate.py P10` and its optional GCC comparison with `python tools/control_differential.py`. Optional independent encoder/native-source comparisons use GNU tools only as development oracles. Evidence is in `validation/`. The portable Windows package is assembled from the tested release binary under `target/P09-package/`; no official release upload is performed automatically.
+P09 distribution evidence covers its frozen subset release; P10 adds the documented control flow. P11 introduces the explicit typed path above. Run its gate with `python validation/run_gate.py P11`; independent development comparisons are `python tools/typed_differential.py` and `python tools/encoding_differential.py --phase P11`. The P10 control-flow oracle remains `python tools/control_differential.py`. Optional independent encoder/native-source comparisons use GNU tools only as development oracles. Evidence is in `validation/`. The portable Windows package is assembled from the tested release binary under `target/P09-package/`; no official release upload is performed automatically.

@@ -1,8 +1,13 @@
 """Compare our encoder bytes with GNU as; development-only, never production."""
 from pathlib import Path
-import subprocess,tempfile,json,hashlib
+import subprocess,tempfile,json,hashlib,argparse
+parser=argparse.ArgumentParser()
+parser.add_argument("--phase",choices=["P03","P11"],default="P03")
+phase=parser.parse_args().phase
 root=Path(__file__).resolve().parents[1]
 fixtures=root/'target/encoding-fixtures.tsv'
+summary_path=root/('validation/'+phase+'-encoding-oracle.json')
+summary_path.write_bytes(b'{"all_decoded_operations_match":false,"status":"running"}\n')
 def run(args):
  p=subprocess.run([str(a) for a in args],cwd=root,capture_output=True,timeout=60)
  if p.returncode:raise RuntimeError((args,p.returncode,p.stdout,p.stderr))
@@ -40,6 +45,6 @@ with tempfile.TemporaryDirectory(prefix='x64 independent oracle ') as temp:
   ref_end=reference_rows[i+1][0] if i+1<len(reference_rows) else len(reference)
   if expected[at:own_end]!=reference[ref_at:ref_end]:
    alternatives.append(dict(instruction=own_text,own=expected[at:own_end].hex(),reference=reference[ref_at:ref_end].hex()))
-summary=dict(fixtures_sha256=hashlib.sha256(fixtures.read_bytes()).hexdigest(),generator_sha256=hashlib.sha256((root/'examples/encoding_oracle.rs').read_bytes()).hexdigest(),fixtures=len(records),own_bytes=len(expected),reference_bytes=len(reference),decoded_instructions=len(own_rows),all_decoded_operations_match=True,valid_alternate_encodings=alternatives,oracle='GNU as, objcopy and objdump; development only')
-(root/'validation/P03-encoding-oracle.json').write_bytes((json.dumps(summary,indent=2)+'\n').encode())
+summary=dict(encoder_sha256=hashlib.sha256((root/'src/x64.rs').read_bytes()).hexdigest(),fixtures_sha256=hashlib.sha256(fixtures.read_bytes()).hexdigest(),generator_sha256=hashlib.sha256((root/'examples/encoding_oracle.rs').read_bytes()).hexdigest(),fixtures=len(records),own_bytes=len(expected),reference_bytes=len(reference),decoded_instructions=len(own_rows),all_decoded_operations_match=True,valid_alternate_encodings=alternatives,oracle='GNU as, objcopy and objdump; development only')
+summary_path.write_bytes((json.dumps(summary,indent=2)+'\n').encode())
 print(json.dumps(summary),flush=True)

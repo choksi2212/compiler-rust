@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 3.5, continuous phase execution; P01-P10 passed
+**Revision:** 3.7, continuous phase execution; P01-P11 passed
 **Date:** 2026-11-24 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -642,7 +642,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P10 have passed their recorded gates; P11 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P11 have passed their recorded gates; P12 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -693,7 +693,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P08 | Complete C-subset-to-native integration | 8B-9 | Passed; evidence in section 13.13.2 |
 | P09 | Native CLI and usable distribution | 8C | Passed: output safety, CLI and packaging |
 | P10 | Conventional syntax and control flow | 9 | Passed; evidence in section 13.15.2 |
-| P11 | General type system and typed IR | 10, type portion | Planned |
+| P11 | General type system and typed IR | 10, type portion | Passed; evidence in section 13.16.2 |
 | P12 | Functions, calls, globals and variadics | 10, function/storage portion | Planned |
 | P13 | Pointers, arrays, memory and strings | 11 | Planned |
 | P14 | Aggregates and advanced declaration forms | 12, aggregate portion | Planned |
@@ -1262,6 +1262,38 @@ Work items:
 **Gate:** accepted typed operations have correct native semantics and explicit conversions; existing examples still work; unsupported type operations are rejected.
 **Boundary:** parsing a pointer type alone does not qualify pointer execution or full declarator coverage as complete.
 
+#### 13.16.1 P11 implementation contract before coding
+
+Retain the existing checked teaching frontend/IR/VM explicitly, including source-only execution and native default behavior. Add a separate typed frontend/IR path for explicit `--std=c11` native compilation and `-fsyntax-only`; the option describes selected language rules and partial capability, never a conformance claim. Reject typed VM requests rather than silently erasing widths/types. Runtime/call/memory facilities not delivered by this phase remain diagnostics. All production logic stays in Rust with no new dependencies.
+
+Freeze the Windows LLP64 scalar layout already specified in section8: signed plain char8, short16, int/long32, long long64, Bool8, pointers64; natural scalar alignment. Canonical TypeIds represent integer kinds/ranks, void, qualifiers, pointers, constant/incomplete arrays and function signatures. Queries diagnose invalid/incomplete layouts instead of using Rust host sizes. Typedef names participate in scoped grammar/name lookup with declaration identities; compatibility and qualifier rules are explicit. Array/function type records and sizeof queries do not imply their execution support before P12/P13. Floating/aggregate types remain future phases.
+
+Implement target integer values as normalized bit patterns with their TypeId. Literal selection follows C11 decimal versus octal/hex candidate lists and suffixes; promotions/usual arithmetic conversions distinguish equal-width int and long ranks. Define signed narrowing as target two's-complement low-bit conversion, signed right shift as arithmetic, and unsigned arithmetic modulo its width. Signed overflow/division faults may be diagnosed/trapped as checked extensions; oracle programs exclude undefined behavior. Bool conversions compare against zero. sizeof returns target size_t (unsigned long long), does not evaluate scalar operands, and rejects incomplete/function/void operands. Parser and semantic checks insert explicit conversions rather than storing wide values in legacy i32 slots.
+
+Typed IR has distinct module/function/block/value/local/symbol identities, typed constants/operations/conversions, explicit control terminators and declared effects. Memory/call record shapes are validated but unimplemented execution paths are rejected until their owning phases; no placeholder code is emitted. Native integer lowering uses actual64-bit homes/instructions, normalization and signed/unsigned comparison/division/shift semantics as required. Extend the owned encoder only with independently checked bytes and CPU tests. Typed optimizations use target arithmetic and preserve observable effects and checks; verification runs before/after each enabled transformation. The compatibility path remains independent and keeps all prior gates.
+
+Parser resource checks also cover aggregate complexity across nested subexpressions/declarators, not just each individual tail. An actual compatibility probe found a pre-existing teaching-parser stack overflow from an8157-byte nested/tail combination; preserve its failing process result and add a clean-diagnostic regression in both frontends. The expression operator ceiling is128 across a complete expression, syntax recursion64, type derivation128 and typed CFG blocks4096. These are explicit partial-compiler resource limits, not a final conformance/translation-limit claim.
+
+The phase is not complete after type-model or AST-only tests. Required evidence includes native signed/unsigned width/rank/conversion behavior, typed IR invalid-case rejection, typedef/declarator/sizeof diagnostics, unoptimized/optimized agreement on defined programs, and independent GCC comparisons. Documentation updates and passing foundation subtests alone do not open P12.
+
+#### 13.16.2 P11 completion evidence (2026-11-24)
+
+P11 passed its defined gate. `validation/P11-gate.json` and `.log` record formatting, strict all-target Clippy, and debug/release all-target tests: **135 passed per mode, zero failed/ignored**. The gate now fingerprints Rust examples and the gate runner itself as well as source/tests/Cargo files. Its final source manifest matches the implementation.
+
+Implemented modules: `types` (canonical target types, qualifiers, complete/incomplete derived records and layouts), `integer` (target arithmetic), `typed_front` (scoped typedef-aware declarators and typed integer expressions/statements), `typed_ir` (distinct identities, typed/effect-bearing operations and CFG verifier), `typed_lower` (explicit conversions/control/lifetimes), `typed_opt` (verified constant/branch folding and unreachable removal), `typed_native` (real x64 integer lowering), and `typed_pipeline`. Compilation contexts explicitly select Teaching or C11; mixed pipeline/context requests are rejected. The separate teaching frontend/IR/VM remains the default. No new production dependency was added.
+
+Tests cover LLP64 width/rank/literal-candidate lists, every pair of integer conversion kinds and boundary patterns, exhaustive byte conversions, signed/unsigned arithmetic/comparisons/division/shifts on the actual CPU, narrow updates/Bool conversion, volatile preservation, typedef shadowing and a separate label namespace, pointer/array/function declarator precedence, constant/incomplete layouts, scalar sizeof without evaluation, return conversion and status/result separation. Native ABI fixtures exercise twelve mixed integer-width parameters across registers/stack and probed large frames. Negative typed IR tests check malformed identities, wrong types/arity/alignment/volatile effects/const stores, duplicate converted cases and temporary definitions on all reachable predecessor paths. Syntax mutation and10000 random token inputs drive successful results through typed IR verification, optimization and real machine lowering without executing potentially unbounded mutations.
+
+`tools/typed_differential.py` independently compiled100 deterministic C11 programs with Windows-target GCC and compared **200 native executions** at -O0/-O1. `validation/P11-typed-oracle*.json` records commands, sources, exact Windows32 process results and image/source hashes. Arithmetic avoids undefined behavior; the final unsigned-to-signed conversion follows the documented low-bit implementation policy. All passed and the final source manifest matches. `tools/encoding_differential.py --phase P11` independently matched **16020 fixtures /16244 decoded instructions** against GNU as/objdump. The original six reviewed accumulator immediate alternate encodings remain recorded. A shift-by-one disassembly spelling difference is preserved in `P11-first-encoder-oracle-failure.log`; selecting the compact D1 encoding resolved it, with every fixture retained. Initial example-loop lint evidence is preserved separately.
+
+Aggressive compatibility probing found an actual older teaching-parser stack overflow from an8157-byte combination of nested parentheses and long binary tails: Windows exit3221225725, preserved in `P11-legacy-depth-probe.json`. Aggregate expression budgets now reject that case cleanly in teaching VM/native and typed syntax-only modes; the corrected process result and CLI regression are recorded. Typed derivation/declaration resource budgets are also tested. These limits remain explicit partial-compiler limits for the later translation-limit audit.
+
+`P11-native-import-inspection.log` independently inspects a generated typed image: only kernel32.dll is imported. `cargo install --path . --locked --offline --force` updated the command; `P11-install.log` and `P11-installed-qualification.json` prove installed/release binary equality and teaching/typed compilation outside the repository with empty PATH, followed by successful execution after deleting each temporary source. The Rust/MSVC bootstrap prerequisite remains as declared in P09; no new DLL was redistributed.
+
+User commands are `compiler source.c --std=c11 -o program.exe` and `compiler source.c --std=c11 -fsyntax-only`; -O0/-O1/--no-opt select verified optimization modes. `examples/typed_integers.c` executes in both modes and returns0 only after its real arithmetic/layout checks pass. Typed mode rejects VM combinations. Syntax-only type records do not claim pointer/array execution. General calls/globals, pointer/array execution, floats/aggregates, preprocessing and hosted library families remain assigned to later phases; typed output currently uses main's process result. Full C11 conformance is not claimed.
+
+Semantic references: [C11 committee draft N1570](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf), notably6.2.5/6.2.7/6.3.1/6.4.4.1/6.5/6.7.3/6.7.6, interpreted with this document's frozen target choices. P12 is eligible because P11's implementation and independent gates passed.
+
 ### 13.17 P12 - Functions, calls, global storage and variadic support
 
 **Purpose:** compile real multi-function C programs under one consistent ABI.
@@ -1698,7 +1730,7 @@ This is a review checklist, not a request to approve six separate actions indivi
 
 ### 15.6 Immediate next action during continuous execution
 
-The user authorized continuous phase execution after P00. P01-P10 have now passed their recorded gates. Proceed to P11's target type system, typed frontend/IR and native integer-width contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
+The user authorized continuous phase execution after P00. P01-P11 have now passed their recorded gates. Proceed to P12's functions, calls, global storage and variadic contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
 
 ## 16. References and preserved history
 

@@ -23,14 +23,67 @@ fn compile() -> Result<i32, (i32, String)> {
         })
         .transpose()
         .map_err(|e| (1, e))?;
-    let mut context = CompilationContext::default();
+    let mut context = CompilationContext::for_semantics(if options.flag("--std=c11") {
+        compiler::context::Semantics::C11
+    } else {
+        compiler::context::Semantics::Teaching
+    });
     let source_id = context.add_source(file.to_string_lossy(), source);
+    if options.flag("--std=c11") {
+        if options.flag("-fsyntax-only") {
+            let frontend = context
+                .check_typed(source_id)
+                .map_err(|e| (1, context.render(&e)))?;
+            if options.flag("--tokens") {
+                eprintln!("TOKENS\n{:#?}", frontend.tokens);
+            }
+            if options.flag("--ast") {
+                eprintln!("TYPED AST\n{:#?}", frontend.unit);
+            }
+            return Ok(0);
+        }
+        let built = context
+            .compile_typed(
+                source_id,
+                &compiler::pipeline::NativeCompileOptions {
+                    optimize: options.optimize(),
+                    ..Default::default()
+                },
+            )
+            .map_err(|e| (1, context.render(&e)))?;
+        for (flag, label, value) in [
+            (
+                "--tokens",
+                "TOKENS",
+                format!("{:#?}", built.frontend.tokens),
+            ),
+            ("--ast", "TYPED AST", format!("{:#?}", built.frontend.unit)),
+            ("--ir", "TYPED IR", format!("{:#?}", built.ir)),
+            (
+                "--optimized-ir",
+                "OPTIMIZED TYPED IR",
+                format!("{:#?}", built.optimized_ir),
+            ),
+        ] {
+            if options.flag(flag) {
+                eprintln!("{label}\n{value}");
+            }
+        }
+        if options.flag("--emit=machine") {
+            eprint!("{}", built.machine_dump);
+        }
+        target
+            .ok_or_else(|| (2, "typed native output requires -o".into()))?
+            .publish(&built.image.bytes)
+            .map_err(|e| (1, e))?;
+        return Ok(0);
+    }
     if let Some(target) = target {
         let built = context
             .compile_native(
                 source_id,
                 &compiler::pipeline::NativeCompileOptions {
-                    optimize: !options.flag("--no-opt"),
+                    optimize: options.optimize(),
                     ..Default::default()
                 },
             )
@@ -83,7 +136,7 @@ fn compile() -> Result<i32, (i32, String)> {
             eprintln!("OPTIMIZED IR\n{optimized:#?}");
         }
         let code = context.run_stage(source_id, Stage::Bytecode, || {
-            bytecode::generate(if flag("--no-opt") { &ir } else { &optimized })
+            bytecode::generate(if options.optimize() { &optimized } else { &ir })
         })?;
         if flag("--bytecode") {
             for (i, op) in code.iter().enumerate() {
@@ -114,7 +167,10 @@ With -o: build an independent Windows x64 executable; do not execute it.
   --tokens --ast --ir --optimized-ir   Stage dumps on stderr
   --bytecode        VM instruction dump (VM only)
   --emit=machine    Linked native bytes and encoder instructions (requires -o)
-  --no-opt          Disable IR optimization
+  --no-opt / -O0    Disable IR optimization (-O1 enables verified basic passes)
+  --std=c11         Partial typed native integer mode; requires -o
+  -fsyntax-only     Type-check supported declarations with --std=c11; no -o
+  --semantics=teaching  Explicit checked teaching mode (the default)
   --version --print-capabilities --help
   --                End options; following argument is the source filename
 Exit codes: 0 success, 1 compilation/IO/runtime failure, 2 invalid usage.
@@ -129,6 +185,9 @@ struct Options {
 impl Options {
     fn flag(&self, name: &str) -> bool {
         self.flags.iter().any(|s| s == name)
+    }
+    fn optimize(&self) -> bool {
+        !self.flag("--no-opt") && !self.flag("-O0")
     }
     fn parse() -> Result<Option<Self>, String> {
         let mut args = std::env::args_os().skip(1).peekable();
@@ -160,7 +219,7 @@ impl Options {
                     env!("CARGO_PKG_VERSION")
                 ),
                 _ => println!(
-                    r#"{{"version":"{}","language":"teaching C subset","full_c11":false,"preprocessor":false,"target":"windows-x86_64","native_pe":true,"external_compiler_required":false,"source_limit_bytes":16777216,"token_limit":1000000,"integer_bits":32,"checked_arithmetic":true,"printf_formats":["%d","%s"],"native_output_default_bytes":16777216,"vm_default":true,"control_flow":["if","while","for","do","break","continue","switch","goto","integer-return"],"integer_updates":true,"comments":true,"integer_radices":[8,10,16],"typed_integer_suffixes":false}}"#,
+                    r#"{{"version":"{}","language":"teaching C subset","full_c11":false,"preprocessor":false,"target":"windows-x86_64","native_pe":true,"external_compiler_required":false,"source_limit_bytes":16777216,"token_limit":1000000,"integer_bits":32,"checked_arithmetic":true,"printf_formats":["%d","%s"],"native_output_default_bytes":16777216,"vm_default":true,"control_flow":["if","while","for","do","break","continue","switch","goto","integer-return"],"integer_updates":true,"comments":true,"integer_radices":[8,10,16],"typed_integer_suffixes":true,"typed_mode_requires":"--std=c11","typed_vm":false,"typed_integer_widths":[8,16,32,64],"typed_calls":false,"typed_memory_execution":false}}"#,
                     env!("CARGO_PKG_VERSION")
                 ),
             }
@@ -177,6 +236,31 @@ impl Options {
         }
         if options.output.is_none() && (options.overwrite || options.flag("--emit=machine")) {
             return Err("--overwrite and --emit=machine require -o".into());
+        }
+        let typed = options.flag("--std=c11");
+        let syntax = options.flag("-fsyntax-only");
+        if options.flag("-O1") && (options.flag("-O0") || options.flag("--no-opt")) {
+            return Err("conflicting optimization options".into());
+        }
+        if syntax
+            && (!typed
+                || options.output.is_some()
+                || options.flag("--ir")
+                || options.flag("--optimized-ir"))
+        {
+            return Err("-fsyntax-only requires --std=c11 and conflicts with -o/IR dumps".into());
+        }
+        if typed
+            && (options.flag("--run-vm")
+                || options.flag("--bytecode")
+                || options.flag("--semantics=teaching"))
+        {
+            return Err("--std=c11 conflicts with teaching/VM modes".into());
+        }
+        if typed && options.output.is_none() && !syntax {
+            return Err(
+                "--std=c11 requires -o or -fsyntax-only; typed VM execution is unsupported".into(),
+            );
         }
         Ok(Some(options))
     }
@@ -215,6 +299,11 @@ fn for_arg(
                 "--run-vm",
                 "--emit=machine",
                 "--overwrite",
+                "--std=c11",
+                "--semantics=teaching",
+                "-fsyntax-only",
+                "-O0",
+                "-O1",
             ]
             .contains(&text)
             {

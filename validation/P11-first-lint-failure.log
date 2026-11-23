@@ -1,0 +1,17 @@
+    Checking compiler v0.2.0 (N:\compiler-proj)
+error: the loop variable `reg` is used to index `names`
+  --> examples\encoding_oracle.rs:34:20
+   |
+34 |         for reg in 0..16 {
+   |                    ^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.96.0/index.html#needless_range_loop
+   = note: `-D clippy::needless-range-loop` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::needless_range_loop)]`
+help: consider using an iterator and enumerate()
+   |
+34 -         for reg in 0..16 {
+34 +         for (reg, <item>) in names.iter().enumerate().take(16) {
+   |
+
+error: could not compile `compiler` (example "encoding_oracle") due to 1 previous error

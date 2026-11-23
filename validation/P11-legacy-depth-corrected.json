@@ -1,0 +1,6 @@
+{
+  "exit": 1,
+  "source_sha256": "00afbbb045c23e35de75053b88574ffb53719a9fc669b3d62c7fb2753876566f",
+  "compiler_sha256": "b70eee4fd3acdbf99cf05376a216592ab2dbf752cba82e8c3cb4f27632125914",
+  "stderr": "N:\\compiler-proj\\target\\P11-legacy-depth.c:1:308: expression size limit exceeded, found \"+\"\n"
+}

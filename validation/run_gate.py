@@ -42,7 +42,7 @@ with log.open('w', encoding='utf-8', newline='\n') as stream:
         records.append(dict(command=command, exit=code, ignored_tests=ignored, passed=code == 0 and ignored == 0))
         if code != 0:
             break
-files = sorted([*root.glob('src/**/*.rs'), *root.glob('tests/**/*.rs'), root/'Cargo.toml', root/'Cargo.lock'])
+files = sorted([*root.glob('src/**/*.rs'), *root.glob('tests/**/*.rs'), *root.glob('examples/**/*.rs'), root/'validation/run_gate.py', root/'Cargo.toml', root/'Cargo.lock'])
 manifest = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
 summary = dict(phase=args.phase, commands=records, source_sha256=manifest,
                required_commands_executed=len(records) == len(commands),

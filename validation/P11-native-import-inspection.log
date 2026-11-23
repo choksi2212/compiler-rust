@@ -1,0 +1,122 @@
+
+N:\compiler-proj\target\P11-oracle\case099-O1.exe:     file format pei-x86-64
+
+Characteristics 0x22
+	executable
+	large address aware
+
+Time/Date		Thu Jan  1 05:30:00 1970
+Magic			020b	(PE32+)
+MajorLinkerVersion	0
+MinorLinkerVersion	0
+SizeOfCode		0000000000001c00
+SizeOfInitializedData	0000000000000c00
+SizeOfUninitializedData	0000000000000000
+AddressOfEntryPoint	0000000000001000
+BaseOfCode		0000000000001000
+ImageBase		0000000140000000
+SectionAlignment	00001000
+FileAlignment		00000200
+MajorOSystemVersion	6
+MinorOSystemVersion	0
+MajorImageVersion	0
+MinorImageVersion	0
+MajorSubsystemVersion	6
+MinorSubsystemVersion	0
+Win32Version		00000000
+SizeOfImage		00009000
+SizeOfHeaders		00000400
+CheckSum		00000000
+Subsystem		00000003	(Windows CUI)
+DllCharacteristics	00000160
+					HIGH_ENTROPY_VA
+					DYNAMIC_BASE
+					NX_COMPAT
+SizeOfStackReserve	0000000000100000
+SizeOfStackCommit	0000000000001000
+SizeOfHeapReserve	0000000000100000
+SizeOfHeapCommit	0000000000001000
+LoaderFlags		00000000
+NumberOfRvaAndSizes	00000010
+
+The Data Directory
+Entry 0 0000000000000000 00000000 Export Directory [.edata (or where ever we found it)]
+Entry 1 0000000000007000 00000028 Import Directory [parts of .idata]
+Entry 2 0000000000000000 00000000 Resource Directory [.rsrc]
+Entry 3 0000000000006000 00000030 Exception Directory [.pdata]
+Entry 4 0000000000000000 00000000 Security Directory
+Entry 5 0000000000008000 0000000c Base Relocation Directory [.reloc]
+Entry 6 0000000000000000 00000000 Debug Directory
+Entry 7 0000000000000000 00000000 Description Directory
+Entry 8 0000000000000000 00000000 Special Directory
+Entry 9 0000000000000000 00000000 Thread Storage Directory [.tls]
+Entry a 0000000000000000 00000000 Load Configuration Directory
+Entry b 0000000000000000 00000000 Bound Import Directory
+Entry c 0000000000007058 00000030 Import Address Table Directory
+Entry d 0000000000000000 00000000 Delay Import Directory
+Entry e 0000000000000000 00000000 CLR Runtime Header
+Entry f 0000000000000000 00000000 Reserved
+
+There is an import table in .idata at 0x40007000
+
+The Import Tables (interpreted .idata section contents)
+ vma:            Hint    Time      Forward  DLL       First
+                 Table   Stamp     Chain    Name      Thunk
+ 00007000	00007028 00000000 00000000 00007088 00007058
+
+	DLL Name: kernel32.dll
+	vma:  Hint/Ord Member-Name Bound-To
+	7096	    0  ExitProcess
+	70a4	    0  GetStdHandle
+	70b4	    0  VirtualAlloc
+	70c4	    0  VirtualFree
+	70d2	    0  WriteFile
+
+ 00007014	00000000 00000000 00000000 00000000 00000000
+
+The Function Table (interpreted .pdata section contents)
+vma:			BeginAddress	 EndAddress	  UnwindData
+ 0000000140006000:	0000000140001000 0000000140001202 0000000140005000
+ 000000014000600c:	0000000140001202 000000014000288a 0000000140005010
+ 0000000140006018:	000000014000288a 0000000140002a3c 000000014000501c
+ 0000000140006024:	0000000140002a3c 0000000140002ae7 0000000140005030
+
+Dump of .xdata
+ 0000000140005000 (rva: 00005000): 0000000140001000 - 0000000140001202
+	Version: 1, Flags: none
+	Nbr codes: 5, Prologue size: 0x0e, Frame offset: 0x0, Frame reg: none
+	  pc+0x0e: alloc small area: rsp = rsp - 0x28
+	  pc+0x07: push r14
+	  pc+0x05: push r13
+	  pc+0x03: push r12
+	  pc+0x01: push rbx
+ 0000000140005010 (rva: 00005010): 0000000140001202 - 000000014000288a
+	Version: 1, Flags: none
+	Nbr codes: 3, Prologue size: 0x08, Frame offset: 0x0, Frame reg: none
+	  pc+0x08: alloc large area: rsp = rsp - 0x510
+	  pc+0x01: push rbx
+ 000000014000501c (rva: 0000501c): 000000014000288a - 0000000140002a3c
+	Version: 1, Flags: none
+	Nbr codes: 8, Prologue size: 0x12, Frame offset: 0x0, Frame reg: none
+	  pc+0x12: alloc small area: rsp = rsp - 0x30
+	  pc+0x0b: push r15
+	  pc+0x09: push r14
+	  pc+0x07: push r13
+	  pc+0x05: push r12
+	  pc+0x03: push rdi
+	  pc+0x02: push rsi
+	  pc+0x01: push rbx
+ 0000000140005030 (rva: 00005030): 0000000140002a3c - 0000000140002ae7
+	Version: 1, Flags: none
+	Nbr codes: 4, Prologue size: 0x0a, Frame offset: 0x0, Frame reg: none
+	  pc+0x0a: alloc small area: rsp = rsp - 0x30
+	  pc+0x03: push rdi
+	  pc+0x02: push rsi
+	  pc+0x01: push rbx
+
+
+PE File Base Relocations (interpreted .reloc section contents)
+
+Virtual Address: 00001000 Chunk size 12 (0xc) Number of fixups 2
+	reloc    0 offset    0 [1000] ABSOLUTE
+	reloc    1 offset    0 [1000] ABSOLUTE

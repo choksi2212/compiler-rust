@@ -12,6 +12,8 @@ pub struct Token {
     pub text: String,
     pub line: usize,
     pub column: usize,
+    pub byte_start: usize,
+    pub byte_end: usize,
     pub kind: Kind,
 }
 #[derive(Debug, Clone, PartialEq)]
@@ -27,6 +29,13 @@ pub fn lex(source: &str) -> Result<Vec<Token>, String> {
 }
 /// Smaller budgets may be selected by callers; the global ceiling still applies.
 pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token>, String> {
+    scan(source, max_tokens, false)
+}
+/// Typed frontend tokenization; no conventional-header shortcut is permitted.
+pub fn lex_typed(source: &str) -> Result<Vec<Token>, String> {
+    scan(source, MAX_TOKENS, true)
+}
+fn scan(source: &str, max_tokens: usize, typed: bool) -> Result<Vec<Token>, String> {
     if source.len() > MAX_SOURCE_BYTES {
         return Err("1:1: source input exceeds16MiB budget".into());
     }
@@ -37,9 +46,11 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
     let chars: Vec<char> = source.chars().collect();
     let (mut i, mut line, mut column) = (0, 1, 1);
     let mut tokens = Vec::new();
+    let mut byte_cursor = 0;
     while i < chars.len() {
         let c = chars[i];
         if c.is_whitespace() {
+            byte_cursor += c.len_utf8();
             if c == '\n' {
                 line += 1;
                 column = 1;
@@ -49,6 +60,11 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
             i += 1;
             continue;
         }
+        if c == '#' && typed {
+            return Err(format!(
+                "{line}:{column}: preprocessing is not yet available in typed mode"
+            ));
+        }
         if c == '#' && column == 1 {
             let start = i;
             while i < chars.len() && chars[i] != '\n' {
@@ -56,20 +72,27 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
                 column += 1;
             }
             let directive: String = chars[start..i].iter().collect();
+            byte_cursor += directive.len();
             if !tokens.is_empty() || directive.trim() != "#include <stdio.h>" {
                 return Err(format!("{line}:1: unsupported preprocessor directive"));
             }
             continue;
         }
         if c == '/' && chars.get(i + 1) == Some(&'/') {
+            let comment_start = i;
             while i < chars.len() && chars[i] != '\n' {
                 i += 1;
                 column += 1;
             }
+            byte_cursor += chars[comment_start..i]
+                .iter()
+                .map(|c| c.len_utf8())
+                .sum::<usize>();
             continue;
         }
         if c == '/' && chars.get(i + 1) == Some(&'*') {
             let origin = (line, column);
+            let comment_start = i;
             i += 2;
             column += 2;
             while i < chars.len() && !(chars[i] == '*' && chars.get(i + 1) == Some(&'/')) {
@@ -86,10 +109,21 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
             }
             i += 2;
             column += 2;
+            byte_cursor += chars[comment_start..i]
+                .iter()
+                .map(|c| c.len_utf8())
+                .sum::<usize>();
             continue;
         }
         let (start, col) = (i, column);
-        let kind = if c.is_ascii_alphabetic() || c == '_' {
+        let triple = typed
+            && chars.get(i..i + 3).is_some_and(|s| {
+                s == ['<', '<', '='] || s == ['>', '>', '='] || s == ['.', '.', '.']
+            });
+        let kind = if triple {
+            i += 3;
+            Kind::Symbol
+        } else if c.is_ascii_alphabetic() || c == '_' {
             while i < chars.len() && (chars[i].is_ascii_alphanumeric() || chars[i] == '_') {
                 i += 1;
             }
@@ -120,7 +154,7 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
             }
             let magnitude = u64::from_str_radix(&digits, radix)
                 .map_err(|_| format!("{line}:{col}: integer literal exceeds 64-bit range"))?;
-            if radix == 10 && suffix.is_empty() {
+            if radix == 10 && suffix.is_empty() && (!typed || magnitude <= i32::MAX as u64) {
                 Kind::Number(i32::try_from(magnitude).map_err(|_| {
                     format!("{line}:{col}: integer literal exceeds current signed 32-bit range")
                 })?)
@@ -169,11 +203,11 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
             }
             i += 1;
             Kind::String(value)
-        } else if "{}();,:+-*/%<>=!&|".contains(c) {
+        } else if "{}();,:+-*/%<>=!&|".contains(c) || (typed && "[]?~^.".contains(c)) {
             i += 1;
-            if i < chars.len()
-                && matches!(
-                    (c, chars[i]),
+            let pair = chars.get(i).is_some_and(|next| {
+                matches!(
+                    (c, *next),
                     ('<', '=')
                         | ('>', '=')
                         | ('=', '=')
@@ -187,10 +221,15 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
                         | ('*', '=')
                         | ('/', '=')
                         | ('%', '=')
-                )
-            {
+                ) || (typed
+                    && matches!(
+                        (c, *next),
+                        ('<', '<') | ('>', '>') | ('&', '=') | ('|', '=') | ('^', '=')
+                    ))
+            });
+            if pair {
                 i += 1;
-            } else if c == '&' || c == '|' {
+            } else if !typed && (c == '&' || c == '|') {
                 return Err(format!("{line}:{col}: unsupported operator {c}"));
             }
             Kind::Symbol
@@ -200,8 +239,13 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
         if tokens.len() >= max_tokens {
             return Err(format!("{line}:{col}: token budget exceeded"));
         }
+        let text: String = chars[start..i].iter().collect();
+        let byte_start = byte_cursor;
+        byte_cursor += text.len();
         tokens.push(Token {
-            text: chars[start..i].iter().collect(),
+            text,
+            byte_start,
+            byte_end: byte_cursor,
             line,
             column: col,
             kind,
@@ -213,6 +257,8 @@ pub fn lex_with_token_limit(source: &str, max_tokens: usize) -> Result<Vec<Token
         line,
         column,
         kind: Kind::End,
+        byte_start: source.len(),
+        byte_end: source.len(),
     });
     Ok(tokens)
 }

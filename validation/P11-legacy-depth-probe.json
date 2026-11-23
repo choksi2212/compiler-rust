@@ -1,0 +1,7 @@
+{
+  "case": "combined nested parentheses and long binary tails",
+  "source_bytes": 8157,
+  "exit": 3221225725,
+  "stdout": "",
+  "stderr": "\nthread 'main' (24776) has overflowed its stack\n"
+}

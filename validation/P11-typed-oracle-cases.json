@@ -1,0 +1,1802 @@
+[
+  {
+    "case": 0,
+    "source": "/* P11 oracle 0; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf3336b1983833745ULL;\n const U factor=102ULL;\n unsigned int u=4294967295u-95u;\n long s=-95L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)10997;\n unsigned short us=(unsigned short)14149;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<12;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<28)^(state>>36);\n }\n U quotient=state/52ULL;\n U remainder=state%52ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "bc1c34418371ee386f8648408fd70813c06d72dbf60334129de045abf38bad33",
+    "expected_exit": 3745025113,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3745025113,
+        "sha256": "9353b418632c0377b961c1abf6ab54c69ff371953b473b0f9d1e067205d60355"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3745025113,
+        "sha256": "cabffdd6bf3f874c865beb5524364bb3269cd7c58144788c353c4d43d15b3067"
+      }
+    ]
+  },
+  {
+    "case": 1,
+    "source": "/* P11 oracle 1; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xa0a4865c12e8ac1aULL;\n const U factor=220ULL;\n unsigned int u=4294967295u-55u;\n long s=-55L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)8858;\n unsigned short us=(unsigned short)44058;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<9;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<59)^(state>>5);\n }\n U quotient=state/162ULL;\n U remainder=state%162ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "a821b7b7069088d22ae95fbef700a439afbbb64744bdbaecee644671b6a7d9ed",
+    "expected_exit": 190517774,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 190517774,
+        "sha256": "27be9e280edda7ec073d12a469e11234add1e82cd85b1a2e0fd8cb3461004522"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 190517774,
+        "sha256": "ab121f6f22f9ece5bda33967e466f2b9b54c2b510f649ce80ce96e6614208181"
+      }
+    ]
+  },
+  {
+    "case": 2,
+    "source": "/* P11 oracle 2; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x8705c448edfb8298ULL;\n const U factor=18ULL;\n unsigned int u=4294967295u-80u;\n long s=-80L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)7208;\n unsigned short us=(unsigned short)33432;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<19;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<6)^(state>>58);\n }\n U quotient=state/188ULL;\n U remainder=state%188ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "2a257a11752fe33611f1001003b63fa1e979357fbeaf17b9570919695f18805b",
+    "expected_exit": 3670116948,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3670116948,
+        "sha256": "b5e00f677b9c65a517ecef2aca5e84735ccb1a3b8c2197c2ec6d61daf010b6ec"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3670116948,
+        "sha256": "30a0c3edcfcdf48e039f48342602903cf7b98e40aafb9c82e89fe7ec2db80f1b"
+      }
+    ]
+  },
+  {
+    "case": 3,
+    "source": "/* P11 oracle 3; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x28783de6779e08b1ULL;\n const U factor=295ULL;\n unsigned int u=4294967295u-86u;\n long s=-86L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)24193;\n unsigned short us=(unsigned short)2225;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<8)^(state>>56);\n }\n U quotient=state/133ULL;\n U remainder=state%133ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "43a7a30d619cc770cdc7ee62b86eb191aec0dab149d4681fd0c83fa1ec28895e",
+    "expected_exit": 2746423337,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2746423337,
+        "sha256": "c1469b6e1d48688d31c5c363914c6beecc593c3f4524e72470c9ae78dc7c6379"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2746423337,
+        "sha256": "88a517015926b0a1427570f9ea5b87496101257c2aa334aff925ac888b35a63d"
+      }
+    ]
+  },
+  {
+    "case": 4,
+    "source": "/* P11 oracle 4; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x86f935bf4e389cf7ULL;\n const U factor=309ULL;\n unsigned int u=4294967295u-13u;\n long s=-13L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25479;\n unsigned short us=(unsigned short)40183;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<18;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<22)^(state>>42);\n }\n U quotient=state/72ULL;\n U remainder=state%72ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "0a0eafc8fe9b195034fea17256d906c28472abd22daad9eb449673bd07a4fc2a",
+    "expected_exit": 487617374,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 487617374,
+        "sha256": "ffb33c5616427cdb9a14d68671067f5ea26829aa3cf4f3e8e64f74f3bfdcc30e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 487617374,
+        "sha256": "da60f5e4a989a4b50224844bec7e282afc7c54ddcdb549069086276f2b66dc27"
+      }
+    ]
+  },
+  {
+    "case": 5,
+    "source": "/* P11 oracle 5; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x1feb3bba67744d22ULL;\n const U factor=182ULL;\n unsigned int u=4294967295u-70u;\n long s=-70L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)1186;\n unsigned short us=(unsigned short)19746;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<1;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<37)^(state>>27);\n }\n U quotient=state/93ULL;\n U remainder=state%93ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "320fc890d407462ea0778537993ce20c52b4883bebcb8c080ffbeae96b6b5022",
+    "expected_exit": 378840583,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 378840583,
+        "sha256": "6ead1443d68a11e592b2810efe10674ef12b4779762b620d6f4af424e821b1f0"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 378840583,
+        "sha256": "d3a99d6f5a680adb6ea4a46a05ffd59fd8f91f1b9fe791a795fe356fd0541b61"
+      }
+    ]
+  },
+  {
+    "case": 6,
+    "source": "/* P11 oracle 6; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x2c1451e5dcf09496ULL;\n const U factor=246ULL;\n unsigned int u=4294967295u-55u;\n long s=-55L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)27142;\n unsigned short us=(unsigned short)38038;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<12;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<55)^(state>>9);\n }\n U quotient=state/180ULL;\n U remainder=state%180ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "67518231e48d100fee68bd4db43eb0ddaf9706045b667a461cbb10a9acf4a6f9",
+    "expected_exit": 3328193445,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3328193445,
+        "sha256": "8a7d2639c61dc6daa6e63eb68923e491961896e75882d122666c6f4831ee29d3"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3328193445,
+        "sha256": "20754ecd3b5662c658668d89c04404a3b13d8eb931051b64f4759fdd117959e3"
+      }
+    ]
+  },
+  {
+    "case": 7,
+    "source": "/* P11 oracle 7; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x14413f15a7d4ed18ULL;\n const U factor=105ULL;\n unsigned int u=4294967295u-15u;\n long s=-15L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)23864;\n unsigned short us=(unsigned short)60696;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<42)^(state>>22);\n }\n U quotient=state/140ULL;\n U remainder=state%140ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "56ef100070d41a66adfabb8ff0f35141a18bb87168c1331ffb68287640f15f70",
+    "expected_exit": 3338797178,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3338797178,
+        "sha256": "ceaaad57a8451ce77f2bcc0550934ec0d1e3cfe7994f0a5bc49a75f9a8d4fb07"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3338797178,
+        "sha256": "1599547f3e3600f167cc257cc3465a61f935503ebca5662c358e6dc30b22a0f7"
+      }
+    ]
+  },
+  {
+    "case": 8,
+    "source": "/* P11 oracle 8; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf56ba23032204cdeULL;\n const U factor=374ULL;\n unsigned int u=4294967295u-45u;\n long s=-45L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)22062;\n unsigned short us=(unsigned short)19678;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<17;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<43)^(state>>21);\n }\n U quotient=state/16ULL;\n U remainder=state%16ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "60ff2753889f08b7a191371f5bf891d77c1bdf3d275c90b969a5e83aff1eeced",
+    "expected_exit": 1338237189,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1338237189,
+        "sha256": "3ea11d7ebe725e5d72ecaf6b9c37a4474f7ee0a1cd164356af32a8468474f440"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1338237189,
+        "sha256": "0a4a3c64ccc07e08ef75302db5e7cc22216eff571ba9e6bdbef54376fc7bb312"
+      }
+    ]
+  },
+  {
+    "case": 9,
+    "source": "/* P11 oracle 9; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x2e359dced5a3a1f1ULL;\n const U factor=201ULL;\n unsigned int u=4294967295u-48u;\n long s=-48L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)4465;\n unsigned short us=(unsigned short)41457;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<12;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<46)^(state>>18);\n }\n U quotient=state/182ULL;\n U remainder=state%182ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "eaf45e63cf2b1de009d2706559031b5c3094ce616fe7ffa5c22634f262bfa34d",
+    "expected_exit": 1902872477,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1902872477,
+        "sha256": "4d75b7776b7b5c4e2e14c0f95b1dab2844364d99405d43debe24e3203dbd1e73"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1902872477,
+        "sha256": "a87a870705be96a2df94ab0be6e98e31bac77e7776547e38c4f3390c55665fc2"
+      }
+    ]
+  },
+  {
+    "case": 10,
+    "source": "/* P11 oracle 10; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x86ee36575ed8df80ULL;\n const U factor=126ULL;\n unsigned int u=4294967295u-59u;\n long s=-59L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25504;\n unsigned short us=(unsigned short)57216;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<8;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<19)^(state>>45);\n }\n U quotient=state/84ULL;\n U remainder=state%84ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "4979bca872ecf42895abae47551fef37087ddf4c483343e4eedb59b06f74560c",
+    "expected_exit": 1327378346,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1327378346,
+        "sha256": "deb8ec46c33260d5b7b53a57fb4a9e352c02605781c5947f073b770d699b1d73"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1327378346,
+        "sha256": "1db3b757d7a72129bd6dca7243d21b87e986e1348d8f4ea543aa373b836f12e5"
+      }
+    ]
+  },
+  {
+    "case": 11,
+    "source": "/* P11 oracle 11; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xe9bbfa3e4698bd44ULL;\n const U factor=342ULL;\n unsigned int u=4294967295u-47u;\n long s=-47L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)23156;\n unsigned short us=(unsigned short)48452;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<33)^(state>>31);\n }\n U quotient=state/112ULL;\n U remainder=state%112ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "dca235e9b2d9c61546a6f7bef3a5ba5653b2a3ee1d5e4cc4bdf4c9ca7f78c633",
+    "expected_exit": 1000061009,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1000061009,
+        "sha256": "229471f67cab909976ee725826dab8c3d96734921939902716da1261f6137854"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1000061009,
+        "sha256": "517b6992fc5ee7710e993094bf5967dea6ed771324f274c88ee78c04ce00d7cb"
+      }
+    ]
+  },
+  {
+    "case": 12,
+    "source": "/* P11 oracle 12; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x569ed39aebb37574ULL;\n const U factor=370ULL;\n unsigned int u=4294967295u-16u;\n long s=-16L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)27236;\n unsigned short us=(unsigned short)30068;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<38)^(state>>26);\n }\n U quotient=state/175ULL;\n U remainder=state%175ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "e97490249746616b49f401ed36241357da7ff9b990aae5c63591213f77257423",
+    "expected_exit": 711899735,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 711899735,
+        "sha256": "abdb563ae421bd27da7b91f08665408e50f40eb609a2d48a4d3c7da47bf96752"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 711899735,
+        "sha256": "dcfdfd43ad597e36b4794b4169f00a85a917c7a79b8c841b48d5413811047f69"
+      }
+    ]
+  },
+  {
+    "case": 13,
+    "source": "/* P11 oracle 13; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x6773e76d0488ec5bULL;\n const U factor=265ULL;\n unsigned int u=4294967295u-40u;\n long s=-40L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)6635;\n unsigned short us=(unsigned short)60507;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<5;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<48)^(state>>16);\n }\n U quotient=state/105ULL;\n U remainder=state%105ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "4e1fa109aeca1fcd39ad49329b9f8de4310bf709426d7674049eb4893f115a73",
+    "expected_exit": 1352884103,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1352884103,
+        "sha256": "dacae7c5174cd5f8708626268714b675a7bb1c562f0849180c92dad9e17c6773"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1352884103,
+        "sha256": "ac1db5cae0a89feae93db874ac77ac2d3ee99b7069860abbabe51fde00161cd9"
+      }
+    ]
+  },
+  {
+    "case": 14,
+    "source": "/* P11 oracle 14; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xb5e4a97ea7f34a0eULL;\n const U factor=315ULL;\n unsigned int u=4294967295u-85u;\n long s=-85L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)8702;\n unsigned short us=(unsigned short)18958;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<34)^(state>>30);\n }\n U quotient=state/111ULL;\n U remainder=state%111ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "5b4b1309d7ab25b2a1d59446a586e19b63312f51a47f0f49920278e87da7948d",
+    "expected_exit": 2823396338,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2823396338,
+        "sha256": "546913b7a7a6ebc14a1110b38abc4d52481585e66e2aaf70b8fad8d26844796b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2823396338,
+        "sha256": "f40c9aaac16aa0350bf3a2e6293a021d033b8ab6775b6f68db73ca5f7d3b8a52"
+      }
+    ]
+  },
+  {
+    "case": 15,
+    "source": "/* P11 oracle 15; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xd7389a84444a8c44ULL;\n const U factor=167ULL;\n unsigned int u=4294967295u-62u;\n long s=-62L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)29812;\n unsigned short us=(unsigned short)35908;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<9;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<14)^(state>>50);\n }\n U quotient=state/111ULL;\n U remainder=state%111ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "d68251e39365c60234e6133a580aa47eac54936d89af2c0bdbd4837ddc95fe5b",
+    "expected_exit": 3984553725,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3984553725,
+        "sha256": "f0cfb152da904ac0b9343d4f9df9e0177acf70af136fc1f020f5c8ab1eb2783d"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3984553725,
+        "sha256": "1c61281672d8bdeaeacefad386cad405dfd6fcedea4de7bf47f89d08b1f04a8e"
+      }
+    ]
+  },
+  {
+    "case": 16,
+    "source": "/* P11 oracle 16; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x0c7521d2b1befbd8ULL;\n const U factor=328ULL;\n unsigned int u=4294967295u-24u;\n long s=-24L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)4296;\n unsigned short us=(unsigned short)64472;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<5;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<30)^(state>>34);\n }\n U quotient=state/135ULL;\n U remainder=state%135ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "a0db27a0df1aece5916bdfac50e41442c63643eb2c0deaec0184950cb4ae5e03",
+    "expected_exit": 2388824840,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2388824840,
+        "sha256": "662526278b59d17cefe00204c1cd32424bf6e3ce04a4a894cb140ff98f7ac35b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2388824840,
+        "sha256": "cc4ca2ff4e818baba77bbaaf2eb8a6e02be91b0a2a52f8c6350caa7d09d51869"
+      }
+    ]
+  },
+  {
+    "case": 17,
+    "source": "/* P11 oracle 17; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x04130b1ee065f6e7ULL;\n const U factor=16ULL;\n unsigned int u=4294967295u-39u;\n long s=-39L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)17351;\n unsigned short us=(unsigned short)63207;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<11;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<8)^(state>>56);\n }\n U quotient=state/127ULL;\n U remainder=state%127ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "1310492060e1c618fb0b243ba5478f9f1cdd524978abbef72c13bed7ede7ce15",
+    "expected_exit": 3126089887,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3126089887,
+        "sha256": "a4f464c6e985908f4856d10fd11c23db7421e39b84c0fa35b01fc30c5cf0345e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3126089887,
+        "sha256": "713b3c66531418f376df26b55da883744077c51164f45b917421c0554705c3ac"
+      }
+    ]
+  },
+  {
+    "case": 18,
+    "source": "/* P11 oracle 18; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x0f735c576aca060fULL;\n const U factor=231ULL;\n unsigned int u=4294967295u-87u;\n long s=-87L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)19343;\n unsigned short us=(unsigned short)1551;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<36)^(state>>28);\n }\n U quotient=state/56ULL;\n U remainder=state%56ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "d19e94229e91af961a60262754da2ea4bf43d84ace4c3193b16c91829399b202",
+    "expected_exit": 1076028191,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1076028191,
+        "sha256": "95164c8c7cb1a90717302a9e929798df80761623810f99040981b4be1a626689"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1076028191,
+        "sha256": "8cdec1b2a6cbfba8c87f14be6b4f15e3852df269c186963bfee4d560ad44386a"
+      }
+    ]
+  },
+  {
+    "case": 19,
+    "source": "/* P11 oracle 19; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x1ec690de5e641c46ULL;\n const U factor=244ULL;\n unsigned int u=4294967295u-37u;\n long s=-37L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)26566;\n unsigned short us=(unsigned short)7238;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<6;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<34)^(state>>30);\n }\n U quotient=state/52ULL;\n U remainder=state%52ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "dc28862e5cf8af51d8bfaff4ac5ee95eef5f2744b5bfb54f0d4a1884e5a5f500",
+    "expected_exit": 2721449999,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2721449999,
+        "sha256": "390a704ef7dac9f4382c1fd0902d21ff3d97c2f30684f94deac83f6db1a4de01"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2721449999,
+        "sha256": "bf5f3e156d143d469849a086354ac5a2198e943ab62a1c00c944998309593c5e"
+      }
+    ]
+  },
+  {
+    "case": 20,
+    "source": "/* P11 oracle 20; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x0b828bd6785ac54bULL;\n const U factor=376ULL;\n unsigned int u=4294967295u-74u;\n long s=-74L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)9451;\n unsigned short us=(unsigned short)50507;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<16;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<39)^(state>>25);\n }\n U quotient=state/193ULL;\n U remainder=state%193ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "99b1a65881489473caafc5f5b9222448ac30ca17a8370e5439e9941807c774cc",
+    "expected_exit": 1139750134,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1139750134,
+        "sha256": "a594f3eb899ad86367eb7c6800158cf998133a40b54c6596dc9c9354baccbdc9"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1139750134,
+        "sha256": "1e601ac8e9e6b67f8e9708e36206dc282b96796d25f5a4a74c646269b36ba3b3"
+      }
+    ]
+  },
+  {
+    "case": 21,
+    "source": "/* P11 oracle 21; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x8e7b5bb00b00c2a6ULL;\n const U factor=369ULL;\n unsigned int u=4294967295u-15u;\n long s=-15L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)28518;\n unsigned short us=(unsigned short)49830;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<19;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<56)^(state>>8);\n }\n U quotient=state/143ULL;\n U remainder=state%143ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "68c2d0520491541e1ca69cd26540159bf9d1c552498c69bc4da1322450d5d360",
+    "expected_exit": 4116290005,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4116290005,
+        "sha256": "acb270d0d550254a99c1ea90eaf1a670b15355a13d4879c089b0aba9c9a58b09"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4116290005,
+        "sha256": "49996c23ef44e39ebd9e6afc539c1bb880be08fde98ae6064bba76172a21e370"
+      }
+    ]
+  },
+  {
+    "case": 22,
+    "source": "/* P11 oracle 22; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x4a65986a361028e1ULL;\n const U factor=101ULL;\n unsigned int u=4294967295u-22u;\n long s=-22L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)17553;\n unsigned short us=(unsigned short)10465;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<52)^(state>>12);\n }\n U quotient=state/59ULL;\n U remainder=state%59ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "16a34973897f5c235dabb4149d5e30a2c4d2d70f4bd46ebe69ae4b8a508bc449",
+    "expected_exit": 2146585707,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2146585707,
+        "sha256": "b8fedc101a34c873be658df1d41c9bd6b39cf8bf4904c25aadf430171977e7fb"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2146585707,
+        "sha256": "a98a0be9f3a565a97a22a5f370e395b79de651773d000631d1bf73f4c5f3019b"
+      }
+    ]
+  },
+  {
+    "case": 23,
+    "source": "/* P11 oracle 23; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf653ecc9abe4189aULL;\n const U factor=256ULL;\n unsigned int u=4294967295u-96u;\n long s=-96L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)10778;\n unsigned short us=(unsigned short)6298;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<12;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<35)^(state>>29);\n }\n U quotient=state/154ULL;\n U remainder=state%154ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "b190cc14a0a2cb2326d16b3af24cf230de0166846c7b74287e748ebacb07d319",
+    "expected_exit": 3542988364,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3542988364,
+        "sha256": "ffbbcbaa7fd7d45d2d296879aeb6979e236235fe259a561cf17fffe72a169cf2"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3542988364,
+        "sha256": "cd373a06ea0bf531895bf4bded542a22c490e97986bb75c157d93a8528082deb"
+      }
+    ]
+  },
+  {
+    "case": 24,
+    "source": "/* P11 oracle 24; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x0b2fa13206dcf2f3ULL;\n const U factor=253ULL;\n unsigned int u=4294967295u-47u;\n long s=-47L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)18275;\n unsigned short us=(unsigned short)62195;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<61)^(state>>3);\n }\n U quotient=state/114ULL;\n U remainder=state%114ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "42de2e75c7c40f569ab4e60d8ae5b3f16e030ec5e542ff6aa351d59e53100c6b",
+    "expected_exit": 2980108332,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2980108332,
+        "sha256": "724e536b2889ebf5ed2f1639a7f9579b6aa6d4bf91fdc99e8add744d37940f25"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2980108332,
+        "sha256": "e35b41d2d49da2220c33d3f73cab20a6b85c5b5090a7c9350678e239b2e9d1e5"
+      }
+    ]
+  },
+  {
+    "case": 25,
+    "source": "/* P11 oracle 25; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x90a4e19b08d98ca0ULL;\n const U factor=263ULL;\n unsigned int u=4294967295u-44u;\n long s=-44L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25888;\n unsigned short us=(unsigned short)36000;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<5)^(state>>59);\n }\n U quotient=state/166ULL;\n U remainder=state%166ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "ad265c72207164d704ced3f12c737dbab4ee8a81767fb5d13273ea68d3a09d2a",
+    "expected_exit": 2725285221,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2725285221,
+        "sha256": "9ccbf2b3e5ff1b9410a40156054ed36d2ebba2562a9f47a9c015fd228768265a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2725285221,
+        "sha256": "06a7024e9296a208a072f10191d62f3c4579042f8b2af0ddf5a1bee0d9fc0285"
+      }
+    ]
+  },
+  {
+    "case": 26,
+    "source": "/* P11 oracle 26; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf8403f79a45f6584ULL;\n const U factor=254ULL;\n unsigned int u=4294967295u-38u;\n long s=-38L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)18148;\n unsigned short us=(unsigned short)25988;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<39)^(state>>25);\n }\n U quotient=state/67ULL;\n U remainder=state%67ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "248d944de894d9e3b43fbc1e2289fbd0b20cfd7106675aa6d81d11159ca7b3c0",
+    "expected_exit": 1509400421,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1509400421,
+        "sha256": "a9f77f21be7764f1e61453e2e633f6626fc9bc0ec091d3dc321253cae2b2d9d5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1509400421,
+        "sha256": "2ac29e924a3a58626a5b5bd5a17c6381a63a4ee858b7373e3f058f0d45b13088"
+      }
+    ]
+  },
+  {
+    "case": 27,
+    "source": "/* P11 oracle 27; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x13dff43cf7babaefULL;\n const U factor=263ULL;\n unsigned int u=4294967295u-45u;\n long s=-45L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)2079;\n unsigned short us=(unsigned short)47855;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<13;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<15)^(state>>49);\n }\n U quotient=state/73ULL;\n U remainder=state%73ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "8ccc3d1c06f898641497b679a21f69deefbf2a7037e274130b804bf62a90be34",
+    "expected_exit": 4225460122,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4225460122,
+        "sha256": "d140311f7f559948e4a9c4218d10736f36914cba960844e6dc4080ddb83252f1"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4225460122,
+        "sha256": "90128535bd38663d2ae5e8fd13a2c5d2346bc09784718d3fba06c0abaeb84285"
+      }
+    ]
+  },
+  {
+    "case": 28,
+    "source": "/* P11 oracle 28; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xfba67ff3c4f2419bULL;\n const U factor=129ULL;\n unsigned int u=4294967295u-12u;\n long s=-12L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)12155;\n unsigned short us=(unsigned short)16795;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<16;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<56)^(state>>8);\n }\n U quotient=state/117ULL;\n U remainder=state%117ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "b2c1da754d605f439df40cd9dff9f6461a259946bf9077f9a94264a2dac95e64",
+    "expected_exit": 392482836,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 392482836,
+        "sha256": "bbf4c87eb94039d7f776870f53f49e31819c82838eaa3b8cc78e89c08d3f070c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 392482836,
+        "sha256": "c26700d6877786460324992c5ff73474ed17259b278c5665432fceae73b75329"
+      }
+    ]
+  },
+  {
+    "case": 29,
+    "source": "/* P11 oracle 29; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x36805c422ecd6c50ULL;\n const U factor=389ULL;\n unsigned int u=4294967295u-54u;\n long s=-54L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)23984;\n unsigned short us=(unsigned short)27728;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<43)^(state>>21);\n }\n U quotient=state/23ULL;\n U remainder=state%23ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "74f5fee875673b3a9fc94a8078a852eea77acc6873eb6a66186e48259e61a731",
+    "expected_exit": 726297783,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 726297783,
+        "sha256": "9edae1c19485dfa9cbf407573157b97dba952ad8e39fa58d4de88cf7ac122d0c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 726297783,
+        "sha256": "c8212f0ee9ef959570daae83b93f7dd40b52dd690e3314e7b72f7f2e08348b8a"
+      }
+    ]
+  },
+  {
+    "case": 30,
+    "source": "/* P11 oracle 30; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x35c40ebca7909f2bULL;\n const U factor=186ULL;\n unsigned int u=4294967295u-66u;\n long s=-66L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)22699;\n unsigned short us=(unsigned short)40747;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<18;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<62)^(state>>2);\n }\n U quotient=state/75ULL;\n U remainder=state%75ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "b4cb649612b7222bfad323850ec9f1e0fe435583477c2fa0bd816a158d758e9e",
+    "expected_exit": 121206736,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 121206736,
+        "sha256": "10406ec295ae4b943a7c08344ca6f10ad107962b578bcaa18c5d90d3bc4ce731"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 121206736,
+        "sha256": "dcf7b269841646a4f433cf8ba72e495181adc4a5ebb669d26fec5f4fdcb59761"
+      }
+    ]
+  },
+  {
+    "case": 31,
+    "source": "/* P11 oracle 31; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xc742ef1acbda5176ULL;\n const U factor=172ULL;\n unsigned int u=4294967295u-74u;\n long s=-74L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)13270;\n unsigned short us=(unsigned short)20854;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<17)^(state>>47);\n }\n U quotient=state/161ULL;\n U remainder=state%161ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "b1e0e6706bc7d553263c7de8e93d1f995ab071436e83717494270ffbad6430fa",
+    "expected_exit": 538922484,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 538922484,
+        "sha256": "3561dd18a404bd7b6a79ca8e8f7366ab37c22abcdb8c5faa6a8450f841650b25"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 538922484,
+        "sha256": "2f49d9e2bca4e3ec03ac966c0befa61b950d1fa068b1c0463957530ab3d38879"
+      }
+    ]
+  },
+  {
+    "case": 32,
+    "source": "/* P11 oracle 32; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf3d7e78fd705f371ULL;\n const U factor=209ULL;\n unsigned int u=4294967295u-54u;\n long s=-54L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)10513;\n unsigned short us=(unsigned short)62321;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<8;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<39)^(state>>25);\n }\n U quotient=state/73ULL;\n U remainder=state%73ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "3def21ede4e21b1e7a5c24f37b280d8dad9ab6c88a9c6dc39674b3995dbbc4f3",
+    "expected_exit": 3578841373,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3578841373,
+        "sha256": "e4d4f2ab23efc8e714d82fcf78e95f065107c4ff62531a430909c24655ca22cd"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3578841373,
+        "sha256": "bc20e6407e98d715d94fe79451b2f9d9a66cbbbba6b832ded221f2819a3e9c5b"
+      }
+    ]
+  },
+  {
+    "case": 33,
+    "source": "/* P11 oracle 33; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x1339e613469bb757ULL;\n const U factor=259ULL;\n unsigned int u=4294967295u-89u;\n long s=-89L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)15415;\n unsigned short us=(unsigned short)46935;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<25)^(state>>39);\n }\n U quotient=state/171ULL;\n U remainder=state%171ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "bc5db0ad3557c5f68c33fcdc34de5561af532f8c4f40b0388dc8e1a64bd2b6eb",
+    "expected_exit": 93174529,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 93174529,
+        "sha256": "fe851af31c237936f2c6c55c08949397cdf6f9257a58990b44ee9abf21a16c7b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 93174529,
+        "sha256": "fdc81ab8ef29e32b28cbb845fb88e5051dba7b06eb74c79b62b0861fc8076c84"
+      }
+    ]
+  },
+  {
+    "case": 34,
+    "source": "/* P11 oracle 34; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x4907a0a449f0f517ULL;\n const U factor=249ULL;\n unsigned int u=4294967295u-85u;\n long s=-85L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)12775;\n unsigned short us=(unsigned short)62743;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<10;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<33)^(state>>31);\n }\n U quotient=state/125ULL;\n U remainder=state%125ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "ab2582edde42782a55f38308ff71e43c7fb7e54b261cfd59e2d0beefe4a98af8",
+    "expected_exit": 2287017980,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2287017980,
+        "sha256": "f0fa51cf0efff43179ce8b84d60c205907d6cce525913e180acc91ee9b8803e5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2287017980,
+        "sha256": "0c949b49acb97100a23fb0323524310f5e81e6fcf4b13ddd75ac09512a8395e7"
+      }
+    ]
+  },
+  {
+    "case": 35,
+    "source": "/* P11 oracle 35; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x1035ee71001e887bULL;\n const U factor=35ULL;\n unsigned int u=4294967295u-72u;\n long s=-72L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)17899;\n unsigned short us=(unsigned short)34939;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<22)^(state>>42);\n }\n U quotient=state/151ULL;\n U remainder=state%151ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "b961b81ebea87d64f27848592e784a526f439dab5e38721f1681b4bd9db615be",
+    "expected_exit": 441810396,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 441810396,
+        "sha256": "1d8ace00d5171e76fdbafed4e64762dfc140dbf625e87528a98d4f708d68bf23"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 441810396,
+        "sha256": "09839a38c911daf9f1969b99c23bc2a33713a79c7b1d42f66626f71e3d4717b1"
+      }
+    ]
+  },
+  {
+    "case": 36,
+    "source": "/* P11 oracle 36; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x949557d6bf7773e3ULL;\n const U factor=34ULL;\n unsigned int u=4294967295u-67u;\n long s=-67L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)16835;\n unsigned short us=(unsigned short)29667;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<7;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<50)^(state>>14);\n }\n U quotient=state/46ULL;\n U remainder=state%46ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "3276575e94fcb4956c8bb590224a1f10779b676a3b79dabaf31a916fae70f91f",
+    "expected_exit": 4230437104,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4230437104,
+        "sha256": "ee20ee3c614d45b3dbb0d6012f68ebc4cb6285844b0d782794df09fbba275811"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4230437104,
+        "sha256": "2d734bfdae90ff694a829ddb1d5b53a49f6d10ec4f82f87dd797d9f3bb3ee302"
+      }
+    ]
+  },
+  {
+    "case": 37,
+    "source": "/* P11 oracle 37; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xc972f3fdcf8117e9ULL;\n const U factor=395ULL;\n unsigned int u=4294967295u-55u;\n long s=-55L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)9353;\n unsigned short us=(unsigned short)6121;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<1;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<13)^(state>>51);\n }\n U quotient=state/66ULL;\n U remainder=state%66ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "2e9243ae9cd7dd49b769724b26060d8f9539df66a6543ca35af5b2f260af2741",
+    "expected_exit": 1510158855,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1510158855,
+        "sha256": "3af9b1426ae3d354ad37b9935fc4464152bcfd357102d4b903f9c38287458383"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1510158855,
+        "sha256": "9740e3fb589dab5b1ad7df1d39ef47146054910a692093ea80814d3772b13534"
+      }
+    ]
+  },
+  {
+    "case": 38,
+    "source": "/* P11 oracle 38; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xaec342a7aaff17aeULL;\n const U factor=18ULL;\n unsigned int u=4294967295u-28u;\n long s=-28L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)24894;\n unsigned short us=(unsigned short)6062;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<6;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<46)^(state>>18);\n }\n U quotient=state/89ULL;\n U remainder=state%89ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "ecaf66cd26f7544e9e6cff2a533f6b84222e90f019f56038a15f3c4b2683856e",
+    "expected_exit": 3984292951,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3984292951,
+        "sha256": "c89ba8774b15b0cb8c45081110bfa7bc21d919acd4bb0c662a24290822fd249c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3984292951,
+        "sha256": "08daaa6a4826947cdf6b5b85241101323d50b57736bf1a01a8f77962db206893"
+      }
+    ]
+  },
+  {
+    "case": 39,
+    "source": "/* P11 oracle 39; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x0ad167e5f4a9d693ULL;\n const U factor=209ULL;\n unsigned int u=4294967295u-70u;\n long s=-70L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)9395;\n unsigned short us=(unsigned short)54931;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<6;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<20)^(state>>44);\n }\n U quotient=state/87ULL;\n U remainder=state%87ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "c79bbeda5a832b7e3c7700d913bb2d503ca1996cc6aad2b1b22f86f188946bb0",
+    "expected_exit": 2029509443,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2029509443,
+        "sha256": "b707220bb17aa6d879dd6bf77522bcf4f6016d48afc758dcd9e52c2a6aeeac1a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2029509443,
+        "sha256": "c5bab093975e9e660aa159afa4e50680b247e5a130307b60c1ae82f0f250ae99"
+      }
+    ]
+  },
+  {
+    "case": 40,
+    "source": "/* P11 oracle 40; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x387d7caa19b7c780ULL;\n const U factor=278ULL;\n unsigned int u=4294967295u-84u;\n long s=-84L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25520;\n unsigned short us=(unsigned short)51072;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<17;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<2)^(state>>62);\n }\n U quotient=state/109ULL;\n U remainder=state%109ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "f8d6e8d0394bd7a8706bb13642df2ab3cc8458859854ab6474cc1be50c36cd51",
+    "expected_exit": 1018467664,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1018467664,
+        "sha256": "233c8e94ee1e3963a5606080c10b532e969e281590de9219b94ece8892fd6534"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1018467664,
+        "sha256": "09baf7520362d83c988b2ab8ab734e0344e505efd802965e094b1442eb1a81e6"
+      }
+    ]
+  },
+  {
+    "case": 41,
+    "source": "/* P11 oracle 41; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xcee6a9e53eb76725ULL;\n const U factor=287ULL;\n unsigned int u=4294967295u-89u;\n long s=-89L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)17509;\n unsigned short us=(unsigned short)26405;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<8;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<5)^(state>>59);\n }\n U quotient=state/136ULL;\n U remainder=state%136ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "138a7e643069f0c4e672fb17e8712d5dec36b97bb8bd3020c35d384e2d694836",
+    "expected_exit": 3451658643,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3451658643,
+        "sha256": "37bf3263b306c33fded183d137eccf805de72b4fd820531dfd54e63d9107ae8b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3451658643,
+        "sha256": "55301fa036f88734fd912936b3876c5eaa34826be3f9e06f8f1d6994590a662d"
+      }
+    ]
+  },
+  {
+    "case": 42,
+    "source": "/* P11 oracle 42; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x2a7976c4faa92698ULL;\n const U factor=390ULL;\n unsigned int u=4294967295u-46u;\n long s=-46L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)29736;\n unsigned short us=(unsigned short)9880;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<58)^(state>>6);\n }\n U quotient=state/6ULL;\n U remainder=state%6ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "2dc3e6807a255566f9f7187f3867001edd015cc6edfa98e013d2fdf69e24c652",
+    "expected_exit": 2628515071,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2628515071,
+        "sha256": "215df6a1aa2ed57e759f819ddf68b083fc275eda8e774860178422d5ca1cc1c2"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2628515071,
+        "sha256": "2c45aec49bdc94b94559375b2c1cf355d701e33155e9be0cd6d543e686be1574"
+      }
+    ]
+  },
+  {
+    "case": 43,
+    "source": "/* P11 oracle 43; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x75116a36b2c12631ULL;\n const U factor=284ULL;\n unsigned int u=4294967295u-32u;\n long s=-32L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)10577;\n unsigned short us=(unsigned short)9777;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<2;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<48)^(state>>16);\n }\n U quotient=state/149ULL;\n U remainder=state%149ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "735099cb832da4e036458fe90d8c75549c18444c453469869f2eac424b49826f",
+    "expected_exit": 236931289,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 236931289,
+        "sha256": "35b0c2fccc6f71db340fad7ca5d311b55ffda2db978fd5eaf00076ad3738e7e8"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 236931289,
+        "sha256": "66fb4e38b4c5438628b4e7e9a70c9099d153470d1399c59f433d787dceacc8fd"
+      }
+    ]
+  },
+  {
+    "case": 44,
+    "source": "/* P11 oracle 44; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xdf5b69989722e856ULL;\n const U factor=204ULL;\n unsigned int u=4294967295u-57u;\n long s=-57L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)2214;\n unsigned short us=(unsigned short)59478;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<19;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<24)^(state>>40);\n }\n U quotient=state/79ULL;\n U remainder=state%79ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "06bfe5298fa3f62d011df5a2cf39531b6304f7f256d50075b355adf708f40ba2",
+    "expected_exit": 3271560574,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3271560574,
+        "sha256": "1cd315213459b99a94bbf90fffb3c71d30e2306aaec583870b6efcc027ff956e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3271560574,
+        "sha256": "82d868f6b93b371311a596269d0815c6076ecdb167a54c0bfe874aeb210a7f25"
+      }
+    ]
+  },
+  {
+    "case": 45,
+    "source": "/* P11 oracle 45; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xac532f203adfdbd9ULL;\n const U factor=29ULL;\n unsigned int u=4294967295u-45u;\n long s=-45L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)27721;\n unsigned short us=(unsigned short)56281;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<7;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<40)^(state>>24);\n }\n U quotient=state/2ULL;\n U remainder=state%2ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "689b994b945467decc132935d7b85e14a6e1452e1c8ff0b66101a528d6419e07",
+    "expected_exit": 4261544903,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4261544903,
+        "sha256": "d155df304cb088154369dfa5768a96a26db69eb01320068afd518d61b9a7bd77"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4261544903,
+        "sha256": "7b0f01379da521c4bdaf3a8dd4da3199328ef68ad6bca9eab1d4da7b42824c09"
+      }
+    ]
+  },
+  {
+    "case": 46,
+    "source": "/* P11 oracle 46; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xc474a8adc7bb29cfULL;\n const U factor=258ULL;\n unsigned int u=4294967295u-48u;\n long s=-48L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)22047;\n unsigned short us=(unsigned short)10703;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<6;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<59)^(state>>5);\n }\n U quotient=state/136ULL;\n U remainder=state%136ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "d93795fb6ce4a1542037362e1f4226cd4e019284fe2d5e4b86dbe966371856ee",
+    "expected_exit": 3439986400,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3439986400,
+        "sha256": "6fcdaf4a110563da83d69d0ad38e0d1c8a030739519111e181010c9b8d73a6af"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3439986400,
+        "sha256": "c05da09a233ee2db4b414cccd76e6eee906069f72c4a4bf6ce09ffdfb12db995"
+      }
+    ]
+  },
+  {
+    "case": 47,
+    "source": "/* P11 oracle 47; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xde9f7a2b15e682b6ULL;\n const U factor=295ULL;\n unsigned int u=4294967295u-15u;\n long s=-15L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)26774;\n unsigned short us=(unsigned short)33462;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<10;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<55)^(state>>9);\n }\n U quotient=state/193ULL;\n U remainder=state%193ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "00e0ab7e194d4445db545d3b5e714063558ff159e05ed217907dfbaf1f52131a",
+    "expected_exit": 4251595879,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4251595879,
+        "sha256": "81b836539970d556602d4bbb5d596e086610daca1cba6f28095eac74d1db2b01"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4251595879,
+        "sha256": "f9b910ee56ea77e2d9c66cb16a4cb394c60a206d1ba6d37f5d8758b0580f6e79"
+      }
+    ]
+  },
+  {
+    "case": 48,
+    "source": "/* P11 oracle 48; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xd0a22b86c03f4af9ULL;\n const U factor=168ULL;\n unsigned int u=4294967295u-99u;\n long s=-99L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)22425;\n unsigned short us=(unsigned short)19193;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<12;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<21)^(state>>43);\n }\n U quotient=state/91ULL;\n U remainder=state%91ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "e48602283b44ab63f2a0369a1a78ffafb0680d8491b8343fe8dce1621f7de826",
+    "expected_exit": 5172074,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 5172074,
+        "sha256": "d9173b66226b894cb2e2eb455418c79cf71a017c9f0577be79dd58e926bc2005"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 5172074,
+        "sha256": "4761bd9070110fb9110496b3e54f32ecc2cf21b000f25576ed33be863a3ae63d"
+      }
+    ]
+  },
+  {
+    "case": 49,
+    "source": "/* P11 oracle 49; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xfad0d49d4213845dULL;\n const U factor=99ULL;\n unsigned int u=4294967295u-46u;\n long s=-46L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)29757;\n unsigned short us=(unsigned short)33885;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<2;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<33)^(state>>31);\n }\n U quotient=state/154ULL;\n U remainder=state%154ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "490cdfb4c25e986a890a9c9df37f084ef3b34e6c7a9bc65af75980aeac54de22",
+    "expected_exit": 3139821089,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3139821089,
+        "sha256": "ae9a39b409bd22fc64c22acc6b4925004ceb13992f1dccab97131764b5e38625"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3139821089,
+        "sha256": "ed5223513ac368a2fac26b01314a6eade40cd8b860127e5d1db00dfa2828add5"
+      }
+    ]
+  },
+  {
+    "case": 50,
+    "source": "/* P11 oracle 50; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x6c131accb689bd84ULL;\n const U factor=319ULL;\n unsigned int u=4294967295u-16u;\n long s=-16L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)10372;\n unsigned short us=(unsigned short)48516;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<6;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<35)^(state>>29);\n }\n U quotient=state/104ULL;\n U remainder=state%104ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "fe4e1d1ad9bfd92ea5289518d0abf8f84c6675a442f225ab5f962443a0b1dad9",
+    "expected_exit": 2529109390,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2529109390,
+        "sha256": "9fb0dacc5242f5c6dc7358b9e55b4f071fc9e27d7a7f91627f0215e285c75227"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2529109390,
+        "sha256": "8792ff422ddb8a703364ad792ad40c2a28c708058c1b9299d50a3009758d4a09"
+      }
+    ]
+  },
+  {
+    "case": 51,
+    "source": "/* P11 oracle 51; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x1bbb7fd9de299ce4ULL;\n const U factor=102ULL;\n unsigned int u=4294967295u-27u;\n long s=-27L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)16820;\n unsigned short us=(unsigned short)40164;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<29)^(state>>35);\n }\n U quotient=state/140ULL;\n U remainder=state%140ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "d6b144de8ccce45a1919922b96f498ad61d4b20915eaa84feac64e6004df3ebe",
+    "expected_exit": 1262707871,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1262707871,
+        "sha256": "4146b0558639b44b6643282f4725347581cc17a2d82ee26fba7a23c244761b5b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1262707871,
+        "sha256": "f4261320efb9d3dd0c52c0a71c4e961cfaabe6bafe3943b5b6ef7f550cf2f0e4"
+      }
+    ]
+  },
+  {
+    "case": 52,
+    "source": "/* P11 oracle 52; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xb0129f57889c185bULL;\n const U factor=245ULL;\n unsigned int u=4294967295u-20u;\n long s=-20L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)907;\n unsigned short us=(unsigned short)6235;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<49)^(state>>15);\n }\n U quotient=state/3ULL;\n U remainder=state%3ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "fa43f4ec595c0e6da91b579b144bbc9272310cb3f91081b46f8d8508f676ddca",
+    "expected_exit": 3325454554,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3325454554,
+        "sha256": "5865ab27a9a7f794b233931427b154daf11b7b7d3bdd839a04473a39de2b2245"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3325454554,
+        "sha256": "fd350e75f1423349b32a230ed14d9a7db7a7acf0f3c3b70b90138c8f2b88c8fd"
+      }
+    ]
+  },
+  {
+    "case": 53,
+    "source": "/* P11 oracle 53; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xc9bd0844eaa9ac52ULL;\n const U factor=226ULL;\n unsigned int u=4294967295u-91u;\n long s=-91L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)5698;\n unsigned short us=(unsigned short)44114;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<16;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<16)^(state>>48);\n }\n U quotient=state/172ULL;\n U remainder=state%172ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "230eee16da09fa1df0324636dea5cd0459db568f7a74ec4454e564a60c1cc895",
+    "expected_exit": 3987551007,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3987551007,
+        "sha256": "3fd930607686b3b68eb29db22ad62c23a4de24e37e12dace183b4aff3bc2a5dd"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3987551007,
+        "sha256": "9ea7f4c51d0065833aea36fd22701574c7bd36f46d3af54b32068197a4250194"
+      }
+    ]
+  },
+  {
+    "case": 54,
+    "source": "/* P11 oracle 54; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x8dbeaebc3ab5eb97ULL;\n const U factor=375ULL;\n unsigned int u=4294967295u-54u;\n long s=-54L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)29143;\n unsigned short us=(unsigned short)60311;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<2;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<31)^(state>>33);\n }\n U quotient=state/104ULL;\n U remainder=state%104ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "13e08c1549d75f78b0f7da13135f84fbe6c6a1dbc0fad2f0adfa84b64050e0ab",
+    "expected_exit": 1285339317,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1285339317,
+        "sha256": "c5fbc5d3914f71e69ac3d99218dde63624286fa7e123283784fff0b5d6cb942a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1285339317,
+        "sha256": "6f436134996c245f1da48c808f8a5cde3a16bbb74c189fda8ad59771bc7e40c1"
+      }
+    ]
+  },
+  {
+    "case": 55,
+    "source": "/* P11 oracle 55; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf19fe3b8ed91ef31ULL;\n const U factor=171ULL;\n unsigned int u=4294967295u-50u;\n long s=-50L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)18641;\n unsigned short us=(unsigned short)61233;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<5;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<45)^(state>>19);\n }\n U quotient=state/132ULL;\n U remainder=state%132ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "1309b8ec996ba589a5ad957424ff1dacb4ed1099db6c8ccfb7503ffe9177e329",
+    "expected_exit": 2322889562,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2322889562,
+        "sha256": "a96e5125fa329c0b35b36af43b07779e3632ce3cd96104b1ab63ec3f3fee6f83"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2322889562,
+        "sha256": "40d07cb02b722b21632c01b1b7fb8b9c74ea80ae8fdd7c209735fd688409d105"
+      }
+    ]
+  },
+  {
+    "case": 56,
+    "source": "/* P11 oracle 56; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x092171e768f041dbULL;\n const U factor=104ULL;\n unsigned int u=4294967295u-36u;\n long s=-36L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)3099;\n unsigned short us=(unsigned short)16859;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<4;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<31)^(state>>33);\n }\n U quotient=state/18ULL;\n U remainder=state%18ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "dc331d3336a0e1b95c77ab85b0bcd90a907e622514feb2a019f89da3707716a6",
+    "expected_exit": 502951418,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 502951418,
+        "sha256": "96ba2db292183f4da505ba8d543ee21d466e856a583d32ce38196416521a7f1f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 502951418,
+        "sha256": "d46c132be6c19b03c8c62d43d28d8a5946ba84e76abd4ae3a5e7d2b0f39c6467"
+      }
+    ]
+  },
+  {
+    "case": 57,
+    "source": "/* P11 oracle 57; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf33866777a31b839ULL;\n const U factor=392ULL;\n unsigned int u=4294967295u-4u;\n long s=-4L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25337;\n unsigned short us=(unsigned short)47161;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<17;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<53)^(state>>11);\n }\n U quotient=state/98ULL;\n U remainder=state%98ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "8028ef50167790a4da29617a5431e0583af4ab55a127cd35d8f4d353c2ab53e3",
+    "expected_exit": 1130822646,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1130822646,
+        "sha256": "9c6498b5581065aea6fb20cc19eaf46214950efd36036c4249c2f86618ee8818"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1130822646,
+        "sha256": "eb9d96db2ff351a517cb8e9920c7a69fc5c224d749cee0f84604bc8d87b20d41"
+      }
+    ]
+  },
+  {
+    "case": 58,
+    "source": "/* P11 oracle 58; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x7dbe9ed86d67d2b9ULL;\n const U factor=350ULL;\n unsigned int u=4294967295u-68u;\n long s=-68L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)1881;\n unsigned short us=(unsigned short)53945;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<4;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<6)^(state>>58);\n }\n U quotient=state/197ULL;\n U remainder=state%197ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "4d52f04cb9805982682d0c58601918861f7a7424b081594b41ba6d6bce92cc4d",
+    "expected_exit": 818380619,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 818380619,
+        "sha256": "28895d76050c52aa6c9a976028e3cec1d965a5d5cf0fc02dfb66aa2d142e46f5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 818380619,
+        "sha256": "daefcfa7a63c1ec4e6b2a1084cfc6c0924b8dc6cced552f59035b328c981908e"
+      }
+    ]
+  },
+  {
+    "case": 59,
+    "source": "/* P11 oracle 59; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x9efdcca53c68e816ULL;\n const U factor=13ULL;\n unsigned int u=4294967295u-60u;\n long s=-60L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)18118;\n unsigned short us=(unsigned short)59414;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<7;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<12)^(state>>52);\n }\n U quotient=state/11ULL;\n U remainder=state%11ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "06e7ab3ec9ae718df778d056e27c2a8b246ad445d3ce68a8c22914f44e7ef8f6",
+    "expected_exit": 2630722257,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2630722257,
+        "sha256": "89ff83ab96348ba9510b40b7f965f86069c33c9aea08c80df57aead8f15ef2c0"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2630722257,
+        "sha256": "df80aadaaceff87c3859c7fa944831dc919a84559f8d44365149cdc648a9256c"
+      }
+    ]
+  },
+  {
+    "case": 60,
+    "source": "/* P11 oracle 60; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x3d95ef9b95ebc95cULL;\n const U factor=269ULL;\n unsigned int u=4294967295u-97u;\n long s=-97L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)18876;\n unsigned short us=(unsigned short)51548;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<4;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<52)^(state>>12);\n }\n U quotient=state/88ULL;\n U remainder=state%88ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "2eb43190eea2a755a1574f5953a2b80bbd1f370134e5130b478ac9a256f20c49",
+    "expected_exit": 2880474153,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2880474153,
+        "sha256": "ee4bf4b5c3631fd73218a0036e8304f7d43294d81fd77fa54d53ac2fabec9e1a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2880474153,
+        "sha256": "c5844160365992e4d7ae856758d78f4c009131eac9316984f7deef66dde02750"
+      }
+    ]
+  },
+  {
+    "case": 61,
+    "source": "/* P11 oracle 61; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x71a5f16c8763a34dULL;\n const U factor=324ULL;\n unsigned int u=4294967295u-90u;\n long s=-90L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)21021;\n unsigned short us=(unsigned short)41805;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<14;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<49)^(state>>15);\n }\n U quotient=state/166ULL;\n U remainder=state%166ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "8ff5e2dafd4d81c5e3e1454183ba2f455ff9faacaa25ef186fb87a0a242b0422",
+    "expected_exit": 1208316339,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1208316339,
+        "sha256": "9ef7e88fbc97a750b601350849fa595bf796018312a61b8ca69959439a24466a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1208316339,
+        "sha256": "26ef7a5de47f5b7ae528aefb8ce1ac7c21d5f40652515fd52bfd989f26123c2d"
+      }
+    ]
+  },
+  {
+    "case": 62,
+    "source": "/* P11 oracle 62; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x903037bc6654dcdeULL;\n const U factor=50ULL;\n unsigned int u=4294967295u-34u;\n long s=-34L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)1198;\n unsigned short us=(unsigned short)56542;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<5;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<9)^(state>>55);\n }\n U quotient=state/14ULL;\n U remainder=state%14ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "c96fc6eb40245421b80f4f08eb05eedd161c678845ce7464fb7abc19cc26043f",
+    "expected_exit": 2766878498,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2766878498,
+        "sha256": "30a3738c025971fec4ccc8a9b84411495e84c32f21a0506f61b756f9f7f5045f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2766878498,
+        "sha256": "7758be16bd170250af0e923a8a8c9353e892d8537a373403ab296de97a749b9f"
+      }
+    ]
+  },
+  {
+    "case": 63,
+    "source": "/* P11 oracle 63; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x690387e4481e6734ULL;\n const U factor=28ULL;\n unsigned int u=4294967295u-7u;\n long s=-7L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)548;\n unsigned short us=(unsigned short)26420;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<9;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<17)^(state>>47);\n }\n U quotient=state/120ULL;\n U remainder=state%120ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "ea8444986ed764688e398d461cc511712fbebefb0a6feefd12f5eb15814930a5",
+    "expected_exit": 1258686299,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1258686299,
+        "sha256": "f761f7ff382afd0d16bad091e47a976efffbece768093aac7d5a90add6ebe7b5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1258686299,
+        "sha256": "e245115ef532c5557543f391f3501535a731a131a5c9f99e976fca83945124cf"
+      }
+    ]
+  },
+  {
+    "case": 64,
+    "source": "/* P11 oracle 64; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x555d6169f84ce589ULL;\n const U factor=3ULL;\n unsigned int u=4294967295u-53u;\n long s=-53L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)4985;\n unsigned short us=(unsigned short)58761;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<16;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<31)^(state>>33);\n }\n U quotient=state/41ULL;\n U remainder=state%41ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "2c3f2c4515f924fd199d371ddf6417f2ae4966828b496104c1d4ef60afbb5a37",
+    "expected_exit": 3973563431,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3973563431,
+        "sha256": "5435e38dc4d2e0ee12d7a2931105678748d31eaa584d70878941654a2874add3"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3973563431,
+        "sha256": "af90fe286d482f6d287e8a9f88940556473466a1bdaeb1171bd6d52de9a0134f"
+      }
+    ]
+  },
+  {
+    "case": 65,
+    "source": "/* P11 oracle 65; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xd7758781b857689eULL;\n const U factor=79ULL;\n unsigned int u=4294967295u-94u;\n long s=-94L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)94;\n unsigned short us=(unsigned short)26782;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<28)^(state>>36);\n }\n U quotient=state/117ULL;\n U remainder=state%117ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "c4b6e6555a040004f4f7e7394ea025b1c8603a5f39db218475093e86d0577c3e",
+    "expected_exit": 3932645109,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3932645109,
+        "sha256": "b47d0bf7d0be651ae186b3c1f532822c039a8e6ad8a6bd1ec638a99bb3e942c5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3932645109,
+        "sha256": "20bfe6b652f348fcf4fd2478e8e48b0114c9b5feb4e67602c5e7c2de951a7a6e"
+      }
+    ]
+  },
+  {
+    "case": 66,
+    "source": "/* P11 oracle 66; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x0000c60606a84f62ULL;\n const U factor=3ULL;\n unsigned int u=4294967295u-61u;\n long s=-61L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)27090;\n unsigned short us=(unsigned short)20322;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<41)^(state>>23);\n }\n U quotient=state/155ULL;\n U remainder=state%155ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "8d43f94131179dbd8d909bfc71a80d5e365ea2968bf182c824473f1a46672576",
+    "expected_exit": 2400177893,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2400177893,
+        "sha256": "c421c4fb0e8ce3cb6b1fca16bfe3869f7f2348c9dcb529d73cdf72af20a6bceb"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2400177893,
+        "sha256": "a8fa58e522f071439a949454a374030322776f86db7d13cb858ac5bbaaf8f2bc"
+      }
+    ]
+  },
+  {
+    "case": 67,
+    "source": "/* P11 oracle 67; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x3047946392e40b05ULL;\n const U factor=391ULL;\n unsigned int u=4294967295u-37u;\n long s=-37L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)19221;\n unsigned short us=(unsigned short)2821;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<8;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<39)^(state>>25);\n }\n U quotient=state/27ULL;\n U remainder=state%27ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "78a7fee9f88b485cab1b058e8b51f6ac03cb477f3f9230df3ecec822ef927e83",
+    "expected_exit": 3600593371,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3600593371,
+        "sha256": "5885a0ad3431386c0bbdf7ab009322b888ff0aa76391d0c91f48c2f63918a029"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3600593371,
+        "sha256": "c0aa13440f9888e3b120b35d7f5ec324ebb01488b8281569f1555bf747401df6"
+      }
+    ]
+  },
+  {
+    "case": 68,
+    "source": "/* P11 oracle 68; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x5255954d19ae0f20ULL;\n const U factor=181ULL;\n unsigned int u=4294967295u-78u;\n long s=-78L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)4464;\n unsigned short us=(unsigned short)3872;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<5;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<20)^(state>>44);\n }\n U quotient=state/156ULL;\n U remainder=state%156ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "7e2f803ef9b53e2764b060ef6a08d1c88b119f62d1112027b8270bc26f92271f",
+    "expected_exit": 2082547270,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2082547270,
+        "sha256": "b05337bf341e9e5e40b089b7dfa0a6006aab36ffebd45103868ee673eec6c78d"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2082547270,
+        "sha256": "4d8e2e681e8e34fc7f50226f1bc7875c5ca1096e2a6af82b5b5679037e1e446b"
+      }
+    ]
+  },
+  {
+    "case": 69,
+    "source": "/* P11 oracle 69; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x7815e1b1ddfb2e29ULL;\n const U factor=85ULL;\n unsigned int u=4294967295u-89u;\n long s=-89L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)13177;\n unsigned short us=(unsigned short)11817;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<2;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<23)^(state>>41);\n }\n U quotient=state/86ULL;\n U remainder=state%86ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "2314c7d77f95621718cf4fdb399d751b1d1425e17e7f670e6124a9f91d06f953",
+    "expected_exit": 1441661888,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1441661888,
+        "sha256": "0e40f1127fca3d67c35474d297645ca0b1309312efb75945e657be2e2f8ed41d"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1441661888,
+        "sha256": "89387085ccb1bd2effa3474aae5691e7bacf053c0bdc5127b8179d55108bc0be"
+      }
+    ]
+  },
+  {
+    "case": 70,
+    "source": "/* P11 oracle 70; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xe43a3d8a6d983933ULL;\n const U factor=217ULL;\n unsigned int u=4294967295u-88u;\n long s=-88L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)21299;\n unsigned short us=(unsigned short)14643;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<7;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<43)^(state>>21);\n }\n U quotient=state/64ULL;\n U remainder=state%64ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "46179ae6485ef45b3951b91e5116b37d51db6665ce5d35c72d81f5a125e14df4",
+    "expected_exit": 2694806563,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2694806563,
+        "sha256": "f458ea3b87f30cc6e6bf5ae01db35a4868d9875cf24b25419807fed6ad20d426"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2694806563,
+        "sha256": "bd0993f55db0deabbd9353d85f072907f1d27c030daa575572a768404e247bce"
+      }
+    ]
+  },
+  {
+    "case": 71,
+    "source": "/* P11 oracle 71; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x22dfa41b2e3a6b58ULL;\n const U factor=115ULL;\n unsigned int u=4294967295u-12u;\n long s=-12L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)28872;\n unsigned short us=(unsigned short)27480;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<9;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<12)^(state>>52);\n }\n U quotient=state/64ULL;\n U remainder=state%64ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "5d2bb42052e6375076f3f8810460fcf47115d6013fd35a54f4d996f7304a38bb",
+    "expected_exit": 730836304,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 730836304,
+        "sha256": "27838311fc22bea99466d35e92491a39b2a24d64a35ebe2858f806c971dce97f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 730836304,
+        "sha256": "0e2513b82e9cdc51a44a22eb2a57446394dd7a4dd29c379884d98ea3cc93dd40"
+      }
+    ]
+  },
+  {
+    "case": 72,
+    "source": "/* P11 oracle 72; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x1df6819a0ded6422ULL;\n const U factor=52ULL;\n unsigned int u=4294967295u-56u;\n long s=-56L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)29682;\n unsigned short us=(unsigned short)25634;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<19;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<12)^(state>>52);\n }\n U quotient=state/78ULL;\n U remainder=state%78ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "f9220cd57a816fdfa31fa976518f6c8113d0478083476d924007b4dbd4ae2091",
+    "expected_exit": 345967934,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 345967934,
+        "sha256": "69c703a091c88ede52bdf435b98b4b3f3215ff191df467bac5152437eabf7422"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 345967934,
+        "sha256": "0068dbdb7ac7f7bcb41567df88094d15f1778296203cddca69468e05b2307061"
+      }
+    ]
+  },
+  {
+    "case": 73,
+    "source": "/* P11 oracle 73; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xaa9d4cbafdbdc40eULL;\n const U factor=256ULL;\n unsigned int u=4294967295u-94u;\n long s=-94L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)22286;\n unsigned short us=(unsigned short)50190;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<11;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<28)^(state>>36);\n }\n U quotient=state/116ULL;\n U remainder=state%116ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "d09325c37a6817fb448a79db1c90d1005e7d73f4298d87c514978a4d5487dabc",
+    "expected_exit": 2010185812,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2010185812,
+        "sha256": "67136262c190fd860f1bb195160ba8ba6580072163461aa934db281a2f508812"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2010185812,
+        "sha256": "f70c7f95c39deea70683edba2ea5753466aade6dd7514620e701914f55ac4ed3"
+      }
+    ]
+  },
+  {
+    "case": 74,
+    "source": "/* P11 oracle 74; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x911cf7f47e0f8e4fULL;\n const U factor=118ULL;\n unsigned int u=4294967295u-11u;\n long s=-11L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)28671;\n unsigned short us=(unsigned short)36431;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<9;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<46)^(state>>18);\n }\n U quotient=state/56ULL;\n U remainder=state%56ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "b0fdac4cdc002dd903b4ffb7ad80e3a3d58efb6af44f25968ca0e1994a87f7e3",
+    "expected_exit": 3734494610,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3734494610,
+        "sha256": "b8e6193b88285ca07a822b9fafff3d88ccd3c7067f47865b0eeb4e2fcbacfb1c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3734494610,
+        "sha256": "a72216e63a4976b1d84c64445920fa67512b906328fb321ff24a5a2057c5aaf5"
+      }
+    ]
+  },
+  {
+    "case": 75,
+    "source": "/* P11 oracle 75; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x05696bd2dd85efe3ULL;\n const U factor=89ULL;\n unsigned int u=4294967295u-96u;\n long s=-96L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25187;\n unsigned short us=(unsigned short)61411;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<43)^(state>>21);\n }\n U quotient=state/72ULL;\n U remainder=state%72ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "069386d978f54f7b634d81907e8af80b6e125479d3d945472fc940d93ad5667e",
+    "expected_exit": 1729119071,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1729119071,
+        "sha256": "c38b84ed5b5ba99570fa3f1d8ebcd6b1427e6d09fbed64ae1861a2dee4e95ac9"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1729119071,
+        "sha256": "f38b7a53f5128a1878e85064d8b4ac7e44063a79ba0a66c400c65dee8b2b6391"
+      }
+    ]
+  },
+  {
+    "case": 76,
+    "source": "/* P11 oracle 76; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x85c5d88fcf012a3fULL;\n const U factor=258ULL;\n unsigned int u=4294967295u-9u;\n long s=-9L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)17727;\n unsigned short us=(unsigned short)10815;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<1;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<42)^(state>>22);\n }\n U quotient=state/83ULL;\n U remainder=state%83ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "e6d0e2d1f54ec5af95c8a83e6e321849d7320ac594df26c7ad57f4f864d64515",
+    "expected_exit": 1638506753,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1638506753,
+        "sha256": "93a25683e34908ba5182de45413d2fb088befe8929bf82048b2862dcca3012a7"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1638506753,
+        "sha256": "464cd2732a6f2626e0750cca71c62aa9d31668b47067518797c90ff9181a1839"
+      }
+    ]
+  },
+  {
+    "case": 77,
+    "source": "/* P11 oracle 77; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x6c1646d6c4477757ULL;\n const U factor=121ULL;\n unsigned int u=4294967295u-43u;\n long s=-43L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25127;\n unsigned short us=(unsigned short)30551;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<5;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<4)^(state>>60);\n }\n U quotient=state/198ULL;\n U remainder=state%198ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "4f256d25bb7457e820dc7357a46f63f2888c0c3c45fb621c0b76b504068997c6",
+    "expected_exit": 2373556177,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2373556177,
+        "sha256": "139fd0fea9bd2bec63e7c5523e3335cce36476af1e740e8188201c0b1448c8ce"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2373556177,
+        "sha256": "2bd2e52f30a85cf4a5db733e6e574f101a704e34a7b463fe8b3f07b9a2532272"
+      }
+    ]
+  },
+  {
+    "case": 78,
+    "source": "/* P11 oracle 78; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x3ddc2d8ca6a331e1ULL;\n const U factor=204ULL;\n unsigned int u=4294967295u-11u;\n long s=-11L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)12769;\n unsigned short us=(unsigned short)12769;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<18;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<38)^(state>>26);\n }\n U quotient=state/113ULL;\n U remainder=state%113ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "bef5ddd285c18d85af313bc80a0c7021080e3f3ed52f4394c65c79cd80ecba39",
+    "expected_exit": 1783944890,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1783944890,
+        "sha256": "78b141d1ffab24adf3295cd2bd46055753ff9dc54ced8e51f5cd215bad0764cc"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1783944890,
+        "sha256": "aa871053dee16d39609604c36e2306df64cc85c6bddc214517779b9e942eaa5b"
+      }
+    ]
+  },
+  {
+    "case": 79,
+    "source": "/* P11 oracle 79; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x6ccfb9608505deb2ULL;\n const U factor=347ULL;\n unsigned int u=4294967295u-6u;\n long s=-6L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)26274;\n unsigned short us=(unsigned short)57010;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<4;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<21)^(state>>43);\n }\n U quotient=state/166ULL;\n U remainder=state%166ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "69b126e108a7918cc1b65b5ad478379ab96d7096083287062262fab9613ec0c3",
+    "expected_exit": 1748234842,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1748234842,
+        "sha256": "4e5ebc2d02e64626b9db43a4d975b117a311db687dc52e993494cf240d57defc"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1748234842,
+        "sha256": "ec1dc9594cdc14bed6e23bb21accc99970efc44db188ff1d4066b3597de6466e"
+      }
+    ]
+  },
+  {
+    "case": 80,
+    "source": "/* P11 oracle 80; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xf87973016343aa29ULL;\n const U factor=271ULL;\n unsigned int u=4294967295u-49u;\n long s=-49L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)7897;\n unsigned short us=(unsigned short)43561;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<4;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<11)^(state>>53);\n }\n U quotient=state/97ULL;\n U remainder=state%97ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "88a5019561ef6cd9787c31c6803c149a09a83a4856f841e38c45a31727164acd",
+    "expected_exit": 3947852673,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3947852673,
+        "sha256": "f83c77d443b0160bccdab004feccb3ea6c6a471816163adc86801de2884d6e07"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3947852673,
+        "sha256": "8b8b976e8b220035c8221909ab5379bee9e518a6edbf30f40eaa0b258543b8cf"
+      }
+    ]
+  },
+  {
+    "case": 81,
+    "source": "/* P11 oracle 81; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xadcb2f582b9cbdaeULL;\n const U factor=68ULL;\n unsigned int u=4294967295u-72u;\n long s=-72L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)26078;\n unsigned short us=(unsigned short)48558;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<57)^(state>>7);\n }\n U quotient=state/96ULL;\n U remainder=state%96ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "72e698c0782b33562e2ee55cf601af58423a1feccaa17654355b3cad4974bd54",
+    "expected_exit": 1630740655,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1630740655,
+        "sha256": "f75ea218f1ed2ba75454ae7bccc58e345d804df8318d55979f46bd00019cfc1b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1630740655,
+        "sha256": "7130ee6136a6b5aeb33224e86bcce6dbabf4333d7518f700099f4f6ec0de2509"
+      }
+    ]
+  },
+  {
+    "case": 82,
+    "source": "/* P11 oracle 82; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x5b97f84f4144a60cULL;\n const U factor=258ULL;\n unsigned int u=4294967295u-27u;\n long s=-27L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)4060;\n unsigned short us=(unsigned short)42508;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<6;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<41)^(state>>23);\n }\n U quotient=state/68ULL;\n U remainder=state%68ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "3dbdecc2e82e6d01eef4977e6308750109df6aeb570a4c734410a8428348b956",
+    "expected_exit": 13193852,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 13193852,
+        "sha256": "4fbe1a71194617f8df14e4ba91d3936d56a7920ebfcf5734f4f43aefacfa7260"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 13193852,
+        "sha256": "4dc45766eddfdcd75b7ae363647bc5dab522ce252b2925a5ba2e3524aadbe8c5"
+      }
+    ]
+  },
+  {
+    "case": 83,
+    "source": "/* P11 oracle 83; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xc9f6e3a8ac5c4f23ULL;\n const U factor=387ULL;\n unsigned int u=4294967295u-31u;\n long s=-31L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)28115;\n unsigned short us=(unsigned short)20259;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<23)^(state>>41);\n }\n U quotient=state/121ULL;\n U remainder=state%121ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "49fe467b2f8340b67dfb5777fdf731c72a2548760da5d6746bd989d162fd43b1",
+    "expected_exit": 899280531,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 899280531,
+        "sha256": "c7f86cf852122ce4bf68d95354ecb67af7f9fee12179ba19477c07e395ef9c4b"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 899280531,
+        "sha256": "81378b8d248176c55952cec8f78df08f2946f7e7097efafcbac23e78146d26dc"
+      }
+    ]
+  },
+  {
+    "case": 84,
+    "source": "/* P11 oracle 84; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x5a30ac08715473d3ULL;\n const U factor=309ULL;\n unsigned int u=4294967295u-31u;\n long s=-31L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)1651;\n unsigned short us=(unsigned short)29651;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<3;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<3)^(state>>61);\n }\n U quotient=state/44ULL;\n U remainder=state%44ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "4f77c625884062841d362651ff0dd7ba49a25156ba353d3654dd11b1baf5b907",
+    "expected_exit": 1697381298,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1697381298,
+        "sha256": "82f812709a648e232b1d54c58d3c967bcf534257f10da9e4f894eefcd54e04af"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1697381298,
+        "sha256": "3d5a5ecd9d756af425b03e596666d5ee19a07f966482e0253890755002ceee26"
+      }
+    ]
+  },
+  {
+    "case": 85,
+    "source": "/* P11 oracle 85; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x6636bea4274c514aULL;\n const U factor=204ULL;\n unsigned int u=4294967295u-26u;\n long s=-26L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)11850;\n unsigned short us=(unsigned short)20810;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<17;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<54)^(state>>10);\n }\n U quotient=state/47ULL;\n U remainder=state%47ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "0e85e55e515fa263c1e58beec50abc97fa3584b7c9b44eb50440dab18684aa20",
+    "expected_exit": 2012903891,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2012903891,
+        "sha256": "dceb7af57578c8f10d447a9df242757a173b7005429f4284fee19ae032578d30"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2012903891,
+        "sha256": "ca5e2d4023457e1cb036bd680e4d9486a88b3b3a0f9f61584b9d9b7e28ce9619"
+      }
+    ]
+  },
+  {
+    "case": 86,
+    "source": "/* P11 oracle 86; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xaf323c88a2d13df8ULL;\n const U factor=244ULL;\n unsigned int u=4294967295u-56u;\n long s=-56L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)22296;\n unsigned short us=(unsigned short)15864;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<19;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<6)^(state>>58);\n }\n U quotient=state/197ULL;\n U remainder=state%197ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "125db1c5a818bbfdd7cab4fa8859ec2d06c64907f6a3feb84c7f180ec23e0522",
+    "expected_exit": 2862103105,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2862103105,
+        "sha256": "4bf5e4c90842a0c47506a272224dd0c7bd4203185a0a1dd73dd423d0eafdc3ac"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2862103105,
+        "sha256": "6f4712f29cd02acda75813732a7c8420c402cac073f5c3a99bed9a1a46c9bb80"
+      }
+    ]
+  },
+  {
+    "case": 87,
+    "source": "/* P11 oracle 87; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xa21b889baf1b8d45ULL;\n const U factor=178ULL;\n unsigned int u=4294967295u-78u;\n long s=-78L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)20197;\n unsigned short us=(unsigned short)36165;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<15;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<38)^(state>>26);\n }\n U quotient=state/189ULL;\n U remainder=state%189ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "2dddf6a3ec2cca8eca0c6b45dd4e2a932545c6f662a459da7a47c4c9dca54d1e",
+    "expected_exit": 1318187144,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1318187144,
+        "sha256": "96a7bae5f4113b79f17bc9988bd943c822be7fdfa8fce602bb5c87949541560f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1318187144,
+        "sha256": "4273f2337a50fa9c2c5885f220496fda8f69b1226096a3bd20aa8ec62bcf1b15"
+      }
+    ]
+  },
+  {
+    "case": 88,
+    "source": "/* P11 oracle 88; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xd78d487772b81ceaULL;\n const U factor=335ULL;\n unsigned int u=4294967295u-17u;\n long s=-17L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)25482;\n unsigned short us=(unsigned short)7402;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<17;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<32)^(state>>32);\n }\n U quotient=state/77ULL;\n U remainder=state%77ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "54c61aca06354ce202888315b427cd7e69c8fac1cf6bb80d659420b0c8902a23",
+    "expected_exit": 3484264382,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3484264382,
+        "sha256": "10c36d5f7929f10d9b081b607edf2cc8a3af53008c9aac44898d9428b6b30c6f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3484264382,
+        "sha256": "f8ebe1ce7641a6840efb135926af847f791e1827d7156f4f13d156e9fc23148a"
+      }
+    ]
+  },
+  {
+    "case": 89,
+    "source": "/* P11 oracle 89; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x245b1052f466dd0aULL;\n const U factor=312ULL;\n unsigned int u=4294967295u-54u;\n long s=-54L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)10042;\n unsigned short us=(unsigned short)56586;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<5;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<24)^(state>>40);\n }\n U quotient=state/23ULL;\n U remainder=state%23ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "71640037297b9e53cb565d2a7a04189be424a9a627460952b9c7980cdc47cad3",
+    "expected_exit": 4280913623,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4280913623,
+        "sha256": "aeef7da6fb95d69f22cea1a2cac5f51417cd52dfc32f7d281bdc2c1bc4591b4c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4280913623,
+        "sha256": "227182fa81b9c2ae7cd0c730894e6aad92b8a3d3b3b46a7887db41e0dee9c22b"
+      }
+    ]
+  },
+  {
+    "case": 90,
+    "source": "/* P11 oracle 90; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x34aa43e5e1a7e504ULL;\n const U factor=183ULL;\n unsigned int u=4294967295u-10u;\n long s=-10L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)12708;\n unsigned short us=(unsigned short)58628;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<2;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<56)^(state>>8);\n }\n U quotient=state/35ULL;\n U remainder=state%35ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "5eac72cfa74fdfac4a41b6df337e6a0372f30f70f6215954d2add0851207d67d",
+    "expected_exit": 2457604316,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2457604316,
+        "sha256": "36cdedcf9c1487fb273c148029928206b408ea1bd535528f91482661729bc02f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2457604316,
+        "sha256": "1cd1579c45635544bd1febd3fe575da7089edbd07f9a5d996750e901e80f99b7"
+      }
+    ]
+  },
+  {
+    "case": 91,
+    "source": "/* P11 oracle 91; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xa21fd8cb211d14d9ULL;\n const U factor=353ULL;\n unsigned int u=4294967295u-86u;\n long s=-86L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)20681;\n unsigned short us=(unsigned short)5337;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<6;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<11)^(state>>53);\n }\n U quotient=state/121ULL;\n U remainder=state%121ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "1791871a7b1eb68216665fc80506d5031adfc5b757114f2658d065eeec3e72c2",
+    "expected_exit": 2172080242,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2172080242,
+        "sha256": "ad309e1d4483da256a6c490cfb12c755d0ec0a971186332d46a3e7d163fcbf4a"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2172080242,
+        "sha256": "8f5d1e3541d1723f8775fdef603161fb8271faa92b945f9b10592f251005f1a0"
+      }
+    ]
+  },
+  {
+    "case": 92,
+    "source": "/* P11 oracle 92; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xc427a124d7ec8970ULL;\n const U factor=395ULL;\n unsigned int u=4294967295u-80u;\n long s=-80L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)8752;\n unsigned short us=(unsigned short)35184;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<16;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<14)^(state>>50);\n }\n U quotient=state/39ULL;\n U remainder=state%39ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "124e0e9f68e1f4ccacc311ba6458c3a3214d2b2689a6ddbd7b653d597f4066fd",
+    "expected_exit": 836189018,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 836189018,
+        "sha256": "dfde97fbaa818863b447ba5454202a88bb5ad0860e3290390a26a6d949f28390"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 836189018,
+        "sha256": "de2d4f9323315c2831e3635e07b70d244ca34bd118e7817349b155f09acc5638"
+      }
+    ]
+  },
+  {
+    "case": 93,
+    "source": "/* P11 oracle 93; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xd5dd345b767e9696ULL;\n const U factor=375ULL;\n unsigned int u=4294967295u-91u;\n long s=-91L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)21206;\n unsigned short us=(unsigned short)38550;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<17;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<14)^(state>>50);\n }\n U quotient=state/140ULL;\n U remainder=state%140ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "6289993f067bbcc4623c58db42670064fa42b3b35ce29697f466a359b2df74fe",
+    "expected_exit": 1647185401,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1647185401,
+        "sha256": "7613871dd895127991fb0bd138b96f0ed0a8cc4f25a4c206ca3e70663be29db4"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1647185401,
+        "sha256": "35a89155858dad91446751893b8648ed64848d5394e6dc5d02fb717cf5288da8"
+      }
+    ]
+  },
+  {
+    "case": 94,
+    "source": "/* P11 oracle 94; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xad6606cea2bba5f3ULL;\n const U factor=292ULL;\n unsigned int u=4294967295u-12u;\n long s=-12L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)6179;\n unsigned short us=(unsigned short)42483;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<1;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<50)^(state>>14);\n }\n U quotient=state/9ULL;\n U remainder=state%9ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "0db12c63dfc763afe6d2a44067dc8ad86a9b786789493fa09329f1f3a94c800d",
+    "expected_exit": 1296462786,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 1296462786,
+        "sha256": "72954f01b2d9a58a65715b8c914e9f83271fb1e41707f77fa654fcf02788bffc"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 1296462786,
+        "sha256": "7c9c5506cefc4b385cf8c2287ec6d9427471be567e4137bd034bbf9aa82c24e2"
+      }
+    ]
+  },
+  {
+    "case": 95,
+    "source": "/* P11 oracle 95; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0xff32a2a34039f88eULL;\n const U factor=179ULL;\n unsigned int u=4294967295u-33u;\n long s=-33L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)26446;\n unsigned short us=(unsigned short)63630;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<9;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<44)^(state>>20);\n }\n U quotient=state/112ULL;\n U remainder=state%112ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "30b7b05238feefb4a83369647193b588b44240e3e85cea82f369bac4997d73c4",
+    "expected_exit": 2070310015,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2070310015,
+        "sha256": "9a9174dfb0ebecdae705dd47e29b869a3bd851de4cf3e21fb8b5c6e83ac0b890"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2070310015,
+        "sha256": "bb99c20145a9f44725ec4004b5c3225b13f8ff6f099cc3a60d9ab0bfe9a647f6"
+      }
+    ]
+  },
+  {
+    "case": 96,
+    "source": "/* P11 oracle 96; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x0a7311a30e3e3698ULL;\n const U factor=42ULL;\n unsigned int u=4294967295u-10u;\n long s=-10L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)4472;\n unsigned short us=(unsigned short)13976;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<12;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<21)^(state>>43);\n }\n U quotient=state/147ULL;\n U remainder=state%147ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "3e8bc5430824562b5eee24bf3982a9f730c17d44844ce7b86b13b8a10a35cbd4",
+    "expected_exit": 3988868158,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3988868158,
+        "sha256": "e41351d004fa482726b77f2ea8256655818becf79ead259d6dc84214b344bb58"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3988868158,
+        "sha256": "198acd82185a78fe8b2c606ef35a776cfbef65e5db16088208ef380679b18062"
+      }
+    ]
+  },
+  {
+    "case": 97,
+    "source": "/* P11 oracle 97; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x500123ac0a65d874ULL;\n const U factor=41ULL;\n unsigned int u=4294967295u-1u;\n long s=-1L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)19316;\n unsigned short us=(unsigned short)55412;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<11;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<12)^(state>>52);\n }\n U quotient=state/149ULL;\n U remainder=state%149ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "0c5a251946c00f9ba6f2f8498afbbbef4310b2506ed3cc1528ef6d0f4ba047b6",
+    "expected_exit": 3229216350,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 3229216350,
+        "sha256": "cc1ac3d6ecf495bf10ead3a5a5cc22ab02159ef041574a9e7fb4a85e84b5832f"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 3229216350,
+        "sha256": "bce83f33da15f17a0f877b992c3fea44803beffa76141f630eb8781eb1f098da"
+      }
+    ]
+  },
+  {
+    "case": 98,
+    "source": "/* P11 oracle 98; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x773da57681b69a5aULL;\n const U factor=397ULL;\n unsigned int u=4294967295u-95u;\n long s=-95L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)6298;\n unsigned short us=(unsigned short)39514;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<9;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<34)^(state>>30);\n }\n U quotient=state/71ULL;\n U remainder=state%71ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "5c0014f6169e788c1915b0fa400b22f684e2988fb7e8c9346c493e959b8fb4c3",
+    "expected_exit": 4008326141,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 4008326141,
+        "sha256": "fb29d87d628dc8aba7c7d27b182bfdcaa5343edd940464e91fca33e8c329d5d3"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 4008326141,
+        "sha256": "d4cafd0393383e4099fafd23eda95f98a03a4e1bbecb2744729b2164af411672"
+      }
+    ]
+  },
+  {
+    "case": 99,
+    "source": "/* P11 oracle 99; defined arithmetic and documented low-bit int conversion. */\ntypedef unsigned long long U;\ntypedef int Matrix[3][4];\ntypedef int (*Callback)(int);\nint main(void){\n volatile U state=0x96a9fbbc6ba8fcf7ULL;\n const U factor=55ULL;\n unsigned int u=4294967295u-45u;\n long s=-45L;\n unsigned long mix=u+s;\n long long widened=u+(long long)s;\n unsigned char byte=250;byte+=21;\n short narrow=(short)1607;\n unsigned short us=(unsigned short)64759;\n int promoted=narrow+us;\n _Bool truth=state;\n for(unsigned int i=0;i<4;i++){\n   if(i==2)continue;\n   switch(i%4){case 0:state+=factor;case 1:state^=i;break;\n     case 2:state-=factor;break;default:state*=factor;}\n   state=(state<<31)^(state>>33);\n }\n U quotient=state/187ULL;\n U remainder=state%187ULL;\n U selected=truth ? quotient : remainder;\n int untouched=1;\n U layout=sizeof(Matrix)+sizeof(Callback)+sizeof(long)+sizeof(long long)+sizeof(void*)+_Alignof(short);\n U sizes=sizeof(byte++)+sizeof(+byte)+sizeof(++untouched);\n if(untouched!=1)return 123;\n U score=(U)promoted+(U)mix+(U)widened+(U)byte+layout+sizes;\n return (int)(state^(state>>32)^selected^remainder^score);\n}\n",
+    "source_sha256": "4e2709068f8266c4e7358bdccd48440479abe8443115a4949e0a34241c664ab4",
+    "expected_exit": 2882789664,
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 2882789664,
+        "sha256": "05b5c56e8f7940f920ae933714313c32bde9e307728088d45b5682e5a5c9d0f6"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 2882789664,
+        "sha256": "c185239847ee728715b80473b522d66062d15d2b88b12d1bc78f902a08aad168"
+      }
+    ]
+  }
+]

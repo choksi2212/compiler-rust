@@ -31,6 +31,17 @@ pub enum Width {
     Qword,
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Shift {
+    Left,
+    LogicalRight,
+    ArithmeticRight,
+}
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ShiftCount {
+    Immediate(u8),
+    Cl,
+}
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Scale {
     One,
     Two,
@@ -172,6 +183,16 @@ pub enum Instruction {
     Divide {
         width: Width,
         divisor: Reg,
+    },
+    DivideUnsigned {
+        width: Width,
+        divisor: Reg,
+    },
+    Shift {
+        width: Width,
+        op: Shift,
+        reg: Reg,
+        count: ShiftCount,
     },
     Set {
         condition: Condition,
@@ -405,6 +426,41 @@ pub fn encode(instructions: &[Instruction]) -> Result<MachineFragment, String> {
                     false,
                 );
                 bytes.extend([0xf7, 0xf8 | divisor.low()]);
+            }
+            Instruction::DivideUnsigned { width, divisor } => {
+                rex(
+                    &mut bytes,
+                    width == Width::Qword,
+                    0,
+                    0,
+                    divisor.high(),
+                    false,
+                );
+                bytes.extend([0xf7, 0xf0 | divisor.low()]);
+            }
+            Instruction::Shift {
+                width,
+                op,
+                reg,
+                count,
+            } => {
+                rex(&mut bytes, width == Width::Qword, 0, 0, reg.high(), false);
+                let group = match op {
+                    Shift::Left => 4,
+                    Shift::LogicalRight => 5,
+                    Shift::ArithmeticRight => 7,
+                };
+                let opcode = match count {
+                    ShiftCount::Cl => 0xd3,
+                    ShiftCount::Immediate(1) => 0xd1,
+                    ShiftCount::Immediate(_) => 0xc1,
+                };
+                bytes.extend([opcode, 0xc0 | (group << 3) | reg.low()]);
+                if let ShiftCount::Immediate(count) = count
+                    && count != 1
+                {
+                    bytes.push(count);
+                }
             }
             Instruction::Set { condition, dst } => {
                 rex(&mut bytes, false, 0, 0, dst.high(), dst.low() >= 4);

@@ -53,6 +53,8 @@ pub fn parse(tokens: Vec<Token>) -> Result<Stmt, String> {
         tokens,
         i: 0,
         depth: 0,
+        expression_level: 0,
+        expression_operators: 0,
     };
     p.expect("int")?;
     p.expect("main")?;
@@ -65,7 +67,7 @@ pub fn parse(tokens: Vec<Token>) -> Result<Stmt, String> {
     }
     Ok(s)
 }
-fn reserved(s: &str) -> bool {
+pub(crate) fn reserved(s: &str) -> bool {
     matches!(
         s,
         "auto"
@@ -118,6 +120,8 @@ struct Parser {
     tokens: Vec<Token>,
     i: usize,
     depth: usize,
+    expression_level: usize,
+    expression_operators: usize,
 }
 impl Parser {
     fn peek(&self) -> &Token {
@@ -321,9 +325,14 @@ impl Parser {
         if self.depth >= 64 {
             return self.error("syntax nesting limit exceeded");
         }
+        if self.expression_level == 0 {
+            self.expression_operators = 0;
+        }
+        self.expression_level += 1;
         self.depth += 1;
         let result = self.expr_inner(min);
         self.depth -= 1;
+        self.expression_level -= 1;
         result
     }
     fn expr_inner(&mut self, min: u8) -> Result<Expr, String> {
@@ -395,7 +404,8 @@ impl Parser {
                 break;
             }
             operators += 1;
-            if operators > 128 {
+            self.expression_operators += 1;
+            if operators > 128 || self.expression_operators > 128 {
                 return self.error("expression size limit exceeded");
             }
             let t = self.take();

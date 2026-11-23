@@ -579,6 +579,30 @@ pub struct NativeBuild {
 
 pub fn build(ir: &[Ir], options: &RuntimeOptions) -> Result<NativeBuild, String> {
     crate::verify::verify(ir)?;
+    let mut strings = BTreeMap::new();
+    let mut formats = BTreeMap::new();
+    for (index, op) in ir.iter().enumerate() {
+        match op {
+            Ir::Const(_, Value::Str(text)) => {
+                strings.insert(index, text.clone());
+            }
+            Ir::Print(format, _, _) => {
+                formats.insert(index, format.clone());
+            }
+            _ => (),
+        }
+    }
+    build_program(options, &strings, &formats, |labels, bindings| {
+        lower_with_runtime(ir, labels, bindings)
+    })
+}
+/// Shared owned startup/runtime/PE construction for verified program lowerers.
+pub fn build_program(
+    options: &RuntimeOptions,
+    strings: &BTreeMap<usize, String>,
+    formats: &BTreeMap<usize, String>,
+    lower: impl FnOnce(&mut LabelAllocator, &RuntimeBindings) -> Result<NativeFunction, String>,
+) -> Result<NativeBuild, String> {
     if !(1..=64 * 1024 * 1024).contains(&options.output_capacity) {
         return Err("native output capacity must be1..64MiB".into());
     }
@@ -610,16 +634,11 @@ pub fn build(ir: &[Ir], options: &RuntimeOptions) -> Result<NativeBuild, String>
         constants: BTreeMap::new(),
         formats: BTreeMap::new(),
     };
-    for (index, op) in ir.iter().enumerate() {
-        match op {
-            Ir::Const(_, Value::Str(text)) => {
-                bindings.constants.insert(index, pool.add(text)?);
-            }
-            Ir::Print(format, _, _) => {
-                bindings.formats.insert(index, pool.add(format)?);
-            }
-            _ => (),
-        }
+    for (index, text) in strings {
+        bindings.constants.insert(*index, pool.add(text)?);
+    }
+    for (index, format) in formats {
+        bindings.formats.insert(*index, pool.add(format)?);
     }
     let mut messages = vec![];
     for (status, message) in [
@@ -630,11 +649,12 @@ pub fn build(ir: &[Ir], options: &RuntimeOptions) -> Result<NativeBuild, String>
         (5, "runtime error: invalid runtime format\n"),
         (6, "runtime error: memory service failure\n"),
         (7, "runtime error: output IO failure\n"),
+        (8, "runtime error: invalid shift\n"),
     ] {
         messages.push((status, pool.add(message)?, message.len() as u32));
     }
     let context = pool.allocator.fresh()?;
-    let program = lower_with_runtime(ir, &mut labels, &bindings)?;
+    let program = lower(&mut labels, &bindings)?;
     let formatting = formatter(&mut labels)?;
     let writing = write_all(&mut labels, imports.write)?;
     let root = startup(

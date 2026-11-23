@@ -8,6 +8,7 @@ pub enum Target {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Semantics {
     Teaching,
+    C11,
 }
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Stage {
@@ -48,6 +49,12 @@ impl Default for CompilationContext {
     }
 }
 impl CompilationContext {
+    pub fn for_semantics(semantics: Semantics) -> Self {
+        Self {
+            semantics,
+            ..Self::default()
+        }
+    }
     pub fn add_source(&mut self, name: impl Into<String>, text: impl Into<String>) -> SourceId {
         let id = SourceId(self.sources.len());
         self.sources.push(Source {

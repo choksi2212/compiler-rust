@@ -312,3 +312,114 @@ fn successful_nonzero_returns_flush_stdout_without_runtime_diagnostics() {
     }
     w.clean_temps();
 }
+
+#[test]
+fn explicit_typed_mode_syntax_only_and_mode_conflicts() {
+    let w = Workspace::new();
+    fs::write(w.0.join("source.c"),"typedef unsigned long long U;int main(void){U x=18446744073709551615ULL;return (int)(x>>62);}").unwrap();
+    for optimization in ["-O0", "-O1", "--no-opt"] {
+        let out = w.cli(&[
+            "source.c",
+            "--std=c11",
+            "-o",
+            "typed.exe",
+            "--overwrite",
+            optimization,
+            "--tokens",
+            "--ast",
+            "--ir",
+            "--optimized-ir",
+            "--emit=machine",
+        ]);
+        code(&out, 0);
+        assert!(out.stdout.is_empty());
+        let dumps = String::from_utf8(out.stderr).unwrap();
+        for label in [
+            "TOKENS",
+            "TYPED AST",
+            "TYPED IR",
+            "OPTIMIZED TYPED IR",
+            "MACHINE CODE",
+        ] {
+            assert!(dumps.contains(label));
+        }
+        let out = Command::new(w.0.join("typed.exe"))
+            .env("PATH", "")
+            .output()
+            .unwrap();
+        code(&out, 3);
+        assert!(out.stderr.is_empty());
+    }
+    code(
+        &w.cli(&[
+            "source.c",
+            "--std=c11",
+            "-fsyntax-only",
+            "--tokens",
+            "--ast",
+        ]),
+        0,
+    );
+    fs::write(
+        w.0.join("types.c"),
+        "typedef int (*F)(int);typedef unsigned long U;",
+    )
+    .unwrap();
+    code(&w.cli(&["types.c", "--std=c11", "-fsyntax-only"]), 0);
+    for args in [
+        vec!["source.c", "--std=c11"],
+        vec!["source.c", "-fsyntax-only"],
+        vec!["source.c", "--std=c11", "--run-vm"],
+        vec!["source.c", "--std=c11", "--bytecode"],
+        vec![
+            "source.c",
+            "--std=c11",
+            "--semantics=teaching",
+            "-o",
+            "x.exe",
+        ],
+        vec!["source.c", "--std=c11", "-fsyntax-only", "-o", "x.exe"],
+        vec!["source.c", "--std=c11", "-fsyntax-only", "--ir"],
+        vec!["source.c", "-O0", "-O1"],
+        vec!["source.c", "--no-opt", "-O1"],
+    ] {
+        code(&w.cli(&args), 2);
+    }
+    // No typed fallback is hidden behind the default VM or teaching compiler.
+    code(&w.cli(&["source.c", "--semantics=teaching"]), 1);
+    fs::write(w.0.join("bad.c"), "int main(){int a[3];return sizeof(a);}").unwrap();
+    fs::write(w.0.join("old.exe"), b"preserve").unwrap();
+    code(
+        &w.cli(&["bad.c", "--std=c11", "-o", "old.exe", "--overwrite"]),
+        1,
+    );
+    assert_eq!(fs::read(w.0.join("old.exe")).unwrap(), b"preserve");
+    w.clean_temps();
+}
+
+#[test]
+fn nested_expression_tails_report_limits_instead_of_overflowing_the_stack() {
+    let w = Workspace::new();
+    let mut expression = "0".to_string();
+    for _ in 0..32 {
+        expression = format!("({expression}+{})", vec!["0"; 126].join("+"));
+    }
+    fs::write(
+        w.0.join("source.c"),
+        format!("int main(){{int x={expression};return 0;}}"),
+    )
+    .unwrap();
+    for flags in [
+        vec![],
+        vec!["--std=c11", "-fsyntax-only"],
+        vec!["-o", "out.exe"],
+    ] {
+        let mut args = vec!["source.c"];
+        args.extend(flags);
+        let out = w.cli(&args);
+        code(&out, 1);
+        assert!(String::from_utf8_lossy(&out.stderr).contains("expression size limit"));
+        assert!(!String::from_utf8_lossy(&out.stderr).contains("overflowed its stack"));
+        assert!(!w.0.join("out.exe").exists());
+    }
+}

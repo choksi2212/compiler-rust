@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "installed_compiler": "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+  "compiler_sha256": "eac21972cf38be8fa52a498c4f4688247a75cea1e9f7459eabcdda97c3851e40",
+  "records": [
+    {
+      "mode": "typed",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed typed compiler j008s6ae\\source.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed typed compiler j008s6ae\\program.exe",
+        "--overwrite",
+        "--std=c11"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "84ea6065a65428b477bb2d90e3fa7b7a0bc11e2104c7022d5008d03d93c4f7bd"
+    },
+    {
+      "mode": "teaching",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed typed compiler j008s6ae\\source.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed typed compiler j008s6ae\\program.exe",
+        "--overwrite"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "Sum = 20\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "1e6a8331b0fffb8acdb087b7ecc21d8a29b0e2c34c05654067e72f56f11f4248"
+    }
+  ]
+}

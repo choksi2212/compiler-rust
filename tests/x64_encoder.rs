@@ -6,6 +6,40 @@ fn bytes(instructions: &[Instruction]) -> Vec<u8> {
 #[test]
 fn reviewed_byte_fixtures() {
     assert_eq!(
+        bytes(&[
+            Instruction::Shift {
+                width: Width::Qword,
+                op: Shift::Left,
+                reg: Reg::new(9).unwrap(),
+                count: ShiftCount::Immediate(13)
+            },
+            Instruction::Shift {
+                width: Width::Dword,
+                op: Shift::LogicalRight,
+                reg: Reg::new(10).unwrap(),
+                count: ShiftCount::Cl
+            },
+            Instruction::Shift {
+                width: Width::Qword,
+                op: Shift::ArithmeticRight,
+                reg: Reg::new(12).unwrap(),
+                count: ShiftCount::Immediate(1)
+            },
+            Instruction::DivideUnsigned {
+                width: Width::Qword,
+                divisor: Reg::new(15).unwrap()
+            },
+            Instruction::DivideUnsigned {
+                width: Width::Dword,
+                divisor: Reg::RCX
+            },
+        ]),
+        vec![
+            0x49, 0xc1, 0xe1, 0x0d, 0x41, 0xd3, 0xea, 0x49, 0xd1, 0xfc, 0x49, 0xf7, 0xf7, 0xf7,
+            0xf1
+        ]
+    );
+    assert_eq!(
         bytes(&[Instruction::MovImm {
             width: Width::Dword,
             dst: Reg::RAX,
@@ -74,6 +108,114 @@ fn reviewed_byte_fixtures() {
         ]),
         vec![0x41, 0x57, 0x41, 0x5f, 0xc3]
     );
+}
+
+#[test]
+#[cfg(all(windows, target_arch = "x86_64"))]
+fn native_unsigned_division_and_shift_boundaries() {
+    for (width, bits) in [(Width::Dword, 32), (Width::Qword, 64)] {
+        for (shift, expected) in [
+            (Shift::Left, 1u64 << (bits - 1)),
+            (Shift::LogicalRight, 1),
+            (Shift::ArithmeticRight, compiler::types::mask(bits)),
+        ] {
+            let input = if shift == Shift::Left {
+                1
+            } else {
+                1u64 << (bits - 1)
+            };
+            for count in [ShiftCount::Immediate((bits - 1) as u8), ShiftCount::Cl] {
+                run(
+                    vec![
+                        Instruction::MovImm {
+                            width,
+                            dst: Reg::RAX,
+                            value: input,
+                        },
+                        Instruction::MovImm {
+                            width: Width::Dword,
+                            dst: Reg::RCX,
+                            value: u64::from(bits - 1),
+                        },
+                        Instruction::Shift {
+                            width,
+                            op: shift,
+                            reg: Reg::RAX,
+                            count,
+                        },
+                        Instruction::MovImm {
+                            width,
+                            dst: Reg::new(10).unwrap(),
+                            value: expected,
+                        },
+                        Instruction::Binary {
+                            width,
+                            op: Binary::Compare,
+                            dst: Reg::RAX,
+                            src: Reg::new(10).unwrap(),
+                        },
+                        Instruction::Set {
+                            condition: Condition::Equal,
+                            dst: Reg::RAX,
+                        },
+                    ],
+                    1,
+                );
+            }
+        }
+        for remainder in [false, true] {
+            let mut body = vec![
+                Instruction::MovImm {
+                    width,
+                    dst: Reg::RAX,
+                    value: compiler::types::mask(bits),
+                },
+                Instruction::MovImm {
+                    width,
+                    dst: Reg::RDX,
+                    value: 0,
+                },
+                Instruction::MovImm {
+                    width,
+                    dst: Reg::new(10).unwrap(),
+                    value: 2,
+                },
+                Instruction::DivideUnsigned {
+                    width,
+                    divisor: Reg::new(10).unwrap(),
+                },
+            ];
+            if remainder {
+                body.push(Instruction::Mov {
+                    width,
+                    dst: Reg::RAX,
+                    src: Reg::RDX,
+                });
+            }
+            body.extend([
+                Instruction::MovImm {
+                    width,
+                    dst: Reg::new(10).unwrap(),
+                    value: if remainder {
+                        1
+                    } else {
+                        compiler::types::mask(bits) / 2
+                    },
+                },
+                Instruction::Binary {
+                    width,
+                    op: Binary::Compare,
+                    dst: Reg::RAX,
+                    src: Reg::new(10).unwrap(),
+                },
+                Instruction::Set {
+                    condition: Condition::Equal,
+                    dst: Reg::RAX,
+                },
+            ]);
+            run(body, 1);
+        }
+    }
 }
 #[test]
 fn labels_symbols_and_ranges() {

@@ -31,6 +31,41 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Ok(())
     };
     for (width, suffix, names) in [(Width::Dword, "l", &d), (Width::Qword, "q", &q)] {
+        for (reg, name) in names.iter().enumerate() {
+            let r = Reg::new(reg as u8)?;
+            emit(
+                Instruction::DivideUnsigned { width, divisor: r },
+                format!("div{suffix} %{}", name),
+            )?;
+            for (op, mnemonic) in [
+                (Shift::Left, "shl"),
+                (Shift::LogicalRight, "shr"),
+                (Shift::ArithmeticRight, "sar"),
+            ] {
+                emit(
+                    Instruction::Shift {
+                        width,
+                        op,
+                        reg: r,
+                        count: ShiftCount::Cl,
+                    },
+                    format!("{mnemonic}{suffix} %cl,%{}", name),
+                )?;
+                for amount in [0, 1, 7, 8, 15, 16, 31, 32, 63, 64, 127, 255] {
+                    emit(
+                        Instruction::Shift {
+                            width,
+                            op,
+                            reg: r,
+                            count: ShiftCount::Immediate(amount),
+                        },
+                        format!("{mnemonic}{suffix} ${amount},%{}", name),
+                    )?;
+                }
+            }
+        }
+    }
+    for (width, suffix, names) in [(Width::Dword, "l", &d), (Width::Qword, "q", &q)] {
         for dst in 0..16 {
             let r = Reg::new(dst as u8)?;
             emit(

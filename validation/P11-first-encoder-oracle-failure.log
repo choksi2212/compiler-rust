@@ -1,0 +1,6 @@
+Encoded 16020 oracle fixtures
+
+Traceback (most recent call last):
+  File "N:\compiler-proj\tools\encoding_differential.py", line 41, in <module>
+    assert own_text==ref_text,(i,own_text,ref_text)
+AssertionError: (3, 'shl $0x1,%eax', 'shl $1,%eax')
