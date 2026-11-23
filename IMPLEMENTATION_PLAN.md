@@ -2,16 +2,16 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 2.0, documentation proposal for review
+**Revision:** 3.0, phased execution specification for review
 **Date:** 2026-11-23 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
-**Immediate delivery:** compile the existing supported C subset into genuine native Windows executables
+**Immediate implementation delivery after review:** compile the existing supported C subset into genuine native Windows executables
 **Long-term delivery:** a project-owned C11 compiler, linker, runtime, headers, and standard library
 
 This is the project's single source of truth. It combines the PRD, technical requirements, architecture, execution flows, implementation sequence, validation strategy, and change control. The README is a usage guide and must derive scope claims from this document. Git history preserves earlier plans; no parallel roadmap or competing specification should be introduced.
 
-**Document-only revision:** this revision specifies future work; it does not implement or certify it. Review this complete revision before native backend or language expansion implementation continues. The user has authorized project-owned development and stage-by-stage testing. A change to the agreed architecture, dependency policy, target, or scope requires asking the user first, then updating this file before coding.
+**Document-only revision:** this revision specifies future work; it does not implement or certify it. No implementation phase is authorized to start merely because this planning update has been committed. Review this complete phased revision before native backend or language expansion implementation continues. The user has authorized project-owned development and stage-by-stage testing. A change to the agreed architecture, dependency policy, target, or scope requires asking the user first, then updating this file before coding.
 
 ## Contents
 
@@ -27,7 +27,7 @@ This is the project's single source of truth. It combines the PRD, technical req
 10. [PE image layout and project-owned linking](#10-pe-image-layout-and-project-owned-linking)
 11. [Startup, runtime, headers, and standard library](#11-startup-runtime-headers-and-standard-library)
 12. [Diagnostics, resource limits, and failure behavior](#12-diagnostics-resource-limits-and-failure-behavior)
-13. [Implementation work packages and stage gates](#13-implementation-work-packages-and-stage-gates)
+13. [Phased implementation execution plan](#13-phased-implementation-execution-plan)
 14. [Verification, conformance, and release policy](#14-verification-conformance-and-release-policy)
 15. [Risks, decisions, traceability, and next action](#15-risks-decisions-traceability-and-next-action)
 16. [References and preserved history](#16-references-and-preserved-history)
@@ -634,147 +634,668 @@ Preserve user-created files such as the current untracked `addition.c`. Do not s
 
 Use deterministic symbol/section ordering and a reproducible timestamp policy. Byte-for-byte reproducibility is a tested property of the selected options, not an assumption. Avoid embedding host absolute paths unless explicitly requested for diagnostics. Validate PE field sizes and directory bounds before writing. Use writable data and executable code permissions appropriate to their contents; do not use universal writable/executable sections to bypass layout work.
 
-## 13. Implementation work packages and stage gates
+## 13. Phased implementation execution plan
 
-### 13.1 Global stage protocol
+### 13.1 How to use this plan
 
-For every stage: specify the detailed contract here; implement real behavior; add tests for valid cases, errors and boundaries; run focused tests; run prior regressions; inspect actual outputs; record evidence here; only then begin the next stage. If a prerequisite fails, repair it rather than carrying a known defect into dependent work. No stage is complete because its files exist or a compilation command exits successfully.
+This section is the controlling implementation sequence for phases P00-P24 (25 phases). Sections 1-12 define the product and technical contracts; sections 14-16 define verification, governance and references. All are part of this same document. Earlier stage/package names are historical aliases only: they must not be maintained as another independent task sequence.
 
-Historical stage numbers 0-7 identify the VM baseline. Stage 8A identifies the existing native foundation. The packages below refine the native/full-C roadmap. This dependency order governs work; a later feature may be specified early but cannot be reported implemented before its dependencies and acceptance gate pass.
+Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-### 13.2 Dependency overview
+The user requested this revision before code. Every new phase below remains unstarted unless existing foundation work is explicitly identified. Document checks performed for this revision do not count as phase implementation tests. Do not change compiler source while preparing or reviewing this revision.
+
+### 13.2 Phase lifecycle and completion record
+
+Allowed lifecycle: `planned -> specified -> in progress -> verifying -> passed`. A failed check returns the phase to `in progress`; a missing decision is `awaiting decision`, with the exact question recorded. Historical code alone does not make a new phase pass. Only `passed` unlocks dependent phases.
+
+At phase start, record baseline commit, scope, relevant requirement IDs, dependencies, target/mode, and any open decisions. At phase end, fill this record in this document:
+
+| Completion record field | Required content |
+| --- | --- |
+| Phase ID and status | Exact phase; passed or still incomplete |
+| Implemented behavior | Concrete user/internal capability and current limitations |
+| Changed components | Real source/test/runtime paths and interfaces |
+| Validation | Commands, build mode, meaningful case counts and actual results |
+| Artifact evidence | Representative output/image/status/diagnostic and how obtained |
+| Regression evidence | Earlier phases rechecked and any expected mode-specific differences |
+| Remaining defects | Reproductions and whether they block the gate |
+| Decisions/deviations | User-approved change with this document updated first |
+| Commit/reproducibility | Commit identifier, fixture locations, random seeds if applicable |
+| Next eligible phase | First dependency-unlocked phase only |
+
+Every phase requires focused tests plus previous regression tests appropriate to the change. Native behavior requires real process execution. A developer may perform routine choices within these contracts; an architecture/dependency/target change requires user approval under section 15.4.
+
+### 13.3 Phase map and current status
+
+| Phase | Bounded deliverable | Historical alias | Initial status |
+| --- | --- | --- | --- |
+| P00 | Review, baseline and specification freeze | Plan review | Documentation only; review pending |
+| P01 | Native foundation audit | 8A audit | Existing foundation; expanded gate not passed |
+| P02 | Shared compiler library and legacy IR verification | 8B-1 | Planned |
+| P03 | Project x64 instruction encoder | 8B-2 | Planned |
+| P04 | Dynamic PE layout, imports and fixups | 8B-3 | Planned |
+| P05 | ABI, stack frames and unwind generation | 8B-4 | Planned |
+| P06 | Native subset arithmetic and control flow | 8B-5/6 | Planned |
+| P07 | Native subset runtime and startup | 8B-7/8 | Planned |
+| P08 | Complete C-subset-to-native integration | 8B-9 | Planned |
+| P09 | Native CLI and usable distribution | 8C | Planned |
+| P10 | Conventional syntax and control flow | 9 | Planned |
+| P11 | General type system and typed IR | 10, type portion | Planned |
+| P12 | Functions, calls, globals and variadics | 10, function/storage portion | Planned |
+| P13 | Pointers, arrays, memory and strings | 11 | Planned |
+| P14 | Aggregates and advanced declaration forms | 12, aggregate portion | Planned |
+| P15 | Floating types and numerical semantics | 12, floating portion | Planned |
+| P16 | Real preprocessor and project headers | 13A | Planned |
+| P17 | Own COFF objects and separate linking | 13B | Planned |
+| P18 | Hosted startup, environment and allocator | 14, runtime foundation | Planned |
+| P19 | Streams, files and formatted IO | 14, IO | Planned |
+| P20 | Utilities, encodings, locales and system interfaces | 14, utility families | Planned |
+| P21 | Numerical library and complex facilities | 14, numerical families | Planned |
+| P22 | Atomics, threads and TLS facilities | 14, concurrency families | Planned |
+| P23 | Remaining language/library coverage and conformance audit | 14, conformance closure | Planned |
+| P24 | Release validation, packaging and truthful support report | Release gate | Planned |
+
+No calendar promises are attached. Full C11 remains a long-term goal measured by requirements and evidence, not by the number of phases marked started.
+
+### Phase navigation
+
+- [P00: Review, baseline and specification freeze](#135-p00---review-baseline-and-specification-freeze)
+- [P01: Audit the native executable foundation](#136-p01---audit-the-native-executable-foundation)
+- [P02: Shared compilation library and legacy IR verifier](#137-p02---shared-compilation-library-and-legacy-ir-verifier)
+- [P03: Own x64 instruction encoder](#138-p03---own-x64-instruction-encoder)
+- [P04: Dynamic executable layout, imports and fixups](#139-p04---dynamic-executable-layout-imports-and-fixups)
+- [P05: Calling convention, frames and unwind metadata](#1310-p05---calling-convention-frames-and-unwind-metadata)
+- [P06: Native lowering of subset operations and control flow](#1311-p06---native-lowering-of-subset-operations-and-control-flow)
+- [P07: Project native runtime and startup for the subset](#1312-p07---project-native-runtime-and-startup-for-the-subset)
+- [P08: End-to-end native C subset qualification](#1313-p08---end-to-end-native-c-subset-qualification)
+- [P09: Native command-line compiler and subset distribution](#1314-p09---native-command-line-compiler-and-subset-distribution)
+- [P10: Conventional syntax and control-flow expansion](#1315-p10---conventional-syntax-and-control-flow-expansion)
+- [P11: General C types and typed intermediate representation](#1316-p11---general-c-types-and-typed-intermediate-representation)
+- [P12: Functions, calls, global storage and variadic support](#1317-p12---functions-calls-global-storage-and-variadic-support)
+- [P13: Objects, pointers, arrays and mutable strings](#1318-p13---objects-pointers-arrays-and-mutable-strings)
+- [P14: Aggregate layout and advanced declarations](#1319-p14---aggregate-layout-and-advanced-declarations)
+- [P15: Floating types, conversions and numerical execution](#1320-p15---floating-types-conversions-and-numerical-execution)
+- [P16: Real preprocessor, source provenance and project headers](#1321-p16---real-preprocessor-source-provenance-and-project-headers)
+- [P17: COFF objects, symbol resolution and separate compilation](#1322-p17---coff-objects-symbol-resolution-and-separate-compilation)
+- [P18: Hosted startup, environment and production allocator](#1323-p18---hosted-startup-environment-and-production-allocator)
+- [P19: Standard streams, files and formatted IO](#1324-p19---standard-streams-files-and-formatted-io)
+- [P20: Utilities, encodings, locale and system interfaces](#1325-p20---utilities-encodings-locale-and-system-interfaces)
+- [P21: Numerical library, floating environment and complex facilities](#1326-p21---numerical-library-floating-environment-and-complex-facilities)
+- [P22: Atomics, threads, TLS and concurrent runtime audit](#1327-p22---atomics-threads-tls-and-concurrent-runtime-audit)
+- [P23: Remaining C11 coverage and conformance closure](#1328-p23---remaining-c11-coverage-and-conformance-closure)
+- [P24: Final release validation and distribution](#1329-p24---final-release-validation-and-distribution)
+
+### 13.4 Dependency and release flow
 
 ```mermaid
 flowchart TD
-    B[0-7 VM baseline] --> A[8A native foundation audit]
-    A --> N[8B encoder and native subset runtime]
-    N --> C[8C native CLI and distribution]
-    C --> S[9 syntax and control flow]
-    S --> T[10 typed functions and storage]
-    T --> M[11 memory and strings]
-    M --> G[12 aggregates and numerical types]
-    G --> P[13A preprocessing and headers]
-    P --> O[13B objects and linking]
-    O --> R[14 hosted runtime and conformance]
+    P00[P00 review and freeze] --> P01[P01 foundation audit]
+    P01 --> P02[P02 shared library and IR verifier]
+    P02 --> P03[P03 x64 encoder]
+    P03 --> P04[P04 PE layout and fixups]
+    P04 --> P05[P05 ABI and unwind]
+    P05 --> P06[P06 native operations]
+    P06 --> P07[P07 subset runtime]
+    P07 --> P08[P08 complete native subset]
+    P08 --> P09[P09 CLI and native subset release]
+    P09 --> P10[P10 syntax and flow]
+    P10 --> P11[P11 types and typed IR]
+    P11 --> P12[P12 functions and storage]
+    P12 --> P13[P13 memory and arrays]
+    P13 --> P14[P14 aggregate types]
+    P14 --> P15[P15 floating types]
+    P15 --> P16[P16 preprocessing and headers]
+    P16 --> P17[P17 objects and linking]
+    P17 --> P18[P18 hosted runtime]
+    P18 --> P19[P19 standard IO]
+    P19 --> P20[P20 utilities and system interfaces]
+    P20 --> P21[P21 numerical library]
+    P21 --> P22[P22 concurrency]
+    P22 --> P23[P23 conformance closure]
+    P23 --> P24[P24 hosted release gate]
 ```
 
-The order prioritizes end-to-end native demos. Therefore stages before 13A use explicitly limited teaching/header handling or header-free declarations. Do not claim that standard library include-based programs already work during those stages. If preprocessing needs to move earlier to enable real usage, ask for that sequencing change and update this graph first.
+This deliberately preserves the earlier agreed dependency order. P09 can be a useful native-subset release without waiting for full C. P10-P15 must use documented teaching/header handling or header-free declarations until P16. P22 owns final thread-safe auditing of earlier runtime components. If practical implementation needs preprocessing, TLS infrastructure, or another dependency earlier, ask for the specific sequence amendment and update this diagram first rather than silently jumping ahead.
 
-### 13.3 Package 8A: native foundation audit and expansion prerequisites
+### 13.5 P00 - Review, baseline and specification freeze
 
-**Status:** basic implementation exists; broader audit work remains.
-**Inputs:** `native_pe::image`, machine-code payload fixtures.
-**Outputs:** validated PE layout records and foundation regression evidence.
+**Purpose:** establish exactly what is being built before implementation.
+**Prerequisite:** this revision exists and the user has reviewed it.
+**Primary contracts:** PR-02, PR-10, PR-12; sections 3, 4, 8, 15.
 
-Tasks:
+Work items:
 
-1. Preserve recorded real-process tests for exit statuses 0/37/255.
-2. Audit header and directory fields against the PE reference; add independent field checks rather than checking only signatures and total file length.
-3. Verify raw/virtual ranges, section permissions, file alignment, image alignment and size arithmetic across code-size boundaries.
-4. Separate fixed-foundation assumptions from reusable layout interfaces; document the fixed-base/no-relocation constraint until removed.
-5. Add function unwind support and relocation requirements to the layout design before production native delivery.
+1. Record the reviewed revision and target: Rust implementation, proposed hosted C11 language scope, Windows x64, owned production pipeline and runtime.
+2. Confirm that Windows OS services and the compiler's normal Rust bootstrap toolchain are allowed boundaries; neither is an external C implementation.
+3. Confirm native `-o` behavior, retained teaching default, checked/strict semantics distinction, target type policy and optional-feature tracking.
+4. Inspect the repository, preserve user files, record the baseline commit and identify any existing uncommitted source changes before work.
+5. During implementation startup, run the baseline formatting/lint/test checks and record actual results. Do not run them merely to decorate this documentation change.
+6. Establish the completion record format and initial capability matrix; label the existing PE foundation accurately.
 
-**Gate:** structural checks and real process tests pass, known foundation limits are explicit, and the encoder/runtime can use symbolic imports rather than depending on fixed offsets indefinitely. Existing 8A evidence is preserved, not inflated into completion of this broader audit.
+**Deliverables:** reviewed specification, reproducible baseline record, explicit unresolved-decision list.
+**Gate:** no ambiguity that would change P01-P09 architecture; user has authorized implementation against this reviewed revision; baseline checks pass or preexisting failures are repaired before dependent work.
+**Boundary:** this phase adds no language or native CLI feature. If review changes the target, revise relevant contracts before proceeding.
 
-### 13.4 Package 8B: real native backend for the current subset
+### 13.6 P01 - Audit the native executable foundation
 
-**Status:** planned.
-**Depends on:** 8A gate.
-**Deliverable:** in-memory native image generation from every operation in the current IR.
+**Purpose:** turn the existing limited PE writer into a trusted foundation for expansion.
+**Prerequisite:** P00 passed.
+**Primary components:** `src/native_pe.rs`, future PE layout records, native library tests.
+**Existing evidence:** actual exit statuses 0/37/255 already tested; broader gate remains outstanding.
 
-| Step | Concrete work | Required tests before next step |
+Work items:
+
+1. Inventory every header field, fixed RVA, file offset, section permission and import assumption in the current writer.
+2. Define typed/named address domains so file offsets cannot be confused with RVAs or full addresses.
+3. Add independent structural checks for header locations, machine type, optional header, directories, section bounds, image size and alignment.
+4. Exercise code sizes around file/page boundaries, including 1, 511, 512, 513, 4095 and 4096 bytes; reject empty and oversized foundation input clearly.
+5. Verify lookup/address import tables, null termination, entrypoint location and code/data access intent.
+6. Preserve real Windows process tests including paths containing spaces and child-process timeout cleanup.
+7. Specify the interfaces needed for symbolic imports, dynamic sections, relocation and unwind work in later phases; do not certify them as implemented now.
+
+**Deliverables:** audited foundation, structural regression fixtures, explicit fixed-base/one-import/one-page constraints.
+**Gate:** structural and actual process checks pass; no unexplained field values or range truncation remain; expanded layout requirements are recorded.
+**Boundary:** this phase does not make C input compile natively and does not add `-o`.
+
+### 13.7 P02 - Shared compilation library and legacy IR verifier
+
+**Purpose:** give native and VM backends the same real frontend without duplicate incompatible types.
+**Prerequisite:** P01 passed.
+**Primary contracts:** sections 6 and 9.2.
+
+Work items:
+
+1. Move shared frontend/IR modules behind library interfaces; keep the binary responsible for CLI policy and filesystem actions.
+2. Preserve all current source/diagnostic/output behavior; perform the structural move before adding new language syntax.
+3. Introduce a compilation context with source identities, target configuration, mode and structured diagnostics, adapting old interfaces incrementally.
+4. Define legacy IR invariants: destination slots, definitions, resets, valid operator kinds, label uniqueness, branch targets and halt semantics.
+5. Implement a verifier and run it before and after the existing optimizer. Do not reject a runtime-uninitialized source solely because its read is not statically proven initialized; teaching checks remain runtime behavior where specified.
+6. Ensure invalid IR returns a compiler diagnostic before encoder/VM execution, rather than a user-triggered indexing panic.
+7. Update tests to import one shared library representation and retain the recorded arithmetic/mutation/demo corpus.
+
+**Tests:** duplicate/missing labels, malformed operands, unsupported operators, bad symbol references; unchanged six-demo results; optimizer output verification; CLI regression.
+**Deliverables:** shared library API, verifier, migration evidence with no capability loss.
+**Gate:** all existing tests pass through shared types; deliberately invalid IR is rejected; neither backend reconstructs symbol identity from unbound source spelling.
+**Boundary:** no new C syntax, full type system, or simulated native backend is introduced here.
+
+### 13.8 P03 - Own x64 instruction encoder
+
+**Purpose:** generate trustworthy CPU instruction bytes without an assembler.
+**Prerequisite:** P02 passed.
+**Primary contracts:** section 9.4; target integer widths in section 8.
+
+Work items:
+
+1. Specify supported registers, operand sizes, addressing forms, immediates and encoding errors.
+2. Implement REX, opcode, ModR/M, SIB and displacement construction using checked operands.
+3. Add moves, register/memory access, address formation, arithmetic, compare/set-condition and boolean normalization required by the subset.
+4. Add sign extension, signed division/remainder with correct implicit register usage, branches, calls and return encodings.
+5. Represent labels and fixups symbolically; range-check relative displacements instead of truncating them.
+6. Build readable instruction/offset dumps from the same selected instructions, not from unrelated explanatory strings.
+7. Execute reviewed tiny native sequences to verify encodings in addition to byte fixtures.
+
+**Tests:** low/high registers, 32/64-bit widths, stack/frame addressing, zero/positive/negative displacements, boundary immediates, forward/backward fixups, invalid combinations. Byte expectations must be justified independently against the relevant ISA reference.
+**Deliverables:** encoder module, machine-fragment contract, reviewed encoding corpus.
+**Gate:** required instruction families pass byte and real-execution tests; impossible operands/fixups fail explicitly.
+**Boundary:** no broad optimizer, register allocator or full C source integration yet; scratch-register allocation remains conservative.
+
+### 13.9 P04 - Dynamic executable layout, imports and fixups
+
+**Purpose:** remove the native foundation's hardcoded one-page/one-import layout.
+**Prerequisite:** P03 passed.
+**Primary contracts:** section 10.
+
+Work items:
+
+1. Introduce section records and a checked alignment/layout algorithm with distinct file and virtual ranges.
+2. Lay out executable code, readonly literal bytes, writable state and zero-filled storage as needed.
+3. Group and deduplicate OS imports; generate descriptors, name records and lookup/address tables dynamically.
+4. Resolve text/data/import symbols and apply relative/image-relative/absolute fixups according to kind.
+5. Implement required base relocations and compatible flags rather than silently relying on a preferred address forever.
+6. Reserve interfaces and directories for unwind metadata consumed by P05.
+7. Validate the image internally before returning bytes; keep file publication in P09's driver layer.
+
+**Tests:** multiple imports, ordering stability, added sections, code/data crossing page boundaries, maximum field arithmetic, relocation at a changed load address, missing symbols, duplicate definitions and displacement overflow. Test resulting images as actual Windows processes.
+**Deliverables:** dynamic PE serializer/layout engine, import/fixup engine, image validator.
+**Gate:** no production import call depends on a magic fixed IAT offset; image bounds and relocation claims are independently checked; representative expanded images execute.
+**Boundary:** this is in-memory executable linking, not delivered COFF file or static archive support.
+
+### 13.10 P05 - Calling convention, frames and unwind metadata
+
+**Purpose:** make calls to runtime helpers and Windows services correct and scalable.
+**Prerequisite:** P04 passed.
+**Primary contracts:** sections 8.2, 8.3 and 8.5.
+
+Work items:
+
+1. Build the shared ABI classifier for currently supported integer/pointer arguments and returns, preserving extension points for later types.
+2. Allocate shadow/outgoing argument space, locals, scratch homes, initialization flags and saved registers from one frame-layout record.
+3. Generate prologue/epilogue sequences with correct call-site alignment and nonvolatile preservation.
+4. Generate unwind records from the same frame actions; serialize function tables through P04.
+5. Define and implement a project-owned stack-probe path for frames that cross the documented probe threshold before such frames are accepted.
+6. Add internal runtime-function boundaries and imported-function call fixups without source-level user functions yet.
+
+**Tests:** 0-12 scalar arguments in native harnesses, nested helper calls, register preservation, frame offsets, alignment at each call, large frames, unwind record inspection and controlled unwind behavior. Later mixed-float/aggregate classifications must not be advertised now.
+**Deliverables:** ABI helper, frame builder, unwind emitter, stack-probe behavior and fixtures.
+**Gate:** actual native calls preserve state and deliver arguments/results correctly; metadata agrees with executed frame operations.
+**Boundary:** passing exit-only code is insufficient evidence for this phase.
+
+### 13.11 P06 - Native lowering of subset operations and control flow
+
+**Purpose:** translate every non-library operation in the current IR into CPU instructions.
+**Prerequisite:** P05 passed.
+**Primary components:** current IR, optimizer, x64 lowering, native checked-mode state.
+
+Work items:
+
+1. Assign stack homes to integer locals/temporaries and track declaration reset state.
+2. Lower constants, copies, unary minus/not and arithmetic using the correct width and checked-mode failure branches.
+3. Lower comparisons, boolean normalization, labels and conditional/unconditional branches.
+4. Preserve short-circuit evaluation by control flow; never eagerly evaluate a skipped faulting operand.
+5. Preserve fresh declarations on every loop iteration and correct inner-scope self-initialization behavior.
+6. Emit helper/trap symbols for checked failures; complete user-visible error output when P07 provides runtime IO.
+7. Compare optimized and unoptimized lowering without sharing a second handwritten evaluator as the only oracle.
+
+**Tests:** signed boundary values, divisor zero, minimum/-1, modulo signs, all comparison outcomes, nested loops, nested conditionals, forward/backward branches, reset/read state and faulting skipped operands. Use actual native return statuses or internal harnesses before formatted output exists.
+**Deliverables:** native lowering for the legacy arithmetic/control-flow IR and source-linked machine dumps.
+**Gate:** native execution matches independent expected results for the supported operations and checked failure branches.
+**Boundary:** print/string behavior and complete source-to-executable demos wait for P07/P08.
+
+### 13.12 P07 - Project native runtime and startup for the subset
+
+**Purpose:** supply actual output/string/error behavior without importing a system CRT.
+**Prerequisite:** P06 passed.
+**Primary contracts:** sections 9.5 and 11.1-11.3.
+
+Work items:
+
+1. Emit runtime helper instructions through the owned encoder, with symbols, frames and unwind records like other native functions.
+2. Implement signed integer decimal conversion, literal/string byte output, supported format parsing and length calculation.
+3. Implement OS-handle acquisition, partial-write loops, failure checks and real computed printf return counts.
+4. Implement empty strings, escapes and terminators according to teaching-mode source contracts.
+5. Implement checked-mode error reporting, program status and process exit using Windows services.
+6. Preserve teaching-mode buffered-output behavior with real project-owned storage where required; specify allocation/growth failures.
+7. Generate an entrypoint that initializes supported state, runs compiled program instructions, finalizes supported output and exits.
+
+**Tests:** minimum/maximum integers, zero, negative values, empty/large strings, tabs/newlines, format/argument mismatch rejection, output counts, short/failed writes, stdout/stderr distinction and process statuses. Failure injection is permitted for wrapper tests, but real OS execution tests remain mandatory.
+**Deliverables:** native subset runtime, startup, diagnostics, documented OS import set.
+**Gate:** helpers execute correct algorithms; imports contain OS primitives rather than CRT substitutes; no placeholder library results exist.
+**Boundary:** this is not yet full stdio, general variadic C support, or a hosted C library.
+
+### 13.13 P08 - End-to-end native C subset qualification
+
+**Purpose:** prove that actual C source now becomes a standalone native program.
+**Prerequisite:** P07 passed.
+**Primary contracts:** PR-01, PR-03, PR-07, PR-11.
+
+Work items:
+
+1. Connect source loading, existing subset frontend, verified IR, optimizer, native lowering, runtime resolution and PE generation through the shared library.
+2. Generate files in controlled test directories without introducing the public CLI output policy early.
+3. Compile all six existing demos and launch their actual executables.
+4. Compare output/status with expected fixtures and both VM modes for the shared defined-behavior subset.
+5. Add source-level stress programs covering nested flow, scoping, reset state, arithmetic checks and large constants/data.
+6. Run executables from another directory with compiler/GCC/Rust tooling unavailable through PATH.
+7. Inspect imports and machine output to rule out VM embedding, source replay or hidden tool invocation.
+
+**Tests:** optimized/unoptimized native, legacy VM equivalence where appropriate, genuine process failures, image growth and relocation/unwind regressions. Include different source constants/program structures so hardcoded demo output cannot masquerade as compilation.
+**Deliverables:** callable native compilation API, end-to-end corpus, recorded dependency audit.
+**Gate:** every currently supported demo and specified subset operation has native evidence; no unimplemented operation falls back to the VM.
+**Boundary:** broader C syntax is still unsupported; public `-o` arrives only in P09.
+
+### 13.14 P09 - Native command-line compiler and subset distribution
+
+**Purpose:** make the native compiler usable in the expected terminal workflow.
+**Prerequisite:** P08 passed.
+**Primary contracts:** section 4 and section 12.4.
+
+Work items:
+
+1. Add `compiler input.c -o output.exe` without automatically running the result.
+2. Preserve the existing default VM behavior; expose explicit `--run-vm` and reject incompatible option combinations.
+3. Implement path identity checks, temporary output creation, verified publication and explicit existing-output overwrite policy.
+4. Add documented exit codes, help/version, native machine dump and capability reporting reflecting only implemented support.
+5. Update installed command/portable packaging from the actual tested release binary.
+6. Verify required runtime files and DLL imports; ship own runtime statically into the image where specified, not as an undeclared compiler installation dependency.
+7. Update README usage from this specification and record this limited native release honestly.
+
+**Tests:** compile/run workflow, destination aliasing, input/output spaces and Unicode, permissions, missing sources, unknown flags, failing compilation preserving an old executable, output path equal to compiler/input, installation from another directory and clean-environment launch.
+**Deliverables:** usable native CLI, tested Windows package and accurate instructions.
+**Gate:** a user can compile a supported file and run the resulting `.exe` independently. All prior gates pass.
+**Release claim:** native compiler for the documented C subset; never full C yet.
+
+### 13.15 P10 - Conventional syntax and control-flow expansion
+
+**Purpose:** accept ordinary small C programs without educational spelling restrictions where the existing value model permits it.
+**Prerequisite:** P09 passed.
+**Primary contracts:** sections 7.2, 7.3, 7.6.
+
+Work items:
+
+1. Define comment, character/escape and literal token rules; preserve source positions through skipped text.
+2. Accept supported integer bases and retain suffix/rank information structurally. General typed literal selection is completed in P11; do not fake wide/unsigned semantics in an i32 slot.
+3. Implement prefix/postfix increment/decrement and compound assignments with single address evaluation.
+4. Implement general integer returns from main and corresponding process-status flow, preserving legacy mode where promised.
+5. Add break/continue contexts, do/while, switch/default/case and label/goto resolution under the supported lifetime model.
+6. Add empty loop clauses where specified and correct continue destinations, without assigning an arbitrary iteration budget.
+7. Migrate negative lexical tests: a previously unsupported operator becomes a positive test only when its semantics and native lowering are real.
+
+**Tests:** comment/literal errors, precedence, update result versus stored value, nested loops/switches, case duplication, fallthrough, labels, zero-iteration loops and early returns. Required diagnostics and runtime behavior are tested separately.
+**Deliverables:** expanded grammar/lowering and updated capability matrix.
+**Gate:** each accepted construct executes correctly natively; no newly tokenized feature is silently assigned wrong types.
+**Boundary:** user functions and pointer-address updates still wait for their type/memory phases.
+
+### 13.16 P11 - General C types and typed intermediate representation
+
+**Purpose:** replace integer-only assumptions with target-correct types before general functions and memory.
+**Prerequisite:** P10 passed.
+**Primary contracts:** sections 6.2, 7.4, 7.5, 8.1 and 9.1-9.3.
+
+Work items:
+
+1. Define canonical types, qualifiers, incomplete types, pointer/array/function type records and target layout queries.
+2. Add general declaration/declarator AST structure and typedef-aware grammar without pretending all related runtime operations already exist.
+3. Implement integer type widths/ranks, typed literal selection, promotions, conversions and constant expressions.
+4. Introduce typed module/function/block IR with explicit conversions and memory/call operation shapes; verify every boundary.
+5. Preserve legacy mode through a documented adapter; select the restricted typed-IR-to-VM subset or retained legacy path explicitly here.
+6. Implement namespaces, declaration identity and compatibility checks needed by the supported typed declarations.
+7. Migrate optimizations to typed operations and explicit effects without changing defined observable behavior.
+
+**Tests:** signed/unsigned boundaries, rank combinations, invalid conversions, incomplete types, sizeof/layout constants for delivered types, typedef/declarator disambiguation, verifier rejection and legacy regressions. Native integer widths and signed/unsigned comparisons must be tested, not merely printed in AST dumps.
+**Deliverables:** type context, typed frontend/IR/verifier, target arithmetic evaluator, migration adapter.
+**Gate:** accepted typed operations have correct native semantics and explicit conversions; existing examples still work; unsupported type operations are rejected.
+**Boundary:** parsing a pointer type alone does not qualify pointer execution or full declarator coverage as complete.
+
+### 13.17 P12 - Functions, calls, global storage and variadic support
+
+**Purpose:** compile real multi-function C programs under one consistent ABI.
+**Prerequisite:** P11 passed.
+**Primary contracts:** sections 7.4-7.7, 8.2-8.5, 9.1.
+
+Work items:
+
+1. Parse translation units containing function prototypes, definitions and global declarations; resolve compatible redeclarations.
+2. Implement parameter scopes, typed returns, direct calls, recursion, indirect-call groundwork and complete frame lifetime.
+3. Extend ABI classification to delivered integer/pointer signatures and preserve all caller/callee responsibilities.
+4. Implement globals, static locals, static/extern linkage, zero initialization, constant initialization and tentative-definition handling.
+5. Add function-pointer expressions/calls once compatible with P13 memory representation; reject unfinished combinations rather than faking them.
+6. Implement required default argument promotions, variadic access representation and compiler support for va-list operations.
+7. Replace spelling-based special handling with symbol-aware built-in/runtime resolution; valid name lookup must not be bypassed.
+
+**Tests:** recursion/mutual recursion, nested calls, 0-12 arguments, prototypes, mismatched returns/parameters, duplicate definitions, static lifetime, global initialization and per-call locals. Exercise variadic argument order and native register/stack boundaries independently.
+**Deliverables:** functioning typed calls/storage and ABI-backed variadic primitives.
+**Gate:** multi-function native programs and delivered variadic behavior pass; a function return never exits the process except through main/startup completion.
+**Boundary:** multiple source-file linking remains P17; floating/aggregate calling cases wait for their types.
+
+### 13.18 P13 - Objects, pointers, arrays and mutable strings
+
+**Purpose:** implement the C object model and usable memory operations.
+**Prerequisite:** P12 passed.
+**Primary contracts:** sections 7.5, 7.7 and 11.4.
+
+Work items:
+
+1. Freeze object lifetime/storage/address representation and pointer arithmetic rules in the target contract.
+2. Add typed loads/stores, address/dereference, array decay, subscripting and pointer comparisons under applicable rules.
+3. Implement fixed/multidimensional arrays, pointer-to-array/function declarators, string/character arrays and initializer layout.
+4. Store C strings as bytes/objects with explicit terminators, not compiler-owned Rust string handles.
+5. Complete function-pointer calls and pointer argument/return ABI tests.
+6. Implement real primitive memory/string helpers plus an initial allocator over Windows services; validate alignment and overflow.
+7. Add alias/effect information sufficient to keep existing optimizations correct; defer unproven memory optimizations.
+8. Track variable-length forms explicitly as partial/planned until their dynamic lifetime/size semantics pass in P23 or an approved earlier substep.
+
+**Tests:** element scaling, row strides, decay contexts, address constants, overlap where permitted, embedded NUL storage, empty strings, allocation failures, stack/global/heap identity and indirect calls. Test valid boundaries; do not require a prescribed result for undefined out-of-bounds operations.
+**Deliverables:** native object memory, arrays/pointers and actual mutable string programs.
+**Gate:** typed memory instructions and runtime helpers have native evidence; no host-pointer or host-string representation leaks into generated programs.
+
+### 13.19 P14 - Aggregate layout and advanced declarations
+
+**Purpose:** support composed types without guessing their memory or calling layout.
+**Prerequisite:** P13 passed.
+**Primary contracts:** sections 7.3-7.5, 8.1, 8.4.
+
+Work items:
+
+1. Freeze struct/union field layout, padding, alignment, enum policy and bitfield unit/order decisions.
+2. Implement tagged/anonymous aggregates, member access, pointer-member access, nested members and flexible array tails where applicable.
+3. Implement aggregate/designated initialization, compound literals and required zero-filled remainder behavior.
+4. Complete typedef/declarator combinations and compatible/redeclared aggregate types.
+5. Extend the ABI classifier to aggregate arguments and return values, including hidden storage parameters.
+6. Implement delivered alignment constructs, static assertions and type-generic selection with correct evaluation behavior.
+7. Add explicit handling of volatile aggregate/member operations; preserve qualifier requirements.
+
+**Tests:** independently computed sizes/offsets, nested padding, union storage, bitfield boundaries, anonymous members, flexible tails, aggregate copies/returns, designated initializer nesting and invalid layouts. Generic selection must not evaluate its controlling expression accidentally.
+**Deliverables:** documented layout ledger, typed aggregate lowering, aggregate ABI fixtures.
+**Gate:** parser, layout, memory codegen, initializer serializer and ABI agree; target-specific decisions are documented and tested.
+**Boundary:** vendor packing pragmas and binary compatibility with arbitrary external compiler objects are not implied.
+
+### 13.20 P15 - Floating types, conversions and numerical execution
+
+**Purpose:** support actual floating computation before claiming numerical C or building math libraries.
+**Prerequisite:** P14 passed.
+**Primary contracts:** sections 8.1, 8.4 and 9.4.
+
+Work items:
+
+1. Freeze floating storage, evaluation precision, rounding/subnormal policy and relevant target macros.
+2. Parse decimal/hexadecimal floating constants and suffixes using a reviewed target conversion algorithm.
+3. Implement typed floating arithmetic, comparisons, conversions and constants in IR, optimizer and encoder.
+4. Extend ABI classification for floating and mixed signatures, including variadic duplication/promotion behavior.
+5. Implement project-owned primitive floating output/input conversion needed for tests, with exact published scope and accuracy expectations.
+6. Add initial environment handling; full `fenv.h`/math/complex functionality is P21.
+7. Test long-double policy as a distinct C type even if its target storage equals double.
+
+**Tests:** finite values, signed zero, subnormals, infinities/NaNs under the selected model, conversion boundaries, rounding-sensitive constants, mixed argument positions and optimization equivalence. Use independent numerical expectations and meaningful tolerances; an approximate constant result is not a math implementation.
+**Deliverables:** native floating execution and conversion/ABI evidence.
+**Gate:** compiler folding and native operations agree with the chosen semantics for tested cases; precision limits and exceptions are explicit.
+**Boundary:** optional numerical binding claims and a complete math library remain undelivered.
+
+### 13.21 P16 - Real preprocessor, source provenance and project headers
+
+**Purpose:** compile normal include/macro-based sources using our own translation environment.
+**Prerequisite:** P15 passed; any approved dependency reorder must be recorded first.
+**Primary contracts:** PP-01 through PP-09, section 7.1 and library ownership in section 11.
+
+Work items:
+
+1. Implement ordered source processing with location maps and preprocessing-token representation.
+2. Implement macro definition/undefinition, object/function/variadic expansion, recursion suppression, stringification, pasting and rescanning.
+3. Implement conditional groups, conditional expressions, includes, line mapping, error directives and defined pragmas.
+4. Implement deterministic include paths, command definitions and preprocessing-only output options.
+5. Preserve spelling/invocation/include provenance in diagnostics; bound expansion and include growth gracefully.
+6. Add own public headers for actually delivered facilities; required but unavailable interfaces must not be backed by stubs.
+7. Remove teaching-only include deletion from strict mode; build strict demo variants with genuine prototypes/includes.
+8. Advertise only target/language/optional features justified by delivered capabilities; do not make premature conformance claims.
+
+**Tests:** inactive invalid source, nested conditionals, recursive/empty/variadic macros, pasted-token errors, include guards/cycles/search order, repeated/self-contained headers, command macros, diagnostic traces and resource limits. Ensure no host compiler headers are accidentally included.
+**Deliverables:** token-based preprocessor, source maps, real headers and CLI include/macro options.
+**Gate:** PP-01 through PP-09 have substantive tests; header-based programs compile against project declarations and real implementations.
+
+### 13.22 P17 - COFF objects, symbol resolution and separate compilation
+
+**Purpose:** build multi-file C programs entirely with project-owned linking.
+**Prerequisite:** P16 passed.
+**Primary contracts:** section 10.4 and multi-file flow in section 5.4.
+
+Work items:
+
+1. Freeze the emitted/read COFF subset, symbol records, section metadata and relocation mappings.
+2. Implement `-c` to create real objects without an executable or missing-main error.
+3. Read project-generated objects with bounds checks; diagnose unsupported foreign objects explicitly.
+4. Resolve internal/external symbols, strong/tentative definitions, runtime references and cross-unit calls.
+5. Lay out combined sections and feed the same project-owned PE serializer/fixup engine.
+6. Implement static runtime object selection; define archive indexing/search before exposing archive options.
+7. Preserve deterministic ordering and originating-source context for link failures.
+8. Add multi-source driver jobs and output-path safety for object and final artifacts.
+
+**Tests:** helper/main units, shared extern globals, internal-symbol isolation, duplicate/missing definitions, relocation range errors, mutually recursive cross-unit calls, malformed object records, object round-trips and same behavior as a combined unit.
+**Deliverables:** own object writer/reader, linker, `-c`, multi-input build workflow.
+**Gate:** resulting executables use no external linker; every unresolved reference fails rather than becoming a zero address.
+**Boundary:** support for own objects does not imply arbitrary MSVC/GCC library compatibility.
+
+### 13.23 P18 - Hosted startup, environment and production allocator
+
+**Purpose:** turn the subset runtime into a foundation for the hosted library.
+**Prerequisite:** P17 passed.
+**Primary contracts:** sections 11.2-11.4; project header inventory.
+
+Work items:
+
+1. Specify and implement argument/environment decoding, storage ownership, standard-stream initialization and startup failure behavior.
+2. Support delivered main signatures and standard exit status flow without special-casing only `return 0`.
+3. Implement exit-handler registration/order, normal exit, immediate exit and abnormal paths with distinct cleanup rules.
+4. Mature the P13 allocator into the hosted allocation family, including alignment, checked sizes, reuse/coalescing, calloc and realloc semantics.
+5. Establish runtime error-state representation and per-thread extension points; full concurrency behavior is audited in P22.
+6. Migrate portable runtime helpers into own C sources when possible and compile them using this compiler; retain owned encoded platform glue only where needed.
+7. Version runtime/compiler ABI records so incompatible objects are rejected or diagnosed.
+
+**Tests:** empty/quoted/Unicode arguments, environment lifetime, handler order, flush/exit behavior, allocation alignment/failure/overflow, zero-size contract and realloc preservation. Inspect generated imports for CRT leakage.
+**Deliverables:** hosted runtime bootstrap, allocator and termination facilities with real header declarations.
+**Gate:** normal independent process lifecycle works with documented policies; no allocation or startup API is just a success placeholder.
+**Boundary:** complete streams, threads and library coverage remain later phases.
+
+### 13.24 P19 - Standard streams, files and formatted IO
+
+**Purpose:** implement `stdio` behavior rather than just demo printing.
+**Prerequisite:** P18 passed.
+**Primary contracts:** section 11.5 `stdio.h` row and section 11.6.
+
+Work items:
+
+1. Define FILE representation, buffering/orientation/state, locking extension points and ownership.
+2. Implement standard streams, open/close/read/write/seek, EOF/error tracking, position and flushing behavior.
+3. Define text/binary translation on Windows and test redirected files separately from console handles.
+4. Expand output formatting through exact flags, widths, precisions, length modifiers and supported conversion families; share a real format parser.
+5. Implement formatted input as a separate consumption/matching engine with assignment counts, widths, whitespace and failure behavior.
+6. Implement bounded string formatting/scanning and correct truncation/termination/return contracts.
+7. Cover relevant variadic, integer, floating and string forms only when their runtime implementation exists.
+
+**Tests:** short/failed IO, EOF versus error, binary bytes/CRLF policy, seek/update streams, flush, format boundaries, minimum integers, floating conversions, truncation, failed matches and zero assignments. Compare byte streams and counts, not just visible console lines.
+**Deliverables:** implemented stdio interface ledger and stream/format/input corpus.
+**Gate:** every advertised stdio interface has substantive success/error tests; no declaration is presented as available with unimplemented logic.
+**Boundary:** locale/wide/concurrency interactions must receive the later cross-phase audits before hosted completion.
+
+### 13.25 P20 - Utilities, encodings, locale and system interfaces
+
+**Purpose:** complete nonnumerical hosted library families and their platform policies.
+**Prerequisite:** P19 passed.
+**Primary contracts:** section 11.5 inventory and implementation-defined behavior ledger.
+
+Work items:
+
+1. Enumerate exact interfaces/macros for assertions, character classification, errors, limits/types, memory/string utilities and standard utility functions.
+2. Implement integer/numeric parsing, searching/sorting callbacks and utility contracts with overflow and end-position reporting.
+3. Implement locale state, encoding conversion and wide-character/string/IO behavior under the documented UTF-8/UTF-16 model.
+4. Implement time/calendar formatting/conversion and environment-related services with explicit epoch/range/time-zone policy.
+5. Implement context save/restore and signal interfaces with an honest Windows mapping and native register-state tests.
+6. Audit all typedefs/macros against actual target layout, not host Rust or another compiler headers.
+7. Track every completed interface in the library ledger; keep missing functions explicitly unavailable.
+
+**Tests:** classification domains, parse boundaries, callback signatures, conversion state/partial invalid sequences, locale transitions, wide stream orientation, calendar edge cases, context restoration and permitted signal behavior.
+**Deliverables:** reviewed interface inventory and implementations for these library families.
+**Gate:** all advertised interfaces match declarations, errors, lifetime and target policy; required remaining gaps are assigned to P23 rather than hidden.
+**Boundary:** numerical math/fenv and concurrent correctness are finalized in P21/P22.
+
+### 13.26 P21 - Numerical library, floating environment and complex facilities
+
+**Purpose:** supply trustworthy numerical library behavior beyond native arithmetic.
+**Prerequisite:** P20 passed; P15 numerical model remains the contract.
+**Primary contracts:** `math.h`, `fenv.h`, complex/type-generic inventory in section 11.5.
+
+Work items:
+
+1. Freeze per-function accuracy/rounding/error requirements and independent reference datasets before implementation.
+2. Implement project-owned real mathematical algorithms with argument reduction, edge domains and error reporting.
+3. Implement floating environment state, rounding modes and exception flags consistently with compiler optimizations.
+4. Complete complex types/operations and library functions if selected, including representation and ABI rules; do not claim them from real math alone.
+5. Implement type-generic numerical dispatch without repeated evaluation or incorrect type selection.
+6. Validate floating input/output conversion interactions introduced in P15/P19 and locale interactions from P20.
+7. Keep optional Annex F/G binding claims distinct and unavailable until their separate evidence exists.
+
+**Tests:** independent high-quality references, exceptional inputs, boundary intervals, signed zero, under/overflow, domain/range behavior, rounding changes, complex-sensitive cases and optimizer consistency. Numerical tolerance cannot be loosened merely to make a wrong algorithm pass.
+**Deliverables:** numerical interface ledger, algorithms, documented accuracy evidence and environment behavior.
+**Gate:** every advertised numerical interface meets its chosen contract; no external CRT math implementation is imported.
+**Boundary:** ordinary math availability alone does not certify optional floating-point annexes.
+
+### 13.27 P22 - Atomics, threads, TLS and concurrent runtime audit
+
+**Purpose:** implement selected C11 concurrency facilities and make earlier runtime guarantees true under concurrency.
+**Prerequisite:** P21 passed; earlier introduction of required TLS infrastructure needs a recorded sequence amendment.
+**Primary contracts:** sections 3.4, 7.5 and hosted-library concurrency families.
+
+Work items:
+
+1. Resolve any still-open optional-facility support decision explicitly; default roadmap goal remains implementation, not silent omission.
+2. Define memory ordering, atomic layout/alignment, supported sizes, lock-free guarantees and lock-based fallback.
+3. Implement atomic operations/fences with the encoder and prohibit optimizer reorderings that violate their effects.
+4. Implement thread creation/join, mutexes, condition variables, once initialization and thread-specific state over Windows primitives.
+5. Implement TLS image/runtime lifecycle and per-thread errno, locale/error state where required.
+6. Audit allocator, streams, exit machinery and library static storage for required thread safety and permitted reentrancy.
+7. Make feature and lock-free macros reflect actual implementation capabilities.
+
+**Tests:** allowed ordering litmus cases, contested operations, wakeups/timeouts, join results, TLS initialization/destruction, independent errno, allocator/stdio contention and shutdown. Stress success is supporting evidence, not proof of a memory model.
+**Deliverables:** real concurrency facilities, platform wrappers, cross-runtime audit and truthful feature macros.
+**Gate:** selected facility contracts and earlier runtime invariants survive focused and stress tests; unsupported optional scope is approved/documented before conformance claims.
+
+### 13.28 P23 - Remaining C11 coverage and conformance closure
+
+**Purpose:** close standard-language/library gaps instead of declaring victory after common examples.
+**Prerequisite:** P22 passed.
+**Primary contracts:** sections 3, 7, 11.5 and 14.6.
+
+Work items:
+
+1. Build a requirement-by-requirement language and library ledger against the chosen C11 references and applicable corrections.
+2. Audit rare declarators, legacy declaration forms, initialization corner cases, variably modified types, qualifiers, inline/linkage, alignment and required diagnostics.
+3. Complete missing applicable features or explicitly resolve permitted optional choices; do not silently exclude mandatory facilities.
+4. Finish every required library interface, header macro/type and implementation-defined behavior record.
+5. Audit translation/environmental limits against the target requirements rather than retaining the original teaching parser limits.
+6. Run independent conformance suites where permitted and minimize every failure into a permanent project regression.
+7. Classify tests by defined/unspecified/undefined behavior, platform dependence and extension requirements.
+8. Record unresolved defects as release blockers; compile success alone does not close semantics/runtime obligations.
+
+**Tests:** clause-mapped positives/negatives/boundaries, applicable independent suites, multi-unit/native/library regressions, strict-mode diagnostics and mode compatibility.
+**Deliverables:** completed applicability/coverage ledger, known-deviation report and reproducible conformance evidence.
+**Gate:** no unreviewed mandatory gap; conditional choices and implementation-defined behavior are documented; release claim matches evidence.
+**Boundary:** C11 audit does not confer vendor-extension, other-OS or third-party-library support.
+
+### 13.29 P24 - Final release validation and distribution
+
+**Purpose:** ship the capability that actually passed, with reliable reproduction and installation.
+**Prerequisite:** P23 passed for a hosted candidate; P09 already permits its separately bounded subset release.
+**Primary contracts:** PR-04, PR-06, PR-07 and section 14.8.
+
+Work items:
+
+1. Build the release from a known commit and run applicable debug/release, native, library, conformance and packaging gates.
+2. Produce an import/dependency manifest; verify no production compiler/assembler/linker/VM/CRT substitution remains.
+3. Test the packaged compiler and its generated programs in a clean target environment, including redirected IO and user paths.
+4. Check deterministic artifacts under the recorded settings and identify any intentional variable metadata.
+5. Package tested binaries, project headers/runtime objects, license notices and derived usage instructions together with compatible versions.
+6. Generate support/restriction notes from the authoritative ledger and state optional facilities/deviations accurately.
+7. Publish or upload an official release only when requested; repository maintenance is not blanket authorization for unrelated distribution services.
+8. Record exact versions, checksums, commands, environment and known issues so the release can be reproduced.
+
+**Tests:** clean install/uninstall policy, relocated compiler directory, multi-file native builds, executable launch without toolchain availability, corrupted/missing package components and source-output safety.
+**Deliverables:** release artifacts, dependency/support report and completed phase evidence.
+**Gate:** the user-facing claim is no broader than verified scope; no unresolved correctness blocker is waived because packaging succeeds.
+**After release:** regressions become minimized tests and specification corrections; new targets/extensions require reviewed scope changes.
+
+### 13.30 Release checkpoints and handoffs
+
+| Checkpoint | Eligible after | Demonstrable result |
 | --- | --- | --- |
-| 8B-1 | IR verifier and typed identities for legacy slots/labels | Invalid destinations/labels rejected; existing IR accepted |
-| 8B-2 | Instruction encoder primitives and fixups | Reviewed encodings, displacement boundaries, executed arithmetic sequences |
-| 8B-3 | Dynamic PE layout/import symbols | Multiple imports, growth beyond code page, readonly constants and writable state |
-| 8B-4 | Frame layout and ABI helper | Alignment, preserved registers, outgoing arguments, unwind metadata |
-| 8B-5 | Constants, copies, reset/check state, unary/binary arithmetic | Boundary arithmetic and legacy failures as actual process results |
-| 8B-6 | Labels, branches, loops, boolean short circuit | Forward/backward branches, nested loops, faulting skipped operands |
-| 8B-7 | Project formatting/output/string helpers | Minimum integer, empty strings, count/errors, short writes |
-| 8B-8 | Startup/exit and runtime diagnostics | Correct exit paths, stdout/stderr contract and no compiler callback |
-| 8B-9 | All six C demos through native output | Native output/status match expected files and both legacy VM modes |
+| Native foundation | P01 | Audited generated entrypoints; still no C native compiler |
+| Native subset engine | P08 | Current C subset becomes real executed machine code |
+| Usable native subset | P09 | `compiler demo.c -o demo.exe` works independently |
+| Extended language | Each P10-P15 gate | Only enumerated newly verified constructs |
+| Header-based compilation | P16 | Real preprocessing and project headers |
+| Multi-unit toolchain | P17 | Own objects/linker build multi-file programs |
+| Hosted runtime candidate | P18-P22 | Enumerated implemented runtime/library families |
+| Hosted C11 candidate | P23 | Applicable coverage reviewed, deviations explicit |
+| Released hosted toolchain | P24 and requested publication | Tested distribution with truthful support claim |
 
-**Gate:** all existing subset programs have real native execution, not just packaged bytecode. Inspect generated images and imports. Complete branch/error tests and code/data growth tests. No external production tool invocation, mock output or unimplemented fallback. Instruction/resource-limit differences from the VM are explicit in comparison tests.
-
-### 13.5 Package 8C: native CLI and installation
-
-**Status:** planned.
-**Depends on:** complete 8B gate.
-**Deliverable:** usable `compiler source.c -o output.exe`.
-
-Implement validated options, compiler-specific exit codes, output alias detection, temporary-file publication, overwrite policy, machine dumps and capability reporting. Retain current default behavior and explicit VM mode. Update install/portable packaging instructions to match actual behavior.
-
-**Gate:** compile and execute all native examples from paths with spaces and from another directory; verify no compiler tools are required at program runtime; test source protection, permissions, existing outputs, compile failure cleanup, malformed flags and unknown options. A release archive must contain the tested binary and current usage instructions, with no claim of completed full C support.
-
-### 13.6 Package 9: conventional syntax and flow
-
-**Status:** planned.
-**Depends on:** 8C and documented AST/IR changes.
-
-Implement comments and literal improvements first; then operators with lvalue evaluation rules; then general returns in main, break/continue, do/while, switch and labels/goto under their valid semantic restrictions. Retain legacy parsing regressions in teaching mode while adding strict-mode grammar tests. Freeze integer suffix/base and escape policies before lexing changes.
-
-**Gate:** precedence/associativity matrix, update-address evaluation counts, loop continue targets, switch fallthrough/default and duplicate labels/cases, malformed input rejection, ordinary demo source with `i++`, and output equivalence at both optimization levels. General function returns await package 10's function IR.
-
-### 13.7 Package 10: typed IR, functions, declarations and storage
-
-**Status:** planned.
-**Depends on:** 9.
-
-1. Implement type context, target widths/ranks, explicit conversions and layout queries.
-2. Add translation-unit AST, declarators, symbols, function signatures and prototypes.
-3. Implement typed module/function/basic-block IR plus verifiers; migrate legacy lowering without losing its tests.
-4. Add parameter passing, scalar returns, recursion, direct/indirect calls and frame lifetime.
-5. Implement integer type families, qualified operations, globals, static/extern storage and constant initialization.
-6. Add va-list/compiler builtin support needed by general runtime calls; maintain the shared ABI classifier.
-
-**Gate:** recursion and nested calls; compatibility/redeclaration diagnostics; 0-12 arguments; preserved registers; signed/unsigned conversions; separate local lifetimes; constant/global initialization; optimization equivalence on defined behavior. Do not advance on a typed-IR migration that silently drops currently supported print or reset semantics.
-
-### 13.8 Package 11: objects, pointers, arrays and mutable strings
-
-**Status:** planned.
-**Depends on:** typed IR and general calls.
-
-Specify object identity, pointer representation, address arithmetic, alignment, array decay, storage duration and lifetime before implementing loads/stores. Add multidimensional arrays, pointer-to-array and function-pointer declarators, string/character arrays, literals with terminators, address/dereference, subscripting, sizeof and initializers. Implement portable memory/string functions and allocator primitives as real project runtime code.
-
-**Gate:** pointer scaling by target type; array row strides; valid overlap operations; NUL termination; bounds-adjacent valid cases; allocation failure/overflow; stack/global/heap object distinctions; indirect calls; function/array argument adjustments; alias-sensitive optimization tests. Undefined memory accesses are not compared for a prescribed C result.
-
-### 13.9 Package 12: aggregates, numerics and remaining type forms
-
-**Status:** planned.
-**Depends on:** 11.
-
-Freeze struct/union/enum layout, bitfield allocation policy and aggregate ABI before code. Implement members, designated/aggregate initialization, compound literals, typedefs, alignment facilities, generic selection and static assertions. Add floating arithmetic/conversions with a specified numerical model and later complex operations as tracked. Validate qualifiers and supported atomic type forms.
-
-**Gate:** independently calculated layout fixtures, nested aggregates, flexible members where applicable, bitfield boundaries, aggregate calls/returns, float exceptional values and rounding, decimal conversion accuracy, address constants and relocations. Finalize every implementation-defined choice in the target ledger.
-
-### 13.10 Package 13A: preprocessing and project headers
-
-**Status:** planned.
-**Depends on:** source manager and stable declarations; scheduled after 12 for this roadmap.
-
-Implement PP-01 through PP-09 with a token-based engine. Add own public headers only for interfaces implemented or explicitly marked unavailable. Produce strict-mode demo variants and eliminate teaching-only include treatment from strict mode. Add standard/target/feature macros only to the level actually delivered; partial releases must not pretend all hosted requirements are met.
-
-**Gate:** macro conformance corpus, include provenance, inactive branches, recursion suppression, concatenation/stringification/variadics, include search order, resource bounds, header self-containment and repeated inclusion. Strict examples must compile using actual project headers, never accidentally finding a system compiler's headers.
-
-### 13.11 Package 13B: object files and project linking
-
-**Status:** planned.
-**Depends on:** stable module/symbol/type model and 13A.
-
-Define the supported COFF object subset, relocation mapping and symbol resolution policy. Write/read own objects; link multiple source units; implement runtime object selection and archive format/search if shipped. Preserve deterministic image layout and own PE validation. Add type-consistency information sufficient for our cross-unit diagnostics without misrepresenting what standard object records can prove.
-
-**Gate:** multi-source main/helper programs, extern/global sharing, internal linkage isolation, duplicate/missing symbols, relocation range errors, recursive cross-unit calls, same result as single-unit build, object path safety and no external linker invocation.
-
-### 13.12 Package 14: hosted library and conformance program
-
-**Status:** planned; substantial long-term work.
-**Depends on:** required language, preprocessing, object and runtime features.
-
-Split into reviewed subpackages: startup/environment; memory/strings; streams/files; formatting/scanning; numeric parsing/utilities; wide/Unicode/locale; time/signals/context; numerical math/fenv; atomics/threads/TLS; remaining language and optional-facility decisions. Each requires exact interface lists, target behavior, tests and quantitative numerical criteria where applicable before its implementation begins.
-
-Build a clause/interface ledger against the C11 reference and documented defect decisions. Fill gaps in old-style declaration forms, rare declarators, diagnostics, literal/initializer forms, environmental limits and library edge behavior. Run independently sourced conformance tests where licensing permits, while retaining project-owned regression cases. Any downloaded test suite is development input, not compiler logic.
-
-**Gate:** applicable language/library requirements mapped to evidence; implementation-defined behavior documented; optional-feature macros truthful; all required headers self-contained; multi-file and runtime failure tests pass; clean-environment distribution works; unresolved nonconformance is disclosed. Do not label a release fully hosted-conforming while this gate remains incomplete.
+At every checkpoint, update section 2's current-state table and the phase status/evidence records. Do not copy this sequence into a new manually maintained roadmap. A handoff must identify the last passed phase, current task, outstanding failures and first eligible next phase within this same file.
 
 ## 14. Verification, conformance, and release policy
 
@@ -889,16 +1410,16 @@ Approving this document approves its proposed baseline choices for implementatio
 
 | Product requirement | Owning sections/packages | Acceptance gate |
 | --- | --- | --- |
-| PR-01 native output | 8-10, 8A-8C | Actual C-source-to-executable process tests |
+| PR-01 native output | Sections 8-10; P01-P09 | Actual C-source-to-executable process tests |
 | PR-02 ownership | 3, 9-11 | No external production tool/import delegation |
 | PR-03 behavior | 7-11, 14 | Feature-specific expected results and regressions |
 | PR-04 honest status | 2-3, 14.6 | Capability and conformance ledger review |
 | PR-05 visibility | 4, 6, 9 | CLI dump tests and useful typed identities |
-| PR-06 CLI | 4, 12, 8C | Command/error/output safety matrix |
-| PR-07 distribution | 10-11, 8C, 14.8 | Clean-environment execution |
-| PR-08 C11 progression | 7, 11, 9-14 packages | Applicable language/library requirement ledger |
+| PR-06 CLI | Sections 4, 12; P09 and later driver extensions | Command/error/output safety matrix |
+| PR-07 distribution | Sections 10-11, 14.8; P09/P24 | Clean-environment execution |
+| PR-08 C11 progression | Sections 7, 11; P10-P23 | Applicable language/library requirement ledger |
 | PR-09 diagnostics | 6, 12 | Source/macro locations, malformed-input tests |
-| PR-10 stage gates | 13-14 | Evidence recorded before advancing |
+| PR-10 stage gates | Sections 13-14; every phase P00-P24 | Evidence recorded before advancing |
 | PR-11 real logic | 3, 9-11, 14 | Native/runtime audit and runtime-dependent tests |
 | PR-12 single source | Preamble, 15 | No competing manual plan; changes reconciled here |
 
@@ -915,13 +1436,13 @@ Do not ask repeatedly for already approved routine implementation within a stage
 - Confirm data model and teaching/strict-mode migration policy.
 - Confirm initial native CLI retains the existing default and adds explicit `-o` compilation.
 - Confirm progressive deliverables rather than an immediate promise of arbitrary C acceptance.
-- Confirm packages 8A audit, 8B and 8C precede language expansion and all gates are mandatory.
+- Confirm phases P00-P09 precede language expansion; each phase requires a recorded passing gate before the next phase starts.
 
 This is a review checklist, not a request to approve six separate actions individually. One review of the document can establish the baseline. Outstanding questions discovered during implementation must be concrete and tied to an actual dependency or specification conflict.
 
 ### 15.6 Immediate next action after document review
 
-Resume package 8A audit and symbolic native-layout prerequisites. Do not start coding a broad C frontend or output CLI before that gate. Then implement the 8B steps in order, testing each. The first user-visible native milestone is the current six demos compiling into standalone `.exe` files through the entirely project-owned path. Later packages expand language support without claiming unfinished capabilities.
+Complete P00's reviewed baseline and record its passing evidence. Then start P01's native foundation audit. Follow P02-P08 in order to qualify actual native compilation before P09 delivers the user-facing `-o` workflow. Do not jump directly into broad language expansion or native CLI work. The first user-visible native milestone is the current six demos compiling into standalone `.exe` files through the entirely project-owned path. P10-P24 subsequently expand language/runtime coverage without claiming unfinished capabilities. Historical package aliases may explain past commits but cannot override this phase sequence.
 
 ## 16. References and preserved history
 
@@ -949,4 +1470,7 @@ The original bytecode-only architecture remains historical context, not an alter
 
 ### 16.3 Change record
 
-Revision 2.0: documentation-only consolidation into PRD, TRD, architecture, flows, runtime/library inventory, implementation packages, acceptance gates, test policy, compatibility choices, risk register and conformance requirements. Existing source files and current compiler behavior are unchanged by this revision. Future status updates must record actual implementation evidence rather than silently converting planned requirements into completed claims.
+Revision 2.0 (historical): documentation-only consolidation into PRD, TRD, architecture, flows, runtime/library inventory, implementation packages, acceptance gates, test policy, compatibility choices, risk register and conformance requirements. Existing source files and current compiler behavior are unchanged by this revision. Future status updates must record actual implementation evidence rather than silently converting planned requirements into completed claims.
+
+
+Revision 3.0: documentation-only refinement into 25 ordered phases, P00-P24. Section 13 is the sole detailed execution sequence, replacing the earlier broad work-package sequence while preserving its dependency order and ownership contracts. Every phase identifies prerequisites, concrete tasks, tests, deliverables, acceptance gate and scope boundaries. Phase status and completion-record rules distinguish historical foundation work from new verified progress. No compiler source, tests, runtime implementation or user sample changed in this revision.
