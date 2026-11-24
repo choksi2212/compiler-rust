@@ -33,7 +33,10 @@ impl LiteralPool {
 fn scalar(unit: &Unit, ty: TypeId) -> Result<(), String> {
     if matches!(
         unit.types.get(unit.types.unqualified(ty)?)?,
-        crate::types::Type::Integer(_) | crate::types::Type::Pointer(_)
+        crate::types::Type::Integer(_)
+            | crate::types::Type::Enum(_)
+            | crate::types::Type::Pointer(_)
+            | crate::types::Type::Record(_)
     ) {
         Ok(())
     } else {
@@ -316,6 +319,14 @@ impl Lower<'_> {
             _ => self.value_expr(e).map(Some),
         }
     }
+    fn bitfield_volatile(&self, base: &Expr, path: &[usize]) -> Result<bool, String> {
+        let crate::types::Type::Pointer(object) = self.unit.types.get(base.ty)? else {
+            return Err("bitfield requires object pointer".into());
+        };
+        let mut types = self.unit.types.clone();
+        let field = types.member_type(*object, path)?;
+        Ok(types.qualifiers(field)?.volatile)
+    }
     fn value_expr(&mut self, e: &Expr) -> Result<ValueId, String> {
         match &e.kind {
             Expression::IndirectCall {
@@ -341,6 +352,147 @@ impl Lower<'_> {
             }
             Expression::VaStart { .. } | Expression::VaCopy { .. } | Expression::VaEnd { .. } => {
                 Err("void variadic operation has no value".into())
+            }
+            Expression::Bitfield { base, path } => {
+                let volatile = self.bitfield_volatile(base, path)?;
+                let base = self.value_expr(base)?;
+                let dst = self.value(e.ty)?;
+                self.emit(I::BitfieldRead {
+                    dst,
+                    base,
+                    path: path.clone(),
+                    volatile,
+                })?;
+                Ok(dst)
+            }
+            Expression::BitfieldAssign {
+                base,
+                path,
+                value,
+                operation,
+            } => {
+                let volatile = self.bitfield_volatile(base, path)?;
+                let base = self.value_expr(base)?;
+                let old = if let Some((_, ty)) = operation {
+                    let old = self.value(e.ty)?;
+                    self.emit(I::BitfieldRead {
+                        dst: old,
+                        base,
+                        path: path.clone(),
+                        volatile,
+                    })?;
+                    Some(self.convert(old, *ty)?)
+                } else {
+                    None
+                };
+                let mut src = self.value_expr(value)?;
+                if let Some((op, ty)) = operation {
+                    let dst = self.value(*ty)?;
+                    self.emit(I::Binary {
+                        dst,
+                        op: *op,
+                        lhs: old.ok_or("bitfield compound load missing")?,
+                        rhs: src,
+                    })?;
+                    src = self.convert(dst, e.ty)?;
+                }
+                let dst = self.value(e.ty)?;
+                self.emit(I::BitfieldWrite {
+                    dst,
+                    base,
+                    path: path.clone(),
+                    src,
+                    volatile,
+                })?;
+                Ok(dst)
+            }
+            Expression::BitfieldUpdate {
+                base,
+                path,
+                increment,
+                postfix,
+            } => {
+                let volatile = self.bitfield_volatile(base, path)?;
+                let crate::types::Type::Pointer(object) = self.unit.types.get(base.ty)? else {
+                    unreachable!()
+                };
+                let width = self
+                    .unit
+                    .types
+                    .member_path(*object, path)?
+                    .bits
+                    .ok_or("bitfield width missing")?
+                    .width;
+                let kind = self.unit.types.integer_kind(e.ty)?;
+                let promoted = if kind == crate::types::IntegerKind::UnsignedInt && width < 32 {
+                    self.unit.types.integer(crate::types::IntegerKind::Int)
+                } else {
+                    self.unit.types.promoted(e.ty)?
+                };
+                let base = self.value_expr(base)?;
+                let old = self.value(e.ty)?;
+                self.emit(I::BitfieldRead {
+                    dst: old,
+                    base,
+                    path: path.clone(),
+                    volatile,
+                })?;
+                let lhs = self.convert(old, promoted)?;
+                let rhs = self.constant(promoted, 1)?;
+                let result = self.value(promoted)?;
+                self.emit(I::Binary {
+                    dst: result,
+                    op: if *increment {
+                        Binary::Add
+                    } else {
+                        Binary::Subtract
+                    },
+                    lhs,
+                    rhs,
+                })?;
+                let src = self.convert(result, e.ty)?;
+                let dst = self.value(e.ty)?;
+                self.emit(I::BitfieldWrite {
+                    dst,
+                    base,
+                    path: path.clone(),
+                    src,
+                    volatile,
+                })?;
+                Ok(if *postfix { old } else { dst })
+            }
+            Expression::CompoundAddress { symbol, initial } => {
+                let dst = self.value(e.ty)?;
+                if self.unit.declarations[symbol.0].kind == DeclarationKind::Global {
+                    self.emit(I::GlobalAddress {
+                        dst,
+                        symbol: *symbol,
+                    })?;
+                } else {
+                    let local = self.local(*symbol)?;
+                    self.emit(I::AddressLocal { dst, local })?;
+                    if let Some(initial) = initial {
+                        self.emit(I::ResetLocal(local))?;
+                        self.initialize_object(dst, initial)?;
+                    }
+                }
+                Ok(dst)
+            }
+            Expression::ValueAddress(inner) => {
+                let src = self.value_expr(inner)?;
+                let dst = self.value(e.ty)?;
+                self.emit(I::AddressValue { dst, src })?;
+                Ok(dst)
+            }
+            Expression::MemberAddress { base, path } => {
+                let base = self.value_expr(base)?;
+                let dst = self.value(e.ty)?;
+                self.emit(I::MemberAddress {
+                    dst,
+                    base,
+                    path: path.clone(),
+                })?;
+                Ok(dst)
             }
             Expression::AddressLiteral(inner) => {
                 let Expression::String(text) = &inner.kind else {
@@ -558,7 +710,7 @@ impl Lower<'_> {
                 self.emit(I::DataAddress { dst, data })?;
                 Ok(dst)
             }
-            Expression::ArrayInitial(_) => {
+            Expression::ArrayInitial(_) | Expression::ObjectInitial(_) => {
                 Err("array initializer cannot be used as a scalar expression".into())
             }
             Expression::Integer(value) => self.constant(e.ty, value.bits),
@@ -732,6 +884,93 @@ impl Lower<'_> {
         Ok(bridge)
     }
     fn initialize_object(&mut self, address: ValueId, initial: &Expr) -> Result<(), String> {
+        self.initialize_object_effect(address, initial, false)
+    }
+    fn initialize_object_effect(
+        &mut self,
+        address: ValueId,
+        initial: &Expr,
+        inherited_volatile: bool,
+    ) -> Result<(), String> {
+        let crate::types::Type::Pointer(original) = self.unit.types.get(self.values[address.0])?
+        else {
+            return Err("initializer destination requires pointer".into());
+        };
+        let inherited_volatile =
+            inherited_volatile || self.unit.types.qualifiers(*original)?.volatile;
+        if let Expression::ObjectInitial(writes) = &initial.kind {
+            self.emit(I::ZeroObject { address })?;
+            for write in writes {
+                let mut at = address;
+                let mut ty = initial.ty;
+                let mut volatile = inherited_volatile;
+                let mut bitfield = None;
+                for (position, step) in write.path.iter().enumerate() {
+                    let plain = self.unit.types.unqualified(ty)?;
+                    let mutable_pointer = self.unit.types.pointer_existing(plain)?;
+                    at = self.convert(at, mutable_pointer)?;
+                    match step {
+                        typed_ir::InitializerStep::Element(index) => {
+                            let crate::types::Type::Array { element, .. } =
+                                self.unit.types.get(plain)?
+                            else {
+                                return Err("initializer element target is not array".into());
+                            };
+                            let pointer = self.unit.types.pointer_existing(*element)?;
+                            let base = self.convert(at, pointer)?;
+                            let index = self.constant(
+                                self.unit.types.integer(crate::types::IntegerKind::LongLong),
+                                *index,
+                            )?;
+                            let dst = self.value(pointer)?;
+                            self.emit(I::PointerOffset {
+                                dst,
+                                base,
+                                index,
+                                subtract: false,
+                            })?;
+                            at = dst;
+                            ty = *element;
+                        }
+                        typed_ir::InitializerStep::Member(index) => {
+                            let member = self.unit.types.member_path(plain, &[*index])?;
+                            ty = member.ty;
+                            volatile |= self.unit.types.qualifiers(ty)?.volatile;
+                            if member.bits.is_some() {
+                                if position + 1 != write.path.len() {
+                                    return Err("initializer descends into bitfield".into());
+                                }
+                                bitfield = Some((at, *index));
+                                break;
+                            }
+                            let pointer = self.unit.types.pointer_existing(ty)?;
+                            let dst = self.value(pointer)?;
+                            self.emit(I::MemberAddress {
+                                dst,
+                                base: at,
+                                path: vec![*index],
+                            })?;
+                            at = dst;
+                        }
+                    }
+                }
+                if let Some((base, index)) = bitfield {
+                    let src = self.value_expr(&write.value)?;
+                    let dst = self.value(self.unit.types.unqualified(ty)?)?;
+                    self.emit(I::BitfieldInitialize {
+                        dst,
+                        base,
+                        path: vec![index],
+                        src,
+                        volatile,
+                    })?;
+                } else {
+                    self.initialize_object_effect(at, &write.value, volatile)?;
+                }
+            }
+            return Ok(());
+        }
+
         if let Expression::ArrayInitial(values) = &initial.kind {
             let crate::types::Type::Array { element, .. } = self.unit.types.get(initial.ty)? else {
                 unreachable!()
@@ -757,11 +996,11 @@ impl Lower<'_> {
             let ty = self.unit.types.unqualified(initial.ty)?;
             let pointer = self.unit.types.pointer_existing(ty)?;
             let address = self.convert(address, pointer)?;
-            self.emit(I::Store {
+            self.emit(I::InitializeMemory {
                 address,
                 src,
                 align: self.unit.types.layout(ty)?.align,
-                volatile: self.unit.types.qualifiers(initial.ty)?.volatile,
+                volatile: inherited_volatile || self.unit.types.qualifiers(initial.ty)?.volatile,
             })?;
         }
         Ok(())
@@ -777,7 +1016,10 @@ impl Lower<'_> {
                     let local = self.local(*symbol)?;
                     self.emit(I::ResetLocal(local))?;
                     if let Some(initial) = initial {
-                        if matches!(initial.kind, Expression::ArrayInitial(_)) {
+                        if matches!(
+                            initial.kind,
+                            Expression::ArrayInitial(_) | Expression::ObjectInitial(_)
+                        ) {
                             let ty = self.unit.types.pointer_existing(initial.ty)?;
                             let dst = self.value(ty)?;
                             self.emit(I::AddressLocal { dst, local })?;
@@ -999,6 +1241,7 @@ pub fn lower(unit: &Unit) -> Result<Module, String> {
                 typed_ir::GlobalInitializer::Zero
             };
             Ok(typed_ir::Global {
+                alignment: d.alignment,
                 symbol: SymbolId(i),
                 name: d.token.text.clone(),
                 ty: d.ty,
@@ -1043,6 +1286,15 @@ fn lower_function(
     };
     let mut symbols = definition.parameters.clone();
     collect_locals(&definition.body, &mut symbols);
+    let mut scopes = std::collections::HashSet::new();
+    collect_object_scopes(&definition.body, &mut scopes);
+    symbols.extend(
+        unit.declarations
+            .iter()
+            .enumerate()
+            .filter(|(_, d)| d.kind == DeclarationKind::CompoundLocal && scopes.contains(&d.scope))
+            .map(|(i, _)| SymbolId(i)),
+    );
     for symbol in symbols {
         let declaration = &unit.declarations[symbol.0];
         unit.types.layout(declaration.ty).map_err(|e| {
@@ -1058,6 +1310,7 @@ fn lower_function(
             .or_default()
             .push(local);
         l.locals.push(Local {
+            alignment: declaration.alignment,
             symbol,
             ty: declaration.ty,
         });
@@ -1116,6 +1369,14 @@ fn lower_function(
         blocks,
     })
 }
+fn collect_object_scopes(statement: &Statement, scopes: &mut std::collections::HashSet<usize>) {
+    if let StatementKind::Block { scope, .. } | StatementKind::For { scope, .. } = &statement.kind {
+        scopes.insert(*scope);
+    }
+    for child in statement.children() {
+        collect_object_scopes(child, scopes);
+    }
+}
 fn collect_locals(statement: &Statement, symbols: &mut Vec<SymbolId>) {
     if let StatementKind::Declarations(declarations) = &statement.kind {
         symbols.extend(declarations.iter().map(|d| d.0));
@@ -1140,6 +1401,22 @@ fn global_initializer(
         ));
     }
     match &e.kind {
+        Expression::ObjectInitial(writes) => Ok(G::Object(
+            writes
+                .iter()
+                .map(|write| {
+                    let target = typed_ir::initializer_path(&unit.types, storage, &write.path)?;
+                    Ok(typed_ir::GlobalWrite {
+                        path: write.path.clone(),
+                        initial: global_initializer(unit, literals, &write.value, target.ty)?,
+                    })
+                })
+                .collect::<Result<Vec<_>, String>>()?,
+        )),
+        Expression::CompoundAddress { symbol, .. } => Ok(G::Address {
+            symbol: *symbol,
+            addend: 0,
+        }),
         Expression::ArrayInitial(values) => {
             let crate::types::Type::Array { element, .. } = unit.types.get(storage)? else {
                 return Err("array initializer type required".into());
@@ -1150,6 +1427,23 @@ fn global_initializer(
                     .map(|value| global_initializer(unit, literals, value, *element))
                     .collect::<Result<Vec<_>, String>>()?,
             ))
+        }
+        Expression::MemberAddress { base, path } => {
+            let crate::types::Type::Pointer(object) = unit.types.get(base.ty)? else {
+                unreachable!()
+            };
+            let offset = i64::try_from(unit.types.member_path(*object, path)?.offset)
+                .map_err(|_| "member offset exceeds target address range")?;
+            let mut initial = global_initializer(unit, literals, base, storage)?;
+            match &mut initial {
+                G::Address { addend, .. } | G::DataAddress { addend, .. } => {
+                    *addend = addend
+                        .checked_add(offset)
+                        .ok_or("static member address overflow")?
+                }
+                _ => return Err("static member address requires static object".into()),
+            }
+            Ok(initial)
         }
         Expression::AddressLiteral(inner) => {
             let Expression::String(text) = &inner.kind else {

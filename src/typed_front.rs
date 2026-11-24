@@ -5,7 +5,11 @@ use crate::{
     typed_ir::SymbolId,
     types::{self, IntegerKind, IntegerValue, Linkage, Qualifiers, Type, TypeContext, TypeId},
 };
+#[path = "typed_initializers.rs"]
+mod initializers;
 use std::collections::{HashMap, HashSet};
+#[path = "typed_declaration_features.rs"]
+mod declaration_features;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum DeclarationKind {
     Typedef,
@@ -13,6 +17,8 @@ pub enum DeclarationKind {
     Parameter,
     Function,
     Global,
+    EnumConstant,
+    CompoundLocal,
 }
 #[derive(Debug, Clone)]
 pub struct Declaration {
@@ -26,6 +32,7 @@ pub struct Declaration {
     pub defined: bool,
     pub tentative: bool,
     pub adjusted_parameter: bool,
+    pub alignment: Option<u32>,
 }
 #[derive(Debug, Clone)]
 pub struct Unit {
@@ -54,6 +61,8 @@ impl Unit {
 struct Parameters {
     scope: usize,
     identities: Vec<Option<SymbolId>>,
+    tags: HashMap<String, TypeId>,
+    names: HashMap<String, SymbolId>,
 }
 #[derive(Debug, Clone)]
 pub struct Expr {
@@ -62,16 +71,47 @@ pub struct Expr {
     pub kind: Expression,
 }
 #[derive(Debug, Clone)]
+pub struct InitialWrite {
+    pub path: Vec<crate::typed_ir::InitializerStep>,
+    pub value: Expr,
+}
+#[derive(Debug, Clone)]
 pub enum Expression {
     Integer(IntegerValue),
     ArrayInitial(Vec<Expr>),
+    ObjectInitial(Vec<InitialWrite>),
+    CompoundAddress {
+        symbol: SymbolId,
+        initial: Option<Box<Expr>>,
+    },
     Variable(SymbolId),
     String(String),
     Convert(Box<Expr>),
     Discard(Box<Expr>),
     Decay(Box<Expr>),
     Address(SymbolId),
+    Bitfield {
+        base: Box<Expr>,
+        path: Vec<usize>,
+    },
+    BitfieldAssign {
+        base: Box<Expr>,
+        path: Vec<usize>,
+        value: Box<Expr>,
+        operation: Option<(Binary, TypeId)>,
+    },
+    BitfieldUpdate {
+        base: Box<Expr>,
+        path: Vec<usize>,
+        increment: bool,
+        postfix: bool,
+    },
+    MemberAddress {
+        base: Box<Expr>,
+        path: Vec<usize>,
+    },
     AddressLiteral(Box<Expr>),
+    ValueAddress(Box<Expr>),
     Dereference(Box<Expr>),
     PointerOffset {
         base: Box<Expr>,
@@ -218,6 +258,7 @@ impl Declarator {
 struct Scope {
     id: usize,
     names: HashMap<String, SymbolId>,
+    tags: HashMap<String, TypeId>,
 }
 struct Switch {
     ty: TypeId,
@@ -270,6 +311,7 @@ pub fn parse_tokens(tokens: Vec<Token>) -> Result<Unit, String> {
         scopes: vec![Scope {
             id: 0,
             names: HashMap::new(),
+            tags: HashMap::new(),
         }],
         next_scope: 1,
         expression_level: 0,
@@ -297,6 +339,7 @@ fn keyword(name: &str) -> bool {
         || matches!(
             name,
             "_Alignof"
+                | "_Alignas"
                 | "_Atomic"
                 | "_Generic"
                 | "_Static_assert"
@@ -345,7 +388,12 @@ impl Parser {
     fn declaration_start(&self) -> bool {
         matches!(
             self.peek().text.as_str(),
-            "void"
+            "_Alignas"
+                | "_Static_assert"
+                | "void"
+                | "struct"
+                | "union"
+                | "enum"
                 | "__builtin_va_list"
                 | "_Bool"
                 | "char"
@@ -370,6 +418,7 @@ impl Parser {
         self.scopes.push(Scope {
             id,
             names: HashMap::new(),
+            tags: HashMap::new(),
         });
         id
     }
@@ -437,6 +486,7 @@ impl Parser {
             defined: matches!(kind, DeclarationKind::Local | DeclarationKind::Parameter),
             tentative: false,
             adjusted_parameter: false,
+            alignment: None,
         });
         Ok(id)
     }
@@ -513,6 +563,7 @@ impl Parser {
                 defined: false,
                 tentative: false,
                 adjusted_parameter: false,
+                alignment: None,
             });
             id
         };
@@ -520,6 +571,12 @@ impl Parser {
         Ok(id)
     }
     fn static_initial(&self, e: &Expr) -> Result<(), String> {
+        if let Expression::ObjectInitial(writes) = &e.kind {
+            for write in writes {
+                self.static_initial(&write.value)?;
+            }
+            return Ok(());
+        }
         if let Expression::ArrayInitial(values) = &e.kind {
             for value in values {
                 self.static_initial(value)?;
@@ -570,9 +627,229 @@ impl Parser {
         }
         q
     }
-    fn specifiers(&mut self) -> Result<(TypeId, Storage), String> {
+    fn enum_specifier(&mut self) -> Result<TypeId, String> {
+        let token = self.take();
+        let tag = if self.peek().kind == Kind::Word && !keyword(&self.peek().text) {
+            Some(self.take().text)
+        } else {
+            None
+        };
+        let definition = self.peek().text == "{";
+        let existing = tag.as_ref().and_then(|tag| {
+            if definition {
+                self.scopes.last().unwrap().tags.get(tag).copied()
+            } else {
+                self.scopes
+                    .iter()
+                    .rev()
+                    .find_map(|scope| scope.tags.get(tag).copied())
+            }
+        });
+        let ty = if let Some(ty) = existing {
+            if !matches!(self.types.get(ty)?, Type::Enum(_)) {
+                return Err(error(&token, "conflicting tag kind"));
+            }
+            ty
+        } else {
+            if !definition {
+                return Err(error(&token, "C11 enum requires a definition before use"));
+            }
+            let ty = self.types.new_enum(tag.clone())?;
+            if let Some(tag) = tag {
+                self.scopes.last_mut().unwrap().tags.insert(tag, ty);
+            }
+            ty
+        };
+        if !definition {
+            return Ok(ty);
+        }
+        self.expect("{")?;
+        let mut values = vec![];
+        let mut next = 0i64;
+        loop {
+            let name = self.take();
+            if name.kind != Kind::Word || keyword(&name.text) {
+                return Err(error(&name, "expected enumerator name"));
+            }
+            let value = if self.eat("=") {
+                let e = self.expr(1)?;
+                let value = constant(&self.types, &e)?.signed_value(&self.types)?;
+                i32::try_from(value)
+                    .map_err(|_| error(&e.token, "C11 enumerator must fit target int"))?
+            } else {
+                i32::try_from(next)
+                    .map_err(|_| error(&name, "implicit enumerator exceeds target int"))?
+            };
+            let int = self.types.integer(IntegerKind::Int);
+            let initial = Expr {
+                token: name.clone(),
+                ty: int,
+                kind: Expression::Integer(IntegerValue::new(&self.types, int, value as u64)?),
+            };
+            let id = self.define(name.clone(), int, DeclarationKind::EnumConstant)?;
+            self.declarations[id.0].initial = Some(initial);
+            values.push((name.text, value));
+            if values.len() > 4096 {
+                return Err(error(&token, "enumerator budget exceeded"));
+            }
+            next = i64::from(value) + 1;
+            if self.eat("}") {
+                break;
+            }
+            self.expect(",")?;
+            if self.eat("}") {
+                break;
+            }
+        }
+        self.types
+            .complete_enum(ty, values)
+            .map_err(|e| error(&token, e))?;
+        Ok(ty)
+    }
+    fn record_specifier(&mut self) -> Result<TypeId, String> {
+        if self.depth >= 64 {
+            return Err(error(self.peek(), "record nesting limit exceeded"));
+        }
+        self.depth += 1;
+        let result = self.record_specifier_inner();
+        self.depth -= 1;
+        result
+    }
+    fn record_specifier_inner(&mut self) -> Result<TypeId, String> {
+        use crate::aggregate::{FieldSpec, RecordKind};
+        let token = self.take();
+        let kind = if token.text == "struct" {
+            RecordKind::Struct
+        } else {
+            RecordKind::Union
+        };
+        let tag = if self.peek().kind == Kind::Word && !keyword(&self.peek().text) {
+            Some(self.take().text)
+        } else {
+            None
+        };
+        let definition = self.peek().text == "{";
+        let new_scope = definition || self.peek().text == ";";
+        let existing = tag.as_ref().and_then(|tag| {
+            if new_scope {
+                self.scopes.last().unwrap().tags.get(tag).copied()
+            } else {
+                self.scopes
+                    .iter()
+                    .rev()
+                    .find_map(|scope| scope.tags.get(tag).copied())
+            }
+        });
+        let ty = if let Some(ty) = existing {
+            if self
+                .types
+                .record_type(ty)
+                .map_err(|e| error(&token, e))?
+                .kind
+                != kind
+            {
+                return Err(error(&token, "conflicting tag kind"));
+            }
+            ty
+        } else {
+            if tag.is_none() && !definition {
+                return Err(error(&token, "record requires a tag or definition"));
+            }
+            let ty = self.types.new_record(kind, tag.clone())?;
+            if let Some(tag) = tag {
+                self.scopes.last_mut().unwrap().tags.insert(tag, ty);
+            }
+            ty
+        };
+        if !definition {
+            return Ok(ty);
+        }
+        self.expect("{")?;
+        let mut fields = vec![];
+        while !self.eat("}") {
+            if self.peek().text == "_Static_assert" {
+                self.static_assert_declaration()?;
+                continue;
+            }
+            if self.peek().kind == Kind::End {
+                return Err(error(self.peek(), "unterminated record definition"));
+            }
+            let field_token = self.peek().clone();
+            let (base, storage, alignment) = self.specifiers()?;
+            if storage != Storage::None {
+                return Err(error(
+                    &field_token,
+                    "record member cannot have a storage class",
+                ));
+            }
+            if self.eat(";") {
+                let record = self
+                    .types
+                    .record_type(base)
+                    .map_err(|_| error(&field_token, "member declaration requires a name"))?;
+                if record.tag.is_some() {
+                    return Err(error(
+                        &field_token,
+                        "anonymous member requires an untagged record",
+                    ));
+                }
+                fields.push(FieldSpec {
+                    name: None,
+                    ty: base,
+                    bits: None,
+                    alignment: alignment.filter(|a| *a != 0),
+                    anonymous: true,
+                });
+                continue;
+            }
+            loop {
+                let (name, field_ty) = if self.peek().text == ":" {
+                    (None, base)
+                } else {
+                    let declarator = self.declarator(true, false)?;
+                    let (name, ty, _) = declarator.apply(&mut self.types, base)?;
+                    (name, ty)
+                };
+                let bits = if self.eat(":") {
+                    let expression = self.expr(1)?;
+                    let value = constant(&self.types, &expression)?.signed_value(&self.types)?;
+                    Some(u32::try_from(value).map_err(|_| {
+                        error(
+                            &expression.token,
+                            "bitfield width must be nonnegative and representable",
+                        )
+                    })?)
+                } else {
+                    None
+                };
+                if bits.is_some() && alignment.is_some() {
+                    return Err(error(&field_token, "alignment specifier on bitfield"));
+                }
+                fields.push(FieldSpec {
+                    name: name.map(|n| n.text),
+                    ty: field_ty,
+                    bits,
+                    alignment: alignment.filter(|a| *a != 0),
+                    anonymous: false,
+                });
+                if fields.len() > 4096 {
+                    return Err(error(&field_token, "record field budget exceeded"));
+                }
+                if !self.eat(",") {
+                    self.expect(";")?;
+                    break;
+                }
+            }
+        }
+        self.types
+            .complete_record(ty, fields)
+            .map_err(|e| error(&token, e))?;
+        Ok(ty)
+    }
+    fn specifiers(&mut self) -> Result<(TypeId, Storage, Option<u32>), String> {
         let token = self.peek().clone();
         let mut alias = None;
+        let mut alignment: Option<u32> = None;
         let (
             mut signed,
             mut unsigned,
@@ -588,6 +865,26 @@ impl Parser {
         let mut storage_kind = Storage::None;
         loop {
             match self.peek().text.as_str() {
+                "_Alignas" => {
+                    if let Some(value) = self.alignment_specifier()? {
+                        alignment = Some(alignment.unwrap_or(0).max(value));
+                    }
+                    continue;
+                }
+                "enum"
+                    if alias.is_none()
+                        && signed + unsigned + short + long + int + char_ + bool_ + void == 0 =>
+                {
+                    alias = Some(self.enum_specifier()?);
+                    continue;
+                }
+                "struct" | "union"
+                    if alias.is_none()
+                        && signed + unsigned + short + long + int + char_ + bool_ + void == 0 =>
+                {
+                    alias = Some(self.record_specifier()?);
+                    continue;
+                }
                 "const" => q.constant = true,
                 "volatile" => q.volatile = true,
                 "restrict" => q.restrict = true,
@@ -718,7 +1015,7 @@ impl Parser {
         };
         self.types
             .qualify(ty, q)
-            .map(|ty| (ty, storage_kind))
+            .map(|ty| (ty, storage_kind, alignment))
             .map_err(|e| error(&token, e))
     }
     fn declarator(&mut self, allow_name: bool, abstract_: bool) -> Result<Declarator, String> {
@@ -761,6 +1058,9 @@ impl Parser {
                         || matches!(
                             t.text.as_str(),
                             "void"
+                                | "struct"
+                                | "union"
+                                | "enum"
                                 | "__builtin_va_list"
                                 | "int"
                                 | "char"
@@ -838,7 +1138,13 @@ impl Parser {
                                 break;
                             }
                             let token = self.peek().clone();
-                            let (base, storage) = self.specifiers()?;
+                            let (base, storage, alignment) = self.specifiers()?;
+                            if alignment.is_some() {
+                                return Err(error(
+                                    &token,
+                                    "alignment specifier in parameter declaration",
+                                ));
+                            }
                             if !matches!(storage, Storage::None | Storage::Register) {
                                 return Err(error(&token, "invalid parameter storage class"));
                             }
@@ -866,7 +1172,9 @@ impl Parser {
                         }
                     }
                 }
-                self.scopes.pop();
+                let parameter_scope_contents = self.scopes.pop().unwrap();
+                let parameter_tags = parameter_scope_contents.tags;
+                let parameter_names = parameter_scope_contents.names;
                 direct = Declarator::Function(
                     Box::new(direct),
                     parameters,
@@ -875,6 +1183,8 @@ impl Parser {
                     Parameters {
                         scope: parameter_scope,
                         identities: parameter_identities,
+                        tags: parameter_tags,
+                        names: parameter_names,
                     },
                 );
             } else {
@@ -888,7 +1198,10 @@ impl Parser {
     }
     fn type_name(&mut self) -> Result<TypeId, String> {
         let token = self.peek().clone();
-        let (base, storage) = self.specifiers()?;
+        let (base, storage, alignment) = self.specifiers()?;
+        if alignment.is_some() {
+            return Err(error(&token, "alignment specifier in type name"));
+        }
         if storage != Storage::None {
             return Err(error(&token, "storage class in type name"));
         }
@@ -906,9 +1219,29 @@ impl Parser {
         let mut main_symbol = None;
         let mut defined = HashSet::new();
         while self.peek().kind != Kind::End {
+            if self.peek().text == "_Static_assert" {
+                self.static_assert_declaration()?;
+                continue;
+            }
             let token = self.peek().clone();
-            let (base, storage) = self.specifiers()?;
+            let (base, storage, alignment) = self.specifiers()?;
             let typedef = storage == Storage::Typedef;
+            if self.peek().text == ";"
+                && storage == Storage::None
+                && matches!(
+                    self.types.get(self.types.unqualified(base)?)?,
+                    Type::Record(_) | Type::Enum(_)
+                )
+            {
+                if alignment.is_some() {
+                    return Err(error(
+                        &token,
+                        "alignment specifier requires object declarator",
+                    ));
+                }
+                self.take();
+                continue;
+            }
             loop {
                 let declarator = self.declarator(true, false)?;
                 let (name, mut ty, parameters) = declarator
@@ -972,6 +1305,7 @@ impl Parser {
                     ty = self.types.function(result, types, variadic, true)?;
                     let is_main = name.text == "main";
                     let id = self.linked(name.clone(), ty, kind, storage)?;
+                    self.apply_declaration_alignment(id, alignment)?;
                     self.declarations[id.0].defined = true;
                     if !defined.insert(id) {
                         return Err(error(&name, "duplicate function definition"));
@@ -986,7 +1320,8 @@ impl Parser {
                     self.current_variadic = variadic;
                     self.scopes.push(Scope {
                         id: parameters.scope,
-                        names,
+                        names: parameters.names,
+                        tags: parameters.tags,
                     });
                     let body = self.block_existing(parameters.scope)?;
                     self.scopes.pop();
@@ -1018,6 +1353,7 @@ impl Parser {
                 } else {
                     None
                 };
+                self.apply_declaration_alignment(id, alignment)?;
                 if kind == DeclarationKind::Global {
                     let defined = initial.is_some();
                     self.record_initial(
@@ -1071,160 +1407,40 @@ impl Parser {
         }
         Ok(())
     }
-    fn zero_initial(&mut self, ty: TypeId, token: &Token) -> Result<Expr, String> {
-        self.initial_budget()?;
-        let ty = self.types.unqualified(ty)?;
-        self.types.pointer(ty)?;
-        let kind = match self.types.get(ty)?.clone() {
-            Type::Array {
-                element,
-                length: Some(n),
-            } => {
-                if n > 65535 {
-                    return Err(error(token, "initializer element budget exceeded"));
-                }
-                let mut values = vec![];
-                for _ in 0..n {
-                    values.push(self.zero_initial(element, token)?);
-                }
-                Expression::ArrayInitial(values)
-            }
-            Type::Integer(_) => Expression::Integer(IntegerValue::new(&self.types, ty, 0)?),
-            Type::Pointer(_) => {
-                let int = self.types.integer(IntegerKind::Int);
-                Expression::Convert(Box::new(Expr {
-                    token: token.clone(),
-                    ty: int,
-                    kind: Expression::Integer(IntegerValue::new(&self.types, int, 0)?),
-                }))
-            }
-            _ => return Err(error(token, "unsupported zero initializer object")),
-        };
-        Ok(Expr {
-            token: token.clone(),
-            ty,
-            kind,
-        })
-    }
-    fn initializer(&mut self, ty: TypeId, elision: bool) -> Result<Expr, String> {
-        if self.depth >= 64 {
-            return Err(error(self.peek(), "initializer nesting limit exceeded"));
-        }
-        self.depth += 1;
-        let result = self.initializer_inner(ty, elision);
-        self.depth -= 1;
-        result
-    }
-    fn initializer_inner(&mut self, ty: TypeId, elision: bool) -> Result<Expr, String> {
-        self.initial_budget()?;
-        let token = self.peek().clone();
-        let ty = self.types.unqualified(ty)?;
-        self.types.pointer(ty)?;
-        if let Type::Array { element, length } = self.types.get(ty)?.clone() {
-            if length.is_some_and(|n| n > 65535) {
-                return Err(error(&token, "initializer element budget exceeded"));
-            }
-            let braced = self.eat("{");
-            if self.types.integer_kind(element).is_ok_and(|k| {
-                matches!(
-                    k,
-                    IntegerKind::Char | IntegerKind::SignedChar | IntegerKind::UnsignedChar
-                )
-            }) && let Kind::String(text) = self.peek().kind.clone()
-            {
-                self.take();
-                let n = length.unwrap_or(text.len() as u64 + 1);
-                if (text.len() as u64) > n {
-                    return Err(error(&token, "string initializer exceeds array bound"));
-                }
-                let mut bytes = text.into_bytes();
-                bytes.resize(n as usize, 0);
-                let element_ty = self.types.unqualified(element)?;
-                self.types.pointer(element_ty)?;
-                let mut values = vec![];
-                for byte in bytes {
-                    self.initial_budget()?;
-                    values.push(Expr {
-                        token: token.clone(),
-                        ty: element_ty,
-                        kind: Expression::Integer(IntegerValue::new(
-                            &self.types,
-                            element_ty,
-                            byte as u64,
-                        )?),
-                    });
-                }
-                if braced {
-                    self.eat(",");
-                    self.expect("}")?;
-                }
-                let ty = self.types.array(element, Some(n))?;
-                self.types.pointer(ty)?;
-                self.types.pointer(element)?;
-                return Ok(Expr {
-                    token,
-                    ty,
-                    kind: Expression::ArrayInitial(values),
-                });
-            }
-            if !braced && (!elision || length.is_none()) {
-                return Err(error(
-                    &token,
-                    "array initializer requires braces or a character string",
-                ));
-            }
-            let mut values = vec![];
-            while length.is_none_or(|n| (values.len() as u64) < n) {
-                if self.peek().text == "}" {
-                    break;
-                }
-                if !values.is_empty() {
-                    if !self.eat(",") {
-                        break;
-                    }
-                    if self.peek().text == "}" {
-                        break;
-                    }
-                }
-                values.push(self.initializer(element, true)?);
-            }
-            if values.is_empty() {
-                return Err(error(&token, "empty initializer is outside C11"));
-            }
-            if braced {
-                self.eat(",");
-                self.expect("}")?;
-            }
-            let n = length.unwrap_or(values.len() as u64);
-            while (values.len() as u64) < n {
-                values.push(self.zero_initial(element, &token)?);
-            }
-            let ty = self.types.array(element, Some(n))?;
-            self.types.pointer(ty)?;
-            self.types.pointer(element)?;
-            Ok(Expr {
-                token,
-                ty,
-                kind: Expression::ArrayInitial(values),
-            })
-        } else {
-            let braced = self.eat("{");
-            let e = if braced {
-                self.initializer(ty, false)?
-            } else {
-                self.expr(1)?
-            };
-            if braced {
-                self.eat(",");
-                self.expect("}")?;
-            }
-            self.convert(e, ty)
-        }
+    fn initializer(&mut self, ty: TypeId, _elision: bool) -> Result<Expr, String> {
+        let raw = self.raw_initializer()?;
+        self.bind_initializer(ty, &raw)
     }
     fn declaration(&mut self) -> Result<Statement, String> {
         let token = self.peek().clone();
-        let (base, storage) = self.specifiers()?;
+        if token.text == "_Static_assert" {
+            self.static_assert_declaration()?;
+            return Ok(Statement {
+                token,
+                kind: StatementKind::Empty,
+            });
+        }
+        let (base, storage, alignment) = self.specifiers()?;
         let typedef = storage == Storage::Typedef;
+        if self.peek().text == ";"
+            && storage == Storage::None
+            && matches!(
+                self.types.get(self.types.unqualified(base)?)?,
+                Type::Record(_) | Type::Enum(_)
+            )
+        {
+            if alignment.is_some() {
+                return Err(error(
+                    &token,
+                    "alignment specifier requires object declarator",
+                ));
+            }
+            self.take();
+            return Ok(Statement {
+                token,
+                kind: StatementKind::Empty,
+            });
+        }
         let mut declarations = vec![];
         loop {
             let d = self.declarator(true, false)?;
@@ -1272,6 +1488,7 @@ impl Parser {
             } else {
                 None
             };
+            self.apply_declaration_alignment(id, alignment)?;
             if kind == DeclarationKind::Local {
                 self.types
                     .layout(self.declarations[id.0].ty)
@@ -1526,7 +1743,7 @@ impl Parser {
     fn scalar(&self, ty: TypeId) -> Result<(), String> {
         if matches!(
             self.types.get(self.types.unqualified(ty)?)?,
-            Type::Integer(_) | Type::Pointer(_)
+            Type::Integer(_) | Type::Enum(_) | Type::Pointer(_)
         ) {
             Ok(())
         } else {
@@ -1534,6 +1751,29 @@ impl Parser {
         }
     }
     fn decay(&mut self, e: Expr) -> Result<Expr, String> {
+        if let Some((base, path)) = Self::bitfield_place(&e) {
+            let Type::Pointer(object) = self.types.get(base.ty)? else {
+                unreachable!()
+            };
+            let member = self.types.member_path(*object, path)?;
+            let width = member.bits.ok_or("bitfield metadata missing")?.width;
+            let kind = self.types.integer_kind(e.ty)?;
+            let promoted = if kind.rank() < IntegerKind::Int.rank()
+                || (kind == IntegerKind::UnsignedInt && width < 32)
+            {
+                self.types.integer(IntegerKind::Int)
+            } else {
+                e.ty
+            };
+            if promoted != e.ty {
+                return Ok(Expr {
+                    token: e.token.clone(),
+                    ty: promoted,
+                    kind: Expression::Convert(Box::new(e)),
+                });
+            }
+        }
+
         let base = match self.types.get(e.ty)? {
             Type::Array { element, .. } => Some(*element),
             Type::Function { .. } => Some(e.ty),
@@ -1573,10 +1813,17 @@ impl Parser {
                 kind: Expression::Discard(Box::new(e)),
             });
         }
+        if self.types.aggregate_value(ty)? {
+            if !self.types.compatible(e.ty, ty)? {
+                return Err(error(&e.token, "incompatible aggregate value conversion"));
+            }
+            self.types.layout(ty)?;
+            return Ok(e);
+        }
         self.scalar(e.ty).map_err(|e2| error(&e.token, e2))?;
         self.scalar(ty).map_err(|e2| error(&e.token, e2))?;
         match (self.types.get(e.ty)?, self.types.get(ty)?) {
-            (Type::Integer(_), Type::Integer(_)) => (),
+            (Type::Integer(_) | Type::Enum(_), Type::Integer(_) | Type::Enum(_)) => (),
             (Type::Pointer(source), Type::Pointer(target)) => {
                 let (source, target) = (*source, *target);
                 let s = self.types.unqualified(source)?;
@@ -1607,7 +1854,7 @@ impl Parser {
                     }
                 }
             }
-            (Type::Integer(_), Type::Pointer(_)) => {
+            (Type::Integer(_) | Type::Enum(_), Type::Pointer(_)) => {
                 if !explicit && !constant(&self.types, &e).is_ok_and(|v| v.bits == 0) {
                     return Err(error(
                         &e.token,
@@ -1616,6 +1863,7 @@ impl Parser {
                 }
             }
             (Type::Pointer(_), Type::Integer(kind)) if explicit || *kind == IntegerKind::Bool => (),
+            (Type::Pointer(_), Type::Enum(_)) if explicit => (),
             _ => return Err(error(&e.token, "incompatible scalar conversion")),
         }
         if e.ty == ty {
@@ -1628,8 +1876,54 @@ impl Parser {
             })
         }
     }
+    fn bitfield_place(e: &Expr) -> Option<(&Expr, &[usize])> {
+        match &e.kind {
+            Expression::Bitfield { base, path }
+            | Expression::BitfieldAssign { base, path, .. }
+            | Expression::BitfieldUpdate { base, path, .. } => Some((base, path)),
+            _ => None,
+        }
+    }
+    fn bitfield_target(
+        &mut self,
+        base: &Expr,
+        path: &[usize],
+        token: &Token,
+    ) -> Result<TypeId, String> {
+        let Type::Pointer(object) = self.types.get(base.ty)? else {
+            return Err(error(token, "bitfield requires record pointer"));
+        };
+        let ty = self.types.member_type(*object, path)?;
+        if self.types.qualifiers(ty)?.constant {
+            return Err(error(token, "cannot modify const bitfield"));
+        }
+        self.types.unqualified(ty)
+    }
+    fn sizeof_expression_type(&self, e: &Expr) -> Result<TypeId, String> {
+        if Self::bitfield_place(e).is_some() {
+            return Err(error(&e.token, "sizeof cannot be applied to a bitfield"));
+        }
+        Ok(e.ty)
+    }
     fn updated(&mut self, e: Expr, token: Token, postfix: bool) -> Result<Expr, String> {
+        if let Expression::Bitfield { base, path } = &e.kind {
+            let ty = self.bitfield_target(base, path, &token)?;
+            return Ok(Expr {
+                ty,
+                kind: Expression::BitfieldUpdate {
+                    base: base.clone(),
+                    path: path.clone(),
+                    increment: token.text == "++",
+                    postfix,
+                },
+                token,
+            });
+        }
+
         if let Expression::Dereference(address) = &e.kind {
+            if Self::temporary_member_address(address) {
+                return Err(error(&token, "cannot update non-lvalue member"));
+            }
             let Type::Pointer(base) = self.types.get(address.ty)? else {
                 unreachable!()
             };
@@ -1678,7 +1972,13 @@ impl Parser {
         {
             return Err(error(&e.token, "modifiable scalar variable required"));
         }
-        self.scalar(d.ty).map_err(|e2| error(&e.token, e2))?;
+        if self.types.aggregate_value(d.ty)? {
+            if self.types.contains_const(d.ty)? {
+                return Err(error(&e.token, "aggregate contains const member"));
+            }
+        } else {
+            self.scalar(d.ty).map_err(|e2| error(&e.token, e2))?;
+        }
         Ok(id)
     }
     fn lvalue(&self, e: &Expr) -> Result<SymbolId, String> {
@@ -1695,6 +1995,10 @@ impl Parser {
     fn common(&mut self, a: Expr, b: Expr) -> Result<(Expr, Expr, TypeId), String> {
         let a = self.decay(a)?;
         let b = self.decay(b)?;
+        if self.types.aggregate_value(a.ty)? && self.types.compatible(a.ty, b.ty)? {
+            let ty = a.ty;
+            return Ok((a, b, ty));
+        }
         let ap = if let Type::Pointer(p) = self.types.get(a.ty)? {
             Some(*p)
         } else {
@@ -1897,8 +2201,12 @@ impl Parser {
                 self.expect(",")?;
                 let ty = self.type_name()?;
                 let ty = self.types.unqualified(ty)?;
-                self.scalar(ty).map_err(|e| error(&token, e))?;
-                if !matches!(self.types.get(ty)?, Type::Pointer(_))
+                if self.types.aggregate_value(ty)? {
+                    self.types.layout(ty)?;
+                } else {
+                    self.scalar(ty).map_err(|e| error(&token, e))?;
+                }
+                if !matches!(self.types.get(ty)?, Type::Pointer(_) | Type::Record(_))
                     && self.types.promoted(ty)? != ty
                 {
                     return Err(error(
@@ -1944,7 +2252,14 @@ impl Parser {
         result
     }
     fn expr_inner(&mut self, min: u8) -> Result<Expr, String> {
-        let lhs = self.prefix()?;
+        // Generic controls recurse into expressions without retaining the large
+        // ordinary-prefix frame at every level of unevaluated selection.
+        let lhs = if self.peek().text == "_Generic" {
+            let token = self.take();
+            self.generic_expression(token)?
+        } else {
+            self.prefix()?
+        };
         let lhs = self.postfix(lhs)?;
         self.infix(lhs, min)
     }
@@ -1998,13 +2313,15 @@ impl Parser {
                             ));
                         }
                         self.at = saved;
-                        self.expr(13)?.ty
+                        let e = self.expr(13)?;
+                        self.sizeof_expression_type(&e)?
                     }
                 } else {
                     if align {
                         return Err(error(&token, "Alignof requires a type name"));
                     }
-                    self.expr(13)?.ty
+                    let e = self.expr(13)?;
+                    self.sizeof_expression_type(&e)?
                 };
                 let layout = self.types.layout(ty).map_err(|e| error(&token, e))?;
                 let value = IntegerValue::new(
@@ -2026,6 +2343,9 @@ impl Parser {
                 if self.declaration_start() {
                     let ty = self.type_name()?;
                     self.expect(")")?;
+                    if self.peek().text == "{" {
+                        return self.compound_literal(ty, token.clone());
+                    }
                     let rhs = self.expr(13)?;
                     let converted = self.cast(rhs, ty)?;
                     if ty == self.types.void() {
@@ -2062,6 +2382,9 @@ impl Parser {
             _ if token.text == "&" => {
                 let e = self.expr(13)?;
                 if let Expression::Dereference(pointer) = e.kind {
+                    if Self::temporary_member_address(&pointer) {
+                        return Err(error(&token, "cannot take address of non-lvalue member"));
+                    }
                     *pointer
                 } else {
                     if matches!(e.kind, Expression::String(_)) {
@@ -2145,18 +2468,98 @@ impl Parser {
                 if d.kind == DeclarationKind::Typedef {
                     return Err(error(&token, "type name used as an expression"));
                 }
-                Expr {
-                    token: token.clone(),
-                    ty: self.types.unqualified(d.ty)?,
-                    kind: Expression::Variable(id),
+                if d.kind == DeclarationKind::EnumConstant {
+                    d.initial.clone().ok_or("enumerator value missing")?
+                } else {
+                    Expr {
+                        token: token.clone(),
+                        ty: self.types.unqualified(d.ty)?,
+                        kind: Expression::Variable(id),
+                    }
                 }
             }
             _ => return Err(error(&token, "expected expression")),
         };
         Ok(lhs)
     }
+    fn temporary_member_address(e: &Expr) -> bool {
+        match &e.kind {
+            Expression::ValueAddress(_) => true,
+            Expression::MemberAddress { base, .. } => Self::temporary_member_address(base),
+            _ => false,
+        }
+    }
+    fn object_pointer(&mut self, e: Expr) -> Result<Expr, String> {
+        if let Expression::Dereference(pointer) = e.kind {
+            return Ok(*pointer);
+        }
+        if let Expression::Variable(symbol) = e.kind {
+            let ty = self.types.pointer(self.declarations[symbol.0].ty)?;
+            return Ok(Expr {
+                token: e.token,
+                ty,
+                kind: Expression::Address(symbol),
+            });
+        }
+        if self.types.aggregate_value(e.ty)? {
+            let ty = self.types.pointer(e.ty)?;
+            return Ok(Expr {
+                token: e.token.clone(),
+                ty,
+                kind: Expression::ValueAddress(Box::new(e)),
+            });
+        }
+        Err(error(&e.token, "member access requires a record object"))
+    }
     fn postfix(&mut self, mut lhs: Expr) -> Result<Expr, String> {
         loop {
+            if self.peek().text == "." || self.peek().text == "->" {
+                let op = self.take();
+                let pointer = if op.text == "." {
+                    self.object_pointer(lhs)?
+                } else {
+                    self.decay(lhs)?
+                };
+                let Type::Pointer(object) = self.types.get(pointer.ty)? else {
+                    return Err(error(&op, "member arrow requires a record pointer"));
+                };
+                let object = *object;
+                let name = self.take();
+                if name.kind != Kind::Word || keyword(&name.text) {
+                    return Err(error(&name, "expected member name"));
+                }
+                let member = self
+                    .types
+                    .member(object, &name.text)
+                    .map_err(|e| error(&name, e))?;
+                let field = self.types.member_type(object, &member.path)?;
+                if member.bits.is_some() {
+                    lhs = Expr {
+                        token: name,
+                        ty: self.types.unqualified(field)?,
+                        kind: Expression::Bitfield {
+                            base: Box::new(pointer),
+                            path: member.path,
+                        },
+                    };
+                    continue;
+                }
+                let pointer_ty = self.types.pointer(field)?;
+                let address = Expr {
+                    token: op,
+                    ty: pointer_ty,
+                    kind: Expression::MemberAddress {
+                        base: Box::new(pointer),
+                        path: member.path,
+                    },
+                };
+                lhs = Expr {
+                    token: name,
+                    ty: self.types.unqualified(field)?,
+                    kind: Expression::Dereference(Box::new(address)),
+                };
+                continue;
+            }
             if self.eat("[") {
                 let index = self.expr(0)?;
                 let token = lhs.token.clone();
@@ -2242,7 +2645,10 @@ impl Parser {
                 let ty = if let Some(ty) = parameters.get(index) {
                     *ty
                 } else {
-                    if matches!(self.types.get(argument.ty)?, Type::Pointer(_)) {
+                    if matches!(
+                        self.types.get(argument.ty)?,
+                        Type::Pointer(_) | Type::Record(_)
+                    ) {
                         argument.ty
                     } else {
                         self.types.promoted(argument.ty)?
@@ -2323,14 +2729,52 @@ impl Parser {
                 precedence + 1
             })?;
             if assignment {
+                if let Expression::Bitfield { base, path } = &lhs.kind {
+                    let target = self.bitfield_target(base, path, &t)?;
+                    let (value, operation) = if op == "=" {
+                        (self.convert(rhs, target)?, None)
+                    } else {
+                        let binary = self.binary(
+                            t.clone(),
+                            binary_operator(&op[..op.len() - 1])
+                                .ok_or("unsupported bitfield compound operation")?,
+                            lhs.clone(),
+                            rhs,
+                        )?;
+                        let Expression::Binary(operator, left, right) = binary.kind else {
+                            return Err(error(&t, "bitfield compound operation requires integers"));
+                        };
+                        (*right, Some((operator, left.ty)))
+                    };
+                    lhs = Expr {
+                        token: t,
+                        ty: target,
+                        kind: Expression::BitfieldAssign {
+                            base: base.clone(),
+                            path: path.clone(),
+                            value: Box::new(value),
+                            operation,
+                        },
+                    };
+                    continue;
+                }
                 if let Expression::Dereference(address) = &lhs.kind {
+                    if Self::temporary_member_address(address) {
+                        return Err(error(&t, "cannot assign to non-lvalue member"));
+                    }
                     let Type::Pointer(base) = self.types.get(address.ty)? else {
                         unreachable!()
                     };
                     if self.types.qualifiers(*base)?.constant {
                         return Err(error(&t, "assignment through const pointer"));
                     }
-                    self.scalar(*base).map_err(|e| error(&t, e))?;
+                    if self.types.aggregate_value(*base)? {
+                        if self.types.contains_const(*base)? {
+                            return Err(error(&t, "aggregate contains const member"));
+                        }
+                    } else {
+                        self.scalar(*base).map_err(|e| error(&t, e))?;
+                    }
                     let target = self.types.unqualified(*base)?;
                     let (value, operation) = if op == "=" {
                         (self.convert(rhs, target)?, None)
@@ -2462,6 +2906,12 @@ fn address_constant(parser: &Parser, e: &Expr) -> Result<(), String> {
         Expression::PointerOffset { base, index, .. } => {
             address_constant(parser, base)?;
             constant(&parser.types, index).map(|_| ())
+        }
+        Expression::MemberAddress { base, .. } => address_constant(parser, base),
+        Expression::CompoundAddress { symbol, .. }
+            if parser.declarations[symbol.0].kind == DeclarationKind::Global =>
+        {
+            Ok(())
         }
         Expression::AddressLiteral(_) => Ok(()),
         Expression::Decay(inner) if matches!(inner.kind, Expression::Dereference(_)) => {

@@ -248,7 +248,7 @@ fn global_data(
     bindings: &mut ModuleBindings,
 ) -> Result<(Vec<crate::pe::DataSection>, Vec<crate::pe::PointerFixup>), String> {
     use crate::{
-        pe::{Access, DataSection, PointerFixup},
+        pe::{Access, DataSection},
         typed_ir::GlobalInitializer,
     };
     let mut groups = vec![
@@ -289,7 +289,11 @@ fn global_data(
         let ty = module.types.unqualified(global.ty)?;
         if !matches!(
             module.types.get(ty)?,
-            Type::Integer(_) | Type::Pointer(_) | Type::Array { .. }
+            Type::Integer(_)
+                | Type::Enum(_)
+                | Type::Pointer(_)
+                | Type::Array { .. }
+                | Type::Record(_)
         ) {
             return Err("non-scalar global storage waits for the memory phase".into());
         }
@@ -303,7 +307,7 @@ fn global_data(
             1
         };
         let section = &mut groups[group];
-        let align = layout.align;
+        let align = global.alignment.unwrap_or(layout.align);
         let offset = section
             .virtual_size
             .checked_add(align - 1)
@@ -316,51 +320,15 @@ fn global_data(
         if group != 2 {
             section.bytes.resize(section.virtual_size as usize, 0);
         }
-        let mut leaves = vec![];
-        initial_leaves(
-            &module.types,
-            global.ty,
-            &global.initial,
-            offset,
-            &mut leaves,
-        )?;
-        for (offset, size, initial) in leaves {
-            match initial {
-                GlobalInitializer::Array(_) => {
-                    return Err("array initializer was not flattened".into());
-                }
-                GlobalInitializer::Zero => (),
-                GlobalInitializer::Integer(bits) => section.bytes
-                    [offset as usize..(offset + size) as usize]
-                    .copy_from_slice(&bits.to_le_bytes()[..size as usize]),
-                GlobalInitializer::Address { symbol, addend } => {
-                    let target = bindings
-                        .globals
-                        .get(symbol)
-                        .map(|g| g.0)
-                        .or_else(|| bindings.function_addresses.get(symbol).copied())
-                        .ok_or("unresolved initializer target")?;
-                    pointers.push(PointerFixup {
-                        section: group,
-                        offset,
-                        target,
-                        addend: *addend,
-                    });
-                }
-                GlobalInitializer::DataAddress { data, addend } => {
-                    let target = *bindings
-                        .literals
-                        .get(data)
-                        .ok_or("unresolved initializer literal")?;
-                    pointers.push(PointerFixup {
-                        section: group,
-                        offset,
-                        target,
-                        addend: *addend,
-                    });
-                }
-            }
+        InitialSerializer {
+            types: &module.types,
+            bindings,
+            section,
+            group,
+            pointers: &mut pointers,
+            depth: 0,
         }
+        .write(global.ty, &global.initial, offset)?;
     }
     let mut data = vec![];
     let mut indexes = [None; 3];
@@ -376,39 +344,150 @@ fn global_data(
     Ok((data, pointers))
 }
 
-fn initial_leaves<'a>(
-    types: &crate::types::TypeContext,
-    ty: crate::types::TypeId,
-    initial: &'a typed_ir::GlobalInitializer,
-    offset: u32,
-    leaves: &mut Vec<(u32, u32, &'a typed_ir::GlobalInitializer)>,
-) -> Result<(), String> {
-    if let typed_ir::GlobalInitializer::Array(values) = initial {
-        let Type::Array { element, .. } = types.get(types.unqualified(ty)?)? else {
-            return Err("array initializer storage mismatch".into());
-        };
-        let stride = u32::try_from(types.layout(*element)?.size)
-            .map_err(|_| "array stride exceeds image budget")?;
-        for (i, value) in values.iter().enumerate() {
-            let at = offset
-                .checked_add(
-                    u32::try_from(i)
-                        .map_err(|_| "array index overflow")?
-                        .checked_mul(stride)
-                        .ok_or("array offset overflow")?,
-                )
-                .ok_or("array layout overflow")?;
-            initial_leaves(types, *element, value, at, leaves)?;
+struct InitialSerializer<'a> {
+    types: &'a crate::types::TypeContext,
+    bindings: &'a ModuleBindings,
+    section: &'a mut crate::pe::DataSection,
+    group: usize,
+    pointers: &'a mut Vec<crate::pe::PointerFixup>,
+    depth: usize,
+}
+impl InitialSerializer<'_> {
+    fn clear(&mut self, offset: u32, size: u64) -> Result<(), String> {
+        let end = u64::from(offset)
+            .checked_add(size)
+            .ok_or("initializer range overflow")?;
+        if end > u64::from(self.section.virtual_size) {
+            return Err("initializer exceeds section object".into());
         }
-    } else {
-        leaves.push((
-            offset,
-            u32::try_from(types.layout(ty)?.size)
-                .map_err(|_| "initializer layout exceeds image budget")?,
-            initial,
-        ));
+        self.pointers.retain(|p| {
+            p.section != self.group
+                || u64::from(p.offset) + 8 <= u64::from(offset)
+                || u64::from(p.offset) >= end
+        });
+        if self.section.access != crate::pe::Access::ZeroFill {
+            self.section.bytes[offset as usize..end as usize].fill(0);
+        }
+        Ok(())
     }
-    Ok(())
+    fn write(
+        &mut self,
+        ty: crate::types::TypeId,
+        initial: &typed_ir::GlobalInitializer,
+        offset: u32,
+    ) -> Result<(), String> {
+        if self.depth >= 128 {
+            return Err("static initializer nesting limit exceeded".into());
+        }
+        self.depth += 1;
+        let result = self.write_inner(ty, initial, offset);
+        self.depth -= 1;
+        result
+    }
+    fn write_inner(
+        &mut self,
+        ty: crate::types::TypeId,
+        initial: &typed_ir::GlobalInitializer,
+        offset: u32,
+    ) -> Result<(), String> {
+        use typed_ir::GlobalInitializer as G;
+        let size = self.types.layout(ty)?.size;
+        match initial {
+            G::Object(writes) => {
+                self.clear(offset, size)?;
+                for write in writes {
+                    let location = typed_ir::initializer_path(self.types, ty, &write.path)?;
+                    let at = u32::try_from(
+                        u64::from(offset)
+                            .checked_add(location.offset)
+                            .ok_or("static initializer offset overflow")?,
+                    )
+                    .map_err(|_| "static initializer offset exceeds image budget")?;
+                    if let Some(bits) = location.bits {
+                        let value = match write.initial {
+                            G::Integer(bits) => bits,
+                            G::Zero => 0,
+                            _ => return Err("bitfield requires integer initializer".into()),
+                        };
+                        let bytes = self.types.layout(bits.storage)?.size as usize;
+                        if bytes > 8 {
+                            return Err("invalid bitfield storage width".into());
+                        }
+                        let mut storage = [0u8; 8];
+                        storage[..bytes]
+                            .copy_from_slice(&self.section.bytes[at as usize..at as usize + bytes]);
+                        let mask = crate::types::mask(bits.width) << bits.shift;
+                        let result =
+                            (u64::from_le_bytes(storage) & !mask) | ((value << bits.shift) & mask);
+                        self.section.bytes[at as usize..at as usize + bytes]
+                            .copy_from_slice(&result.to_le_bytes()[..bytes]);
+                    } else {
+                        self.write(location.ty, &write.initial, at)?;
+                    }
+                }
+            }
+            G::Array(values) => {
+                self.clear(offset, size)?;
+                let Type::Array { element, .. } = self.types.get(self.types.unqualified(ty)?)?
+                else {
+                    return Err("array initializer storage mismatch".into());
+                };
+                let stride = self.types.layout(*element)?.size;
+                for (i, value) in values.iter().enumerate() {
+                    let at = u32::try_from(
+                        u64::from(offset)
+                            + (i as u64)
+                                .checked_mul(stride)
+                                .ok_or("array initializer offset overflow")?,
+                    )
+                    .map_err(|_| "array initializer exceeds image budget")?;
+                    self.write(*element, value, at)?;
+                }
+            }
+            G::Zero => self.clear(offset, size)?,
+            G::Integer(bits) => {
+                self.clear(offset, size)?;
+                let size =
+                    usize::try_from(size).map_err(|_| "integer initializer width overflow")?;
+                if size > 8 {
+                    return Err("integer initializer exceeds scalar storage".into());
+                }
+                self.section.bytes[offset as usize..offset as usize + size]
+                    .copy_from_slice(&bits.to_le_bytes()[..size]);
+            }
+            G::Address { symbol, addend } => {
+                self.clear(offset, size)?;
+                let target = self
+                    .bindings
+                    .globals
+                    .get(symbol)
+                    .map(|g| g.0)
+                    .or_else(|| self.bindings.function_addresses.get(symbol).copied())
+                    .ok_or("unresolved initializer target")?;
+                self.pointers.push(crate::pe::PointerFixup {
+                    section: self.group,
+                    offset,
+                    target,
+                    addend: *addend,
+                });
+            }
+            G::DataAddress { data, addend } => {
+                self.clear(offset, size)?;
+                let target = *self
+                    .bindings
+                    .literals
+                    .get(data)
+                    .ok_or("unresolved initializer literal")?;
+                self.pointers.push(crate::pe::PointerFixup {
+                    section: self.group,
+                    offset,
+                    target,
+                    addend: *addend,
+                });
+            }
+        }
+        Ok(())
+    }
 }
 
 fn initializer_symbols(
@@ -416,6 +495,11 @@ fn initializer_symbols(
     symbols: &mut HashSet<typed_ir::SymbolId>,
 ) {
     match initial {
+        typed_ir::GlobalInitializer::Object(writes) => {
+            for write in writes {
+                initializer_symbols(&write.initial, symbols);
+            }
+        }
         typed_ir::GlobalInitializer::Array(values) => {
             for value in values {
                 initializer_symbols(value, symbols);

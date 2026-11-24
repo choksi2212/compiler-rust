@@ -27,6 +27,7 @@ pub struct FrameRequest {
     pub max_call_arguments: usize,
     pub locals: Vec<(u32, u32)>,
     pub temporaries: usize,
+    pub temporary_layouts: Vec<(u32, u32)>,
     pub initialization_flags: usize,
     pub saved: Vec<Reg>,
 }
@@ -103,10 +104,32 @@ impl FramePlan {
         let temp_count =
             u32::try_from(request.temporaries).map_err(|_| "temporary count overflow")?;
         size = aligned(size, 8)?;
-        let temp_start = size;
-        size = size
-            .checked_add(temp_count.checked_mul(8).ok_or("temporary size overflow")?)
-            .ok_or("frame overflow")?;
+        let mut temporary_offsets = Vec::new();
+        if request.temporary_layouts.is_empty() {
+            let temp_start = size;
+            size = size
+                .checked_add(temp_count.checked_mul(8).ok_or("temporary size overflow")?)
+                .ok_or("frame overflow")?;
+            if size > 1024 * 1024 {
+                return Err("initial frame limit is1MiB".into());
+            }
+            temporary_offsets.extend((0..temp_count).map(|n| temp_start + n * 8));
+        } else {
+            if request.temporary_layouts.len() != request.temporaries {
+                return Err("temporary layout count mismatch".into());
+            }
+            for (bytes, alignment) in &request.temporary_layouts {
+                if *bytes == 0 || !alignment.is_power_of_two() || *alignment > 16 {
+                    return Err("invalid temporary layout".into());
+                }
+                size = aligned(size, *alignment)?;
+                temporary_offsets.push(size);
+                size = size.checked_add(*bytes).ok_or("temporary frame overflow")?;
+                if size > 1024 * 1024 {
+                    return Err("initial frame limit is1MiB".into());
+                }
+            }
+        }
         let flag_count = u32::try_from(request.initialization_flags)
             .map_err(|_| "initialization flag count overflow")?;
         let flag_start = size;
@@ -123,7 +146,6 @@ impl FramePlan {
         if size > 1024 * 1024 {
             return Err("initial frame limit is1MiB".into());
         }
-        let temporary_offsets = (0..temp_count).map(|n| temp_start + n * 8).collect();
         let flag_offsets = (0..flag_count).map(|n| flag_start + n).collect();
         Ok(Self {
             allocation: size,

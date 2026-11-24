@@ -108,6 +108,7 @@ fn writes_initialization_and_volatile_reads_survive_folding() {
         .unwrap();
     let f = &mut m.functions[0];
     f.locals.push(Local {
+        alignment: None,
         symbol: SymbolId(1),
         ty: volatile,
     });

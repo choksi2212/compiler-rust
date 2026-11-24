@@ -15,6 +15,7 @@ pub mod verify;
 pub mod x64;
 
 pub mod abi;
+pub mod aggregate;
 pub mod files;
 pub mod integer;
 pub mod native_allocator;

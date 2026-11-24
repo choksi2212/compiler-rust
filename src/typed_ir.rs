@@ -37,6 +37,7 @@ pub struct Data {
 }
 #[derive(Debug, Clone)]
 pub struct Global {
+    pub alignment: Option<u32>,
     pub symbol: SymbolId,
     pub name: String,
     pub ty: TypeId,
@@ -44,8 +45,19 @@ pub struct Global {
     pub defined: bool,
     pub initial: GlobalInitializer,
 }
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum InitializerStep {
+    Element(u64),
+    Member(usize),
+}
+#[derive(Debug, Clone)]
+pub struct GlobalWrite {
+    pub path: Vec<InitializerStep>,
+    pub initial: GlobalInitializer,
+}
 #[derive(Debug, Clone)]
 pub enum GlobalInitializer {
+    Object(Vec<GlobalWrite>),
     Array(Vec<GlobalInitializer>),
     Zero,
     Integer(u64),
@@ -67,6 +79,7 @@ pub struct Function {
 }
 #[derive(Debug, Clone)]
 pub struct Local {
+    pub alignment: Option<u32>,
     pub symbol: SymbolId,
     pub ty: TypeId,
 }
@@ -96,6 +109,38 @@ pub enum Instruction {
         op: Binary,
         lhs: ValueId,
         rhs: ValueId,
+    },
+    BitfieldRead {
+        dst: ValueId,
+        base: ValueId,
+        path: Vec<usize>,
+        volatile: bool,
+    },
+    BitfieldInitialize {
+        dst: ValueId,
+        base: ValueId,
+        path: Vec<usize>,
+        src: ValueId,
+        volatile: bool,
+    },
+    ZeroObject {
+        address: ValueId,
+    },
+    BitfieldWrite {
+        dst: ValueId,
+        base: ValueId,
+        path: Vec<usize>,
+        src: ValueId,
+        volatile: bool,
+    },
+    AddressValue {
+        dst: ValueId,
+        src: ValueId,
+    },
+    MemberAddress {
+        dst: ValueId,
+        base: ValueId,
+        path: Vec<usize>,
     },
     PointerOffset {
         dst: ValueId,
@@ -128,6 +173,12 @@ pub enum Instruction {
     Load {
         dst: ValueId,
         address: ValueId,
+        align: u32,
+        volatile: bool,
+    },
+    InitializeMemory {
+        address: ValueId,
+        src: ValueId,
         align: u32,
         volatile: bool,
     },
@@ -216,6 +267,11 @@ impl Instruction {
             | Self::Convert { dst, .. }
             | Self::Unary { dst, .. }
             | Self::Binary { dst, .. }
+            | Self::BitfieldRead { dst, .. }
+            | Self::BitfieldWrite { dst, .. }
+            | Self::BitfieldInitialize { dst, .. }
+            | Self::AddressValue { dst, .. }
+            | Self::MemberAddress { dst, .. }
             | Self::PointerOffset { dst, .. }
             | Self::PointerDifference { dst, .. }
             | Self::ReadLocal { dst, .. }
@@ -234,12 +290,15 @@ impl Instruction {
             | Self::WriteLocal { .. }
             | Self::InitializeLocal { .. }
             | Self::Store { .. }
-            | Self::ResetLocal(_) => None,
+            | Self::InitializeMemory { .. }
+            | Self::ResetLocal(_)
+            | Self::ZeroObject { .. } => None,
         }
     }
     pub fn operands(&self) -> Vec<ValueId> {
         match self {
             Self::Convert { src, .. }
+            | Self::AddressValue { src, .. }
             | Self::Unary { src, .. }
             | Self::WriteLocal { src, .. }
             | Self::InitializeLocal { src, .. }
@@ -249,9 +308,17 @@ impl Instruction {
             Self::Binary { lhs, rhs, .. } | Self::PointerDifference { lhs, rhs, .. } => {
                 vec![*lhs, *rhs]
             }
+            Self::BitfieldRead { base, .. } => vec![*base],
+            Self::BitfieldWrite { base, src, .. } | Self::BitfieldInitialize { base, src, .. } => {
+                vec![*base, *src]
+            }
+            Self::ZeroObject { address } => vec![*address],
+            Self::MemberAddress { base, .. } => vec![*base],
             Self::PointerOffset { base, index, .. } => vec![*base, *index],
             Self::Load { address, .. } => vec![*address],
-            Self::Store { address, src, .. } => vec![*address, *src],
+            Self::Store { address, src, .. } | Self::InitializeMemory { address, src, .. } => {
+                vec![*address, *src]
+            }
             Self::DirectCall { arguments, .. } => arguments.clone(),
             Self::Call {
                 callee, arguments, ..
@@ -274,6 +341,26 @@ impl Instruction {
     }
     pub fn effects(&self, function: &Function, types: &TypeContext) -> Result<Effects, String> {
         Ok(match self {
+            Self::BitfieldRead { volatile, .. } => Effects {
+                read: true,
+                observable: *volatile,
+                may_trap: true,
+                ..Default::default()
+            },
+            Self::ZeroObject { .. } => Effects {
+                write: true,
+                observable: true,
+                may_trap: true,
+                ..Default::default()
+            },
+            Self::BitfieldWrite { volatile, .. } | Self::BitfieldInitialize { volatile, .. } => {
+                Effects {
+                    read: true,
+                    write: true,
+                    observable: *volatile,
+                    may_trap: true,
+                }
+            }
             Self::VaStart { .. }
             | Self::VaArg { .. }
             | Self::VaCopy { .. }
@@ -315,7 +402,7 @@ impl Instruction {
                 may_trap: true,
                 ..Default::default()
             },
-            Self::Store { volatile, .. } => Effects {
+            Self::Store { volatile, .. } | Self::InitializeMemory { volatile, .. } => Effects {
                 write: true,
                 observable: *volatile,
                 may_trap: true,
@@ -337,6 +424,8 @@ impl Instruction {
             | Self::DataAddress { .. }
             | Self::GlobalAddress { .. }
             | Self::FunctionAddress { .. }
+            | Self::AddressValue { .. }
+            | Self::MemberAddress { .. }
             | Self::PointerOffset { .. }
             | Self::PointerDifference { .. } => Effects::default(),
         })
@@ -382,7 +471,7 @@ fn scalar(types: &TypeContext, ty: TypeId) -> Result<(), String> {
     require(
         matches!(
             types.get(types.unqualified(ty)?)?,
-            Type::Integer(_) | Type::Pointer(_)
+            Type::Integer(_) | Type::Enum(_) | Type::Pointer(_)
         ),
         "scalar type required",
     )
@@ -420,19 +509,122 @@ fn memory(
         "volatile access lost its effect",
     )?;
     require(
-        !store || !qualifiers.constant,
+        !store || !types.contains_const(base)?,
         "store through const-qualified pointer",
     )
 }
 
+#[derive(Debug, Clone)]
+pub struct InitializerLocation {
+    pub ty: TypeId,
+    pub offset: u64,
+    pub bits: Option<crate::aggregate::BitField>,
+}
+pub fn initializer_path(
+    types: &TypeContext,
+    root: TypeId,
+    path: &[InitializerStep],
+) -> Result<InitializerLocation, String> {
+    if path.len() > 128 {
+        return Err("initializer path depth limit exceeded".into());
+    }
+    let mut ty = root;
+    let mut offset = 0u64;
+    let mut bits = None;
+    for (at, step) in path.iter().enumerate() {
+        match step {
+            InitializerStep::Element(index) => {
+                let Type::Array {
+                    element,
+                    length: Some(n),
+                } = types.get(types.unqualified(ty)?)?
+                else {
+                    return Err("initializer element requires complete array".into());
+                };
+                if index >= n {
+                    return Err("initializer element exceeds bound".into());
+                }
+                offset = offset
+                    .checked_add(
+                        index
+                            .checked_mul(types.layout(*element)?.size)
+                            .ok_or("initializer offset overflow")?,
+                    )
+                    .ok_or("initializer offset overflow")?;
+                ty = *element;
+            }
+            InitializerStep::Member(index) => {
+                let field = types
+                    .record_type(ty)?
+                    .fields
+                    .as_ref()
+                    .ok_or("initializer member of incomplete record")?
+                    .get(*index)
+                    .ok_or("invalid initializer member identity")?;
+                if field.bits.is_some() && at + 1 != path.len() {
+                    return Err("initializer descends within bitfield".into());
+                }
+                if field.bits.is_some_and(|b| b.width == 0) {
+                    return Err("zero width field cannot be initialized".into());
+                }
+                offset = offset
+                    .checked_add(field.offset)
+                    .ok_or("initializer offset overflow")?;
+                ty = field.ty;
+                bits = field.bits;
+            }
+        }
+    }
+    types.layout(ty)?;
+    Ok(InitializerLocation { ty, offset, bits })
+}
 fn verify_initial(
     module: &Module,
     storage: TypeId,
     initial: &GlobalInitializer,
 ) -> Result<(), String> {
+    verify_initial_depth(module, storage, initial, 0)
+}
+fn verify_initial_depth(
+    module: &Module,
+    storage: TypeId,
+    initial: &GlobalInitializer,
+    depth: usize,
+) -> Result<(), String> {
+    if depth >= 128 {
+        return Err("initializer nesting limit exceeded".into());
+    }
     let types = &module.types;
     let ty = types.unqualified(storage)?;
     match initial {
+        GlobalInitializer::Object(writes) => {
+            require(
+                matches!(types.get(ty)?, Type::Array { .. } | Type::Record(_)),
+                "object initializer requires aggregate or array storage",
+            )?;
+            require(writes.len() <= 65535, "initializer write budget exceeded")?;
+            let size = types.layout(ty)?.size;
+            for write in writes {
+                let location = initializer_path(types, ty, &write.path)?;
+                require(
+                    location
+                        .offset
+                        .checked_add(types.layout(location.ty)?.size)
+                        .is_some_and(|end| end <= size),
+                    "initializer write exceeds object",
+                )?;
+                if location.bits.is_some() {
+                    require(
+                        matches!(
+                            write.initial,
+                            GlobalInitializer::Integer(_) | GlobalInitializer::Zero
+                        ),
+                        "bitfield initializer must be integer constant",
+                    )?;
+                }
+                verify_initial_depth(module, location.ty, &write.initial, depth + 1)?;
+            }
+        }
         GlobalInitializer::Array(values) => {
             let Type::Array {
                 element,
@@ -446,7 +638,7 @@ fn verify_initial(
                 "array initializer extent mismatch",
             )?;
             for value in values {
-                verify_initial(module, *element, value)?;
+                verify_initial_depth(module, *element, value, depth + 1)?;
             }
         }
         GlobalInitializer::Zero => {
@@ -493,6 +685,21 @@ fn verify_initial(
     }
     Ok(())
 }
+fn verify_alignment(types: &TypeContext, ty: TypeId, alignment: Option<u32>) -> Result<(), String> {
+    if let Some(alignment) = alignment {
+        fn natural(types: &TypeContext, ty: TypeId) -> Result<u32, String> {
+            match types.get(types.unqualified(ty)?)? {
+                Type::Array { element, .. } => natural(types, *element),
+                _ => Ok(types.layout(ty)?.align),
+            }
+        }
+        require(
+            alignment.is_power_of_two() && alignment <= 16 && alignment >= natural(types, ty)?,
+            "invalid object alignment metadata",
+        )?;
+    }
+    Ok(())
+}
 pub fn verify(module: &Module) -> Result<(), String> {
     let types = &module.types;
     let mut symbols = HashSet::new();
@@ -502,6 +709,7 @@ pub fn verify(module: &Module) -> Result<(), String> {
         "module identity budget exceeded",
     )?;
     for global in &module.globals {
+        verify_alignment(types, global.ty, global.alignment)?;
         require(symbols.insert(global.symbol), "duplicate symbol identity")?;
         if global.defined {
             types.layout(global.ty)?;
@@ -544,6 +752,7 @@ pub fn verify(module: &Module) -> Result<(), String> {
         require(functions.insert(function.id), "duplicate function identity")?;
         require(symbols.insert(function.symbol), "duplicate symbol identity")?;
         for local in &function.locals {
+            verify_alignment(types, local.ty, local.alignment)?;
             require(symbols.insert(local.symbol), "duplicate symbol identity")?;
             types.layout(local.ty)?;
         }
@@ -587,7 +796,11 @@ fn verify_function(module: &Module, f: &Function) -> Result<(), String> {
         )?;
     }
     for ty in &f.values {
-        scalar(types, *ty)?;
+        if types.aggregate_value(*ty)? {
+            types.layout(*ty)?;
+        } else {
+            scalar(types, *ty)?;
+        }
         require(
             types.unqualified(*ty)? == *ty,
             "value type retains an lvalue qualifier",
@@ -659,6 +872,12 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
             }
         }
         Instruction::Convert { dst, src } => {
+            if t.aggregate_value(f.value(*dst)?)? {
+                return require(
+                    f.value(*dst)? == f.value(*src)?,
+                    "incompatible aggregate copy conversion",
+                );
+            }
             scalar(t, f.value(*src)?)?;
             scalar(t, f.value(*dst)?)
         }
@@ -676,6 +895,68 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
             require(
                 f.value(*dst)? == if *op == Unary::Not { int } else { source },
                 "unary result type mismatch",
+            )
+        }
+        Instruction::BitfieldRead {
+            dst,
+            base,
+            path,
+            volatile,
+        }
+        | Instruction::BitfieldWrite {
+            dst,
+            base,
+            path,
+            volatile,
+            ..
+        }
+        | Instruction::BitfieldInitialize {
+            dst,
+            base,
+            path,
+            volatile,
+            ..
+        } => {
+            let object = pointer_target(t, f.value(*base)?)?;
+            let member = t.member_path(object, path)?;
+            let bits = member
+                .bits
+                .ok_or("bitfield instruction names ordinary member")?;
+            require(bits.width > 0, "zero-width bitfield is not a value")?;
+            let ty = t.clone().member_type(object, path)?;
+            let q = t.qualifiers(ty)?;
+            require(
+                f.value(*dst)? == t.unqualified(ty)? && (!q.volatile || *volatile),
+                "bitfield value type or effect mismatch",
+            )?;
+            if let Instruction::BitfieldWrite { src, .. }
+            | Instruction::BitfieldInitialize { src, .. } = i
+            {
+                require(
+                    (!q.constant || matches!(i, Instruction::BitfieldInitialize { .. }))
+                        && f.value(*src)? == f.value(*dst)?,
+                    "invalid bitfield write type or constness",
+                )?;
+            }
+            Ok(())
+        }
+        Instruction::ZeroObject { address } => {
+            let ty = pointer_target(t, f.value(*address)?)?;
+            t.layout(ty).map(|_| ())
+        }
+        Instruction::AddressValue { dst, src } => require(
+            t.aggregate_value(f.value(*src)?)?
+                && pointer_target(t, f.value(*dst)?)? == f.value(*src)?,
+            "invalid aggregate value address",
+        ),
+        Instruction::MemberAddress { dst, base, path } => {
+            let object = pointer_target(t, f.value(*base)?)?;
+            let member = t.member_path(object, path)?;
+            require(member.bits.is_none(), "cannot form a bitfield address")?;
+            let field = t.clone().member_type(object, path)?;
+            require(
+                pointer_target(t, f.value(*dst)?)? == field,
+                "member pointer type mismatch",
             )
         }
         Instruction::PointerOffset {
@@ -737,7 +1018,7 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
         ),
         Instruction::WriteLocal { local, src } => {
             require(
-                !t.qualifiers(f.local(*local)?.ty)?.constant,
+                !t.contains_const(f.local(*local)?.ty)?,
                 "modification of a const-qualified local",
             )?;
             require(
@@ -770,6 +1051,19 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
             *volatile,
             false,
         ),
+        Instruction::InitializeMemory {
+            address,
+            src,
+            align,
+            volatile,
+        } => memory(
+            t,
+            f.value(*address)?,
+            f.value(*src)?,
+            *align,
+            *volatile,
+            false,
+        ),
         Instruction::Store {
             address,
             src,
@@ -796,9 +1090,13 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
         Instruction::VaArg { dst, list } => {
             check_va_object(module, f, *list, true)?;
             let ty = f.value(*dst)?;
-            scalar(t, ty)?;
+            if t.aggregate_value(ty)? {
+                t.layout(ty)?;
+            } else {
+                scalar(t, ty)?;
+            }
             require(
-                matches!(t.get(ty)?, Type::Pointer(_)) || t.promoted(ty)? == ty,
+                matches!(t.get(ty)?, Type::Pointer(_) | Type::Record(_)) || t.promoted(ty)? == ty,
                 "va_arg result lacks default promotion",
             )
         }
@@ -828,7 +1126,7 @@ fn check_instruction(module: &Module, f: &Function, i: &Instruction) -> Result<(
                 .find(|g| g.symbol == *symbol)
                 .ok_or("undefined global symbol")?;
             require(
-                !t.qualifiers(global.ty)?.constant,
+                !t.contains_const(global.ty)?,
                 "modification of const global",
             )?;
             require(
@@ -979,7 +1277,7 @@ fn check_arguments(
     for argument in &arguments[parameters.len()..] {
         let ty = f.value(*argument)?;
         require(
-            matches!(t.get(ty)?, Type::Pointer(_)) || t.promoted(ty)? == ty,
+            matches!(t.get(ty)?, Type::Pointer(_) | Type::Record(_)) || t.promoted(ty)? == ty,
             "variadic argument lacks default promotion",
         )?;
     }

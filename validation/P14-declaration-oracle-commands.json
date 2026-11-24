@@ -1,0 +1,1454 @@
+[
+  {
+    "command": [
+      "gcc",
+      "-dumpmachine"
+    ],
+    "exit": 0,
+    "stdout": "x86_64-w64-mingw32\n",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--manifest-path",
+      "N:\\compiler-proj\\Cargo.toml",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "   Compiling compiler v0.2.0 (N:\\compiler-proj)\n    Finished `release` profile [optimized] target(s) in 5.45s\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-control-effect-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-effect-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault.c: In function 'main':\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault.c:1:50: warning: division by zero [-Wdiv-by-zero]\n    1 | int main(void){return _Generic(1,int:42,default:1/0);}\n      |                                                  ^\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-unselected-fault-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-lvalue-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-const-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-char-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-array-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-function-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-dead-control-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assertions-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-objects-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\aligned-members-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-position-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-type-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-zero-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-O0",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest.c",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest-gcc.exe"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest-gcc.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest.c",
+      "--std=c11",
+      "-O0",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest-O0.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest-O0.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest.c",
+      "--std=c11",
+      "-O1",
+      "-o",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest-O1.exe",
+      "--overwrite"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-strongest-O1.exe"
+    ],
+    "exit": 42,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-false.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-false.c:1:1: error: static assertion failed: \"failure\"\n    1 | _Static_assert(0,\"failure\");int main(void){return 0;}\n      | ^~~~~~~~~~~~~~\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-false.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-false.c:1:1: static assertion failed: failure\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-nonconstant.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-nonconstant.c:1:22: error: expression in static assertion is not constant\n    1 | int n;_Static_assert(n,\"not constant\");int main(void){return 0;}\n      |                      ^\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-nonconstant.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\assert-nonconstant.c:1:22: integer constant expression required\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c: In function 'main':\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c:1:54: error: '_Generic' specifies two compatible types\n    1 | typedef int T;int main(void){return _Generic(0,int:1,T:2);}\n      |                                                      ^\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c:1:48: note: compatible type is here\n    1 | typedef int T;int main(void){return _Generic(0,int:1,T:2);}\n      |                                                ^~~\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c:1:54: error: '_Generic' selector matches multiple associations\n    1 | typedef int T;int main(void){return _Generic(0,int:1,T:2);}\n      |                                                      ^\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c:1:48: note: other match is here\n    1 | typedef int T;int main(void){return _Generic(0,int:1,T:2);}\n      |                                                ^~~\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-duplicate.c:1:54: duplicate compatible generic association type\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-two-defaults.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-two-defaults.c: In function 'main':\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-two-defaults.c:1:44: error: duplicate 'default' case in '_Generic'\n    1 | int main(void){return _Generic(0,default:1,default:2);}\n      |                                            ^~~~~~~\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-two-defaults.c:1:34: note: original 'default' is here\n    1 | int main(void){return _Generic(0,default:1,default:2);}\n      |                                  ^~~~~~~\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-two-defaults.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-two-defaults.c:1:44: duplicate generic default association\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-no-match.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-no-match.c: In function 'main':\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-no-match.c:1:32: error: '_Generic' selector of type 'int' is not compatible with any association\n    1 | int main(void){return _Generic(0,char:1);}\n      |                                ^\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-no-match.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-no-match.c:1:23: generic selection has no compatible association\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-invalid-dead-arm.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-invalid-dead-arm.c: In function 'main':\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-invalid-dead-arm.c:1:49: error: 'missing' undeclared (first use in this function)\n    1 | int main(void){return _Generic(0,int:42,default:missing);}\n      |                                                 ^~~~~~~\nN:\\compiler-proj\\target\\P14-declaration-oracle\\generic-invalid-dead-arm.c:1:49: note: each undeclared identifier is reported only once for each function it appears in\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-invalid-dead-arm.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\generic-invalid-dead-arm.c:1:49: undeclared identifier\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\weak-pointer-alignment.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\weak-pointer-alignment.c: In function 'main':\nN:\\compiler-proj\\target\\P14-declaration-oracle\\weak-pointer-alignment.c:1:32: error: '_Alignas' specifiers cannot reduce alignment of 'p'\n    1 | int main(void){_Alignas(4) int*p;return 0;}\n      |                                ^\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\weak-pointer-alignment.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\weak-pointer-alignment.c:1:32: alignment specifier weakens natural object alignment\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-register-alignment.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-register-alignment.c: In function 'main':\nN:\\compiler-proj\\target\\P14-declaration-oracle\\zero-register-alignment.c:1:41: error: alignment specified for 'register' object 'x'\n    1 | int main(void){_Alignas(0) register int x;return 0;}\n      |                                         ^\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-register-alignment.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-register-alignment.c:1:41: alignment specifier requires a non-register object declaration\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-function-alignment.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-function-alignment.c:1:17: error: alignment specified for function 'f'\n    1 | _Alignas(0) int f(void){return 0;}int main(void){return f();}\n      |                 ^\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-function-alignment.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-function-alignment.c:1:17: alignment specifier requires a non-register object declaration\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-bitfield-alignment.c"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-bitfield-alignment.c:1:26: error: alignment specified for bit-field 'x'\n    1 | struct S{_Alignas(0) int x:3;};int main(void){return 0;}\n      |                          ^\n",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-bitfield-alignment.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\zero-bitfield-alignment.c:1:10: alignment specifier on bitfield\n",
+    "empty_path": true
+  },
+  {
+    "command": [
+      "gcc",
+      "-std=c11",
+      "-pedantic-errors",
+      "-fsyntax-only",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-policy-difference.c"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "",
+    "empty_path": false
+  },
+  {
+    "command": [
+      "N:\\compiler-proj\\target\\release\\compiler.exe",
+      "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-policy-difference.c",
+      "--std=c11",
+      "-fsyntax-only"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "N:\\compiler-proj\\target\\P14-declaration-oracle\\alignment-policy-difference.c:1:18: conflicting object alignment redeclaration\n",
+    "empty_path": true
+  }
+]

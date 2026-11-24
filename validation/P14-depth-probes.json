@@ -1,0 +1,50 @@
+[
+  {
+    "case": "records",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\records.c:1:577: record nesting limit exceeded\n",
+    "source_sha256": "c11e537eb05f8e95d04c168226dd0689cfa713476a6530e8e66d3ba3c07469b6"
+  },
+  {
+    "case": "generic",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\generic.c:1:586: expression nesting limit exceeded\n",
+    "source_sha256": "d810048af26ab1ede4a7903286f2a7d6bbc3f921a97354cb45195ff25d788062"
+  },
+  {
+    "case": "generic-unary",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\generic-unary.c:1:338: expression nesting limit exceeded\n",
+    "source_sha256": "13a72603f20cb4ca4005fc3d958eff77a7df0207bc6ec6feec98482574a0cd15"
+  },
+  {
+    "case": "generic-parens",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\generic-parens.c:1:338: expression nesting limit exceeded\n",
+    "source_sha256": "cc3c6b6b6fe9988550d91c77ea11c56b11a64c7ea874d1421e064f1715a6c3f6"
+  },
+  {
+    "case": "alignment",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\alignment.c:1:577: alignment nesting limit exceeded\n",
+    "source_sha256": "d86c3d7f26a79557992acee2437d5b8bc28148e4470b5963bf5c2cb79573f7d5"
+  },
+  {
+    "case": "compound",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\compound.c:1:145: expression nesting limit exceeded\n",
+    "source_sha256": "17fa1ad456bb4ffb819db3f849998f981e23c0893778bc009b186a28951276a7"
+  },
+  {
+    "case": "designator",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\designator.c:1:10: initializer designator nesting limit exceeded\n",
+    "source_sha256": "507c20bb88c8a7bcaa1ea5b3207d87577916fab611fdd0adbb8f8f07e98134ae"
+  },
+  {
+    "case": "bad-member",
+    "exit": 1,
+    "stderr": "N:\\compiler-proj\\target\\P14-depth\\bad-member.c:1:49: record has no member missing\n",
+    "source_sha256": "61674a9443e2fe8fdee2f50bf05aadf0842f7d2fcf63ee1e2ecdea956bed5b80"
+  }
+]

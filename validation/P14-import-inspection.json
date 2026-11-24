@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "images": [
+    {
+      "demo": "student_records",
+      "imported_dlls": [
+        "kernel32.dll"
+      ],
+      "image_sha256": "5af149ed08dbc515c0e371be7dd48571283462a0046215eb0fe593a9df52e183"
+    },
+    {
+      "demo": "linked_list",
+      "imported_dlls": [
+        "kernel32.dll"
+      ],
+      "image_sha256": "85b90eb65f50fe489395b90e9351c2dcc34114da2180c1bf4b33571df5e961a7"
+    }
+  ]
+}

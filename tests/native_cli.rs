@@ -423,3 +423,29 @@ fn nested_expression_tails_report_limits_instead_of_overflowing_the_stack() {
         assert!(!w.0.join("out.exe").exists());
     }
 }
+
+#[test]
+fn nested_generic_controls_fail_cleanly_on_the_actual_cli_stack() {
+    let w = Workspace::new();
+    let expression = format!(
+        "{}0{}",
+        "_Generic(".repeat(1000),
+        ",int:42,default:0)".repeat(1000)
+    );
+    fs::write(
+        w.0.join("generic.c"),
+        format!("int main(){{return {expression};}}"),
+    )
+    .unwrap();
+    for flags in [
+        vec!["--std=c11", "-fsyntax-only"],
+        vec!["--std=c11", "-o", "generic.exe"],
+    ] {
+        let mut args = vec!["generic.c"];
+        args.extend(flags);
+        let out = w.cli(&args);
+        code(&out, 1);
+        assert!(String::from_utf8_lossy(&out.stderr).contains("nesting limit"));
+        assert!(!w.0.join("generic.exe").exists());
+    }
+}

@@ -22,6 +22,7 @@ fn frame_layout_and_unwind_fixtures() {
                     max_call_arguments: arguments,
                     locals: vec![(local, 8), (16, 16)],
                     temporaries: 4,
+                    temporary_layouts: vec![],
                     initialization_flags: 7,
                     saved: all[..saved].iter().map(|n| Reg::new(*n).unwrap()).collect(),
                 };
@@ -477,4 +478,33 @@ fn unwind_allocation_encoding_boundaries() {
             );
         }
     }
+}
+
+#[test]
+fn typed_temporary_homes_reserve_real_aligned_object_extents() {
+    let frame = FramePlan::new(&FrameRequest {
+        has_calls: true,
+        temporaries: 4,
+        temporary_layouts: vec![(8, 8), (24, 16), (3, 1), (8, 8)],
+        ..Default::default()
+    })
+    .unwrap();
+    assert_eq!(frame.temporary_offsets(), &[32, 48, 72, 80]);
+    assert!(frame.allocation() >= 88);
+    assert!(
+        FramePlan::new(&FrameRequest {
+            temporaries: 2,
+            temporary_layouts: vec![(8, 8)],
+            ..Default::default()
+        })
+        .is_err()
+    );
+    assert!(
+        FramePlan::new(&FrameRequest {
+            temporaries: 1,
+            temporary_layouts: vec![(1, 32)],
+            ..Default::default()
+        })
+        .is_err()
+    );
 }

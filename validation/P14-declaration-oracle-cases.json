@@ -1,0 +1,402 @@
+[
+  {
+    "case": "generic-control-effect",
+    "source": "int main(void){int count=0;int n=_Generic(count++,int:42,default:0);return count==0?n:0;}",
+    "source_sha256": "c4e95dd3cee3e74d7daefcf697698591f64fc91d4fa426ee5d58d0bf592c8306",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "3a86dbc7bbddc72b5d23875bdb9f2c0b3719a63975ebb409339606053107f58f",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "b117df31d0f2bc8fdd8690d61f6abe3ca8e0453f6c09d5637b18d83eb9f72c09"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "20ff150c355654a323dbe70ad007a303f6c435c0f1caeac3c6888a77c6a1e4f4"
+      }
+    ]
+  },
+  {
+    "case": "generic-unselected-effect",
+    "source": "int main(void){int count=0;int n=_Generic(1,int:42,default:count++);return count==0?n:0;}",
+    "source_sha256": "8d5284e2383e7c38d122971d7d0a96213f1ca5a41a68bef3bf5e8abcb74d28fd",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "ab137d53721c2e37b202f2d33bd007f9ff7dcdecceeb3ff1047c77e88be91e94",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "b117df31d0f2bc8fdd8690d61f6abe3ca8e0453f6c09d5637b18d83eb9f72c09"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "20ff150c355654a323dbe70ad007a303f6c435c0f1caeac3c6888a77c6a1e4f4"
+      }
+    ]
+  },
+  {
+    "case": "generic-unselected-fault",
+    "source": "int main(void){return _Generic(1,int:42,default:1/0);}",
+    "source_sha256": "d683abd2f5f066187a9f26760624b099d230f21980c2575e9e47d29ab0f3f0ee",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "8ec008947581189cd4c5a24c2d677d7530715d113331477e209766e4a74c3f1e",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "8671c6ae05468c6b39a7f93f8941783239fbec1b735242145d0c7e9d77d06a8e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "8671c6ae05468c6b39a7f93f8941783239fbec1b735242145d0c7e9d77d06a8e"
+      }
+    ]
+  },
+  {
+    "case": "generic-lvalue",
+    "source": "int main(void){int x=1,y=2;_Generic(0,int:x,default:y)=42;return x;}",
+    "source_sha256": "3ed4b90d9617a80cfe53696363693848ac90cfea6cef02a42ef98a0d0926b219",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "b42acb0ebbb993f20ca52917372354ce30edb6b0144d735ff5d4bed707bfffb7",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "c81c26d8ed85ce761a03e5f45fcb887fce9ca478fd9ed3eaa7825d387076f6c1"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "c81c26d8ed85ce761a03e5f45fcb887fce9ca478fd9ed3eaa7825d387076f6c1"
+      }
+    ]
+  },
+  {
+    "case": "generic-const",
+    "source": "int main(void){const int x=7;return _Generic(x,int:42,const int:1,default:0);}",
+    "source_sha256": "3756072b7520ba9df8493e3d9bd6d71ca2563ccf56c2fca2fce6796e4e56b1de",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "62e52ae867633aca2f4e19457be89a351495b1fa4c1aa7792e271d2a49b331e6",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "d45ef8246593e5fc145e94560768a86dc9ae7539764ac78e617c5bb60c6e4ac2"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "d45ef8246593e5fc145e94560768a86dc9ae7539764ac78e617c5bb60c6e4ac2"
+      }
+    ]
+  },
+  {
+    "case": "generic-char",
+    "source": "int main(void){unsigned char x=1;return _Generic(x,unsigned char:42,int:0,default:1);}",
+    "source_sha256": "24887d6470674d150329c808e1109d11c3d9e1642ce6db855f0a28ed86906a7b",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "7b175937e458b1124d2b1077e9c54879f1a0c7e48b56166e610500afd75c10aa",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "a4dce6660243d34fc8b15ca55f3340aa08d9a2e973d2c042cfa99de5e8aba8d8"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "aebfe43b5113eef6da07a260308c226e3a0ace823202c965e00c2eed1c10d2ce"
+      }
+    ]
+  },
+  {
+    "case": "generic-array",
+    "source": "int main(void){int a[3];return _Generic(a,int*:42,int[3]:1,default:0);}",
+    "source_sha256": "7caabe36a4d5aff26191cbdb78bd7fc3b02154144724d514b3a508496a77df77",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "e84c177c2ff047b9077c2c3f9415e59ad2088ec27b6ef06e286f570bbd973fb1",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "4a79eb1c2ca3894c489c6444599990ef9f67c0e4ba19850e10e098c73b5aeab5"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "4a79eb1c2ca3894c489c6444599990ef9f67c0e4ba19850e10e098c73b5aeab5"
+      }
+    ]
+  },
+  {
+    "case": "generic-function",
+    "source": "int f(int n){return n;}int main(void){return _Generic(f,int(*)(int):42,default:0);}",
+    "source_sha256": "4e08d59a10169e94e33ac1286f2dc202a14b46e98c815a6e5f8fe7b9a2173460",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "6262b91dae08452f1b754471788cbbb5a49c96bc5fdc8cf63c79aba47445a7da",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "602c27035a598a2fbefd6afca86ad414bef01905334806749bcf03a24be5e48c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "602c27035a598a2fbefd6afca86ad414bef01905334806749bcf03a24be5e48c"
+      }
+    ]
+  },
+  {
+    "case": "generic-dead-control",
+    "source": "int f(void);int main(void){return _Generic(f(),int:42,default:0);}",
+    "source_sha256": "b5cb2b6c9fb2afee02739af649632b9d8912c92b05313be9ace4b34ee5f8a2a5",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "4aff98fcda8be8bca7d01353354528913ac748b739a533e060d8cde8187ed2ed",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "8671c6ae05468c6b39a7f93f8941783239fbec1b735242145d0c7e9d77d06a8e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "8671c6ae05468c6b39a7f93f8941783239fbec1b735242145d0c7e9d77d06a8e"
+      }
+    ]
+  },
+  {
+    "case": "assertions",
+    "source": "_Static_assert(sizeof(long)==4,\"LLP64\");struct S{_Static_assert(sizeof(int)==4,\"width\");int x;};int main(void){_Static_assert(sizeof(struct S)==4,\"record\");return 42;}",
+    "source_sha256": "9ecdfdc791172cc5e6aad27bc7117c7554a986228ce14aba3d40ccd8082c217a",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "dcd6b1090faf1a7098b2ead4ee4b06fe97342504d0f91482019709133c6b02f6",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "8671c6ae05468c6b39a7f93f8941783239fbec1b735242145d0c7e9d77d06a8e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "8671c6ae05468c6b39a7f93f8941783239fbec1b735242145d0c7e9d77d06a8e"
+      }
+    ]
+  },
+  {
+    "case": "aligned-objects",
+    "source": "char leading;_Alignas(16) int g;int main(void){char first=1;_Alignas(16) int x=41;return ((unsigned long long)&g%16)==0&&((unsigned long long)&x%16)==0?first+x:0;}",
+    "source_sha256": "64deb8cc3d9086f3599bdf94a0d5eacdf3c777011323d093f82b8cbc2cca582f",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "3fa548d3682ceda52bad0b928b50a8c3556c1a4c04484a21748f564649e1ea01",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "9d1405f00eab5446ae30bd1dbcc5b633a4988c1df411b657df5fd7234ad422d6"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "7785a98dfb1912f071029119b5c3895034b19140b36def66ef1776630d0fc08a"
+      }
+    ]
+  },
+  {
+    "case": "aligned-members",
+    "source": "struct S{char first;_Alignas(16) int x;char last;};int main(void){struct S s;s.x=42;return sizeof(struct S)==32&&_Alignof(struct S)==16&&((unsigned long long)&s.x%16)==0?s.x:0;}",
+    "source_sha256": "bb9e29825508fb73604064489c88b0cfecb054c1a285f09f99b1425a16429a98",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "f5124490611276fa2d9e37394b70b8fb46ce5c3a6bd49b44275de5dfa46c179b",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "79eb71cfb764930fe4e4086d23a1c24f74e32a7746c2d1a31e3fdd19a45defe9"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "e96fbb23fc237e6f3a810119756072fad8be7c81172240cd26ea99fa89a51984"
+      }
+    ]
+  },
+  {
+    "case": "alignment-position",
+    "source": "int main(void){char first=1;int _Alignas(16) x=41;return ((unsigned long long)&x%16)==0?first+x:0;}",
+    "source_sha256": "cf45c8cbced0c04160b1ec727fa0163b5602991aa9aa22f0af8ada7e826eefe8",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "0bcd95476ea20156970603b998e8e9663cd57e21ff52fee9874901babb48ac2f",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "7d3aa175aeb8a233c24cc3a44257bb1bb64d89a946912300ffc9312068581f5c"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "54bd85470b4bd3d31ea484c46918f900976d00b35512723a898659b6ba7e8faa"
+      }
+    ]
+  },
+  {
+    "case": "alignment-type",
+    "source": "int main(void){_Alignas(long long) char bytes[8];return ((unsigned long long)bytes%8)==0?42:0;}",
+    "source_sha256": "bbd4b151a744dcabaa6aa3e4f1105bd317ed2bf202ca155a1b7c56c5917c926a",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "79c56ccf45c051c8167785f6eda51a5bdf64ac9e5f3a649429d380755573e4ac",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "1ad59a19c9fc4b0258884d8fc168b7e3d2c7f9bbd7f6d578bbddd186882091ab"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "e09642b4c28f931961c37b528122e5692478e7620aa0e0dcc90f962ad057ef80"
+      }
+    ]
+  },
+  {
+    "case": "alignment-zero",
+    "source": "int main(void){_Alignas(0) int x=42;return x;}",
+    "source_sha256": "81d5c844e2a468afdd29d7920285efd185c72f6548f613ffe8e77f7ba36e6a4b",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "6a26670b13dba9238d97927d014f89684289d17aa32b779806bc6739c4c627da",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "4a2df5ff1ca880e2c0627f7ebee2505fc7741f0110c41b3d0e4b1f54ec286e34"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "4a2df5ff1ca880e2c0627f7ebee2505fc7741f0110c41b3d0e4b1f54ec286e34"
+      }
+    ]
+  },
+  {
+    "case": "alignment-strongest",
+    "source": "int main(void){_Alignas(8) _Alignas(16) int x=42;return ((unsigned long long)&x%16)==0?x:0;}",
+    "source_sha256": "4d1543782f7ae990e64cef3256003b9a92f183771267a7d9e574b83c6cb5f0e9",
+    "valid": true,
+    "expected_exit": 42,
+    "reference_sha256": "8973218d6740c79b988630c51f618f7e36a05f3c09e7bab2bb40285bbb43cab8",
+    "modes": [
+      {
+        "optimization": "-O0",
+        "exit": 42,
+        "image_sha256": "351dae08f003b31c41f97d76120b3508e9e1df9d04d341d81f31b23d27dedf8e"
+      },
+      {
+        "optimization": "-O1",
+        "exit": 42,
+        "image_sha256": "83ad40635f2fd863266e13919c87fe4cb6817b897b1125977f7b2e1d1fc261bd"
+      }
+    ]
+  },
+  {
+    "case": "assert-false",
+    "source": "_Static_assert(0,\"failure\");int main(void){return 0;}",
+    "source_sha256": "00feea6998e1a3a2d64adb4db9465118021cb9336f28662000642142d9a6b7f6",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "assert-nonconstant",
+    "source": "int n;_Static_assert(n,\"not constant\");int main(void){return 0;}",
+    "source_sha256": "843af29bf6b33ae11925a7197d87ed28877571a58f324fc85b48433cdb1830fd",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "generic-duplicate",
+    "source": "typedef int T;int main(void){return _Generic(0,int:1,T:2);}",
+    "source_sha256": "c5b7544bc3ba529f1a16611608641ed40dcb052c30d2a54c2c9cddd925628b1a",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "generic-two-defaults",
+    "source": "int main(void){return _Generic(0,default:1,default:2);}",
+    "source_sha256": "b4b6a6914fa05214052c3189ba5f19c7f656391f88e031bf9b35dca6ec47ae95",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "generic-no-match",
+    "source": "int main(void){return _Generic(0,char:1);}",
+    "source_sha256": "4ccdc7ba5755aff71b4247b5a3e24797bdac9abf7d4ed5c7444acd340f579221",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "generic-invalid-dead-arm",
+    "source": "int main(void){return _Generic(0,int:42,default:missing);}",
+    "source_sha256": "bd70f0942210b24edc475caead54ff6c98a7ab65ff93dbbc7f24cbe7bae5c0d4",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "weak-pointer-alignment",
+    "source": "int main(void){_Alignas(4) int*p;return 0;}",
+    "source_sha256": "28e0887428c00d36bc8db003306f9a278811fbb675115477e20edc515febde52",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "zero-register-alignment",
+    "source": "int main(void){_Alignas(0) register int x;return 0;}",
+    "source_sha256": "b60f9772b8b3c47dd85f182b746ae494278d9dd242bfa86d8dbf3c4291386edd",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "zero-function-alignment",
+    "source": "_Alignas(0) int f(void){return 0;}int main(void){return f();}",
+    "source_sha256": "3a98ee21dfe018e871f056bae2cdd3ccadbdf7910e2552808623736794f06723",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  },
+  {
+    "case": "zero-bitfield-alignment",
+    "source": "struct S{_Alignas(0) int x:3;};int main(void){return 0;}",
+    "source_sha256": "cf395dd940ab06e71fd757f41ebbc95b9b0e1fdbc907d59e7ceb223c202b144a",
+    "valid": false,
+    "gcc_exit": 1,
+    "native_exit": 1
+  }
+]

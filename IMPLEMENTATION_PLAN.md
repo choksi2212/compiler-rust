@@ -2,7 +2,7 @@
 
 **Canonical file:** `IMPLEMENTATION_PLAN.md`
 **Repository:** [compiler-rust](https://github.com/choksi2212/compiler-rust)
-**Revision:** 4.0, continuous phase execution; P01-P13 passed, P14 eligible
+**Revision:** 4.1, P01-P14 passed; stopped at the user-requested P14 boundary
 **Date:** 2026-11-24 (Asia/Calcutta)
 **Implementation language:** Rust
 **Proposed language/platform target:** hosted ISO C11, Windows x64
@@ -12,6 +12,8 @@
 This is the project's single source of truth. It combines the PRD, technical requirements, architecture, execution flows, implementation sequence, validation strategy, and change control. The README is a usage guide and must derive scope claims from this document. Git history preserves earlier plans; no parallel roadmap or competing specification should be introduced.
 
 **Execution authorization:** after revision 3.0, the user explicitly instructed us to start P00 and impose aggressive, evidence-based phase gates. This authorizes P00 baseline work against the phased specification; it does not turn future features into implemented capabilities or make a commit itself sufficient authorization to skip gates. A change to the agreed architecture, dependency policy, target, or scope requires asking the user first, then updating this file before coding.
+
+**Current stopping boundary (2026-11-24):** the user subsequently instructed us to complete through P14 and then stop. Finish P14 implementation and its complete aggressive evidence gate; do not start P15 or any later phase until the user explicitly authorizes continuation. This newer instruction supersedes earlier continuous-execution authorization beyond P14. The user also authorized multiple sub-agents for the remaining P14 work; shared-file ownership and the single phase gate remain mandatory.
 
 ## Contents
 
@@ -642,7 +644,7 @@ This section is the controlling implementation sequence for phases P00-P24 (25 p
 
 Start a phase only when its prerequisites have recorded passing gates. Within a phase, execute the numbered work items in order unless independent work is explicitly identified. Each phase has a bounded deliverable; its completion does not imply completion of later capabilities. No phase may be implemented using mocks, expected-output substitution, a hidden external compiler, or an embedded VM advertised as native code.
 
-The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P13 have passed their recorded gates; P14 is the next eligible phase. Later phases remain gated and cannot start until their predecessors pass. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
+The user requested the phased specification before code, then explicitly authorized starting P00. P00 has passed its recorded baseline gate. The user subsequently authorized continuous execution in dependency order without stopping at each phase; P01-P14 have passed their recorded gates. Execution is stopped at P14 at the user's explicit request; P15 and later phases require new authorization. Documentation checks do not count as implementation tests. Compiler source changes must follow the current phase scope and its gate.
 
 ### 13.2 Phase lifecycle and completion record
 
@@ -676,7 +678,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 5. State conclusions at the scope actually demonstrated. A test count or a successful build does not prove arbitrary-program correctness, full C conformance, absence of defects, or future phases. Identify gaps and distinguish prior evidence from new runs.
 6. Independent expectations are required where shared implementation could hide common bugs. Native behavior requires executing actual generated machine code; byte snapshots alone do not establish it. Differential oracles must only compare defined behavior and remain outside the production toolchain.
 7. Resource-heavy checks need bounded child execution and cleanup; a timeout is evidence to investigate, never a pass. Do not silently bypass a missing tool, unavailable native platform, or environmental failure.
-8. Record the phase result and first eligible next phase here. An eligible phase is not automatically started in a phase-specific user request. The earlier P00-specific stopping instruction was superseded by the user's authorization to continue through subsequent phases. Advance automatically only after recording a passing gate; architecture/dependency/target/scope changes still require approval.
+8. Record the phase result and first eligible next phase here. An eligible phase is not automatically started in a phase-specific user request. The earlier P00-specific stopping instruction was superseded by the user's authorization to continue through subsequent phases. The current newer instruction stops execution after the passing P14 gate. Do not start P15 or later without new user authorization; architecture/dependency/target/scope changes still require approval.
 
 ### 13.3 Phase map and current status
 
@@ -696,7 +698,7 @@ User instruction on 2026-11-23: no phase may advance until its work has been agg
 | P11 | General type system and typed IR | 10, type portion | Passed; evidence in section 13.16.2 |
 | P12 | Functions, calls, globals and variadics | 10, function/storage portion | Passed |
 | P13 | Pointers, arrays, memory and strings | 11 | Passed |
-| P14 | Aggregates and advanced declaration forms | 12, aggregate portion | Planned |
+| P14 | Aggregates and advanced declaration forms | 12, aggregate portion | Passed |
 | P15 | Floating types and numerical semantics | 12, floating portion | Planned |
 | P16 | Real preprocessor and project headers | 13A | Planned |
 | P17 | Own COFF objects and separate linking | 13B | Planned |
@@ -1409,6 +1411,38 @@ Work items:
 **Gate:** parser, layout, memory codegen, initializer serializer and ABI agree; target-specific decisions are documented and tested.
 **Boundary:** vendor packing pragmas and binary compatibility with arbitrary external compiler objects are not implied.
 
+#### 13.19.1 P14 implementation contract before coding
+
+Extend the existing TypeContext with nominal record/enum identities. Record declarations create an incomplete identity before reading members, permitting self/mutual pointers while rejecting recursive by-value/incomplete fields. Complete records transactionally once, preserving tag scope separately from ordinary names. Anonymous records have distinct identities. Enums use target signed int storage/alignment; C11 enumerator values must fit int and enumerator expressions have int type. Unrelated tags/enums cannot become compatible merely because their layouts match.
+
+Freeze the target layout ledger: struct members use declaration order, each offset rounds up to its effective alignment, and final size rounds up to maximum member alignment; unions place every member at0 and round the largest extent to maximum alignment. Native scalar alignments remain1/2/4/8. Delivered explicit alignments are powers of two through16, cannot weaken natural alignment, and affect automatic/static objects and record members. Diagnose unsupported extended alignment. Flexible array tails are allowed only in the final position of a struct with preceding named storage, contribute element alignment but no element extent, and prohibit containing flexible records in array elements/struct fields as C requires. Anonymous struct/union members expose uniquely named descendant members at their real accumulated offsets; ambiguous promotions are rejected.
+
+Bitfields allocate from low to high bits in naturally aligned units of their declared integer storage size (1/2/4/8). Consecutive fields of the same storage size share a unit only if the next width fits; fields never straddle units. Target plain-int bitfields are signed; Bool width is at most1. A named zero-width field or excessive/negative width is rejected. An unnamed zero-width separator terminates a preceding bitfield unit and imposes that integer alignment; a separator without a preceding bitfield contributes no storage. Unnamed nonzero fields consume bits but are excluded from member lookup/initialization. Signed loads extend the declared field width, stores mask/read-modify-write only the allocation unit, and address/sizeof of a bitfield is rejected. This ledger is tested against selected Windows GCC/MS-layout fixtures, without claiming vendor packing pragmas or arbitrary external-object compatibility.
+
+Represent aggregate IR values as actual owned byte homes with target TypeIds, not host aggregates or handles. Extend the frame planner with per-temporary layouts while retaining8-byte scalar homes. Aggregate local reads/assignments/initialization and returns copy real bytes with explicit memory effects; lvalue/member addressing retains object identity, qualifiers and stable field identity. Native member accesses use checked layout offsets; union members share storage. Volatile aggregate copies retain real accesses. Padding is unspecified after value copies; defined-behavior comparisons must inspect members rather than inventing padding values.
+
+Use the Windows x64 aggregate classifier: complete records of exactly1/2/4/8 bytes occupy one ordinary integer argument/result position; other record arguments pass a pointer to a16-byte-aligned caller-owned copy. Other record returns use caller-owned storage through a hidden first argument and return its pointer in RAX, shifting ordinary argument positions. Callee parameters remain C by-value objects and cannot alias the caller's original object. Extend direct/indirect calls, nested calls, variadic requests and return lowering consistently; retain independent Rust/GCC ABI fixtures across register/stack boundaries and saved-register/probed-frame checks. Reference: [Microsoft x64 calling convention](https://learn.microsoft.com/en-us/cpp/build/x64-calling-convention?view=msvc-170) and [x64 aggregate/storage layout](https://learn.microsoft.com/en-us/cpp/build/x64-software-conventions).
+
+Generalize the initializer walker to array/record/union subobjects and nested designator paths, current-position continuation, inferred array bounds and required remainder zeroing. Union initialization selects one active member; later designated writes follow C initialization rules. Compound literals create real static-duration objects at file scope and block-duration objects at block scope, with correct reuse at the same declaration scope. Reuse the same offset/type ledger for runtime initialization and static data/relocation serialization. Reject excess entries, incomplete objects, invalid designators and nonconstant static initializers before image publication.
+
+Implement _Static_assert in file/block/member declarations using the target integer constant evaluator. Implement _Alignas declarations/member constraints and _Generic: analyze all associations, reject duplicate compatible matches/defaults, apply the selected controlling-type lvalue/array/function conversion rule without executing that expression, and lower only the selected association. Preserve all earlier diagnostics, source budgets and no-external-tool production policy. Generic association lists are bounded to1024 entries (including default), member/enumerator lists to4096, and complete aggregate containment to128 levels, in addition to existing source/type/initializer/frame budgets. Run focused tests after each internal layer, then the complete debug/release gate and independent aggregate source/ABI/layout comparisons. At the user's current boundary, stop after P14 passes; P15 requires new authorization.
+
+#### 13.19.2 P14 completion evidence and stopping boundary (2026-11-24)
+
+Baseline: `b74a2c1`. P14 executes nominal structs/unions/enums, scoped tags/enumerators, ordinary/anonymous members and flexible tails; target bitfield allocation, masked/sign-extended access and single-evaluation modification; record/union copies with real typed byte homes; direct/indirect aggregate calls and small/hidden returns; aggregate variadic values; nested designated initialization/current-position continuation, zero remainders and overlapping union relocation replacement; static/block compound literal identity; _Alignas through16, _Static_assert and unevaluated _Generic. Constructor IR permits initialization of const members while ordinary whole-record assignment is rejected. Production remains project-owned dependency-free Rust with Windows primitives, without external compiler/assembler/linker/CRT delegation.
+
+`python validation/run_gate.py P14` passed formatting, warnings-denied Clippy and all-target debug/release suites: **195 tests per mode, zero failures/ignored**. [Gate log](validation/P14-gate.log), [results/source manifest](validation/P14-gate.json). Layout/IR tests cover transactionality, nominal identity, padding/overlap, anonymous qualification, incomplete/recursive/flexible constraints and malformed member paths, writes/effects and alignment. Independently Rust-compiled repr(C) callers cover1/2/4/8 and irregular3/5/12/24-byte aggregates across register/stack positions and hidden returns. Another passes/returns a5000-byte record through an actual probed frame with Windows unwind registration.
+
+Final CLI stress checks found a nested _Generic debug-stack overflow after an earlier full gate passed. [Before-fix probes](validation/P14-depth-probes-before-fix.json) retain the actual failed process result. Generic dispatch now avoids retaining the large ordinary-prefix frame for every nested control. Its new real-CLI subprocess regression passes; [final probes](validation/P14-depth-probes.json) cleanly reject1000-level record/generic/unary-generic/parenthesized-generic/alignment/compound inputs, excessive designators and invalid members. Full gates and both independent oracles were rerun after the fix; no failure was waived.
+
+[Aggregate GCC oracle](validation/P14-aggregate-oracle.json):128 defined-behavior Windows LLP64 programs /256 O0/O1 comparisons, matching output and Windows32 status. Its104-case matrix covers record extents1/2/4/8/3/5/12/24 at argument positions0..12, hidden-return shifts, aggregate varargs, enums, anonymous/flexible members and Windows bitfield boundaries;24 combined cases add designators, static pointer/function members, compound identity/reinitialization, alignment and generic/static-assert behavior. [Cases](validation/P14-aggregate-oracle-cases.json), [commands](validation/P14-aggregate-oracle-commands.json). The prebuilt [baseline](validation/P14-aggregate-baseline-oracle.json) is deliberately unqualified (`all_passed:false`) because its compiler source was unverified; it is historical comparison evidence, not the final gate.
+
+[Declaration GCC oracle](validation/P14-declaration-oracle.json):16 positive programs /32 O0/O1 comparisons plus10 invalid-program rejection matches. [Cases](validation/P14-declaration-oracle-cases.json), [commands](validation/P14-declaration-oracle-commands.json). A separately recorded explicit-alignment redeclaration conflict is diagnosed although GCC accepts it and is excluded from agreement counts. C11 N1570 section6.7.5p7/J.2 places differing definition alignment outside defined behavior; GCC acceptance does not make it a portable fixture. Generic controlling conversion, including the declared bitfield-type choice, follows the published contract. Final gate/oracle source hashes match.
+
+[Installed qualification](validation/P14-installed-qualification.json) proves the installed command equals the oracle-qualified release and executes both faculty demos and a teaching regression outside the repository with empty PATH and sources removed before execution. Source/expected-output/image hashes are retained. The student-record demo emits actual token/typed AST/typed IR/optimized IR/linked machine-code dumps. [Import inspection](validation/P14-import-inspection.json) confirms only Kernel32 for both faculty images; [install log](validation/P14-install.log). Examples: [student records](examples/student_records.c), [linked list](examples/linked_list.c), with tested expected-output files alongside them.
+
+**P14 is complete and work is stopped here at the user's explicit instruction. P15 has not started.** Finite passing tests do not imply universal C11 conformance or absence of every bug. Floating types, real preprocessing/headers, VLAs and later library work remain undelivered. The canonical status and stopping boundary govern future continuation.
+
 ### 13.20 P15 - Floating types, conversions and numerical execution
 
 **Purpose:** support actual floating computation before claiming numerical C or building math libraries.
@@ -1782,7 +1816,7 @@ This is a review checklist, not a request to approve six separate actions indivi
 
 ### 15.6 Immediate next action during continuous execution
 
-The user authorized continuous phase execution after P00. P01-P13 have now passed their recorded gates. Proceed to P14's aggregate layout and advanced declarations contract, then only through subsequent passing gates. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
+The user authorized continuous phase execution after P00. P01-P14 have now passed their recorded gates. P14 is complete and execution is stopped at the user's requested boundary. P15 and all later phases require a new explicit user instruction. Do not skip to broad C support or count future runtime/library facilities as delivered. Architectural, dependency, target and scope deviations still require asking first. The phase status/evidence records above govern progress, not historical package aliases.
 
 ## 16. References and preserved history
 

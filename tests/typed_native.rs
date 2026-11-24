@@ -337,6 +337,7 @@ fn signed_unsigned_shifts_unary_and_large_local_frames() {
     let f = &mut m.functions[0];
     f.locals = (0..600)
         .map(|i| Local {
+            alignment: None,
             symbol: SymbolId(i + 1),
             ty: int,
         })
@@ -392,6 +393,7 @@ fn twelve_integer_parameters_cross_register_and_stack_boundaries() {
         .iter()
         .enumerate()
         .map(|(i, ty)| Local {
+            alignment: None,
             symbol: SymbolId(i + 1),
             ty: *ty,
         })
@@ -520,6 +522,7 @@ fn real_object_load_store_address_and_alias_widths() {
         let align = module.types.layout(ty).unwrap().align;
         let f = &mut module.functions[0];
         f.locals = vec![Local {
+            alignment: None,
             symbol: SymbolId(1),
             ty,
         }];
@@ -566,4 +569,94 @@ fn real_object_load_store_address_and_alias_widths() {
             "indirect {kind:?}"
         );
     }
+}
+
+#[test]
+fn independently_compiled_rust_caller_checks_small_and_hidden_aggregate_returns() {
+    #[repr(C)]
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    struct Small {
+        a: i32,
+        b: i32,
+    }
+    #[repr(C)]
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    struct Large {
+        a: i64,
+        b: i64,
+        c: i32,
+    }
+    fn native(source: &str) -> Native {
+        let unit =
+            compiler::typed_front::parse(&format!("{source} int main(void){{return 0;}}")).unwrap();
+        let mut module = compiler::typed_lower::lower(&unit).unwrap();
+        module.functions.truncate(1);
+        module.entry = None;
+        Native::new(&module, false)
+    }
+    let small =
+        native("struct S{int a;int b;};struct S f(struct S s,int n){s.a+=n;s.b-=n;return s;}");
+    // SAFETY: repr(C) fields and the emitted signature independently use the
+    // Windows x64 small-aggregate ABI; the allocation stays executable/live.
+    unsafe {
+        let call: unsafe extern "system" fn(Small, i32) -> Small =
+            std::mem::transmute(small.address);
+        assert_eq!(call(Small { a: 10, b: 20 }, 3), Small { a: 13, b: 17 });
+    }
+    let large = native(
+        "struct S{long long a;long long b;int c;};struct S f(int n,struct S s,int x,int y,int z,int w){s.a+=n+x;s.b+=y+z;s.c+=w;return s;}",
+    );
+    // SAFETY: Rust supplies the independent hidden-return pointer and by-value
+    // argument copy, with shifted register and stack positions.
+    unsafe {
+        let call: unsafe extern "system" fn(i32, Large, i32, i32, i32, i32) -> Large =
+            std::mem::transmute(large.address);
+        assert_eq!(
+            call(
+                1,
+                Large {
+                    a: 10,
+                    b: 20,
+                    c: 30
+                },
+                2,
+                3,
+                4,
+                5
+            ),
+            Large {
+                a: 13,
+                b: 27,
+                c: 35
+            }
+        );
+    }
+}
+
+#[test]
+fn independent_large_aggregate_call_crosses_real_probed_stack_pages() {
+    #[repr(C)]
+    #[derive(Clone, Copy)]
+    struct Big {
+        bytes: [u8; 5000],
+    }
+    let unit=compiler::typed_front::parse("struct Big{unsigned char bytes[5000];};struct Big f(struct Big b){b.bytes[4999]+=1;return b;}int main(void){return 0;}").unwrap();
+    let mut module = compiler::typed_lower::lower(&unit).unwrap();
+    module.functions.truncate(1);
+    module.entry = None;
+    let native = Native::new(&module, false);
+    let mut input = Big { bytes: [0; 5000] };
+    for (i, byte) in input.bytes.iter_mut().enumerate() {
+        *byte = (i % 251) as u8;
+    }
+    let expected = input.bytes[4999].wrapping_add(1);
+    // SAFETY: repr(C) byte-array aggregate and emitted signature use independent
+    // hidden-result/by-reference argument lowering; generated frames are probed
+    // and registered with Windows' actual unwind table for their lifetime.
+    let output = unsafe {
+        let call: unsafe extern "system" fn(Big) -> Big = std::mem::transmute(native.address);
+        call(input)
+    };
+    assert_eq!(&output.bytes[..4999], &input.bytes[..4999]);
+    assert_eq!(output.bytes[4999], expected);
 }

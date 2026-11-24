@@ -181,6 +181,7 @@ fn lower(
             vec![]
         },
         temporaries: slots.len(),
+        temporary_layouts: vec![],
         initialization_flags: slots.len(),
     })?;
     let prologue = frame.prologue(labels.fresh()?)?;

@@ -224,7 +224,7 @@ fn scan(source: &str, max_tokens: usize, typed: bool) -> Result<Vec<Token>, Stri
                 ) || (typed
                     && matches!(
                         (c, *next),
-                        ('<', '<') | ('>', '>') | ('&', '=') | ('|', '=') | ('^', '=')
+                        ('<', '<') | ('>', '>') | ('&', '=') | ('|', '=') | ('^', '=') | ('-', '>')
                     ))
             });
             if pair {

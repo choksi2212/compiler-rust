@@ -108,6 +108,8 @@ impl Qualifiers {
 }
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Type {
+    Record(crate::aggregate::RecordId),
+    Enum(crate::aggregate::EnumId),
     Void,
     Integer(IntegerKind),
     Pointer(TypeId),
@@ -131,6 +133,8 @@ pub struct Layout {
 
 #[derive(Debug, Clone)]
 pub struct TypeContext {
+    pub(crate) aggregates: Vec<crate::aggregate::Record>,
+    pub(crate) enumerations: Vec<crate::aggregate::Enumeration>,
     records: Vec<Type>,
     canonical: HashMap<Type, TypeId>,
     depths: Vec<u16>,
@@ -143,6 +147,8 @@ impl Default for TypeContext {
 impl TypeContext {
     pub fn new() -> Self {
         let mut context = Self {
+            aggregates: vec![],
+            enumerations: vec![],
             records: vec![],
             canonical: HashMap::new(),
             depths: vec![],
@@ -178,7 +184,7 @@ impl TypeContext {
             _ => Ok(Qualifiers::default()),
         }
     }
-    fn insert(&mut self, ty: Type) -> Result<TypeId, String> {
+    pub(crate) fn insert(&mut self, ty: Type) -> Result<TypeId, String> {
         if let Some(id) = self.canonical.get(&ty) {
             return Ok(*id);
         }
@@ -245,6 +251,9 @@ impl TypeContext {
     }
     pub fn array(&mut self, element: TypeId, length: Option<u64>) -> Result<TypeId, String> {
         self.layout(element)?;
+        if self.contains_flexible(element)? {
+            return Err("array element contains a flexible array member".into());
+        }
         if length == Some(0) {
             return Err("array bound must be positive".into());
         }
@@ -300,11 +309,22 @@ impl TypeContext {
     pub fn integer_kind(&self, ty: TypeId) -> Result<IntegerKind, String> {
         match self.get(self.unqualified(ty)?)? {
             Type::Integer(kind) => Ok(*kind),
+            Type::Enum(_) => Ok(IntegerKind::Int),
             _ => Err("integer type required".into()),
         }
     }
     pub fn layout(&self, ty: TypeId) -> Result<Layout, String> {
         match self.get(ty)? {
+            Type::Enum(id) => {
+                if self.enumeration(*id)?.values.is_none() {
+                    return Err("incomplete enum has no layout".into());
+                }
+                Ok(Layout { size: 4, align: 4 })
+            }
+            Type::Record(id) => self
+                .record(*id)?
+                .layout
+                .ok_or_else(|| "incomplete record has no object layout".into()),
             Type::Integer(kind) => Ok(Layout {
                 size: u64::from(kind.bits() / 8),
                 align: kind.bits() / 8,
@@ -364,6 +384,8 @@ impl TypeContext {
             (Type::Qualified(a, qa), Type::Qualified(b, qb)) => {
                 qa == qb && self.compatible(*a, *b)?
             }
+            (Type::Enum(_), Type::Integer(IntegerKind::Int))
+            | (Type::Integer(IntegerKind::Int), Type::Enum(_)) => true,
             (Type::Pointer(a), Type::Pointer(b)) => self.compatible(*a, *b)?,
             (
                 Type::Array {

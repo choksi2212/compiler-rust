@@ -15,6 +15,7 @@ const W: Width = Width::Qword;
 fn scalar_kind(types: &TypeContext, ty: TypeId) -> Result<IntegerKind, String> {
     match types.get(types.unqualified(ty)?)? {
         Type::Integer(kind) => Ok(*kind),
+        Type::Enum(_) => Ok(IntegerKind::Int),
         Type::Pointer(_) => Ok(IntegerKind::UnsignedLongLong),
         _ => Err("scalar native type required".into()),
     }
@@ -81,6 +82,7 @@ struct Lower<'a> {
     divide: Label,
     uninitialized: Label,
     addressed: std::collections::HashSet<LocalId>,
+    hidden_return: Option<u32>,
     bad_shift: Label,
     exit: Label,
     runtime: bool,
@@ -90,6 +92,59 @@ struct Lower<'a> {
 impl Lower<'_> {
     fn value(&self, id: ValueId) -> TypeId {
         self.function.values[id.0]
+    }
+    fn temporary_address(&mut self, id: ValueId, dst: Reg) {
+        self.code.push(M::Lea {
+            dst,
+            address: Address::base(Reg::RSP, self.frame.temporary_offsets()[id.0] as i32),
+        });
+    }
+    fn local_address(&mut self, id: LocalId, dst: Reg) {
+        self.code.push(M::Lea {
+            dst,
+            address: Address::base(Reg::RSP, self.frame.local_offsets()[id.0] as i32),
+        });
+    }
+    /// R10=destination, R11=source; copy exactly the target object extent.
+    fn copy_object(&mut self, ty: TypeId) -> Result<(), String> {
+        let bytes = self.types.layout(ty)?.size;
+        if bytes == 0 {
+            return Err("zero-size aggregate copy".into());
+        }
+        let again = self.labels.fresh()?;
+        self.code.extend([
+            immediate(reg(8), bytes),
+            M::Bind(again),
+            M::LoadByte {
+                dst: Reg::RAX,
+                address: Address::base(reg(11), 0),
+            },
+            M::StoreByte {
+                address: Address::base(reg(10), 0),
+                src: Reg::RAX,
+            },
+            M::Immediate {
+                width: W,
+                op: Immediate::Add,
+                reg: reg(10),
+                value: 1,
+            },
+            M::Immediate {
+                width: W,
+                op: Immediate::Add,
+                reg: reg(11),
+                value: 1,
+            },
+            M::Immediate {
+                width: W,
+                op: Immediate::Sub,
+                reg: reg(8),
+                value: 1,
+            },
+            test(reg(8)),
+            branch(Condition::NotEqual, again),
+        ]);
+        Ok(())
     }
     fn read(&mut self, id: ValueId, dst: Reg) {
         self.code
@@ -386,7 +441,9 @@ impl Lower<'_> {
             },
             _ => return Err("unsupported scalar global width".into()),
         });
-        self.normalize(ty, Reg::RAX)?;
+        if !self.types.aggregate_value(ty)? {
+            self.normalize(ty, Reg::RAX)?;
+        }
         Ok(())
     }
     fn write_global(&mut self, symbol: typed_ir::SymbolId, src: ValueId) -> Result<(), String> {
@@ -464,9 +521,25 @@ impl Lower<'_> {
         direct: Option<Label>,
         callee: Option<ValueId>,
     ) -> Result<(), String> {
+        let hidden = match dst {
+            Some(dst) => self.types.indirect_aggregate(self.value(dst))?,
+            None => false,
+        };
+        if hidden {
+            self.temporary_address(dst.ok_or("hidden return destination missing")?, Reg::RCX);
+        }
         for (index, argument) in arguments.iter().enumerate() {
-            self.read(*argument, Reg::RAX);
-            match scalar_argument(index)? {
+            if self.types.aggregate_value(self.value(*argument))? {
+                if self.types.indirect_aggregate(self.value(*argument))? {
+                    self.temporary_address(*argument, Reg::RAX);
+                } else {
+                    self.temporary_address(*argument, reg(10));
+                    self.load_object(self.value(*argument))?;
+                }
+            } else {
+                self.read(*argument, Reg::RAX);
+            }
+            match scalar_argument(index + usize::from(hidden))? {
                 ArgumentLocation::Register(target) => self.code.push(M::Mov {
                     width: W,
                     dst: target,
@@ -493,17 +566,178 @@ impl Lower<'_> {
             ]);
         }
         if let Some(dst) = dst {
-            self.normalize(self.value(dst), Reg::RAX)?;
+            if self.types.aggregate_value(self.value(dst))? {
+                if !hidden {
+                    self.temporary_address(dst, reg(10));
+                    self.store_object(self.value(dst))?;
+                }
+            } else {
+                self.normalize(self.value(dst), Reg::RAX)?;
+                self.write(dst, Reg::RAX);
+            }
+        }
+        Ok(())
+    }
+    fn bitfield_normalize(&mut self, register: Reg, width: u32, signed: bool) {
+        if width < 64 {
+            if signed {
+                let count = ShiftCount::Immediate((64 - width) as u8);
+                self.code.extend([
+                    M::Shift {
+                        width: W,
+                        op: Shift::Left,
+                        reg: register,
+                        count,
+                    },
+                    M::Shift {
+                        width: W,
+                        op: Shift::ArithmeticRight,
+                        reg: register,
+                        count,
+                    },
+                ]);
+            } else {
+                self.code.extend([
+                    immediate(reg(11), mask(width)),
+                    M::Binary {
+                        width: W,
+                        op: Binary::And,
+                        dst: register,
+                        src: reg(11),
+                    },
+                ]);
+            }
+        }
+    }
+    fn bitfield(
+        &mut self,
+        dst: ValueId,
+        base: ValueId,
+        path: &[usize],
+        source: Option<ValueId>,
+    ) -> Result<(), String> {
+        let Type::Pointer(object) = self.types.get(self.value(base))? else {
+            unreachable!()
+        };
+        let member = self.types.member_path(*object, path)?;
+        let bits = member.bits.ok_or("bitfield metadata missing")?;
+        let signed = self.types.integer_kind(bits.storage)?.signed();
+        self.read(base, reg(10));
+        self.code.extend([
+            immediate(reg(11), member.offset),
+            M::Binary {
+                width: W,
+                op: Binary::Add,
+                dst: reg(10),
+                src: reg(11),
+            },
+        ]);
+        if let Some(source) = source {
+            self.read(source, reg(8));
+            self.bitfield_normalize(reg(8), bits.width, false);
+            self.code.push(M::Mov {
+                width: W,
+                dst: reg(9),
+                src: reg(8),
+            });
+            self.bitfield_normalize(reg(9), bits.width, signed);
+            self.load_object(bits.storage)?;
+            self.code.extend([
+                immediate(reg(11), !(mask(bits.width) << bits.shift)),
+                M::Binary {
+                    width: W,
+                    op: Binary::And,
+                    dst: Reg::RAX,
+                    src: reg(11),
+                },
+            ]);
+            if bits.shift != 0 {
+                self.code.push(M::Shift {
+                    width: W,
+                    op: Shift::Left,
+                    reg: reg(8),
+                    count: ShiftCount::Immediate(bits.shift as u8),
+                });
+            }
+            self.code.push(M::Binary {
+                width: W,
+                op: Binary::Or,
+                dst: Reg::RAX,
+                src: reg(8),
+            });
+            self.store_object(bits.storage)?;
+            self.write(dst, reg(9));
+        } else {
+            self.load_object(bits.storage)?;
+            if bits.shift != 0 {
+                self.code.push(M::Shift {
+                    width: W,
+                    op: Shift::LogicalRight,
+                    reg: Reg::RAX,
+                    count: ShiftCount::Immediate(bits.shift as u8),
+                });
+            }
+            self.bitfield_normalize(Reg::RAX, bits.width, signed);
             self.write(dst, Reg::RAX);
         }
         Ok(())
     }
     fn instruction(&mut self, i: &I) -> Result<(), String> {
         match i {
+            I::ZeroObject { address } => {
+                let Type::Pointer(ty) = self.types.get(self.value(*address))? else {
+                    return Err("zero initializer requires object pointer".into());
+                };
+                let bytes = self.types.layout(*ty)?.size;
+                if bytes != 0 {
+                    let again = self.labels.fresh()?;
+                    self.read(*address, reg(10));
+                    self.code.extend([
+                        immediate(reg(8), bytes),
+                        immediate(Reg::RAX, 0),
+                        M::Bind(again),
+                        M::StoreByte {
+                            address: Address::base(reg(10), 0),
+                            src: Reg::RAX,
+                        },
+                        M::Immediate {
+                            width: W,
+                            op: Immediate::Add,
+                            reg: reg(10),
+                            value: 1,
+                        },
+                        M::Immediate {
+                            width: W,
+                            op: Immediate::Sub,
+                            reg: reg(8),
+                            value: 1,
+                        },
+                        test(reg(8)),
+                        branch(Condition::NotEqual, again),
+                    ]);
+                }
+            }
+            I::BitfieldRead {
+                dst, base, path, ..
+            } => self.bitfield(*dst, *base, path, None)?,
+            I::BitfieldWrite {
+                dst,
+                base,
+                path,
+                src,
+                ..
+            }
+            | I::BitfieldInitialize {
+                dst,
+                base,
+                path,
+                src,
+                ..
+            } => self.bitfield(*dst, *base, path, Some(*src))?,
             I::VaStart { list, .. } => {
-                let offset = self
-                    .frame
-                    .incoming_home_offset(self.function.parameters.len())?;
+                let offset = self.frame.incoming_home_offset(
+                    self.function.parameters.len() + usize::from(self.hidden_return.is_some()),
+                )?;
                 self.code.push(M::Lea {
                     dst: Reg::RAX,
                     address: Address::base(Reg::RSP, offset as i32),
@@ -525,6 +759,35 @@ impl Lower<'_> {
                 }
             }
             I::VaArg { dst, list } => {
+                if self.types.aggregate_value(self.value(*dst))? {
+                    self.read_cursor(*list)?;
+                    self.code.push(M::Load {
+                        width: W,
+                        dst: Reg::RAX,
+                        address: Address::base(Reg::RAX, 0),
+                    });
+                    if self.types.indirect_aggregate(self.value(*dst))? {
+                        self.code.push(M::Mov {
+                            width: W,
+                            dst: reg(11),
+                            src: Reg::RAX,
+                        });
+                        self.temporary_address(*dst, reg(10));
+                        self.copy_object(self.value(*dst))?;
+                    } else {
+                        self.temporary_address(*dst, reg(10));
+                        self.store_object(self.value(*dst))?;
+                    }
+                    self.read_cursor(*list)?;
+                    self.code.push(M::Immediate {
+                        width: W,
+                        op: Immediate::Add,
+                        reg: Reg::RAX,
+                        value: 8,
+                    });
+                    self.write_cursor(*list)?;
+                    return Ok(());
+                }
                 self.read_cursor(*list)?;
                 self.code.extend([
                     M::Mov {
@@ -555,8 +818,32 @@ impl Lower<'_> {
                 ]);
                 self.write_cursor(*list)?;
             }
-            I::ReadGlobal { dst, symbol } => self.read_global(*dst, *symbol)?,
-            I::WriteGlobal { symbol, src } => self.write_global(*symbol, *src)?,
+            I::ReadGlobal { dst, symbol } => {
+                if self.types.aggregate_value(self.value(*dst))? {
+                    let (symbol, ty) = self.global(*symbol)?;
+                    self.code.push(M::LeaSymbol {
+                        dst: reg(11),
+                        symbol,
+                    });
+                    self.temporary_address(*dst, reg(10));
+                    self.copy_object(ty)?;
+                } else {
+                    self.read_global(*dst, *symbol)?;
+                }
+            }
+            I::WriteGlobal { symbol, src } => {
+                if self.types.aggregate_value(self.value(*src))? {
+                    let (symbol, ty) = self.global(*symbol)?;
+                    self.code.push(M::LeaSymbol {
+                        dst: reg(10),
+                        symbol,
+                    });
+                    self.temporary_address(*src, reg(11));
+                    self.copy_object(ty)?;
+                } else {
+                    self.write_global(*symbol, *src)?;
+                }
+            }
             I::FunctionAddress { dst, symbol } => {
                 let symbol = self
                     .bindings
@@ -613,9 +900,36 @@ impl Lower<'_> {
                 self.normalize(self.value(*dst), Reg::RAX)?;
                 self.write(*dst, Reg::RAX);
             }
+            I::AddressValue { dst, src } => {
+                self.temporary_address(*src, Reg::RAX);
+                self.write(*dst, Reg::RAX);
+            }
             I::Convert { dst, src } => {
+                if self.types.aggregate_value(self.value(*dst))? {
+                    self.temporary_address(*src, reg(11));
+                    self.temporary_address(*dst, reg(10));
+                    self.copy_object(self.value(*dst))?;
+                    return Ok(());
+                }
                 self.read(*src, Reg::RAX);
                 self.normalize(self.value(*dst), Reg::RAX)?;
+                self.write(*dst, Reg::RAX);
+            }
+            I::MemberAddress { dst, base, path } => {
+                let Type::Pointer(object) = self.types.get(self.value(*base))? else {
+                    unreachable!()
+                };
+                let offset = self.types.member_path(*object, path)?.offset;
+                self.read(*base, Reg::RAX);
+                self.code.extend([
+                    immediate(reg(10), offset),
+                    M::Binary {
+                        width: W,
+                        op: Binary::Add,
+                        dst: Reg::RAX,
+                        src: reg(10),
+                    },
+                ]);
                 self.write(*dst, Reg::RAX);
             }
             I::PointerOffset {
@@ -709,6 +1023,13 @@ impl Lower<'_> {
             }
             I::ResetLocal(local) => self.flag(*local, false),
             I::InitializeLocal { local, src } | I::WriteLocal { local, src } => {
+                if self.types.aggregate_value(self.value(*src))? {
+                    self.temporary_address(*src, reg(11));
+                    self.local_address(*local, reg(10));
+                    self.copy_object(self.value(*src))?;
+                    self.flag(*local, true);
+                    return Ok(());
+                }
                 self.read(*src, Reg::RAX);
                 self.code
                     .push(store(self.frame.local_offsets()[local.0], Reg::RAX));
@@ -728,6 +1049,12 @@ impl Lower<'_> {
                         branch(Condition::Equal, self.uninitialized),
                     ]);
                 }
+                if self.types.aggregate_value(self.value(*dst))? {
+                    self.local_address(*local, reg(11));
+                    self.temporary_address(*dst, reg(10));
+                    self.copy_object(self.value(*dst))?;
+                    return Ok(());
+                }
                 self.code.push(M::Lea {
                     dst: reg(10),
                     address: Address::base(Reg::RSP, self.frame.local_offsets()[local.0] as i32),
@@ -743,11 +1070,23 @@ impl Lower<'_> {
                 self.write(*dst, Reg::RAX);
             }
             I::Load { dst, address, .. } => {
+                if self.types.aggregate_value(self.value(*dst))? {
+                    self.read(*address, reg(11));
+                    self.temporary_address(*dst, reg(10));
+                    self.copy_object(self.value(*dst))?;
+                    return Ok(());
+                }
                 self.read(*address, reg(10));
                 self.load_object(self.value(*dst))?;
                 self.write(*dst, Reg::RAX);
             }
-            I::Store { address, src, .. } => {
+            I::Store { address, src, .. } | I::InitializeMemory { address, src, .. } => {
+                if self.types.aggregate_value(self.value(*src))? {
+                    self.read(*address, reg(10));
+                    self.temporary_address(*src, reg(11));
+                    self.copy_object(self.value(*src))?;
+                    return Ok(());
+                }
                 self.read(*address, reg(10));
                 self.read(*src, Reg::RAX);
                 self.store_object(self.value(*src))?;
@@ -784,6 +1123,19 @@ impl Lower<'_> {
                 self.code.push(M::Jump(self.targets[default]));
             }
             Terminator::Return(Some(value)) => {
+                if self.types.aggregate_value(self.value(*value))? {
+                    if let Some(home) = self.hidden_return {
+                        self.code.push(load(reg(10), home));
+                        self.temporary_address(*value, reg(11));
+                        self.copy_object(self.value(*value))?;
+                        self.code.push(load(Reg::RAX, home));
+                    } else {
+                        self.temporary_address(*value, reg(10));
+                        self.load_object(self.value(*value))?;
+                    }
+                    self.code.push(M::Jump(self.exit));
+                    return Ok(());
+                }
                 self.read(*value, Reg::RAX);
                 if self.runtime {
                     self.code.extend([
@@ -863,8 +1215,13 @@ fn build_body(
         return Err("missing function type".into());
     };
     if *result != types.void() {
-        scalar_kind(types, *result)?;
+        if types.aggregate_value(*result)? {
+            types.layout(*result)?;
+        } else {
+            scalar_kind(types, *result)?;
+        }
     }
+    let hidden = types.indirect_aggregate(*result)?;
     if runtime && (!f.parameters.is_empty() || *result != types.integer(IntegerKind::Int)) {
         return Err("runtime main requires int main(void)".into());
     }
@@ -872,33 +1229,60 @@ fn build_body(
         types.layout(local.ty)?;
     }
     for ty in &f.values {
-        scalar_kind(types, *ty)?;
+        if types.aggregate_value(*ty)? {
+            types.layout(*ty)?;
+        } else {
+            scalar_kind(types, *ty)?;
+        }
     }
-    let max_arguments = f
-        .blocks
+    let mut max_arguments = None;
+    for instruction in f.blocks.iter().flat_map(|b| &b.instructions) {
+        if let I::Call { dst, arguments, .. } | I::DirectCall { dst, arguments, .. } = instruction {
+            let shift = if let Some(dst) = dst {
+                usize::from(types.indirect_aggregate(f.values[dst.0])?)
+            } else {
+                0
+            };
+            let n = arguments.len() + shift;
+            max_arguments = Some(max_arguments.unwrap_or(0).max(n));
+        }
+    }
+    let mut local_layouts = f
+        .locals
         .iter()
-        .flat_map(|b| &b.instructions)
-        .filter_map(|i| match i {
-            I::Call { arguments, .. } | I::DirectCall { arguments, .. } => Some(arguments.len()),
-            _ => None,
+        .map(|local| {
+            let layout = types.layout(local.ty)?;
+            Ok((
+                u32::try_from(layout.size.max(8))
+                    .map_err(|_| "local object exceeds frame budget")?,
+                local.alignment.unwrap_or(layout.align).max(8),
+            ))
         })
-        .max();
+        .collect::<Result<Vec<_>, String>>()?;
+    if hidden {
+        local_layouts.push((8, 8));
+    }
     let frame = FramePlan::new(&FrameRequest {
         has_calls: max_arguments.is_some(),
         max_call_arguments: max_arguments.unwrap_or(0),
-        locals: f
-            .locals
+        locals: local_layouts,
+        temporaries: f.values.len(),
+        temporary_layouts: f
+            .values
             .iter()
-            .map(|local| {
-                let layout = types.layout(local.ty)?;
-                Ok((
-                    u32::try_from(layout.size.max(8))
-                        .map_err(|_| "local object exceeds frame budget")?,
-                    layout.align.max(8),
-                ))
+            .map(|ty| {
+                if types.aggregate_value(*ty)? {
+                    let layout = types.layout(*ty)?;
+                    Ok((
+                        u32::try_from(layout.size.max(8))
+                            .map_err(|_| "aggregate temporary exceeds frame limit")?,
+                        16,
+                    ))
+                } else {
+                    Ok((8, 8))
+                }
             })
             .collect::<Result<Vec<_>, String>>()?,
-        temporaries: f.values.len(),
         initialization_flags: f.locals.len(),
         saved: if runtime || bindings.is_some() {
             vec![reg(3)]
@@ -916,6 +1300,11 @@ fn build_body(
         types,
         function: f,
         code: prologue.instructions,
+        hidden_return: if hidden {
+            Some(frame.local_offsets()[f.locals.len()])
+        } else {
+            None
+        },
         frame,
         overflow: labels.fresh()?,
         divide: labels.fresh()?,
@@ -940,7 +1329,11 @@ fn build_body(
         bindings,
         propagate,
     };
-    if *variadic {
+    let mut home_arguments = *variadic || hidden;
+    for local in &f.parameters {
+        home_arguments |= types.aggregate_value(f.locals[local.0].ty)?;
+    }
+    if home_arguments {
         for index in 0..4 {
             let ArgumentLocation::Register(source) = scalar_argument(index)? else {
                 unreachable!()
@@ -962,23 +1355,50 @@ fn build_body(
             symbol: bindings.context,
         });
     }
+    if let Some(home) = l.hidden_return {
+        l.code
+            .push(load(Reg::RAX, l.frame.incoming_home_offset(0)?));
+        l.code.push(store(home, Reg::RAX));
+    }
     for local in 0..f.locals.len() {
         l.flag(LocalId(local), false);
     }
     for (index, local) in f.parameters.iter().enumerate() {
-        match scalar_argument(index)? {
-            ArgumentLocation::Register(r) => l.code.push(M::Mov {
-                width: W,
-                dst: Reg::RAX,
-                src: r,
-            }),
-            ArgumentLocation::Stack(_) => l
-                .code
-                .push(load(Reg::RAX, l.frame.incoming_stack_offset(index)?)),
+        let index = index + usize::from(hidden);
+        if home_arguments {
+            l.code
+                .push(load(Reg::RAX, l.frame.incoming_home_offset(index)?));
+        } else {
+            match scalar_argument(index)? {
+                ArgumentLocation::Register(src) => l.code.push(M::Mov {
+                    width: W,
+                    dst: Reg::RAX,
+                    src,
+                }),
+                ArgumentLocation::Stack(_) => l
+                    .code
+                    .push(load(Reg::RAX, l.frame.incoming_stack_offset(index)?)),
+            }
         }
-        l.normalize(f.locals[local.0].ty, Reg::RAX)?;
-        l.code
-            .push(store(l.frame.local_offsets()[local.0], Reg::RAX));
+        let ty = f.locals[local.0].ty;
+        if types.aggregate_value(ty)? {
+            if types.indirect_aggregate(ty)? {
+                l.code.push(M::Mov {
+                    width: W,
+                    dst: reg(11),
+                    src: Reg::RAX,
+                });
+                l.local_address(*local, reg(10));
+                l.copy_object(ty)?;
+            } else {
+                l.local_address(*local, reg(10));
+                l.store_object(ty)?;
+            }
+        } else {
+            l.normalize(ty, Reg::RAX)?;
+            l.code
+                .push(store(l.frame.local_offsets()[local.0], Reg::RAX));
+        }
         l.flag(*local, true);
     }
     l.code.push(M::Jump(l.targets[&f.entry]));

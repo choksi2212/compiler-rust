@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "installed_compiler": "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+  "compiler_sha256": "4381cc428878b69cdff9aab07ec7b05abd4714d17634120a072c587d0c11bda1",
+  "records": [
+    {
+      "demo": "student_records",
+      "typed": true,
+      "source_sha256": "3344a2d37954b07e291e5ce2a7da584b5e6530d5e84247dc2664ae9024507879",
+      "expected_sha256": "ab9f88a72c3adb4b82e1f647e051b3243d582161fce6f214e4b215c915bf5d79",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P14 faculty demo tmfsnofh\\student_records.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P14 faculty demo tmfsnofh\\student_records.exe",
+        "--std=c11",
+        "--tokens",
+        "--ast",
+        "--ir",
+        "--optimized-ir",
+        "--emit=machine"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "Sorted student records\nRank 1: Nisha, score 92\nRank 2: Arjun, score 85\nRank 3: Asha, score 78\nWinner: Nisha (92)\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "5af149ed08dbc515c0e371be7dd48571283462a0046215eb0fe593a9df52e183",
+      "actual_stage_headings": [
+        "TOKENS",
+        "TYPED AST",
+        "TYPED IR",
+        "OPTIMIZED TYPED IR",
+        "MACHINE CODE"
+      ],
+      "stage_dump_bytes": 848613,
+      "stage_dump_sha256": "c0987a20f68e0d1ab53997d34f53760e4c28e3f8c3227cb861326e7083388c9b"
+    },
+    {
+      "demo": "linked_list",
+      "typed": true,
+      "source_sha256": "f66042eab44de6665e9eaf29c817826331e2d9be83b69b660345ff1cdc50a8db",
+      "expected_sha256": "21b8e911ca1cb797c3aaf3a2e5110d49d44479503587288b051fb882f58ed00a",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P14 faculty demo tmfsnofh\\linked_list.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P14 faculty demo tmfsnofh\\linked_list.exe",
+        "--std=c11"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "30 -> 20 -> 10 -> NULL\nSum = 60\n20 -> 10 -> NULL\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "85b90eb65f50fe489395b90e9351c2dcc34114da2180c1bf4b33571df5e961a7",
+      "actual_stage_headings": [],
+      "stage_dump_bytes": 0,
+      "stage_dump_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "demo": "addition",
+      "typed": false,
+      "source_sha256": "dfdc859d31c3504db439c49c8525d954fd33a8e94d0521bb7104aca55b1130ce",
+      "expected_sha256": "d55f6e008d8ef3c72446e998830b0c73e9d596f862bbd7951b274a98fe855ecb",
+      "compile_command": [
+        "C:\\Users\\niklaus\\.cargo\\bin\\compiler.exe",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P14 faculty demo tmfsnofh\\addition.c",
+        "-o",
+        "C:\\Users\\niklaus\\AppData\\Local\\Temp\\installed P14 faculty demo tmfsnofh\\addition.exe"
+      ],
+      "compile_exit": 0,
+      "run_exit": 0,
+      "stdout": "Sum = 20\n",
+      "source_removed_before_run": true,
+      "empty_path": true,
+      "image_sha256": "1e6a8331b0fffb8acdb087b7ecc21d8a29b0e2c34c05654067e72f56f11f4248",
+      "actual_stage_headings": [],
+      "stage_dump_bytes": 0,
+      "stage_dump_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

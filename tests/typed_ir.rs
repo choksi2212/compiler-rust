@@ -21,6 +21,7 @@ fn fixture() -> Module {
             signature,
             parameters: vec![],
             locals: vec![Local {
+                alignment: None,
                 symbol: SymbolId(1),
                 ty: int,
             }],
@@ -439,10 +440,10 @@ fn pointer_memory_array_and_function_address_ir_constraints() {
     }
     assert!(count >= 5);
     let mut bad = module.clone();
-    let GlobalInitializer::Array(values) = &mut bad.globals[0].initial else {
+    let GlobalInitializer::Object(writes) = &mut bad.globals[0].initial else {
         panic!()
     };
-    values.pop();
+    writes[0].path = vec![InitializerStep::Element(99999)];
     assert!(verify(&bad).is_err());
     let mut bad = module;
     bad.globals[0].initial = GlobalInitializer::Integer(1);
